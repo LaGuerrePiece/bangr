@@ -94,6 +94,9 @@ const ReceiveScreen = () => {
           </TouchableOpacity>
         </View>
         <ActionButton text="Share" disabled={false} action={onShare} />
+        <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
+          Arbitrum, Optimism and Polygon
+        </Text>
       </View>
     </View>
   );
