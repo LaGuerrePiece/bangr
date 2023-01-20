@@ -1,12 +1,13 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect, useState } from "react";
+import axios from "axios";
+import "@ethersproject/shims";
+import { utils } from "ethers";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Text,
   View,
   Image,
-  TouchableHighlight,
   TouchableOpacity,
-  Dimensions,
   SafeAreaView,
   TouchableWithoutFeedback,
   TextInput,
@@ -17,26 +18,58 @@ import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
+import { CallWithNonce, VaultData } from "../types/types";
+import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
+import { averageApy } from "../components/Vault";
+import useTokensStore from "../state/tokens";
+import useUserStore from "../state/user";
+import useVaultsStore from "../state/vaults";
+import { relay } from "../utils/signAndRelay";
+import { correctInput, getURLInApp } from "../utils/utils";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
+
+const calculateGains = (
+  amount: number,
+  apy: number,
+  period: number
+): string => {
+  return ((amount * (apy / 100)) / (365 / period)).toFixed(2);
+};
 
 type VaultParams = {
   VaultDepositScreen: {
-    name: string;
-    description: string;
-    apy: string;
-    color: string;
-    protocol: string;
+    vault: VaultData;
   };
 };
 
 const VaultDepositScreen = () => {
-  const navigation = useNavigation();
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
-  const { name, description, apy, color, protocol } = params;
+  const { name, description, color, protocol, chains, image } = params.vault;
+  const apy = chains
+    ? averageApy(chains.map((chain) => chain.apy)).toString()
+    : "0";
+
+  const navigation = useNavigation();
   const [amount, setAmount] = useState("");
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("USDC");
+  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState("USDC");
   const [items, setItems] = useState([{ label: "USDC", value: "USDC" }]);
+  const [balance, setBalance] = useState("");
+  const [deposited, setDeposited] = useState("");
+  const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
+    (state) => ({
+      smartWalletAddress: state.smartWalletAddress,
+      wallet: state.wallet,
+      fetchBalances: state.fetchBalances,
+    })
+  );
+  const { fetchVaults, vaults } = useVaultsStore((state) => ({
+    fetchVaults: state.fetchVaults,
+    vaults: state.vaults,
+  }));
+  const tokens = useTokensStore((state) => state.tokens);
+  const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -48,7 +81,7 @@ const VaultDepositScreen = () => {
         return (
           <Image
             className="h-12 w-12"
-            source={require("../../assets/rocketpool.png")}
+            source={require("../../assets/rpl.png")}
           />
         );
       case "Ethereum":
@@ -75,6 +108,108 @@ const VaultDepositScreen = () => {
     }
   };
 
+  const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
+    if (!parseFloat(amount)) {
+      return;
+    }
+    const token = tokens?.find((token) =>
+      token.symbol === tokenSymbol ? tokenSymbol : selectedTokenSymbol
+    );
+
+    try {
+      const calls = await axios.post(`${getURLInApp()}/api/quote/vault`, {
+        address: smartWalletAddress,
+        vaultName: name,
+        action: action ? action : "deposit",
+        amount: utils.parseUnits(amount, token?.decimals),
+        token,
+      });
+
+      return calls.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleDeposit = async () => {
+    if (!validateInput()) return;
+
+    const calls = await handleAmountChange("deposit");
+
+    if (wallet && smartWalletAddress)
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        "0",
+        "Deposit successfull",
+        "Deposit failed"
+      );
+
+    fetchBalances(smartWalletAddress);
+    fetchVaults(smartWalletAddress);
+  };
+
+  const handleWithdraw = async () => {
+    if (!validateInput()) return;
+
+    const calls = await handleAmountChange("withdraw", "aUSDC");
+
+    if (wallet && smartWalletAddress)
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        "0",
+        "Withdrawal successfull",
+        "Withdrawal failed"
+      );
+
+    fetchBalances(smartWalletAddress);
+    fetchVaults(smartWalletAddress);
+  };
+
+  const validateInput = () => {
+    try {
+      utils.parseUnits(amount, token?.decimals);
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        text1: "Input error",
+        text2: "Your amount is invalid",
+      });
+      return false;
+    }
+
+    if (!parseFloat(amount) || parseFloat(amount) <= 0) {
+      Toast.show({
+        type: "error",
+        text1: "Input error",
+        text2: "Your amount is invalid",
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
+    if (amount) handleAmountChange();
+  }, [amount]);
+
+  useEffect(() => {
+    setBalance(
+      tokens?.find((token) => token.symbol === selectedTokenSymbol)?.balance ||
+        "0"
+    );
+    setDeposited(
+      chains
+        .map((chain) => chain.deposited)
+        .reduce((acc, cur) => acc + cur, 0)
+        .toString()
+    );
+  }, [selectedTokenSymbol, tokens, vaults]);
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -95,9 +230,9 @@ const VaultDepositScreen = () => {
             <View className="mb-6 flex-row justify-between">
               <View className="w-4/5">
                 <View className="flex-row items-center">
-                  <TouchableWithoutFeedback onPress={navigation.goBack}>
+                  <TouchableOpacity onPress={navigation.goBack}>
                     <ArrowLeftIcon size={24} />
-                  </TouchableWithoutFeedback>
+                  </TouchableOpacity>
                   <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
                     Deposit in {name}
                   </Text>
@@ -109,21 +244,38 @@ const VaultDepositScreen = () => {
           <DropDownPicker
             style={{ backgroundColor: "#EFEEEC" }}
             open={open}
-            value={value}
+            value={selectedTokenSymbol}
             items={items}
             setOpen={setOpen}
-            setValue={setValue}
+            setValue={setSelectedTokenSymbol}
             setItems={setItems}
           />
-          <View className="mt-6 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
+          <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+            Available:{" "}
+            {balance ? formatUnits(balance, token?.decimals, 3) : "0"}{" "}
+            {selectedTokenSymbol}
+          </Text>
+          <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
             <TextInput
               className="w-4/5 text-4xl text-typo-light dark:text-typo-dark"
-              onChangeText={setAmount}
+              onChangeText={(e) => setAmount(correctInput(e))}
               value={amount}
               keyboardType="numeric"
               placeholder="0"
             />
-            <TouchableOpacity onPress={() => console.log("Clicked on max")}>
+            <TouchableOpacity
+              onPress={() => {
+                setAmount(
+                  balance
+                    ? formatUnits(
+                        balance,
+                        token?.decimals,
+                        token?.decimals || 18
+                      )
+                    : "0"
+                );
+              }}
+            >
               <View className="rounded-xl bg-btn-light px-3 py-1 dark:bg-btn-dark">
                 <Text className="text-secondary-light dark:text-secondary-dark">
                   MAX
@@ -131,17 +283,26 @@ const VaultDepositScreen = () => {
               </View>
             </TouchableOpacity>
           </View>
+          <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+            Deposited: {deposited} {selectedTokenSymbol}
+          </Text>
 
           <View className="mt-12 flex-row justify-evenly">
             <ActionButton
               text="WITHDRAW"
-              disabled={true}
-              action={() => console.log("clicked on withdraw")}
+              disabled={
+                chains
+                  .map((chain) => chain.deposited)
+                  .reduce((acc, cur) => acc + cur, 0) > 0
+                  ? false
+                  : true
+              }
+              action={handleWithdraw}
             />
             <ActionButton
               text="DEPOSIT"
               disabled={false}
-              action={() => console.log("clicked on deposit")}
+              action={handleDeposit}
             />
           </View>
 
@@ -151,6 +312,41 @@ const VaultDepositScreen = () => {
                 Estimated returns based on current APY
               </Text>
               <InformationCircleIcon color="#1C1C1C" />
+            </View>
+            <View className="mt-3 flex-row justify-evenly">
+              <View className="h-[85%]">
+                <Text className="text-typo-light dark:text-typo-dark">
+                  Weekly
+                </Text>
+                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                  $
+                  {amount
+                    ? calculateGains(parseFloat(amount), parseFloat(apy), 7)
+                    : 0}
+                </Text>
+              </View>
+              <View className="h-[85%]">
+                <Text className="text-typo-light dark:text-typo-dark">
+                  Monthly
+                </Text>
+                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                  $
+                  {amount
+                    ? calculateGains(parseFloat(amount), parseFloat(apy), 30)
+                    : 0}
+                </Text>
+              </View>
+              <View className="h-[85%]">
+                <Text className="text-typo-light dark:text-typo-dark">
+                  Annualy
+                </Text>
+                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                  $
+                  {amount
+                    ? calculateGains(parseFloat(amount), parseFloat(apy), 365)
+                    : 0}
+                </Text>
+              </View>
             </View>
           </View>
 

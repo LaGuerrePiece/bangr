@@ -11,6 +11,7 @@ export const chainData = [
     name: "Optimism",
     chainId: 10,
     image: "/optimism.png",
+    logo: require("../../assets/optimism.png"),
     coingeckoIdentifier: "optimistic-ethereum",
     nativeTokenSymbol: "ETH",
     provider:
@@ -26,6 +27,7 @@ export const chainData = [
     name: "Arbitrum",
     chainId: 42161,
     image: "/arbitrum.png",
+    logo: require("../../assets/arbitrum.png"),
     coingeckoIdentifier: "arbitrum-one",
     nativeTokenSymbol: "ETH",
     provider:
@@ -41,6 +43,7 @@ export const chainData = [
     name: "Polygon",
     chainId: 137,
     image: "/polygon.png",
+    logo: require("../../assets/polygon.png"),
     coingeckoIdentifier: "polygon-pos",
     nativeTokenSymbol: "MATIC",
     provider:
@@ -90,6 +93,7 @@ export const TOKEN_WHITELIST = [
   "WBTC",
   "RAI",
   "LINK",
+  "aUSDC",
   // "QI",
   // "DHT",
   // "MKR",

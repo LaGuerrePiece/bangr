@@ -17,7 +17,11 @@ export function keepTwoDecimals(num: number): string {
   return (Math.round(num * 100) / 100).toFixed(2);
 }
 
-export function cutDecimals(num: number, decimalsToKeep: number): string {
+export function cutDecimals(
+  num: number | string,
+  decimalsToKeep: number
+): string {
+  if (typeof num === "string") num = Number(num);
   return (
     Math.round(num * 10 ** decimalsToKeep) /
     10 ** decimalsToKeep

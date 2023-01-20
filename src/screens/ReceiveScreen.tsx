@@ -98,6 +98,7 @@ const ReceiveScreen = () => {
           Arbitrum, Optimism and Polygon
         </Text>
       </View>
+      <Toast />
     </View>
   );
 };

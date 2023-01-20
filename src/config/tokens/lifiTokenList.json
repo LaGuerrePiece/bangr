@@ -16433,6 +16433,16 @@
         "priceUSD": "0",
         "coinKey": "DUCK",
         "logoURI": "https://ethereum-optimism.github.io/data/DUCK/logo.png"
+      },
+      {
+        "address": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+        "chainId": 10,
+        "symbol": "aUSDC",
+        "decimals": 6,
+        "name": "Aave Interest bearing USDC",
+        "priceUSD": "1",
+        "logoURI": "https://static.debank.com/image/token/logo_url/0x9ba00d6856a4edf4665bca2c2309936572473b7e/6841848cb7d6b39981cb76953af0f98a.png",
+        "coinKey": "aUSDC"
       }
     ],
     "25": [
@@ -38087,6 +38097,16 @@
         "priceUSD": "0.01566976201689267",
         "logoURI": "https://static.debank.com/image/matic_token/logo_url/0x11a819beb0aa3327e39f52f90d65cc9bca499f33/1971261459e7f9fc0ffc012f43ae280e.png",
         "coinKey": "SCA"
+      },
+      {
+        "address": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+        "chainId": 137,
+        "symbol": "aUSDC",
+        "decimals": 6,
+        "name": "Aave Interest bearing USDC",
+        "priceUSD": "1",
+        "logoURI": "https://static.debank.com/image/token/logo_url/0x9ba00d6856a4edf4665bca2c2309936572473b7e/6841848cb7d6b39981cb76953af0f98a.png",
+        "coinKey": "aUSDC"
       }
     ],
     "250": [
@@ -44384,6 +44404,16 @@
         "priceUSD": "16841",
         "logoURI": "https://static.debank.com/image/arb_token/logo_url/0xdbf31df14b66535af65aac99c32e9ea844e14501/a5f568ee284b55a25fb2ce001e034300.png",
         "coinKey": "RENBTC"
+      },
+      {
+        "address": "0x625E7708f30cA75bfd92586e17077590C60eb4cD",
+        "chainId": 42161,
+        "symbol": "aUSDC",
+        "decimals": 6,
+        "name": "Aave Interest bearing USDC",
+        "priceUSD": "1",
+        "logoURI": "https://static.debank.com/image/token/logo_url/0x9ba00d6856a4edf4665bca2c2309936572473b7e/6841848cb7d6b39981cb76953af0f98a.png",
+        "coinKey": "aUSDC"
       }
     ],
     "42220": [

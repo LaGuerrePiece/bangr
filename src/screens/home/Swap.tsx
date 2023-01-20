@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-
 import {
   View,
   Text,
@@ -20,15 +19,15 @@ import {
 } from "../../config/configs";
 import useUserStore from "../../state/user";
 import "@ethersproject/shims";
-import { ethers, BigNumber } from "ethers";
+import { ethers } from "ethers";
 import {
   getExampleMultichainToken,
   getRelayerValueToSend,
 } from "../../utils/utils";
-import { getURLInApp } from "../../utils/utils";
+import { correctInput, getURLInApp } from "../../utils/utils";
 import axios from "axios";
 import useTokensStore from "../../state/tokens";
-import { formatUnits } from "../../utils/format";
+import { cutDecimals, formatUnits } from "../../utils/format";
 import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
 import resolveConfig from "tailwindcss/resolveConfig";
@@ -81,10 +80,10 @@ const Swap = () => {
   }, [amountIn]);
 
   useEffect(() => {
-    if (debouncedAmountIn) updateQuote(debouncedAmountIn);
+    if (debouncedAmountIn) updateQuote();
   }, [debouncedAmountIn, srcToken, dstToken]);
 
-  async function updateQuote(debouncedAmountIn: string) {
+  async function updateQuote() {
     if (!debouncedAmountIn || !srcToken || !dstToken) return;
     if (
       Number(debouncedAmountIn) * (srcToken.priceUSD ?? 0) <
@@ -129,8 +128,12 @@ const Swap = () => {
     }
   }
 
-  const rotateTokens = () => {
-    const srcTokenSave = srcToken;
+  const flip = () => {
+    let srcTokenSave = srcToken;
+    if (srcTokenSave && ["ETH", "MATIC"].includes(srcTokenSave.symbol)) {
+      const dai = tokens?.find((token) => token.symbol === "DAI");
+      if (dai) srcTokenSave = dai;
+    }
     update({
       amountIn: "",
       debouncedAmountIn: "",
@@ -142,6 +145,7 @@ const Swap = () => {
   };
 
   const handleInputChange = (event: any) => {
+    event = correctInput(event);
     if (event < 0) event = 0;
     update({
       amountIn: event.toString(),
@@ -280,11 +284,7 @@ const Swap = () => {
             ) : (
               <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
                 {quote && quote.sumOfToAmount
-                  ? formatUnits(
-                      BigNumber.from(quote.sumOfToAmount).toString(),
-                      dstToken?.decimals,
-                      5
-                    )
+                  ? cutDecimals(quote.sumOfToAmount, 5)
                   : "0"}{" "}
               </Text>
             )}
@@ -292,7 +292,7 @@ const Swap = () => {
         </View>
       </View>
       <View className="flex flex-row">
-        <TouchableHighlight onPress={rotateTokens}>
+        <TouchableHighlight onPress={flip}>
           <View className="flex flex-row items-center">
             <Image
               className="ml-3 h-6 w-6"
@@ -312,6 +312,7 @@ const Swap = () => {
       <View className="flex-row justify-evenly">
         {!debouncedAmountIn ||
         !calls ||
+        isSearching ||
         Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
           SWAPAMOUNTIN_USD_THRESHOLD ||
         (srcToken &&

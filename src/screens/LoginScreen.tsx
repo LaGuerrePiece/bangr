@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Alert } from "react-native";
+import { View, Text, SafeAreaView } from "react-native";
 import ActionButton from "../components/ActionButton";
 import Web3Auth, { OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 import Constants, { AppOwnership } from "expo-constants";
@@ -14,6 +14,7 @@ import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
+import useVaultsStore from "../state/vaults";
 global.Buffer = global.Buffer || Buffer;
 
 const resolvedRedirectUrl =
@@ -41,9 +42,11 @@ const LoginScreen = () => {
   const navigation = useNavigation();
   const login = useUserStore((state) => state.login);
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
+  const fetchVaults = useVaultsStore((state) => state.fetchVaults);
 
   useEffect(() => {
     checkPreviousUser();
+    fetchTokensStatic();
   });
 
   const loginThroughBiometrics = async () => {
@@ -79,10 +82,6 @@ const LoginScreen = () => {
 
     // TODO: handle failling
   };
-
-  useEffect(() => {
-    fetchTokensStatic();
-  }, []);
 
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
