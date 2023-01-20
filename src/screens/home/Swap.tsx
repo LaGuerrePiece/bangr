@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BigNumber } from "ethers";
+
 import {
   View,
   Text,
@@ -19,7 +19,8 @@ import {
   SWAP_DEBOUNCE_THRESHOLD,
 } from "../../config/configs";
 import useUserStore from "../../state/user";
-import { ethers } from "ethers";
+import "@ethersproject/shims";
+import { ethers, BigNumber } from "ethers";
 import {
   getExampleMultichainToken,
   getRelayerValueToSend,

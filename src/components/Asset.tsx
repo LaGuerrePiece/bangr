@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import { MultichainToken } from "../types/types";
+import "@ethersproject/shims";
 import { ethers } from "ethers";
 
 const Asset = ({ token }: { token: MultichainToken }) => {

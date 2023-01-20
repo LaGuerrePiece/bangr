@@ -1,3 +1,4 @@
+import "@ethersproject/shims";
 import { BigNumber, UnsignedTransaction } from "ethers";
 import { chainData } from "../config/configs";
 

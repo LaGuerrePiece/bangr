@@ -1,5 +1,5 @@
 import Constants from "expo-constants";
-
+import "@ethersproject/shims";
 import { BigNumber, ethers } from "ethers";
 import {
   chainData,

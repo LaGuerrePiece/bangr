@@ -2,7 +2,6 @@ import { create } from "zustand";
 import { Balances, MultichainToken, Token } from "../types/types";
 import { getURL } from "../config/configs";
 import axios from "axios";
-import { BigNumber } from "ethers";
 import { devtools } from "zustand/middleware";
 import { getURLInApp } from "../utils/utils";
 import { addBalancesToTokens } from "../utils/utils";

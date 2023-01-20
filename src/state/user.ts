@@ -1,3 +1,5 @@
+import "@ethersproject/shims";
+
 import { create } from "zustand";
 import { Wallet } from "ethers";
 import { getSmartWalletAddress } from "../utils/utils";

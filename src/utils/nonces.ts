@@ -1,3 +1,4 @@
+import "@ethersproject/shims";
 import { ethers } from "ethers";
 import contractsConfig from "../config/contracts-config.json";
 import { getChain } from "./utils";
