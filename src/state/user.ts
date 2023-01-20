@@ -1,6 +1,5 @@
-import "@ethersproject/shims";
-
 import { create } from "zustand";
+import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import { getSmartWalletAddress } from "../utils/utils";
 import useHistoricStore from "./historic";
@@ -8,6 +7,7 @@ import axios from "axios";
 import { getURLInApp } from "../utils/utils";
 import { Balances } from "../types/types";
 import useTokensStore from "./tokens";
+import useVaultsStore from "./vaults";
 
 interface UserState {
   wallet: Wallet | undefined;
@@ -30,6 +30,7 @@ const useUserStore = create<UserState>()((set, get) => ({
 
     get().fetchBalances(scwAddress);
     useHistoricStore.getState().fetchHistoric(scwAddress);
+    useVaultsStore.getState().fetchVaults(scwAddress);
   },
 
   fetchBalances: async (scwAddress?: string | null) => {

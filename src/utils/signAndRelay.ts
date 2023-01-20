@@ -13,6 +13,7 @@ import {
   signTypedDataTypes,
   signTypedDataDomain,
 } from "../config/signTypedData";
+import Toast from "react-native-toast-message";
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -22,6 +23,12 @@ export const relay = async (
   successMessage: string,
   errorMessage: string
 ) => {
+  Toast.show({
+    type: "info",
+    text1: "Transaction sent",
+    text2: "Waiting for confirmation...",
+  });
+
   const callsObject = {
     Calls: calls,
   };
@@ -39,7 +46,10 @@ export const relay = async (
   );
 
   if (deployRes === "error") {
-    console.log("error deploying wallets");
+    Toast.show({
+      type: "error",
+      text1: "error deploying wallet",
+    });
     return;
   }
 
@@ -52,11 +62,16 @@ export const relay = async (
 
   if (!relayResponse) {
     console.log("error relaying transaction");
+    Toast.show({
+      type: "error",
+      text1: "error relaying transaction",
+    });
     return;
   }
 
   console.log("Success. relayResponse :", relayResponse);
 
+  const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
@@ -64,21 +79,35 @@ export const relay = async (
       const tx = relayResponse[chainId];
 
       if (tx.error) {
-      } else {
-        let txFound;
-        do {
-          txFound = await getChain(chainId).provider.getTransaction(tx.hash!);
-          await new Promise((r) => setTimeout(r, 750));
-        } while (!txFound);
-
-        console.log(`tx ${tx.hash} found on chain ${chainId}`);
-
-        await txFound.wait();
-
-        console.log(`tx ${tx.hash} mined.`);
+        Toast.show({
+          type: "error",
+          text1: `error relaying transaction on ${getChain(chainId).name}`,
+        });
+        txSuccesses.push(false);
+        return;
       }
+
+      let txFound;
+      do {
+        txFound = await getChain(chainId).provider.getTransaction(tx.hash!);
+        await new Promise((r) => setTimeout(r, 750));
+      } while (!txFound);
+
+      console.log(`tx ${tx.hash} found on chain ${chainId}`);
+
+      await txFound.wait();
+
+      console.log(`tx ${tx.hash} mined.`);
+
+      txSuccesses.push(true);
     })
   );
+
+  if (txSuccesses.includes(false)) return;
+  Toast.show({
+    type: "success",
+    text1: successMessage,
+  });
 };
 
 const sendToRelayer = async (body: {
@@ -130,7 +159,7 @@ const deployWalletsIfNotDeployed = async (
   });
 
   if (!res || Object.values(res).some((res) => res.error)) {
-    console.log("Error send deployment tx. res :", res);
+    console.log("Error sending deployment tx. res :", res);
     return "error";
   }
 
@@ -150,6 +179,11 @@ const deployWalletsIfNotDeployed = async (
         console.log(`tx ${tx.hash} found on chain ${chainId}`);
         await txFound.wait();
         console.log(`tx ${tx.hash} mined.`);
+
+        Toast.show({
+          type: "success",
+          text1: `Smart Wallet deployed on ${getChain(chainId).name}.`,
+        });
       }
     })
   );

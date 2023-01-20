@@ -95,6 +95,7 @@ const ReceiveScreen = () => {
         </View>
         <ActionButton text="Share" disabled={false} action={onShare} />
       </View>
+      <Toast />
     </View>
   );
 };

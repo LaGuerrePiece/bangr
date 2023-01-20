@@ -127,7 +127,6 @@ export function getCorrectedAmountIn(
     throw { message: "tokenToPayGasIn price is undefined" };
   }
 
-  console.log("getCorrectedAmountIn", amountIn, token);
   const numberOfCalls = ["ETH", "MATIC"].includes(token.symbol) ? 1 : 2;
   const amountToPay = ethers.utils.parseUnits(
     ((numberOfCalls * FEE_PER_CALL * 1.05) / token.priceUSD)
@@ -241,7 +240,18 @@ export function addBalancesToTokens(
   return newTokens.sort((a, b) => Number(b.quote) - Number(a.quote));
 }
 
+export function getChainWithMaxBalance(chains: MultichainToken["chains"]) {
+  const chain = chains.reduce((max, chain) =>
+    Number(chain.balance ?? 0) > Number(max.balance ?? 0) ? chain : max
+  );
+  return getChain(chain.chainId);
+}
+
 export const getURLInApp = () =>
   process.env.NODE_ENV == "development"
     ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
-    : "https://dev.poche.fi";
+    : "https://beta.poche.fi";
+
+export const correctInput = (input: string): string => {
+  return input.replace(/,/g, ".");
+};

@@ -1,46 +1,39 @@
 import { ChainId } from "../types/types";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import useTokensStore from "../state/tokens";
-import { Appearance, useColorScheme } from "react-native";
-import { chainData } from "../config/configs";
+import { useColorScheme } from "react-native";
 import { getChain } from "../utils/utils";
 
 type Props = {
-  chain: ChainId;
+  chainId: ChainId;
 };
 
-export default function SelectChainButton({ chain }: Props) {
+export default function SelectChainButton({ chainId }: Props) {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
-  chain = chain || 10;
+  const chain = getChain(chainId);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("SelectChain" as never, { chain } as never);
+        navigation.navigate("SelectChain" as never, { chainId } as never);
       }}
     >
-      {chain && (
-        <View className="flex flex-row items-center px-4">
-          <Image
-            className="h-8 w-8"
-            source={require("../../assets/arbitrum.png")}
-          />
+      <View className="flex flex-row items-center px-4">
+        <Image className="h-8 w-8" source={chain.logo} />
 
-          <Text className="mx-1 text-xl font-bold text-typo-light dark:text-typo-dark">
-            {getChain(chain)?.name}
-          </Text>
-          <Image
-            className="h-2 w-2"
-            source={
-              colorScheme === "light"
-                ? require("../../assets/chevron.png")
-                : require("../../assets/chevron_white.png")
-            }
-          />
-        </View>
-      )}
+        <Text className="mx-1 text-xl font-bold text-typo-light dark:text-typo-dark">
+          {chain.name}
+        </Text>
+        <Image
+          className="h-2 w-2"
+          source={
+            colorScheme === "light"
+              ? require("../../assets/chevron.png")
+              : require("../../assets/chevron_white.png")
+          }
+        />
+      </View>
     </TouchableOpacity>
   );
 }

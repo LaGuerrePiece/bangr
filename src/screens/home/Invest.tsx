@@ -1,7 +1,14 @@
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import Vault from "../../components/Vault";
+import useVaultsStore from "../../state/vaults";
+
+const averageApy = (apys: number[]) => {
+  return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
+};
 
 const Invest = () => {
+  const vaults = useVaultsStore((state) => state.vaults);
+
   return (
     <SafeAreaView className="top-20 h-[90%]">
       <View className="">
@@ -11,37 +18,10 @@ const Invest = () => {
       </View>
       <View className="h-[90%]">
         <ScrollView className="">
-          <Vault
-            name="RocketPool"
-            description="Contribute to the security of Ethereum by staking ETH with RocketPool"
-            apy="4.19"
-            color="#E18700"
-            protocol="RocketPool"
-          />
-
-          <Vault
-            name="GLP"
-            description="Earn on the losses of gullible traders"
-            apy="7.88"
-            color="#006CD0"
-            protocol="GMX"
-          />
-
-          <Vault
-            name="agEUR-USDC"
-            description="Earn by providing liquidity to traders"
-            apy="9.50"
-            color="#4EA1ED"
-            protocol="Velodrome"
-          />
-
-          <Vault
-            name="agEUR-USDC"
-            description="Earn by providing liquidity to traders"
-            apy="9.50"
-            color="#4EA1ED"
-            protocol="Velodrome"
-          />
+          {vaults &&
+            vaults
+              .filter((vault) => vault.active)
+              .map((vault) => <Vault key={vault.name} vault={vault} />)}
         </ScrollView>
       </View>
     </SafeAreaView>

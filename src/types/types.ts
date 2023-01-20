@@ -77,7 +77,7 @@ export type RelayerResponse = {
 
 export type Quote = {
   singleQuotes: SingleQuote[];
-  sumOfToAmount?: BigNumber;
+  sumOfToAmount?: string;
   totalToAmountUSD?: Number;
   totalFromAmountUSD?: Number;
 };
@@ -106,3 +106,29 @@ export type TransferQuote = {
   gasCostUSD: string;
   transactionRequest: UnsignedTransaction;
 };
+
+export enum VaultProtocol {
+  AAVE = "Aave",
+  ROCKET_POOL = "Rocket Pool",
+  GMX = "GMX",
+  VELODROME = "Velodrome",
+}
+
+export interface VaultStatic {
+  name: string;
+  image: string;
+  description: string;
+  tokens: string[];
+  protocol: VaultProtocol;
+  active: boolean;
+  color?: string;
+}
+
+export interface VaultData extends VaultStatic {
+  chains: {
+    chainId?: number;
+    deposited: number;
+    apy: number;
+    tvl: number;
+  }[];
+}

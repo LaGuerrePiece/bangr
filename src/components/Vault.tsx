@@ -1,52 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+import { VaultData } from "../types/types";
 
-const Vault = ({
-  name,
-  description,
-  apy,
-  color,
-  protocol,
-}: {
-  name: string;
-  description: string;
-  apy: string;
-  color: string;
-  protocol: string;
-}) => {
+export const averageApy = (apys: number[]) => {
+  return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
+};
+
+const Vault = ({ vault }: { vault: VaultData }) => {
+  const { name, description, color, protocol, chains, image } = vault;
+  const apy = vault.chains
+    ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
+    : "0";
   const navigation = useNavigation();
-  const getImage = (name: string) => {
-    switch (name) {
-      case "RocketPool":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/rocketpool.png")}
-          />
-        );
-      case "Ethereum":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/ethereum.png")}
-          />
-        );
-      case "GMX":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/glp.png")}
-          />
-        );
-      case "Velodrome":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/velodrome.png")}
-          />
-        );
-    }
-  };
   return (
     <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-3 shadow-sm dark:bg-secondary-dark">
       <TouchableOpacity
@@ -54,19 +19,15 @@ const Vault = ({
           navigation.navigate(
             "VaultDeposit" as never,
             {
-              name,
-              description,
-              apy,
-              color,
-              protocol,
+              vault,
             } as never
           )
         }
       >
-        <Image
+        {/*<Image
           className="h-6 w-6"
           source={require("../../assets/ethereum.png")}
-        />
+      />*/}
         <View className="flex">
           <View className="flex-row justify-between">
             <View className="w-4/5">
@@ -77,7 +38,7 @@ const Vault = ({
                 {description}
               </Text>
             </View>
-            {getImage(protocol)}
+            <Image className="h-12 w-12" source={{ uri: image }} />
           </View>
           <View className="mt-2">
             <Text className="text-typo-light dark:text-typo-dark">

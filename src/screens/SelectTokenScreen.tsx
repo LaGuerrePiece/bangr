@@ -16,6 +16,7 @@ import { XMarkIcon } from "react-native-heroicons/outline";
 import useSwapStore from "../state/swap";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../tailwind.config";
+import useSendStore from "../state/send";
 
 type SelectTokenParams = {
   SelectTokenScreen: {
@@ -30,6 +31,7 @@ export default function SelectToken() {
     useRoute<RouteProp<SelectTokenParams, "SelectTokenScreen">>();
   const { tokenList, tokenToUpdate } = params;
   const { updateSrcToken, updateDstToken } = useSwapStore();
+  const { updateSendToken } = useSendStore();
   const colorScheme = useColorScheme();
   const fullConfig = resolveConfig(tailwindConfig);
   const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
@@ -47,7 +49,7 @@ export default function SelectToken() {
             />
           </TouchableWithoutFeedback>
         </View>
-        <ScrollView className="">
+        <ScrollView>
           {tokenList.map((token, i) => {
             return (
               <TouchableOpacity
@@ -58,7 +60,7 @@ export default function SelectToken() {
                     ? updateSrcToken(token)
                     : tokenToUpdate === "Swap:dstToken"
                     ? updateDstToken(token)
-                    : () => {};
+                    : updateSendToken(token);
                   navigation.goBack();
                 }}
               >

@@ -38,7 +38,7 @@ const VaultScreen = () => {
         return (
           <Image
             className="h-12 w-12"
-            source={require("../../assets/rocketpool.png")}
+            source={require("../../assets/rpl.png")}
           />
         );
       case "Ethereum":
