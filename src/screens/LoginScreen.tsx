@@ -91,13 +91,13 @@ const LoginScreen = () => {
       </Text>
 
       <View className="mx-auto mt-32 flex h-1/4 w-2/3 justify-between">
-        <ActionButton text="It's my first time here" action={handleLogin} />
+        <ActionButton text="Connect" action={handleLogin} />
 
-        <ActionButton
+        {/* <ActionButton
           text="Recover previous account"
           action={() => console.log("recover account")}
           disabled={true}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   );
