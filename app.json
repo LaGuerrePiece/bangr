@@ -2,7 +2,7 @@
   "expo": {
     "name": "poche-app",
     "slug": "poche-app",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "scheme": "poche",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
