@@ -1,4 +1,4 @@
-import { LifiQuote, SingleQuote } from "../../../packages/common/types/types";
+import { LifiQuote, SingleQuote } from "../types/types";
 
 export type LifiData = {
   fromChainId: number;

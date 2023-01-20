@@ -1,4 +1,4 @@
-import { ethers } from "../../../front/node_modules/ethers";
+import { ethers } from "ethers";
 
 export const getURL = () =>
   process.env.NODE_ENV == "development"

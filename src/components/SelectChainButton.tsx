@@ -1,10 +1,10 @@
-import { ChainId } from "../../../packages/common/types/types";
+import { ChainId } from "../types/types";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import useTokensStore from "../state/tokens";
 import { Appearance, useColorScheme } from "react-native";
-import { chainData } from "../../../packages/common/config/configs";
-import { getChain } from "../../../packages/common/utils/utils";
+import { chainData } from "../config/configs";
+import { getChain } from "../utils/utils";
 
 type Props = {
   chain: ChainId;

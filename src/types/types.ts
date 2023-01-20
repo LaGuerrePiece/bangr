@@ -1,7 +1,4 @@
-import {
-  BigNumber,
-  UnsignedTransaction,
-} from "../../../front/node_modules/ethers";
+import { BigNumber, UnsignedTransaction } from "ethers";
 import { chainData } from "../config/configs";
 
 export type ContractsConfig = {
@@ -10,7 +7,7 @@ export type ContractsConfig = {
   };
 };
 
-export type ChainData = typeof chainData[number];
+export type ChainData = (typeof chainData)[number];
 
 export type ChainId = ChainData["chainId"];
 

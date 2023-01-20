@@ -27,7 +27,7 @@ import {
 import { getURLInApp } from "../../utils/utils";
 import axios from "axios";
 import useTokensStore from "../../state/tokens";
-import { formatUnits } from "../../../../packages/common/utils/format";
+import { formatUnits } from "../../utils/format";
 import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
 import resolveConfig from "tailwindcss/resolveConfig";
