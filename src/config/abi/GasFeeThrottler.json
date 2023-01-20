@@ -1,0 +1,4 @@
+[
+  "function gasprice() view returns (address)",
+  "function shouldGasThrottle() view returns (bool)"
+]

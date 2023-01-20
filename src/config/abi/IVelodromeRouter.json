@@ -1,0 +1,7 @@
+[
+  "function addLiquidity(address,address,bool,uint256,uint256,uint256,uint256,address,uint256) returns (uint256, uint256, uint256)",
+  "function getAmountOut(uint256,address,address) view returns (uint256, bool)",
+  "function quoteAddLiquidity(address,address,bool,uint256,uint256) view returns (uint256, uint256, uint256)",
+  "function removeLiquidity(address,address,bool,uint256,uint256,uint256,address,uint256) returns (uint256, uint256)",
+  "function swapExactTokensForTokens(uint256,uint256,tuple(address,address,bool)[],address,uint256) returns (uint256[])"
+]

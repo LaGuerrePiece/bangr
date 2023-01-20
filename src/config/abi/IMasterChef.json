@@ -1,0 +1,15 @@
+[
+  "function deposit(uint256,uint256,address)",
+  "function deposit(uint256,uint256)",
+  "function depositShort(uint256,uint128)",
+  "function emergencyWithdraw(uint256,address)",
+  "function emergencyWithdraw(uint256)",
+  "function harvest(uint256,address)",
+  "function harvestShort(uint256)",
+  "function pendingShare(uint256,address) view returns (uint256)",
+  "function userInfo(uint256,address) view returns (uint256, uint256)",
+  "function withdraw(uint256,uint256)",
+  "function withdrawAll(uint256)",
+  "function withdrawAndHarvest(uint256,uint256,address)",
+  "function withdrawAndHarvestShort(uint256,uint128)"
+]

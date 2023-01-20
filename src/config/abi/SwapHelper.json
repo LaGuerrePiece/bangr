@@ -1,0 +1,6 @@
+[
+  "constructor(address)",
+  "function getSwapPath(address,address) view returns (tuple(address,address[]))",
+  "function getWhitelistedAddresses() returns (address[])",
+  "function unirouter() view returns (address)"
+]

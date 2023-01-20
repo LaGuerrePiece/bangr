@@ -1,0 +1,11 @@
+[
+  "constructor(address,address)",
+  "function WETH() view returns (address)",
+  "function beefIn(address,uint256,address,uint256)",
+  "function beefInETH(address,uint256) payable",
+  "function beefOut(address,uint256)",
+  "function beefOutAndSwap(address,uint256,address,uint256)",
+  "function estimateSwap(address,address,uint256) view returns (uint256, uint256, address)",
+  "function minimumAmount() view returns (uint256)",
+  "function router() view returns (address)"
+]

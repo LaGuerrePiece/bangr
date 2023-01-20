@@ -1,0 +1,5 @@
+[
+  "function getFees(address) view returns (tuple(uint256,uint256,uint256,uint256,string,bool))",
+  "function setStratFeeId(uint256)",
+  "function stratFeeId(address) view returns (uint256)"
+]

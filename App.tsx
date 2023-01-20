@@ -1,0 +1,55 @@
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import WalletScreen from "./src/screens/WalletScreen";
+import VaultScreen from "./src/screens/VaultScreen";
+import VaultDepositScreen from "./src/screens/VaultDepositScreen";
+import TokenScreen from "./src/screens/TokenScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import SelectTokenScreen from "./src/screens/SelectTokenScreen";
+import SendScreen from "./src/screens/SendScreen";
+import ReceiveScreen from "./src/screens/ReceiveScreen";
+import Toast from "react-native-toast-message";
+import SelectChainScreen from "./src/screens/SelectChainScreen";
+
+const Stack = createNativeStackNavigator();
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Wallet" component={WalletScreen} />
+        <Stack.Screen
+          name="Vault"
+          component={VaultScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Token"
+          component={TokenScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectToken"
+          component={SelectTokenScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="SelectChain"
+          component={SelectChainScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
+        <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
+        <Stack.Screen name="Send" component={SendScreen} />
+        <Stack.Screen name="Receive" component={ReceiveScreen} />
+      </Stack.Navigator>
+      <Toast />
+    </NavigationContainer>
+  );
+};
+
+export default App;
