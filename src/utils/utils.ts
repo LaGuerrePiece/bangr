@@ -1,13 +1,12 @@
 import Constants from "expo-constants";
 
-import { BigNumber, ethers } from "../../../front/node_modules/ethers";
+import { BigNumber, ethers } from "ethers";
 import {
   chainData,
   FEE_PER_CALL,
   REFERENCE_CHAIN,
   tokenGroups,
 } from "../config/configs";
-import { TokenWithBalanceAndLifi } from "../../../front/src/tools/quotes/combinations";
 import {
   CallWithNonce,
   ChainData,
@@ -20,6 +19,14 @@ import {
 } from "../types/types";
 import contractsConfig from "../config/contracts-config.json";
 import walletFactoryAbi from "../config/abi/WalletFactory.json";
+
+interface TokenWithBalanceAndLifi extends TokenWithBalanceInBn {
+  amountToConsider: BigNumber;
+}
+
+interface TokenWithBalanceInBn extends Omit<Token, "balance"> {
+  balance: BigNumber;
+}
 
 export function getChain(chainId: ChainId) {
   return chainData.find((chain) => chain.chainId === chainId) as ChainData;

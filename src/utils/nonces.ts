@@ -1,4 +1,4 @@
-import { ethers } from "../../../front/node_modules/ethers";
+import { ethers } from "ethers";
 import contractsConfig from "../config/contracts-config.json";
 import { getChain } from "./utils";
 import { Call, ContractsConfig, CallWithNonce } from "../types/types";
