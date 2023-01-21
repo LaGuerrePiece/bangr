@@ -45,7 +45,11 @@ const App = () => {
         />
         <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
         <Stack.Screen name="Send" component={SendScreen} />
-        <Stack.Screen name="Receive" component={ReceiveScreen} />
+        <Stack.Screen
+          name="Receive"
+          component={ReceiveScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
       </Stack.Navigator>
       <Toast />
     </NavigationContainer>
