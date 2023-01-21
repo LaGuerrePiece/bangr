@@ -14,22 +14,22 @@ const HomeButton = () => {
   };
 
   return (
-    <View className="m-auto mt-8 flex w-2/3 flex-row justify-evenly">
+    <View className="m-auto mt-8 flex w-11/12 flex-row justify-evenly">
       <TouchableOpacity
-        className=""
+        className="w-1/3"
         onPress={() => navigation.navigate("Receive" as never, {} as never)}
       >
         <Image
-          className="mx-4 h-14 w-14"
+          className="m-auto h-14 w-14"
           source={require("../../assets/receivebtn.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Receive
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={showBuyToast}>
+      <TouchableOpacity className="w-1/3" onPress={showBuyToast}>
         <Image
-          className="mx-12 h-14 w-14"
+          className="m-auto h-14 w-14"
           source={require("../../assets/onrampbtn.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
@@ -37,11 +37,11 @@ const HomeButton = () => {
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
-        className=""
+        className="w-1/3"
         onPress={() => navigation.navigate("Send" as never, {} as never)}
       >
         <Image
-          className="mx-4 h-14 w-14"
+          className="m-auto h-14 w-14"
           source={require("../../assets/sendbtn2.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
