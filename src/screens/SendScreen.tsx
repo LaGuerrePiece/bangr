@@ -331,6 +331,10 @@ const SendScreen = () => {
         </View>
       </View>
       <Toast />
+
+      <View className="absolute bottom-8">
+        <ActionButton text="CLOSE" action={navigation.goBack} />
+      </View>
     </View>
   );
 };
