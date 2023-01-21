@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import {
   View,
   Image,
@@ -28,6 +28,7 @@ const WalletScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
+      gestureEnabled: false,
     });
   });
 
