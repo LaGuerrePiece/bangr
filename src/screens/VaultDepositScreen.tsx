@@ -142,7 +142,7 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Deposit successfull",
+        "Deposit successful",
         "Deposit failed"
       );
 
@@ -161,7 +161,7 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Withdrawal successfull",
+        "Withdrawal successful",
         "Withdrawal failed"
       );
 
