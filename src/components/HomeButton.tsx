@@ -1,8 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const HomeButton = () => {
   const navigation = useNavigation();
+
+  const showBuyToast = () => {
+    Toast.show({
+      type: "info",
+      text1: "Not available yet",
+      text2: "We are working on simple on-ramping, stay tuned!",
+    });
+  };
 
   return (
     <View className="m-auto mt-8 flex w-2/3 flex-row justify-evenly">
@@ -18,7 +27,7 @@ const HomeButton = () => {
           Receive
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={showBuyToast}>
         <Image
           className="mx-12 h-14 w-14"
           source={require("../../assets/onrampbtn.png")}
