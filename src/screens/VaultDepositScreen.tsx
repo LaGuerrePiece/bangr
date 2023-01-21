@@ -246,15 +246,15 @@ const VaultDepositScreen = () => {
                 )
               }
             >
-              <Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
+              {/*<Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
                 HOW IT WORKS
-              </Text>
+              </Text>*/}
             </TouchableOpacity>
             <View className="mb-6 flex-row justify-between">
               <View className="w-4/5">
                 <View className="flex-row items-center">
                   <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowLeftIcon size={24} />
+                    <ArrowLeftIcon size={24} color="#3A5A83" />
                   </TouchableOpacity>
                   <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
                     Deposit in {name}
