@@ -15,8 +15,16 @@ import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../tailwind.config";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
+import { useNavigation } from "@react-navigation/native";
+import { useLayoutEffect } from "react";
 
 const ReceiveScreen = () => {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({ headerShown: false });
+  });
+
   const showToast = (text1: string, text2: string) => {
     Toast.show({
       type: "success",
@@ -99,6 +107,10 @@ const ReceiveScreen = () => {
         </Text>
       </View>
       <Toast />
+
+      <View className="absolute bottom-8">
+        <ActionButton text="CLOSE" action={navigation.goBack} />
+      </View>
     </View>
   );
 };

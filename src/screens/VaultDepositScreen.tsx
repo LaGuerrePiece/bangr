@@ -132,7 +132,7 @@ const VaultDepositScreen = () => {
   };
 
   const handleDeposit = async () => {
-    if (!validateInput()) return;
+    if (!validateInput("deposit")) return;
 
     const calls = await handleAmountChange("deposit");
 
@@ -142,7 +142,7 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Deposit successfull",
+        "Deposit successful",
         "Deposit failed"
       );
 
@@ -151,7 +151,7 @@ const VaultDepositScreen = () => {
   };
 
   const handleWithdraw = async () => {
-    if (!validateInput()) return;
+    if (!validateInput("withdraw")) return;
 
     const calls = await handleAmountChange("withdraw", "aUSDC");
 
@@ -161,7 +161,7 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Withdrawal successfull",
+        "Withdrawal successful",
         "Withdrawal failed"
       );
 
@@ -169,7 +169,7 @@ const VaultDepositScreen = () => {
     fetchVaults(smartWalletAddress);
   };
 
-  const validateInput = () => {
+  const validateInput = (action: string) => {
     try {
       utils.parseUnits(amount, token?.decimals);
     } catch (error) {
@@ -188,6 +188,29 @@ const VaultDepositScreen = () => {
         text2: "Your amount is invalid",
       });
       return false;
+    }
+
+    if (action === "deposit") {
+      if (
+        parseFloat(amount) >
+        parseFloat(formatUnits(balance, token?.decimals, token?.decimals || 18))
+      ) {
+        Toast.show({
+          type: "error",
+          text1: "Amount too high",
+          text2: `${amount} exceeds your balance`,
+        });
+        return false;
+      }
+    } else {
+      if (parseFloat(amount) > parseFloat(deposited)) {
+        Toast.show({
+          type: "error",
+          text1: "Amount too high",
+          text2: `${amount} exceeds your deposited balance`,
+        });
+        return false;
+      }
     }
 
     return true;
@@ -223,15 +246,15 @@ const VaultDepositScreen = () => {
                 )
               }
             >
-              <Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
+              {/*<Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
                 HOW IT WORKS
-              </Text>
+              </Text>*/}
             </TouchableOpacity>
             <View className="mb-6 flex-row justify-between">
               <View className="w-4/5">
                 <View className="flex-row items-center">
                   <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowLeftIcon size={24} />
+                    <ArrowLeftIcon size={24} color="#3A5A83" />
                   </TouchableOpacity>
                   <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
                     Deposit in {name}
