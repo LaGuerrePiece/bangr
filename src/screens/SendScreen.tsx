@@ -19,7 +19,7 @@ import SelectTokenButton from "../components/SelectTokenButton";
 import SelectChainButton from "../components/SelectChainButton";
 import useTokensStore from "../state/tokens";
 import useSendStore from "../state/send";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import {
   chainData,
   SWAP_DEBOUNCE_THRESHOLD,
@@ -37,8 +37,10 @@ import {
 } from "../utils/utils";
 import { relay } from "../utils/signAndRelay";
 import { Quote } from "../types/types";
+import { useNavigation } from "@react-navigation/native";
 
 const SendScreen = () => {
+  const navigation = useNavigation();
   const {
     amountIn,
     debouncedAmountIn,
@@ -63,6 +65,8 @@ const SendScreen = () => {
   const fullConfig = resolveConfig(tailwindConfig);
   const colorScheme = useColorScheme();
   const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
+
+  useLayoutEffect(() => navigation.setOptions({ headerShown: false }));
 
   useEffect(() => {
     if (!token) {

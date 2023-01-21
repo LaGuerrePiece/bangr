@@ -44,7 +44,11 @@ const App = () => {
           options={{ presentation: "modal", headerShown: false }}
         />
         <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
-        <Stack.Screen name="Send" component={SendScreen} />
+        <Stack.Screen
+          name="Send"
+          component={SendScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
         <Stack.Screen
           name="Receive"
           component={ReceiveScreen}
