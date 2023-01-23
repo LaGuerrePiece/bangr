@@ -19,7 +19,7 @@ const useVaultsStore = create<VaultState>()(
       )) as {
         data: VaultData[];
       };
-      console.log("getVaults. response:", data);
+      console.log(`fetched ${data.length} vaults`);
       set({ vaults: data });
     },
   }))

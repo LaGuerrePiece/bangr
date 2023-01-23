@@ -120,7 +120,7 @@ export interface VaultStatic {
   description: string;
   tokens: string[];
   protocol: VaultProtocol;
-  active: boolean;
+  status: "active" | "inative" | "preview";
   color?: string;
 }
 

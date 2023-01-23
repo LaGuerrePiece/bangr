@@ -1,12 +1,8 @@
 import {
   View,
   Text,
-  ScrollView,
-  SafeAreaView,
   Image,
   useColorScheme,
-  TouchableOpacity,
-  Share,
   TextInput,
   TouchableHighlight,
   TouchableWithoutFeedback,
@@ -213,12 +209,14 @@ const SendScreen = () => {
 
         <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
           <View className="flex-row items-center">
-            {token && (
+            {token && tokens && (
               <View className="mx-4">
                 <SelectTokenButton
-                  token={token}
+                  tokens={tokens.filter(
+                    (t) => ![token.symbol].includes(t.symbol)
+                  )}
+                  selectedToken={token}
                   tokenToUpdate={"Send:token"}
-                  tokensToOmit={[token.symbol]}
                 />
               </View>
             )}

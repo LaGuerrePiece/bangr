@@ -191,9 +191,10 @@ const Swap = () => {
           </Text>
           <View className="w-full flex-row justify-between p-2">
             <View className="ml-1 justify-end">
-              {srcToken && (
+              {srcToken && tokens && (
                 <SelectTokenButton
-                  token={srcToken}
+                  tokens={tokens}
+                  selectedToken={srcToken}
                   tokenToUpdate={"Swap:srcToken"}
                 />
               )}
@@ -211,12 +212,6 @@ const Swap = () => {
                 </Text>
                 <View className="flex-row">
                   <TextInput
-                    style={{
-                      color:
-                        colorScheme === "light"
-                          ? colors.typo.light
-                          : colors.typo.dark,
-                    }}
                     placeholderTextColor={colors.typo2.light}
                     className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
                     onChangeText={handleInputChange}
@@ -252,11 +247,13 @@ const Swap = () => {
           dark:bg-secondary-dark"
           >
             <View className="ml-1 justify-end p-2">
-              {dstToken && (
+              {dstToken && tokens && (
                 <SelectTokenButton
-                  token={dstToken}
+                  tokens={tokens.filter(
+                    (t) => !["ETH", "MATIC"].includes(t.symbol)
+                  )} // quite dirty
+                  selectedToken={dstToken}
                   tokenToUpdate={"Swap:dstToken"}
-                  tokensToOmit={["ETH", "MATIC"]} // quite dirty
                 />
               )}
               <View className="mt-2 mb-1">

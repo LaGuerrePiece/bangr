@@ -1,5 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { VaultData } from "../types/types";
 
 export const averageApy = (apys: number[]) => {
@@ -11,6 +17,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
   const apy = vault.chains
     ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
     : "0";
+  const colorScheme = useColorScheme();
   const navigation = useNavigation();
   return (
     <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-3 shadow-sm dark:bg-secondary-dark">
@@ -50,7 +57,11 @@ const Vault = ({ vault }: { vault: VaultData }) => {
               </Text>
               <Image
                 className="h-[16px] w-[24px]"
-                source={require("../../assets/arrowright.png")}
+                source={
+                  colorScheme === "light"
+                    ? require("../../assets/arrowright.png")
+                    : require("../../assets/arrowrightwhite.png")
+                }
               />
             </View>
           </View>

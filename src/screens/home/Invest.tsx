@@ -20,7 +20,10 @@ const Invest = () => {
         <ScrollView className="">
           {vaults &&
             vaults
-              .filter((vault) => vault.active)
+              .filter(
+                (vault) =>
+                  vault.status === "active" || vault.status === "preview"
+              )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
         </ScrollView>
       </View>

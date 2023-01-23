@@ -21,7 +21,7 @@ import useSendStore from "../state/send";
 type SelectTokenParams = {
   SelectTokenScreen: {
     tokenList: MultichainToken[];
-    tokenToUpdate: "Swap:srcToken" | "Swap:dstToken" | "Send";
+    tokenToUpdate: "Swap:srcToken" | "Swap:dstToken" | "Send" | "";
   };
 };
 
@@ -60,7 +60,9 @@ export default function SelectToken() {
                     ? updateSrcToken(token)
                     : tokenToUpdate === "Swap:dstToken"
                     ? updateDstToken(token)
-                    : updateSendToken(token);
+                    : tokenToUpdate === "Send"
+                    ? updateSendToken(token)
+                    : null;
                   navigation.goBack();
                 }}
               >

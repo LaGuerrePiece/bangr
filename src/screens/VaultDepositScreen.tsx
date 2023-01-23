@@ -12,6 +12,8 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   Keyboard,
+  ScrollView,
+  useColorScheme,
 } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import {
@@ -28,6 +30,9 @@ import useVaultsStore from "../state/vaults";
 import { relay } from "../utils/signAndRelay";
 import { correctInput, getURLInApp } from "../utils/utils";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import SelectTokenButton from "../components/SelectTokenButton";
+import resolveConfig from "tailwindcss/resolveConfig";
+import tailwindConfig from "../../tailwind.config";
 
 const calculateGains = (
   amount: number,
@@ -45,16 +50,20 @@ type VaultParams = {
 
 const VaultDepositScreen = () => {
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
-  const { name, description, color, protocol, chains, image } = params.vault;
+  const { name, image, description, protocol, status, color, chains } =
+    params.vault;
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
+  const fullConfig = resolveConfig(tailwindConfig);
+  const colors = fullConfig.theme?.colors as { typo: any; typo2: any };
+
+  const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
 
   const navigation = useNavigation();
   const [amount, setAmount] = useState("");
-  const [open, setOpen] = useState(false);
-  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState("USDC");
-  const [items, setItems] = useState([{ label: "USDC", value: "USDC" }]);
+  const [selectedTokenSymbol, setSelectedTokenSymbol] =
+    useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("");
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -74,39 +83,6 @@ const VaultDepositScreen = () => {
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
-
-  const getImage = (name: string) => {
-    switch (name) {
-      case "RocketPool":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/rpl.png")}
-          />
-        );
-      case "Ethereum":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/ethereum.png")}
-          />
-        );
-      case "GMX":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/glp.png")}
-          />
-        );
-      case "Velodrome":
-        return (
-          <Image
-            className="h-12 w-12"
-            source={require("../../assets/velodrome.png")}
-          />
-        );
-    }
-  };
 
   const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
     if (!parseFloat(amount)) {
@@ -236,151 +212,191 @@ const VaultDepositScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
-        <View className="mx-auto h-full w-11/12 rounded-lg p-3">
-          <View className="flex">
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate(
-                  "Vault" as never,
-                  { name, description, apy, color, protocol } as never
-                )
-              }
-            >
-              {/*<Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
+        <ScrollView className="h-full">
+          <View
+            onStartShouldSetResponder={() => true}
+            className="mx-auto w-11/12 rounded-lg p-3"
+          >
+            <View className="flex">
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(
+                    "Vault" as never,
+                    {
+                      name,
+                      image,
+                      description,
+                      protocol,
+                      status,
+                      color,
+                      apy,
+                    } as never
+                  )
+                }
+              >
+                {/* <Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
                 HOW IT WORKS
-              </Text>*/}
-            </TouchableOpacity>
-            <View className="mb-6 flex-row justify-between">
-              <View className="w-4/5">
-                <View className="flex-row items-center">
-                  <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowLeftIcon size={24} color="#3A5A83" />
-                  </TouchableOpacity>
-                  <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
-                    Deposit in {name}
+              </Text> */}
+              </TouchableOpacity>
+              <View className="mb-6 flex-row justify-between">
+                <View className="w-4/5">
+                  <View className="flex-row items-center">
+                    <TouchableOpacity onPress={navigation.goBack}>
+                      <ArrowLeftIcon size={24} color="#3A5A83" />
+                    </TouchableOpacity>
+                    <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
+                      Deposit in {name}
+                    </Text>
+                  </View>
+                </View>
+                <Image className="h-8 w-8" source={{ uri: image }} />
+              </View>
+            </View>
+
+            <View className="my-2 flex items-center">
+              {token && (
+                <SelectTokenButton
+                  tokens={[token]}
+                  selectedToken={token}
+                  tokenToUpdate={""}
+                />
+              )}
+              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+                Available:{" "}
+                {balance ? formatUnits(balance, token?.decimals, 3) : "0"}{" "}
+                {selectedTokenSymbol}
+              </Text>
+            </View>
+            <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
+              <TextInput
+                placeholderTextColor={colors.typo2.light}
+                className="w-4/5 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+                onChangeText={(e) => setAmount(correctInput(e))}
+                value={amount}
+                keyboardType="numeric"
+                placeholder="0"
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  setAmount(
+                    balance
+                      ? formatUnits(
+                          balance,
+                          token?.decimals,
+                          token?.decimals || 18
+                        )
+                      : "0"
+                  );
+                }}
+              >
+                <View className="rounded-xl bg-btn-light px-3 py-1 dark:bg-btn-dark">
+                  <Text className="text-secondary-light dark:text-secondary-dark">
+                    MAX
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+              Deposited: {deposited} {selectedTokenSymbol}
+            </Text>
+
+            {status === "active" ? (
+              <View className="mt-12 flex-row justify-evenly">
+                <ActionButton
+                  text="WITHDRAW"
+                  disabled={
+                    chains
+                      .map((chain) => chain.deposited)
+                      .reduce((acc, cur) => acc + cur, 0) > 0
+                      ? false
+                      : true
+                  }
+                  action={handleWithdraw}
+                />
+                <ActionButton
+                  text="DEPOSIT"
+                  disabled={false}
+                  action={handleDeposit}
+                />
+              </View>
+            ) : (
+              <View className="mt-12 flex-row justify-evenly">
+                <ActionButton
+                  text="COMING"
+                  disabled={true}
+                  action={() => {
+                    Toast.show({
+                      type: "info",
+                      text1: "Coming soon !",
+                    });
+                  }}
+                />
+                <ActionButton
+                  text="SOON™"
+                  disabled={true}
+                  action={() => {
+                    Toast.show({
+                      type: "info",
+                      text1: "Coming soon !",
+                    });
+                  }}
+                />
+              </View>
+            )}
+
+            <View className="mt-6 h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
+              <View className="flex-row items-center">
+                <Text className="font-bold text-typo-light dark:text-typo-dark">
+                  Estimated returns based on current APY
+                </Text>
+                <InformationCircleIcon color="#1C1C1C" />
+              </View>
+              <View className="mt-3 flex-row justify-evenly">
+                <View className="h-[85%]">
+                  <Text className="text-typo-light dark:text-typo-dark">
+                    Weekly
+                  </Text>
+                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                    $
+                    {amount
+                      ? calculateGains(parseFloat(amount), parseFloat(apy), 7)
+                      : 0}
+                  </Text>
+                </View>
+                <View className="h-[85%]">
+                  <Text className="text-typo-light dark:text-typo-dark">
+                    Monthly
+                  </Text>
+                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                    $
+                    {amount
+                      ? calculateGains(parseFloat(amount), parseFloat(apy), 30)
+                      : 0}
+                  </Text>
+                </View>
+                <View className="h-[85%]">
+                  <Text className="text-typo-light dark:text-typo-dark">
+                    Annualy
+                  </Text>
+                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
+                    $
+                    {amount
+                      ? calculateGains(parseFloat(amount), parseFloat(apy), 365)
+                      : 0}
                   </Text>
                 </View>
               </View>
-              {getImage(protocol)}
             </View>
-          </View>
-          <DropDownPicker
-            style={{ backgroundColor: "#EFEEEC" }}
-            open={open}
-            value={selectedTokenSymbol}
-            items={items}
-            setOpen={setOpen}
-            setValue={setSelectedTokenSymbol}
-            setItems={setItems}
-          />
-          <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-            Available:{" "}
-            {balance ? formatUnits(balance, token?.decimals, 3) : "0"}{" "}
-            {selectedTokenSymbol}
-          </Text>
-          <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
-            <TextInput
-              className="w-4/5 text-4xl text-typo-light dark:text-typo-dark"
-              onChangeText={(e) => setAmount(correctInput(e))}
-              value={amount}
-              keyboardType="numeric"
-              placeholder="0"
-            />
-            <TouchableOpacity
-              onPress={() => {
-                setAmount(
-                  balance
-                    ? formatUnits(
-                        balance,
-                        token?.decimals,
-                        token?.decimals || 18
-                      )
-                    : "0"
-                );
-              }}
-            >
-              <View className="rounded-xl bg-btn-light px-3 py-1 dark:bg-btn-dark">
-                <Text className="text-secondary-light dark:text-secondary-dark">
-                  MAX
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-            Deposited: {deposited} {selectedTokenSymbol}
-          </Text>
 
-          <View className="mt-12 flex-row justify-evenly">
-            <ActionButton
-              text="WITHDRAW"
-              disabled={
-                chains
-                  .map((chain) => chain.deposited)
-                  .reduce((acc, cur) => acc + cur, 0) > 0
-                  ? false
-                  : true
-              }
-              action={handleWithdraw}
-            />
-            <ActionButton
-              text="DEPOSIT"
-              disabled={false}
-              action={handleDeposit}
-            />
-          </View>
-
-          <View className="mt-6 h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
-            <View className="flex-row items-center">
-              <Text className="font-bold text-typo-light dark:text-typo-dark">
-                Estimated returns based on current APY
-              </Text>
-              <InformationCircleIcon color="#1C1C1C" />
-            </View>
-            <View className="mt-3 flex-row justify-evenly">
-              <View className="h-[85%]">
-                <Text className="text-typo-light dark:text-typo-dark">
-                  Weekly
-                </Text>
-                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                  $
-                  {amount
-                    ? calculateGains(parseFloat(amount), parseFloat(apy), 7)
-                    : 0}
-                </Text>
-              </View>
-              <View className="h-[85%]">
-                <Text className="text-typo-light dark:text-typo-dark">
-                  Monthly
-                </Text>
-                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                  $
-                  {amount
-                    ? calculateGains(parseFloat(amount), parseFloat(apy), 30)
-                    : 0}
-                </Text>
-              </View>
-              <View className="h-[85%]">
-                <Text className="text-typo-light dark:text-typo-dark">
-                  Annualy
-                </Text>
-                <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                  $
-                  {amount
-                    ? calculateGains(parseFloat(amount), parseFloat(apy), 365)
-                    : 0}
+            <View className="mt-6 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
+              <View className="flex-row items-center">
+                <Text className="font-bold text-typo-light dark:text-typo-dark">
+                  Details:
                 </Text>
               </View>
             </View>
           </View>
-
-          <View className="mt-6 h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
-            <View className="flex-row items-center">
-              <Text className="font-bold text-typo-light dark:text-typo-dark">
-                Details:
-              </Text>
-            </View>
-          </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );

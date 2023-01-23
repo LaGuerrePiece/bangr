@@ -5,25 +5,20 @@ import useTokensStore from "../state/tokens";
 import { Appearance, useColorScheme } from "react-native";
 
 type Props = {
-  token: MultichainToken;
+  tokens: MultichainToken[];
+  selectedToken: MultichainToken;
   tokenToUpdate: string;
-  tokensToOmit?: (string | undefined)[];
 };
 
 export default function SelectTokenButton({
-  token,
+  tokens,
+  selectedToken,
   tokenToUpdate,
-  tokensToOmit,
 }: Props) {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
 
-  const tokens = useTokensStore((state) => state.tokens);
-  const tokenList = tokens?.filter((token) =>
-    tokensToOmit
-      ? tokensToOmit.findIndex((symbol) => token.symbol === symbol) < 0
-      : true
-  );
+  const tokenList = tokens.filter((token) => token.symbol !== "aUSDC");
 
   return (
     <TouchableOpacity
@@ -36,9 +31,9 @@ export default function SelectTokenButton({
       }}
     >
       <View className="flex flex-row items-center">
-        <Image className="h-8 w-8" source={{ uri: token.logoURI }} />
+        <Image className="h-8 w-8" source={{ uri: selectedToken.logoURI }} />
         <Text className="mx-1 text-xl font-bold text-typo-light dark:text-typo-dark">
-          {token.symbol}
+          {selectedToken.symbol}
         </Text>
         <Image
           className="h-2 w-2"

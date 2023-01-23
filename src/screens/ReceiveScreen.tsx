@@ -1,8 +1,6 @@
 import {
   View,
   Text,
-  ScrollView,
-  SafeAreaView,
   Image,
   useColorScheme,
   TouchableOpacity,
@@ -50,8 +48,8 @@ const ReceiveScreen = () => {
       showToast("Error", error.message);
     }
   };
-  const fullConfig = resolveConfig(tailwindConfig);
   const smartWalletAddress = useUserStore((state) => state.smartWalletAddress);
+  const fullConfig = resolveConfig(tailwindConfig);
   const colorScheme = useColorScheme();
   const colors = fullConfig?.theme?.colors as { typo: any; btn: any };
 
