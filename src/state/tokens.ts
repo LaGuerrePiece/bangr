@@ -20,11 +20,15 @@ const useTokensStore = create<BalanceState>()(
     tokens: undefined,
 
     fetchTokensStatic: async () => {
-      const { data } = (await axios.get(`${getURLInApp()}/api/tokens`)) as {
-        data: MultichainToken[];
-      };
-      console.log(`fetched ${data.length} tokens`);
-      set({ tokens: data });
+      try {
+        const { data } = (await axios.get(`${getURLInApp()}/api/tokens`)) as {
+          data: MultichainToken[];
+        };
+        console.log(`fetched ${data.length} tokens`);
+        set({ tokens: data });
+      } catch (error) {
+        console.log("error fetching tokens:", error);
+      }
     },
 
     addBalances: async (balances: Balances[]) => {

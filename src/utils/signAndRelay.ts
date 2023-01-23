@@ -61,7 +61,6 @@ export const relay = async (
   });
 
   if (!relayResponse) {
-    console.log("error relaying transaction");
     Toast.show({
       type: "error",
       text1: "error relaying transaction",

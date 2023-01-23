@@ -37,12 +37,16 @@ const useUserStore = create<UserState>()((set, get) => ({
     const address = scwAddress ?? useUserStore.getState().smartWalletAddress;
     if (!address) return;
 
-    const { data } = (await axios.get(
-      `${getURLInApp()}/api/user?scw=${address}`
-    )) as { data: Balances[] };
-    console.log(`fetched ${data.length} balances`);
+    try {
+      const { data } = (await axios.get(
+        `${getURLInApp()}/api/user?scw=${address}`
+      )) as { data: Balances[] };
+      console.log(`fetched ${data.length} balances`);
 
-    useTokensStore.getState().addBalances(data);
+      useTokensStore.getState().addBalances(data);
+    } catch (error) {
+      console.log("error fetching balances:", error);
+    }
   },
 }));
 

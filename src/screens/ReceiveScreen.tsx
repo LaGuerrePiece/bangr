@@ -63,49 +63,52 @@ const ReceiveScreen = () => {
         Receive
       </Text>
 
-      <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
-        <QRCode
-          value={smartWalletAddress}
-          logo={{ uri: base64Icon }}
-          size={200}
-          logoSize={30}
-          logoBackgroundColor="transparent"
-          backgroundColor="transparent"
-          color={colorScheme === "light" ? colors.btn.light : colors.btn.dark}
-        />
-        <View className="mx-auto my-4 rounded-xl border border-typo2-light bg-primary-light p-2 dark:border-typo-dark dark:bg-primary-dark">
-          <TouchableOpacity
-            onPress={() => {
-              console.log("smartWalletAddress: ", smartWalletAddress);
-              Clipboard.setString(smartWalletAddress ?? "");
-              showToast(
-                "Address copied to clipboard",
-                "You can now paste it anywhere you want"
-              );
-            }}
-          >
-            <Text className="text-s text-center font-bold text-typo2-light dark:text-typo2-dark">
-              {smartWalletAddress?.substring(0, 12) +
-                "..." +
-                smartWalletAddress?.substring(34, 42)}
-              <View className="h-4 w-4">
-                <Image
-                  className="h-5 w-5"
-                  source={
-                    colorScheme === "light"
-                      ? require("../../assets/copy.png")
-                      : require("../../assets/copy-dark.png")
-                  }
-                />
-              </View>
-            </Text>
-          </TouchableOpacity>
+      {smartWalletAddress && (
+        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
+          <QRCode
+            value={smartWalletAddress}
+            logo={{ uri: base64Icon }}
+            size={200}
+            logoSize={30}
+            logoBackgroundColor="transparent"
+            backgroundColor="transparent"
+            color={colorScheme === "light" ? colors.btn.light : colors.btn.dark}
+          />
+          <View className="mx-auto my-4 rounded-xl border border-typo2-light bg-primary-light p-2 dark:border-typo-dark dark:bg-primary-dark">
+            <TouchableOpacity
+              onPress={() => {
+                console.log("smartWalletAddress: ", smartWalletAddress);
+                Clipboard.setString(smartWalletAddress ?? "");
+                showToast(
+                  "Address copied to clipboard",
+                  "You can now paste it anywhere you want"
+                );
+              }}
+            >
+              <Text className="text-s text-center font-bold text-typo2-light dark:text-typo2-dark">
+                {smartWalletAddress?.substring(0, 12) +
+                  "..." +
+                  smartWalletAddress?.substring(34, 42)}
+                <View className="h-4 w-4">
+                  <Image
+                    className="h-5 w-5"
+                    source={
+                      colorScheme === "light"
+                        ? require("../../assets/copy.png")
+                        : require("../../assets/copy-dark.png")
+                    }
+                  />
+                </View>
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <ActionButton text="Share" disabled={false} action={onShare} />
+          <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
+            Arbitrum, Optimism and Polygon
+          </Text>
         </View>
-        <ActionButton text="Share" disabled={false} action={onShare} />
-        <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
-          Arbitrum, Optimism and Polygon
-        </Text>
-      </View>
+      )}
+
       <Toast />
 
       <View className="absolute bottom-8">
