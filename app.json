@@ -8,7 +8,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/poche.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
