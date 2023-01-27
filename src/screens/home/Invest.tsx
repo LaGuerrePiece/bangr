@@ -35,7 +35,7 @@ const Invest = () => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-2 shadow-sm dark:bg-secondary-dark">
+          <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >

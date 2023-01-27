@@ -218,7 +218,7 @@ const SendScreen = () => {
           Send
         </Text>
 
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
+        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
           <View className="flex-row items-center">
             {token && tokens && (
               <View className="mx-4">

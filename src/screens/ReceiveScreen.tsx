@@ -74,7 +74,7 @@ const ReceiveScreen = () => {
       </Text>
 
       {smartWalletAddress && (
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
+        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
           <QRCode
             value={smartWalletAddress}
             logo={{ uri: base64Icon }}
