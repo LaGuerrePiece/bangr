@@ -10,40 +10,15 @@ import {
 
 const getTabImage = (tab: string, selected: string) => {
   switch (tab) {
-    case "Wallet":
-      if (tab === selected)
-        return (
-          <View>
-            <Image
-              className="mx-auto my-3 h-10 w-10"
-              source={require("../../assets/wallet.png")}
-            />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              Account
-            </Text>
-          </View>
-        );
-      return (
-        <View>
-          <Image
-            className="mx-auto my-3 h-10 w-10"
-            source={require("../../assets/wallet.png")}
-          />
-          <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-            Account
-          </Text>
-        </View>
-      );
-
     case "Swap":
       if (tab === selected)
         return (
           <View>
             <Image
-              className="mx-auto my-3 h-10 w-10"
-              source={require("../../assets/swap_selected.png")}
+              className="mx-auto my-3 h-7 w-7"
+              source={require("../../assets/swapbtn-selected.png")}
             />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
               Swap
             </Text>
           </View>
@@ -51,10 +26,10 @@ const getTabImage = (tab: string, selected: string) => {
       return (
         <View>
           <Image
-            className="mx-auto my-3 h-10 w-10"
-            source={require("../../assets/swap.png")}
+            className="mx-auto my-3 h-7 w-7"
+            source={require("../../assets/swapbtn.png")}
           />
-          <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
+          <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
             Swap
           </Text>
         </View>
@@ -65,10 +40,10 @@ const getTabImage = (tab: string, selected: string) => {
         return (
           <View>
             <Image
-              className="mx-auto my-3 h-10 w-10"
+              className="mx-auto my-3 h-7 w-7"
               source={require("../../assets/stonks_selected.png")}
             />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
               Invest
             </Text>
           </View>
@@ -76,100 +51,36 @@ const getTabImage = (tab: string, selected: string) => {
       return (
         <View>
           <Image
-            className="mx-auto my-3 h-10 w-10"
+            className="mx-auto my-3 h-7 w-7"
             source={require("../../assets/stonks.png")}
           />
-          <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
+          <Text className="-mt-2 mb-2 text-center font-bold text-typo-light dark:text-typo-dark">
             Invest
           </Text>
         </View>
       );
 
-    case "More":
+    case "Wallet":
       if (tab === selected)
         return (
-          <View>
+          <View className="mx-auto">
             <Image
-              className="mx-auto my-3 h-10 w-10"
-              source={require("../../assets/more_selected.png")}
+              className="my-3 ml-2 h-7 w-7"
+              source={require("../../assets/poche-selected.png")}
             />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              More
-            </Text>
-          </View>
-        );
-
-      return (
-        <View>
-          <Image
-            className="mx-auto my-3 h-10 w-10"
-            source={require("../../assets/more.png")}
-          />
-          <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-            More
-          </Text>
-        </View>
-      );
-
-    case "Card":
-      if (tab === selected)
-        return (
-          <View>
-            <Image
-              className="mx-auto my-3 h-10 w-10"
-              source={require("../../assets/card_selected.png")}
-            />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              Card
+            <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
+              Poche
             </Text>
           </View>
         );
       return (
-        <View>
+        <View className="mx-auto">
           <Image
-            className="mx-auto my-3 h-10 w-10"
-            source={require("../../assets/card.png")}
-          />
-          <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-            Card
-          </Text>
-        </View>
-      );
-
-    case "Send":
-      if (tab === selected)
-        return (
-          <View>
-            <Image
-              className="mx-auto my-3 h-10 w-10"
-              source={require("../../assets/wallet.png")}
-            />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              Send
-            </Text>
-          </View>
-        );
-      return (
-        <View className="mb-2">
-          <Image
-            className="h-20 w-20"
-            source={require("../../assets/sendbtn.png")}
-          />
-          <Text className="mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
-            Send
-          </Text>
-        </View>
-      );
-
-    case "Poche":
-      return (
-        <View className="mb-2">
-          <Image
-            className="h-20 w-20"
+            className="my-3 ml-2 h-7 w-7"
             source={require("../../assets/poche.png")}
           />
-          <Text className="mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
-            My poche
+          <Text className="-mt-2 mb-2 text-center font-bold text-typo-light dark:text-typo-dark">
+            Poche
           </Text>
         </View>
       );
@@ -187,36 +98,20 @@ interface NavBar {
 export const NavBar = ({ tab, setTab }: NavBar) => {
   return (
     <View className="mt-14 flex flex-row bg-secondary-light dark:bg-secondary-dark">
-      <TouchableOpacity className="m-auto w-1/5" onPress={() => setTab("Swap")}>
+      <TouchableOpacity
+        className="m-auto w-1/3 "
+        onPress={() => setTab("Wallet")}
+      >
+        <View className="">{getTabImage("Wallet", tab)}</View>
+      </TouchableOpacity>
+      <TouchableOpacity className="m-auto w-1/3" onPress={() => setTab("Swap")}>
         <View className="">{getTabImage("Swap", tab)}</View>
       </TouchableOpacity>
-
       <TouchableOpacity
-        className="m-auto w-1/5 "
+        className="m-auto w-1/3 "
         onPress={() => setTab("Invest")}
       >
         <View className="">{getTabImage("Invest", tab)}</View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        className="m-auto -mt-4 w-1/5 "
-        onPress={() => setTab("Wallet")}
-      >
-        <View className="">{getTabImage("Poche", tab)}</View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        className="m-auto w-1/5 "
-        onPress={() => setTab("Card")}
-      >
-        <View className="">{getTabImage("Card", tab)}</View>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        className="m-auto w-1/5 "
-        onPress={() => setTab("More")}
-      >
-        <View className="">{getTabImage("More", tab)}</View>
       </TouchableOpacity>
     </View>
   );
