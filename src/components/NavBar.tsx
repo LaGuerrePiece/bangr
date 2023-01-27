@@ -41,7 +41,7 @@ const getTabImage = (tab: string, selected: string) => {
           <View>
             <Image
               className="mx-auto my-3 h-7 w-7"
-              source={require("../../assets/stonks_selected.png")}
+              source={require("../../assets/vaultbtn-selected.png")}
             />
             <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
               Invest
@@ -52,7 +52,7 @@ const getTabImage = (tab: string, selected: string) => {
         <View>
           <Image
             className="mx-auto my-3 h-7 w-7"
-            source={require("../../assets/stonks.png")}
+            source={require("../../assets/vaultbtn.png")}
           />
           <Text className="-mt-2 mb-2 text-center font-bold text-typo-light dark:text-typo-dark">
             Invest

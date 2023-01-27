@@ -23,7 +23,7 @@ type VaultParams = {
   };
 };
 
-const VaultScreen = () => {
+const VaultInfoScreen = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<VaultParams, "VaultScreen">>();
   const { name, description, apy, color, protocol } = params;
@@ -113,4 +113,4 @@ const VaultScreen = () => {
   );
 };
 
-export default VaultScreen;
+export default VaultInfoScreen;
