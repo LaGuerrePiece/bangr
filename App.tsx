@@ -1,7 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import WalletScreen from "./src/screens/WalletScreen";
-import VaultScreen from "./src/screens/VaultScreen";
+import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
 import TokenScreen from "./src/screens/TokenScreen";
 import LoginScreen from "./src/screens/LoginScreen";
@@ -25,8 +25,8 @@ const App = () => {
         />
         <Stack.Screen name="Wallet" component={WalletScreen} />
         <Stack.Screen
-          name="Vault"
-          component={VaultScreen}
+          name="VaultInfoScreen"
+          component={VaultInfoScreen}
           options={{ presentation: "modal", headerShown: false }}
         />
         <Stack.Screen

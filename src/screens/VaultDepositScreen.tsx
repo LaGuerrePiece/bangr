@@ -80,6 +80,8 @@ const VaultDepositScreen = () => {
   const tokens = useTokensStore((state) => state.tokens);
   const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
 
+  const colorScheme = useColorScheme();
+
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
@@ -388,12 +390,44 @@ const VaultDepositScreen = () => {
               </View>
             </View>
 
-            <View className="mt-6 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
+            <View className="mt-2 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
               <View className="flex-row items-center">
                 <Text className="font-bold text-typo-light dark:text-typo-dark">
                   Details:
                 </Text>
               </View>
+            </View>
+            <View className="m-auto mt-2 mb-3 w-full rounded-lg bg-secondary-light p-2 shadow-sm dark:bg-secondary-dark">
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("VaultInfoScreen" as never, {} as never)
+                }
+              >
+                <View className="flex-row items-center justify-between">
+                  <View className="flex-row items-center">
+                    <Image
+                      className="mr-2 ml-1 h-6 w-6"
+                      // className="h-[16px] w-[24px]"
+                      source={
+                        colorScheme === "light"
+                          ? require("../../assets/question.png")
+                          : require("../../assets/question.png")
+                      }
+                    />
+                    <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+                      How it works
+                    </Text>
+                  </View>
+                  <Image
+                    className="mr-1 h-[16px] w-[24px]"
+                    source={
+                      colorScheme === "light"
+                        ? require("../../assets/arrowright.png")
+                        : require("../../assets/arrowrightwhite.png")
+                    }
+                  />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </ScrollView>
