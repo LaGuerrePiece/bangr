@@ -235,11 +235,7 @@ const VaultDepositScreen = () => {
                     } as never
                   )
                 }
-              >
-                {/* <Text className="text-md mb-3 text-right font-bold text-typo-light dark:text-typo-dark">
-                HOW IT WORKS
-              </Text> */}
-              </TouchableOpacity>
+              ></TouchableOpacity>
               <View className="mb-6 flex-row justify-between">
                 <View className="w-4/5">
                   <View className="flex-row items-center">
@@ -390,6 +386,7 @@ const VaultDepositScreen = () => {
               </View>
             </View>
 
+            {/*
             <View className="mt-2 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
               <View className="flex-row items-center">
                 <Text className="font-bold text-typo-light dark:text-typo-dark">
@@ -428,7 +425,7 @@ const VaultDepositScreen = () => {
                   />
                 </View>
               </TouchableOpacity>
-            </View>
+            </View>*/}
           </View>
         </ScrollView>
       </SafeAreaView>
