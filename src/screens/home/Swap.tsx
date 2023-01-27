@@ -184,7 +184,7 @@ const Swap = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="top-20 flex h-full">
+      <SafeAreaView className="top-20 mx-auto flex h-full w-11/12">
         <View className="mx-auto my-3 w-full items-center rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark">
           <Text className="mb-1 p-2 font-bold text-typo-light dark:text-typo-dark">
             Swap

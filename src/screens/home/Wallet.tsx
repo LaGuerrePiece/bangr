@@ -20,74 +20,52 @@ const Wallet = () => {
     .reduce((a, b) => a + (b.quote ?? 0), 0);
 
   return (
-    <View className="mt-20 mb-10">
-      <View className="flex  flex-row ">
-        <View className="ml-4 mr-60 ">
-          <TouchableWithoutFeedback onPress={() => console.log("history")}>
-            <Image
-              className="h-10 w-10"
-              source={require("../../../assets/history-disabled.png")}
-            />
-          </TouchableWithoutFeedback>
-        </View>
-        <View className="mx-1">
-          <TouchableHighlight
-            onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
-          >
-            <Image
-              className="h-10 w-10"
-              source={require("../../../assets/feedback.png")}
-            />
-          </TouchableHighlight>
-        </View>
-      </View>
-
-      <View className="mx-auto mt-4 mb-2 w-11/12 rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
-        <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
-          ${totalPortfolioValue?.toFixed(2)}
-        </Text>
-        <View className="">
-          <Chart />
-        </View>
-        <HomeButton />
-      </View>
-      {/* <View className="m-auto mb-1 w-11/12 flex-row justify-around">
-        <View className=" w-1/5">
-          <Text className="text-center text-xs font-bold text-typo-light dark:text-typo-dark">
-            {" "}
-          </Text>
-        </View>
-        <View className=" w-1/5">
-          <Text className="text-center text-xs font-bold text-typo-light dark:text-typo-dark">
-            Asset
-          </Text>
-        </View>
-        <View className=" w-1/5">
-          <Text className="text-center text-xs font-bold text-typo-light dark:text-typo-dark">
-            Balance
-          </Text>
-        </View>
-        <View className=" w-1/5">
-          <Text className="text-center text-xs font-bold text-typo-light dark:text-typo-dark">
-            Price
-          </Text>
-        </View>
-        <View className="w-1/5">
-          <Text className="text-center text-xs font-bold text-typo-light dark:text-typo-dark">
-            Value
-          </Text>
-        </View>
-      </View> */}
-      <ScrollView className="m-auto w-11/12 rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark">
-        {tokens ? (
-          tokens.map((token) => <Asset token={token} key={token.symbol} />)
-        ) : (
-          <View className="m-auto">
-            <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-              No tokens found
-            </Text>
+    <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
+      <ScrollView className="mx-auto w-full rounded-xl  shadow-xl">
+        <View className="mx-auto ">
+          <View className="flex flex-row ">
+            <View className="ml-4 mr-60 ">
+              <TouchableWithoutFeedback onPress={() => console.log("history")}>
+                <Image
+                  className="h-10 w-10"
+                  source={require("../../../assets/history-disabled.png")}
+                />
+              </TouchableWithoutFeedback>
+            </View>
+            <View className="mx-1">
+              <TouchableHighlight
+                onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
+              >
+                <Image
+                  className="h-10 w-10"
+                  source={require("../../../assets/feedback.png")}
+                />
+              </TouchableHighlight>
+            </View>
           </View>
-        )}
+          <View className="mx-auto mt-4 mb-2 rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
+            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+              ${totalPortfolioValue?.toFixed(2)}
+            </Text>
+            <View className="">
+              <Chart />
+            </View>
+            <HomeButton />
+          </View>
+
+          {/* <ScrollView className="m-auto w-11/12 rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark"> */}
+          <View className=" rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark">
+            {tokens ? (
+              tokens.map((token) => <Asset token={token} key={token.symbol} />)
+            ) : (
+              <View className="m-auto">
+                <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+                  No tokens found
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
       </ScrollView>
       <View className="my-auto">
         {/* <TouchableHighlight

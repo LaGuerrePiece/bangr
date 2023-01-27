@@ -19,6 +19,7 @@ import Swap from "./home/Swap";
 import Wallet from "./home/Wallet";
 import * as SecureStore from "expo-secure-store";
 import More from "./home/More";
+import { ScrollView } from "react-native-gesture-handler";
 
 const WalletScreen = () => {
   const [tab, setTab] = useState("Wallet");
@@ -43,7 +44,7 @@ const WalletScreen = () => {
       className="flex h-full w-full justify-between bg-primary-light dark:bg-primary-dark"
       style={{ paddingTop: insets.top }}
     >
-      <View className="m-auto w-11/12 grow">
+      <View className="m-auto w-full grow">
         {tab === "Swap" && <Swap />}
         {tab === "Invest" && <Invest />}
         {tab === "Wallet" && <Wallet />}

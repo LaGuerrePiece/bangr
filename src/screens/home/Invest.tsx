@@ -20,7 +20,7 @@ const Invest = () => {
   const colorScheme = useColorScheme();
 
   return (
-    <SafeAreaView className="top-20 h-[90%]">
+    <SafeAreaView className="top-20 mx-auto h-[90%] w-11/12">
       <View>
         <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
           Invest
