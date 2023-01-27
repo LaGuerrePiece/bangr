@@ -21,7 +21,7 @@ const Wallet = () => {
 
   return (
     <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
-      <ScrollView className="mx-auto w-full rounded-xl  shadow-xl">
+      <ScrollView className="-xl mx-auto w-full  rounded-xl">
         <View className="mx-auto ">
           <View className="flex flex-row ">
             <View className="ml-4 mr-60 ">
@@ -43,7 +43,7 @@ const Wallet = () => {
               </TouchableHighlight>
             </View>
           </View>
-          <View className="mx-auto mt-4 mb-2 rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
+          <View className="mx-auto mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
             <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
               ${totalPortfolioValue?.toFixed(2)}
             </Text>
@@ -54,7 +54,7 @@ const Wallet = () => {
           </View>
 
           {/* <ScrollView className="m-auto w-11/12 rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark"> */}
-          <View className=" rounded-xl bg-secondary-light shadow-xl dark:bg-secondary-dark">
+          <View className=" rounded-xl bg-secondary-light  dark:bg-secondary-dark">
             {tokens ? (
               tokens.map((token) => <Asset token={token} key={token.symbol} />)
             ) : (
