@@ -35,35 +35,33 @@ const Vault = ({ vault }: { vault: VaultData }) => {
           className="h-6 w-6"
           source={require("../../assets/ethereum.png")}
       />*/}
-        <View className="flex">
-          <View className="flex-row justify-between">
-            <View className="w-4/5">
-              <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                {name}
-              </Text>
-              <Text className="text-typo-light dark:text-typo-dark">
-                {description}
-              </Text>
-            </View>
-            <Image className="h-12 w-12" source={{ uri: image }} />
-          </View>
-          <View className="mt-2">
-            <Text className="text-typo-light dark:text-typo-dark">
-              Earn up to
+        <View className="flex-row justify-between">
+          <View className="w-4/5">
+            <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+              {name}
             </Text>
-            <View className="flex-row items-end justify-between">
-              <Text className="mt-2 text-4xl font-bold" style={{ color }}>
-                {apy}% <Text className="text-3xl">APY</Text>
-              </Text>
-              <Image
-                className="h-[16px] w-[24px]"
-                source={
-                  colorScheme === "light"
-                    ? require("../../assets/arrowright.png")
-                    : require("../../assets/arrowrightwhite.png")
-                }
-              />
-            </View>
+            <Text className="text-typo-light dark:text-typo-dark">
+              {description}
+            </Text>
+          </View>
+          <Image className="h-12 w-12" source={{ uri: image }} />
+        </View>
+        <View className="mt-2">
+          <Text className="text-typo-light dark:text-typo-dark">
+            Earn up to
+          </Text>
+          <View className="flex-row items-end justify-between">
+            <Text className="mt-2 text-4xl font-bold" style={{ color }}>
+              {apy}% <Text className="text-3xl">APY</Text>
+            </Text>
+            <Image
+              className="h-[16px] w-[24px]"
+              source={
+                colorScheme === "light"
+                  ? require("../../assets/arrowright.png")
+                  : require("../../assets/arrowrightwhite.png")
+              }
+            />
           </View>
         </View>
       </TouchableOpacity>
