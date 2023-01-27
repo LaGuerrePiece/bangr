@@ -36,6 +36,7 @@ import {
 import { relay } from "../utils/signAndRelay";
 import { Quote } from "../types/types";
 import { useNavigation } from "@react-navigation/native";
+import { XMarkIcon } from "react-native-heroicons/outline";
 
 const SendScreen = () => {
   const navigation = useNavigation();
@@ -202,8 +203,18 @@ const SendScreen = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View className="h-full items-center bg-primary-light  py-10 dark:bg-primary-dark">
-        <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
+      <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
+        <TouchableWithoutFeedback onPress={navigation.goBack}>
+          <View className="mx-auto w-11/12">
+            <XMarkIcon
+              size={36}
+              color={
+                colorScheme === "light" ? colors.typo.light : colors.typo.dark
+              }
+            />
+          </View>
+        </TouchableWithoutFeedback>
+        <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
           Send
         </Text>
 
@@ -336,10 +347,6 @@ const SendScreen = () => {
           </View>
         </View>
         <Toast />
-
-        <View className="absolute bottom-8">
-          <ActionButton text="CLOSE" action={navigation.goBack} />
-        </View>
       </View>
     </TouchableWithoutFeedback>
   );
