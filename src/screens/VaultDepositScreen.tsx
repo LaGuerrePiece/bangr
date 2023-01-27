@@ -397,7 +397,7 @@ const VaultDepositScreen = () => {
                 </Text>
               </View>
             </View>
-            <View className="m-auto mt-2 mb-3 w-full rounded-lg bg-secondary-light p-2 shadow-sm dark:bg-secondary-dark">
+            <View className="m-auto mt-2 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("VaultInfoScreen" as never, {} as never)
