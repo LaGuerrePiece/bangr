@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "poche-app",
-    "slug": "poche-app",
+    "name": "Poche",
+    "slug": "poche",
     "version": "0.0.1",
     "scheme": "poche",
     "orientation": "portrait",
@@ -20,7 +20,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "Poche uses FaceId to authenticate you."
-      }
+      },
+      "bundleIdentifier": "com.poche.app"
     },
     "android": {
       "adaptiveIcon": {
