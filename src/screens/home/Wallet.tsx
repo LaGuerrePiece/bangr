@@ -4,12 +4,14 @@ import {
   TouchableHighlight,
   Image,
   ScrollView,
+  Linking,
 } from "react-native";
 import Asset from "../../components/Asset";
 import HomeButton from "../../components/HomeButton";
 import Chart from "../../components/Chart";
 import useHistoricStore from "../../state/historic";
 import useTokensStore from "../../state/tokens";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const Wallet = () => {
   const tokens = useTokensStore((state) => state.tokens);
@@ -19,20 +21,26 @@ const Wallet = () => {
 
   return (
     <View className="mt-20 mb-10">
-      {/* <Text className="text-center text-5xl font-bold">Poche</Text> */}
-
-      {/* <TouchableHighlight onPress={() => console.log("poche")}>
-          <Image
-            className="h-10 w-10"
-            source={require("../../../assets/poche.png")}
-          />
-        </TouchableHighlight>
-        <TouchableHighlight onPress={() => console.log("account")}>
-          <Image
-            className="h-10 w-10"
-            source={require("../../../assets/account.png")}
-          />
-        </TouchableHighlight> */}
+      <View className="flex  flex-row ">
+        <View className="ml-4 mr-60 ">
+          <TouchableWithoutFeedback onPress={() => console.log("history")}>
+            <Image
+              className="h-10 w-10"
+              source={require("../../../assets/history-disabled.png")}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+        <View className="mx-1">
+          <TouchableHighlight
+            onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
+          >
+            <Image
+              className="h-10 w-10"
+              source={require("../../../assets/feedback.png")}
+            />
+          </TouchableHighlight>
+        </View>
+      </View>
 
       <View className="mx-auto mt-4 mb-2 w-11/12 rounded-xl bg-secondary-light py-6 shadow-xl dark:bg-secondary-dark">
         <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
