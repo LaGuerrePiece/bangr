@@ -64,7 +64,7 @@ const TokenScreen = () => {
 
   return (
     <View className="h-full bg-primary-light dark:bg-primary-dark">
-      <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
+      <SafeAreaView className="rounded-lg p-3">
         <View className="my-6">
           <TouchableWithoutFeedback onPress={navigation.goBack}>
             <XMarkIcon size={36} />
@@ -87,11 +87,11 @@ const TokenScreen = () => {
           </Text>
         </View>
 
-        <View className="rounded-lg bg-secondary-light dark:bg-secondary-dark">
+        <View className="my-4 rounded-lg bg-secondary-light dark:bg-secondary-dark">
           {chart ? <Chart chart={chart} /> : <ActivityIndicator />}
         </View>
 
-        <View className="mt-8 rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark">
+        <View className="mt-2 rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark">
           <View className="flex-row justify-between">
             <Text className="text-2xl font-semibold text-typo-light dark:text-typo-dark">
               Balance

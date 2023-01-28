@@ -1,4 +1,6 @@
 import { LineChart } from "react-native-wagmi-charts";
+import { Dimensions } from "react-native";
+const screenWidth = Dimensions.get("window").width;
 
 export type Point = {
   timestamp: number;
@@ -8,8 +10,8 @@ export type Point = {
 function Chart({ chart }: { chart: Point[] }) {
   return (
     <LineChart.Provider data={chart}>
-      {/* <LineChart width={150} height={150}> */}
-      <LineChart yGutter={16}>
+      <LineChart width={(screenWidth * 11) / 12} height={150} yGutter={16}>
+        {/* <LineChart yGutter={16}> */}
         <LineChart.Path />
         <LineChart.CursorCrosshair />
       </LineChart>
