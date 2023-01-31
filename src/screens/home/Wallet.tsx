@@ -52,7 +52,9 @@ const Wallet = () => {
 
         <View className="rounded-xl bg-secondary-light px-3 dark:bg-secondary-dark">
           {tokens ? (
-            tokens.map((token) => <Asset token={token} key={token.symbol} />)
+            tokens
+              .filter((token) => token.symbol !== "aUSDC")
+              .map((token) => <Asset token={token} key={token.symbol} />)
           ) : (
             <View className="m-auto">
               <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
