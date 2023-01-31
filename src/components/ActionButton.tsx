@@ -1,13 +1,14 @@
 import { FC } from "react";
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { Button, Text, TouchableOpacity, View, Image } from "react-native";
 
 interface IButton {
   text: string;
   action: () => void;
+  icon?: any;
   disabled?: boolean;
 }
 
-const ActionButton: FC<IButton> = ({ text, disabled, action }) => {
+const ActionButton: FC<IButton> = ({ text, icon, disabled, action }) => {
   return (
     <TouchableOpacity onPress={action} activeOpacity={disabled ? 1 : 0.2}>
       <View
@@ -17,6 +18,7 @@ const ActionButton: FC<IButton> = ({ text, disabled, action }) => {
             : "bg-typo-dark dark:bg-[#2D2D2D]"
         }`}
       >
+        {icon ? <Image className="mr-2 h-7 w-7" source={icon} /> : null}
         <Text
           className={`w-fit text-center text-2xl ${
             !disabled

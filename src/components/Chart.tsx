@@ -11,7 +11,6 @@ function Chart({ chart }: { chart: Point[] }) {
   return (
     <LineChart.Provider data={chart}>
       <LineChart width={(screenWidth * 11) / 12} height={150} yGutter={16}>
-        {/* <LineChart yGutter={16}> */}
         <LineChart.Path />
         <LineChart.CursorCrosshair />
       </LineChart>

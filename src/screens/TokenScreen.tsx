@@ -15,6 +15,9 @@ import { MultichainToken } from "../types/types";
 import { formatUnits, cutDecimals } from "../utils/format";
 import axios from "axios";
 import { getURLInApp } from "../utils/utils";
+import ActionButton from "../components/ActionButton";
+import useSendStore from "../state/send";
+import useSwapStore from "../state/swap";
 
 type TokenParams = {
   TokenScreen: {
@@ -27,6 +30,8 @@ const TokenScreen = () => {
   const { params } = useRoute<RouteProp<TokenParams, "TokenScreen">>();
   const { token } = params;
   const [chart, setChart] = useState<Point[]>();
+  const updateSendStore = useSendStore((state) => state.update);
+  const updateSwapSrcToken = useSwapStore((state) => state.updateSrcToken);
 
   useEffect(() => {
     getChart(token);
@@ -62,6 +67,16 @@ const TokenScreen = () => {
     navigation.setOptions({ headerShown: false });
   });
 
+  const swap = () => {
+    navigation.navigate("Wallet" as never, {} as never);
+    updateSwapSrcToken(token);
+  };
+
+  const send = () => {
+    navigation.navigate("Send" as never, {} as never);
+    updateSendStore({ token: token });
+  };
+
   return (
     <View className="h-full bg-primary-light dark:bg-primary-dark">
       <SafeAreaView className="rounded-lg p-3">
@@ -86,7 +101,6 @@ const TokenScreen = () => {
             ${token.priceUSD}
           </Text>
         </View>
-
         <View className="my-4 rounded-lg bg-secondary-light dark:bg-secondary-dark">
           {chart ? <Chart chart={chart} /> : <ActivityIndicator />}
         </View>
@@ -107,26 +121,20 @@ const TokenScreen = () => {
           </View>
         </View>
 
-        {/* <View className="my-16 flex-row justify-evenly">
-          <TouchableOpacity>
-            <Image
-              className="h-14 w-14"
-              source={require("../../assets/buy.png")}
-            />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              Buy
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              className="h-14 w-14"
-              source={require("../../assets/sell.png")}
-            />
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-              Sell
-            </Text>
-          </TouchableOpacity>
-        </View> */}
+        <View className="my-6 flex-row justify-evenly">
+          <ActionButton
+            text="Swap"
+            disabled={false}
+            action={swap}
+            icon={require("../../assets/flip_white.png")}
+          />
+          <ActionButton
+            text="Send"
+            disabled={false}
+            action={send}
+            icon={require("../../assets/arrow_up_white.png")}
+          />
+        </View>
       </SafeAreaView>
     </View>
   );
