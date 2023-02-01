@@ -20,9 +20,10 @@ import Wallet from "./home/Wallet";
 import * as SecureStore from "expo-secure-store";
 import More from "./home/More";
 import { ScrollView } from "react-native-gesture-handler";
+import useTabStore from "../state/tab";
 
 const WalletScreen = () => {
-  const [tab, setTab] = useState("Wallet");
+  const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 

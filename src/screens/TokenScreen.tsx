@@ -18,6 +18,7 @@ import { getURLInApp } from "../utils/utils";
 import ActionButton from "../components/ActionButton";
 import useSendStore from "../state/send";
 import useSwapStore from "../state/swap";
+import useTabStore from "../state/tab";
 
 type TokenParams = {
   TokenScreen: {
@@ -27,6 +28,8 @@ type TokenParams = {
 
 const TokenScreen = () => {
   const navigation = useNavigation();
+  const setTab = useTabStore((state) => state.setTab);
+
   const { params } = useRoute<RouteProp<TokenParams, "TokenScreen">>();
   const { token } = params;
   const [chart, setChart] = useState<Point[]>();
@@ -70,6 +73,7 @@ const TokenScreen = () => {
   const swap = () => {
     navigation.navigate("Wallet" as never, {} as never);
     updateSwapSrcToken(token);
+    setTab("Swap");
   };
 
   const send = () => {
