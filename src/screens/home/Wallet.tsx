@@ -22,31 +22,27 @@ const Wallet = () => {
   return (
     <ScrollView>
       <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
-        <View className="flex flex-row">
-          <View className="ml-4 mr-60">
-            <TouchableWithoutFeedback onPress={() => console.log("history")}>
-              <Image
-                className="h-10 w-10"
-                source={require("../../../assets/history-disabled.png")}
-              />
-            </TouchableWithoutFeedback>
-          </View>
-          <View className="mx-1">
-            <TouchableHighlight
-              onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
-            >
-              <Image
-                className="h-10 w-10"
-                source={require("../../../assets/feedback.png")}
-              />
-            </TouchableHighlight>
-          </View>
+        <View className="flex-row justify-between">
+          <TouchableWithoutFeedback onPress={() => console.log("history")}>
+            <Image
+              className="h-10 w-10"
+              source={require("../../../assets/history-disabled.png")}
+            />
+          </TouchableWithoutFeedback>
+          <TouchableHighlight
+            onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
+          >
+            <Image
+              className="h-10 w-10"
+              source={require("../../../assets/feedback.png")}
+            />
+          </TouchableHighlight>
         </View>
         <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
           <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
             ${totalPortfolioValue?.toFixed(2)}
           </Text>
-          <View className="">{/* <Chart chart={chart} /> */}</View>
+          {/* <View className=""><Chart chart={chart} /></View> */}
           <HomeButton />
         </View>
 

@@ -14,7 +14,7 @@ const HomeButton = () => {
   };
 
   return (
-    <View className="m-auto mt-8 flex w-11/12 flex-row justify-evenly">
+    <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
       <TouchableOpacity
         className="w-1/3"
         onPress={() => navigation.navigate("Receive" as never, {} as never)}
