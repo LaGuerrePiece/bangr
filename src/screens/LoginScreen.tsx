@@ -1,6 +1,9 @@
 import { View, Text, SafeAreaView } from "react-native";
 import ActionButton from "../components/ActionButton";
-import Web3Auth, { OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+import Web3Auth, {
+  LOGIN_PROVIDER,
+  OPENLOGIN_NETWORK,
+} from "@web3auth/react-native-sdk";
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
@@ -30,6 +33,14 @@ const clientId =
 const SdkInitParams = {
   clientId,
   network: OPENLOGIN_NETWORK.MAINNET,
+  whiteLabel: {
+    name: "Poche",
+    logoLight: "https://i.imgur.com/bayJ8I1.png",
+    logoDark: "https://i.imgur.com/bayJ8I1.png",
+    theme: {
+      primary: "#386CAF",
+    },
+  },
 };
 
 const web3auth = new Web3Auth(WebBrowser, SdkInitParams);
@@ -73,7 +84,11 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
-    const user = await web3auth.login({ redirectUrl: resolvedRedirectUrl });
+    const user = await web3auth.login({
+      loginProvider: LOGIN_PROVIDER.GOOGLE,
+      redirectUrl: resolvedRedirectUrl,
+    });
+
     if (user.privKey) {
       secureSave("privKey", user.privKey);
       login(new Wallet(user.privKey));
@@ -90,7 +105,7 @@ const LoginScreen = () => {
       </Text>
 
       <View className="mx-auto mt-32 flex h-1/4 w-2/3 justify-between">
-        <ActionButton text="Connect" action={handleLogin} />
+        <ActionButton text="Connect With Google" action={handleLogin} />
 
         {/* <ActionButton
           text="Recover previous account"
