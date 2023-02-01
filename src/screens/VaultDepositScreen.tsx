@@ -15,12 +15,11 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
 import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
-import { CallWithNonce, VaultData } from "../types/types";
+import { VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
 import { averageApy } from "../components/Vault";
@@ -50,22 +49,11 @@ type VaultParams = {
 
 const VaultDepositScreen = () => {
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
-  const { name, image, description, protocol, status, color, chains } =
-    params.vault;
-  const apy = chains
-    ? averageApy(chains.map((chain) => chain.apy)).toString()
-    : "0";
   const fullConfig = resolveConfig(tailwindConfig);
   const colors = fullConfig.theme?.colors as { typo: any; typo2: any };
-
-  const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
-
+  const colorScheme = useColorScheme();
   const navigation = useNavigation();
-  const [amount, setAmount] = useState("");
-  const [selectedTokenSymbol, setSelectedTokenSymbol] =
-    useState(defaultTokenSymbol);
-  const [balance, setBalance] = useState("");
-  const [deposited, setDeposited] = useState("");
+
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -80,7 +68,20 @@ const VaultDepositScreen = () => {
   const tokens = useTokensStore((state) => state.tokens);
   const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
 
-  const colorScheme = useColorScheme();
+  const { name, image, description, protocol, status, color, chains } =
+    params.vault;
+
+  const apy = chains
+    ? averageApy(chains.map((chain) => chain.apy)).toString()
+    : "0";
+
+  const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
+
+  const [amount, setAmount] = useState("");
+  const [selectedTokenSymbol, setSelectedTokenSymbol] =
+    useState(defaultTokenSymbol);
+  const [balance, setBalance] = useState("");
+  const [deposited, setDeposited] = useState("");
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -386,15 +387,14 @@ const VaultDepositScreen = () => {
               </View>
             </View>
 
-            {/*
-            <View className="mt-2 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
+            {/* <View className="mt-2 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
               <View className="flex-row items-center">
                 <Text className="font-bold text-typo-light dark:text-typo-dark">
                   Details:
                 </Text>
               </View>
-            </View>
-            <View className="m-auto mt-2 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
+            </View> */}
+            <View className="m-auto mt-6 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("VaultInfoScreen" as never, {} as never)
@@ -425,7 +425,7 @@ const VaultDepositScreen = () => {
                   />
                 </View>
               </TouchableOpacity>
-            </View>*/}
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>

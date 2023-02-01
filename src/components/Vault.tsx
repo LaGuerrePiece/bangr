@@ -19,6 +19,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
     : "0";
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
+
   return (
     <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark">
       <TouchableOpacity

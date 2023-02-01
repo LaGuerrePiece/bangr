@@ -11,10 +11,6 @@ import {
 import Vault from "../../components/Vault";
 import useVaultsStore from "../../state/vaults";
 
-const averageApy = (apys: number[]) => {
-  return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
-};
-
 const Invest = () => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
