@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Poche",
-    "slug": "poche",
+    "slug": "poche-app",
     "version": "0.0.1",
     "scheme": "poche",
     "orientation": "portrait",
@@ -21,14 +21,14 @@
       "infoPlist": {
         "NSFaceIDUsageDescription": "Poche uses FaceId to authenticate you."
       },
-      "bundleIdentifier": "com.poche.app"
+      "bundleIdentifier": "com.poche.fi"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.poche.app"
+      "package": "com.poche.fi"
     },
     "web": {
       "favicon": "./assets/favicon.png"
