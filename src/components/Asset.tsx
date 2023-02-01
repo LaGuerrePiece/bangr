@@ -8,10 +8,10 @@ const Asset = ({ token }: { token: MultichainToken }) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
-    // onPress={() => navigation.navigate("Token" as never, { token } as never)}
+      onPress={() => navigation.navigate("Token" as never, { token } as never)}
     >
-      <View className="flex flex-row items-center justify-between px-5 py-3">
-        <View className="flex flex-row items-center">
+      <View className="flex-row items-center justify-between py-3">
+        <View className="flex-row items-center">
           <Image
             className="h-12 w-12"
             source={
@@ -20,7 +20,7 @@ const Asset = ({ token }: { token: MultichainToken }) => {
                 : require("../../assets/poche.png")
             }
           />
-          <View className="ml-3 pr-0">
+          <View className="ml-3">
             <Text className="font-bold text-typo-light dark:text-typo-dark">
               {token.name}
             </Text>

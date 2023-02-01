@@ -94,6 +94,7 @@ export const TOKEN_WHITELIST = [
   "RAI",
   "LINK",
   "aUSDC",
+  "jEUR",
   // "QI",
   // "DHT",
   // "MKR",
