@@ -1,5 +1,14 @@
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+import tailwindConfig from "../../tailwind.config";
+import resolveConfig from "tailwindcss/resolveConfig";
+
+const fullConfig = resolveConfig(tailwindConfig);
+export const colors = fullConfig?.theme?.colors as {
+  typo: any;
+  btn: any;
+  typo2: any;
+};
 
 export const getURL = () =>
   process.env.NODE_ENV == "development"

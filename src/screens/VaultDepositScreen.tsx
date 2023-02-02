@@ -30,8 +30,7 @@ import { relay } from "../utils/signAndRelay";
 import { correctInput, getURLInApp } from "../utils/utils";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import SelectTokenButton from "../components/SelectTokenButton";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../tailwind.config";
+import { colors } from "../config/configs";
 
 const calculateGains = (
   amount: number,
@@ -49,8 +48,6 @@ type VaultParams = {
 
 const VaultDepositScreen = () => {
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig.theme?.colors as { typo: any; typo2: any };
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
 
@@ -397,7 +394,10 @@ const VaultDepositScreen = () => {
             <View className="m-auto mt-6 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("VaultInfoScreen" as never, {} as never)
+                  navigation.navigate(
+                    "VaultInfoScreen" as never,
+                    { vault: params.vault } as never
+                  )
                 }
               >
                 <View className="flex-row items-center justify-between">
