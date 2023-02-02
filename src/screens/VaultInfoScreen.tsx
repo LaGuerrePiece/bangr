@@ -16,7 +16,6 @@ import { XMarkIcon } from "react-native-heroicons/outline";
 import { VaultData } from "../types/types";
 import { averageApy } from "../components/Vault";
 import { colors } from "../config/configs";
-import ActionButton from "../components/ActionButton";
 
 type VaultParams = {
   VaultScreen: {
@@ -30,14 +29,44 @@ const getInfo = (name: string) => {
       return [
         {
           type: "text",
-          text: "AAve",
+          text: "Aave is a protocol on which users can borrow and lend assets. Lenders earn interest payed by borrowers. When someone takes out a loan on Aave, he must deposit more collateral value than what he borrows.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Website",
+              url: "https://aave.com/",
+            },
+            {
+              text: "Docs",
+              url: "https://docs.aave.com/hub/",
+            },
+          ],
         },
       ];
     case "RocketPool":
       return [
         {
           type: "text",
-          text: "earn interest on their deposits.",
+          text: "To create an Ethereum node, node operator normally have to lock 16 ETH in collateral. RocketPool is a protocol that allows users to create ethereum nodes with only 8 ETH, the 8 remaining coming from rETH holders.",
+        },
+        {
+          type: "text",
+          text: "By buying rETH, anybody can help create more nodes to secure the network. The rewards are then shared between the node operator and rETH holders.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Website",
+              url: "https://rocketpool.net/",
+            },
+            {
+              text: "Explainer",
+              url: "https://medium.com/rocket-pool/rocket-pool-staking-protocol-part-1-8be4859e5fbd",
+            },
+          ],
         },
       ];
     case "GLP":
@@ -79,32 +108,159 @@ const getInfo = (name: string) => {
           ],
         },
       ];
-    case "JonesDAO ETH":
+    case "JonesDAO's ETH":
       return [
         {
           type: "text",
-          text: "earn interest on their deposits.",
+          text: "JonesDAO's jETH generates yield with a proprietary hedged options strategy. Vault and strategy parameters are under the supervision of the DAO strategy team.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Website",
+              url: "https://www.jonesdao.io/",
+            },
+            {
+              text: "Docs",
+              url: "https://docs.jonesdao.io/jones-dao/",
+            },
+          ],
+        },
+      ];
+    case "JonesDAO's GLP":
+      return [
+        {
+          type: "text",
+          text: "JonesDAO's jGLP is a leveraged version of GLP. Like GLP, it generates yield for the loss of traders on GMX and from the fees they pay. However, it also uses leverage to increase the APY.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Website",
+              url: "https://www.jonesdao.io/",
+            },
+            {
+              text: "Docs",
+              url: "https://docs.jonesdao.io/jones-dao/",
+            },
+            {
+              text: "GLP",
+              url: "https://gmx.io/",
+            },
+          ],
         },
       ];
     case "agEUR-USDC":
       return [
         {
           type: "text",
-          text: "earn interest on their deposits.",
+          text: "Velodrome Finance is a decentralized exchange on Optimism. It allows anybody to trade one token for another.",
+        },
+        {
+          type: "text",
+          text: "Just like on Uniswap, users can provide liquidity to traders by locking their tokens on a pair. The pair will then earn fees from traders.",
+        },
+        {
+          type: "text",
+          text: "When entering this vault, 50% of the value will be swapped for agEUR and 50% for USDC. They will then be deposited in the agEUR-USDC pair on Velodrome Finance.",
+        },
+        {
+          type: "text",
+          text: "USDC is a USD centralized stablecoin managed by Circle.",
+        },
+        {
+          type: "text",
+          text: "agEUR is a decentralized stablecoin pegged to the Euro. It is managed by the Angle Protocol.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Velodrome",
+              url: "https://docs.velodrome.finance/",
+            },
+            {
+              text: "Circle",
+              url: "https://www.circle.com/en/",
+            },
+            {
+              text: "Angle",
+              url: "https://www.angle.money/",
+            },
+          ],
         },
       ];
     case "agEUR-jEUR":
       return [
         {
           type: "text",
-          text: "earn interest on their deposits.",
+          text: "Velodrome Finance is a decentralized exchange on Optimism. It allows anybody to trade one token for another.",
+        },
+        {
+          type: "text",
+          text: "Just like on Uniswap, users can provide liquidity to traders by locking their tokens on a pair. The pair will then earn fees from traders.",
+        },
+        {
+          type: "text",
+          text: "When entering this vault, 50% of the value will be swapped for agEUR and 50% for jEUR. They will then be deposited in the agEUR-jEUR pair on Velodrome Finance.",
+        },
+        {
+          type: "text",
+          text: "agEUR is a decentralized Euro stablecoin managed by the Angle Protocol.",
+        },
+        {
+          type: "text",
+          text: "jEUR is a Euro stablecoin managed by Jarvis Network.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Velodrome",
+              url: "https://docs.velodrome.finance/",
+            },
+            {
+              text: "Angle",
+              url: "https://www.angle.money/",
+            },
+            {
+              text: "Jarvis",
+              url: "https://jarvis.network/",
+            },
+          ],
         },
       ];
     case "Harbor Trade Credit S2":
       return [
         {
           type: "text",
-          text: "earn interest on their deposits.",
+          text: "Centrifuge is a real-world asset protocol. It uses DeFi liquidity pools to provide loans to businesses.",
+        },
+        {
+          type: "text",
+          text: "This pool is used by Harbor, a fintech company that makes short term loans (60 to 120 days) to businesses to let them deal with supply chain delays.",
+        },
+        {
+          type: "links",
+          links: [
+            {
+              text: "Centrifuge",
+              url: "https://centrifuge.io/",
+            },
+            {
+              text: "Harbor",
+              url: "https://harbortrade.com/",
+            },
+          ],
+        },
+      ];
+    default:
+      return [
+        {
+          type: "text",
+          text: "Coming soon.",
         },
       ];
   }
@@ -114,7 +270,7 @@ const VaultInfoScreen = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<VaultParams, "VaultScreen">>();
   const vault = params.vault;
-  const { name, image, description, color, protocol } = vault;
+  const { name, image, description, color } = vault;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
 
@@ -209,8 +365,12 @@ const VaultInfoScreen = () => {
                     key={index}
                   >
                     {item.links &&
-                      item.links.map((link) => (
-                        <LinkButton text={link.text} link={link.url} />
+                      item.links.map((link, indexTwo) => (
+                        <LinkButton
+                          text={link.text}
+                          link={link.url}
+                          key={indexTwo}
+                        />
                       ))}
                   </View>
                 );
