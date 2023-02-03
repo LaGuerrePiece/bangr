@@ -2,7 +2,7 @@
   "expo": {
     "name": "Poche",
     "slug": "poche-app",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "scheme": "poche",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
