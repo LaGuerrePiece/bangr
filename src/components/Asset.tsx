@@ -32,7 +32,7 @@ const Asset = ({ token }: { token: MultichainToken }) => {
         </View>
         <View>
           <Text className="font-bold text-typo-light dark:text-typo-dark">
-            ${token.quote?.toFixed(2)}
+            ${token.quote?.toFixed(2) ?? "0.00"}
           </Text>
         </View>
       </View>
