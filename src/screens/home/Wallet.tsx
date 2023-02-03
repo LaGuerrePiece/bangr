@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   Linking,
+  TouchableOpacity,
 } from "react-native";
 import Asset from "../../components/Asset";
 import HomeButton from "../../components/HomeButton";
@@ -12,6 +13,7 @@ import Chart from "../../components/Chart";
 import useHistoricStore from "../../state/historic";
 import useTokensStore from "../../state/tokens";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Wallet = () => {
   const tokens = useTokensStore((state) => state.tokens);
@@ -19,16 +21,24 @@ const Wallet = () => {
     ?.filter((token) => Number(token.balance) > 1)
     .reduce((a, b) => a + (b.quote ?? 0), 0);
 
+  const showHistoryToast = () => {
+    Toast.show({
+      type: "info",
+      text1: "History",
+      text2: "Coming soon, stay tuned!",
+    });
+  };
+
   return (
     <ScrollView>
       <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
         <View className="flex-row justify-between">
-          <TouchableWithoutFeedback onPress={() => console.log("history")}>
+          <TouchableOpacity onPress={showHistoryToast}>
             <Image
               className="h-10 w-10"
               source={require("../../../assets/history-disabled.png")}
             />
-          </TouchableWithoutFeedback>
+          </TouchableOpacity>
           <TouchableHighlight
             onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
           >
