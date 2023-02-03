@@ -63,7 +63,6 @@ const VaultDepositScreen = () => {
     vaults: state.vaults,
   }));
   const tokens = useTokensStore((state) => state.tokens);
-  const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
 
   const { name, image, description, protocol, status, color, chains } =
     params.vault;
@@ -79,6 +78,8 @@ const VaultDepositScreen = () => {
     useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("");
+
+  const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
