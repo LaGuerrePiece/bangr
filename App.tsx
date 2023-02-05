@@ -11,6 +11,7 @@ import ReceiveScreen from "./src/screens/ReceiveScreen";
 import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import "react-native-gesture-handler";
+import TransactionsScreen from "./src/screens/TransactionsScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -53,6 +54,11 @@ const App = () => {
         <Stack.Screen
           name="Receive"
           component={ReceiveScreen}
+          options={{ presentation: "modal", headerShown: false }}
+        />
+        <Stack.Screen
+          name="Transactions"
+          component={TransactionsScreen}
           options={{ presentation: "modal", headerShown: false }}
         />
       </Stack.Navigator>

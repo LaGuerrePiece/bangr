@@ -14,26 +14,24 @@ import useHistoricStore from "../../state/historic";
 import useTokensStore from "../../state/tokens";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { useNavigation } from "@react-navigation/native";
 
 const Wallet = () => {
+  const navigation = useNavigation();
   const tokens = useTokensStore((state) => state.tokens);
   const totalPortfolioValue = tokens
     ?.filter((token) => Number(token.balance) > 1)
     .reduce((a, b) => a + (b.quote ?? 0), 0);
 
-  const showHistoryToast = () => {
-    Toast.show({
-      type: "info",
-      text1: "History",
-      text2: "Coming soon, stay tuned!",
-    });
-  };
-
   return (
     <ScrollView>
       <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
         <View className="flex-row justify-between">
-          <TouchableOpacity onPress={showHistoryToast}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Transactions" as never);
+            }}
+          >
             <Image
               className="h-10 w-10"
               source={require("../../../assets/history-disabled.png")}
