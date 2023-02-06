@@ -189,14 +189,22 @@ const SendScreen = () => {
     }
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
-    await relay(
-      calls,
-      wallet,
-      smartWalletAddress,
-      value,
-      successMessage,
-      errorMessage
-    );
+    try {
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        value,
+        successMessage,
+        errorMessage
+      );
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
+    }
     clearAfterSend();
     fetchBalances();
   };

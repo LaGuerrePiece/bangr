@@ -113,15 +113,24 @@ const VaultDepositScreen = () => {
 
     const calls = await handleAmountChange("deposit");
 
-    if (wallet && smartWalletAddress)
-      await relay(
-        calls,
-        wallet,
-        smartWalletAddress,
-        "0",
-        "Deposit successful",
-        "Deposit failed"
-      );
+    if (wallet && smartWalletAddress) {
+      try {
+        await relay(
+          calls,
+          wallet,
+          smartWalletAddress,
+          "0",
+          "Deposit successful",
+          "Deposit failed"
+        );
+      } catch (error) {
+        console.log(error);
+        Toast.show({
+          type: "error",
+          text1: "error relaying transaction",
+        });
+      }
+    }
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);

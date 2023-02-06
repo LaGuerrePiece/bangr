@@ -35,6 +35,7 @@ import useSwapStore from "../../state/swap";
 import resolveConfig from "tailwindcss/resolveConfig";
 import tailwindConfig from "../../../tailwind.config";
 import { relay } from "../../utils/signAndRelay";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Swap = () => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -170,14 +171,22 @@ const Swap = () => {
   const swap = async () => {
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
-    await relay(
-      calls,
-      wallet,
-      smartWalletAddress,
-      value,
-      successMessage,
-      errorMessage
-    );
+    try {
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        value,
+        successMessage,
+        errorMessage
+      );
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
+    }
     clearAfterSwap();
     fetchBalances();
   };
