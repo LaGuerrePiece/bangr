@@ -13,22 +13,29 @@ import Asset from "../../components/Asset";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
-  const totalPortfolioValue = tokens
-    ?.filter((token) => Number(token.balance) > 1)
-    .reduce((a, b) => a + (b.quote ?? 0), 0);
+  const setLoaded = useUserStore((state) => state.setLoaded);
+  const loaded = useUserStore((state) => state.loaded);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     await fetchBalances();
     setRefreshing(false);
   }, []);
+
+  useEffect(() => {
+    setLoaded(
+      tokens
+        ?.filter((token) => Number(token.balance) > 1)
+        .reduce((a, b) => a + (b.quote ?? 0), 0)
+    );
+  }, [tokens]);
 
   const showHistoryToast = () => {
     Toast.show({
@@ -44,7 +51,7 @@ const Wallet = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {!tokens || !totalPortfolioValue === undefined ? (
+      {!loaded ? (
         <View className="h-screen border-red-500">
           <View className="m-auto">
             <Text className="text-center text-3xl">loading your bags</Text>
@@ -77,7 +84,7 @@ const Wallet = () => {
           </View>
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
             <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
-              ${totalPortfolioValue?.toFixed(2)}
+              ${loaded.toFixed(2)}
             </Text>
             {/* <View className=""><Chart chart={chart} /></View> */}
             <HomeButton />

@@ -17,11 +17,17 @@ interface UserState {
     getPrices?: boolean
   ) => Promise<void>;
   fetchPrices: () => Promise<void>;
+  loaded: number | undefined;
+  setLoaded: (loaded: number | undefined) => void;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
   wallet: undefined,
   smartWalletAddress: undefined,
+  loaded: undefined,
+  setLoaded: (loaded: number | undefined) => {
+    set({ loaded });
+  },
 
   login: async (newWallet: Wallet) => {
     const scwAddress = await getSmartWalletAddress(newWallet.address);
