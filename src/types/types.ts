@@ -37,12 +37,16 @@ export type MultichainToken = Omit<Token, "chainId" | "address"> & {
   }[];
 };
 
-export type Balances = {
+export type Balance = {
   chainId: ChainId;
   symbol: string;
   balance?: string;
+};
+
+export type Price = {
+  chainId: ChainId;
+  symbol: string;
   priceUSD?: number;
-  quote?: number;
 };
 
 export type TokenGroup = {

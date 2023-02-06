@@ -4,15 +4,19 @@ import { Wallet } from "ethers";
 import { getSmartWalletAddress } from "../utils/utils";
 import axios from "axios";
 import { getURLInApp } from "../utils/utils";
-import { Balances } from "../types/types";
+import { Balance, Price } from "../types/types";
 import useTokensStore from "./tokens";
 import useVaultsStore from "./vaults";
 
 interface UserState {
   wallet: Wallet | undefined;
   smartWalletAddress: string | undefined;
-  login: (wallet: Wallet) => void;
-  fetchBalances: (scwAddress?: string | null) => void;
+  login: (wallet: Wallet) => Promise<void>;
+  fetchBalances: (
+    scwAddress?: string | null,
+    getPrices?: boolean
+  ) => Promise<void>;
+  fetchPrices: () => Promise<void>;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
@@ -28,6 +32,7 @@ const useUserStore = create<UserState>()((set, get) => ({
     });
 
     get().fetchBalances(scwAddress);
+    get().fetchPrices();
     useVaultsStore.getState().fetchVaults(scwAddress);
   },
 
@@ -38,12 +43,25 @@ const useUserStore = create<UserState>()((set, get) => ({
     try {
       const { data } = (await axios.get(
         `${getURLInApp()}/api/user?scw=${address}`
-      )) as { data: Balances[] };
+      )) as { data: Balance[] };
       console.log(`fetched ${data.length} balances`);
 
       useTokensStore.getState().addBalances(data);
     } catch (error) {
       console.log("error fetching balances:", error);
+    }
+  },
+
+  fetchPrices: async () => {
+    try {
+      const { data } = (await axios.get(`${getURLInApp()}/api/prices`)) as {
+        data: Price[];
+      };
+      console.log(`fetched ${data.length} prices`);
+
+      useTokensStore.getState().addPrices(data);
+    } catch (error) {
+      console.log("error fetching prices:", error);
     }
   },
 }));
