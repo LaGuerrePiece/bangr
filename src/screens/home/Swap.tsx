@@ -64,8 +64,8 @@ const Swap = () => {
 
   useEffect(() => {
     if (!srcToken) {
-      const eth = tokens?.find((token) => token.symbol === "ETH");
-      if (eth) update({ srcToken: eth });
+      const dai = tokens?.find((token) => token.symbol === "DAI");
+      if (dai) update({ srcToken: dai });
     }
     if (!dstToken) {
       const usdc = tokens?.find((token) => token.symbol === "USDC");
