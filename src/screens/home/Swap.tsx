@@ -3,10 +3,8 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   SafeAreaView,
   TextInput,
-  TouchableOpacity,
   TouchableHighlight,
   useColorScheme,
   TouchableWithoutFeedback,
@@ -18,6 +16,7 @@ import {
   EXAMPLE_WALLET_ADDRESS,
   SWAPAMOUNTIN_USD_THRESHOLD,
   SWAP_DEBOUNCE_THRESHOLD,
+  colors,
 } from "../../config/configs";
 import useUserStore from "../../state/user";
 import "@ethersproject/shims";
@@ -32,8 +31,6 @@ import useTokensStore from "../../state/tokens";
 import { cutDecimals, formatUnits } from "../../utils/format";
 import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../../tailwind.config";
 import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
@@ -59,8 +56,6 @@ const Swap = () => {
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
   const colorScheme = useColorScheme();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig.theme?.colors as { typo: any; typo2: any };
 
   useEffect(() => {
     if (!srcToken) {

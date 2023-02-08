@@ -20,6 +20,7 @@ import useSendStore from "../state/send";
 import { useEffect, useLayoutEffect } from "react";
 import {
   chainData,
+  colors,
   SWAP_DEBOUNCE_THRESHOLD,
   SWAPAMOUNTIN_USD_THRESHOLD,
 } from "../config/configs";
@@ -61,9 +62,7 @@ const SendScreen = () => {
       fetchBalances: state.fetchBalances,
     })
   );
-  const fullConfig = resolveConfig(tailwindConfig);
   const colorScheme = useColorScheme();
-  const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
 
   useLayoutEffect(() => navigation.setOptions({ headerShown: false }));
 

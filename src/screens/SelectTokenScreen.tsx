@@ -14,9 +14,8 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import useSwapStore from "../state/swap";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../tailwind.config";
 import useSendStore from "../state/send";
+import { colors } from "../config/configs";
 
 type SelectTokenParams = {
   SelectTokenScreen: {
@@ -33,8 +32,6 @@ export default function SelectToken() {
   const { updateSrcToken, updateDstToken } = useSwapStore();
   const { updateSendToken } = useSendStore();
   const colorScheme = useColorScheme();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
 
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
