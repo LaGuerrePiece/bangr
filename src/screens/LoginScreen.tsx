@@ -1,4 +1,12 @@
-import { View, Text, SafeAreaView } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  useColorScheme,
+} from "react-native";
 import ActionButton from "../components/ActionButton";
 import Web3Auth, {
   LOGIN_PROVIDER,
@@ -8,7 +16,7 @@ import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import { Buffer } from "buffer";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
@@ -18,6 +26,8 @@ import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
+import { colors } from "../config/configs";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 global.Buffer = global.Buffer || Buffer;
 
 const resolvedRedirectUrl =
@@ -51,14 +61,16 @@ const secureSave = async (key: string, value: string) => {
 
 const LoginScreen = () => {
   const navigation = useNavigation();
+  const colorScheme = useColorScheme();
   const login = useUserStore((state) => state.login);
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
   const fetchVaults = useVaultsStore((state) => state.fetchVaults);
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     checkPreviousUser();
     fetchTokensStatic();
-  });
+  }, []);
 
   const loginThroughBiometrics = async () => {
     if (
@@ -88,7 +100,7 @@ const LoginScreen = () => {
       loginProvider: loginProvider,
       redirectUrl: resolvedRedirectUrl,
       extraLoginOptions: {
-        login_hint: "nicolas@poche.fi",
+        login_hint: email,
       },
     });
 
@@ -101,36 +113,86 @@ const LoginScreen = () => {
     // TODO: handle failling
   };
 
+  const validateEmail = (email: string) => {
+    return String(email)
+      .toLowerCase()
+      .match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      );
+  };
+
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
       <Text className="mt-16 text-center text-4xl text-typo-light dark:text-typo-dark">
         Welcome to Poche
       </Text>
 
-      <View className="mx-auto mt-16 flex h-1/4 w-2/3 justify-between">
-        <View className="my-2">
-          <ActionButton
-            text="Connect with Google"
-            action={() => handleLogin("google")}
-          />
+      <View className="mx-auto mt-16 flex w-2/3">
+        <View className="flex-row justify-between">
+          <TouchableOpacity onPress={() => handleLogin("google")}>
+            <View className="my-2 h-14 w-14 rounded-3xl bg-btn-light dark:bg-btn-dark">
+              <Image
+                className="mx-auto my-auto h-7 w-7"
+                source={require("../../assets/Google.png")}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLogin("apple")}>
+            <View className="my-2 h-14 w-14 rounded-3xl bg-btn-light dark:bg-btn-dark">
+              <Image
+                className="mx-auto my-auto h-7 w-7"
+                source={require("../../assets/Apple.png")}
+              />
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => handleLogin("twitter")}>
+            <View className="my-2 h-14 w-14 rounded-3xl bg-btn-light dark:bg-btn-dark">
+              <Image
+                className="mx-auto my-auto h-7 w-7"
+                source={require("../../assets/Twitter.png")}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
-        <View className="my-2">
-          <ActionButton
-            text="Connect with Apple"
-            action={() => handleLogin("apple")}
-          />
-        </View>
-        <View className="my-2">
-          <ActionButton
-            text="Connect with Email"
-            action={() => handleLogin("email_passwordless")}
-          />
-        </View>
-        <View className="my-2">
-          <ActionButton
-            text="Connect with Twitter"
-            action={() => handleLogin("twitter")}
-          />
+        <View className="">
+          <View className="mx-auto mt-6 w-full rounded-xl border bg-primary-light p-1 dark:bg-primary-dark">
+            <TextInput
+              style={{
+                color:
+                  colorScheme === "light"
+                    ? colors.typo.light
+                    : colors.typo.dark,
+              }}
+              placeholderTextColor={colors.typo2.light}
+              className="my-1 font-semibold text-typo-light dark:text-typo-dark"
+              onChangeText={(value) => setEmail(value)}
+              value={email}
+              placeholder="bob@pm.me"
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              if (!validateEmail(email)) {
+                Toast.show({
+                  type: "error",
+                  text1: "Input error",
+                  text2: "This does not look like a valid email",
+                });
+                return;
+              }
+              handleLogin("email_passwordless");
+            }}
+          >
+            <View className="my-3 h-14 flex-row items-center justify-around rounded-3xl bg-btn-light px-1 dark:bg-btn-dark">
+              <Image
+                className="h-7 w-7"
+                source={require("../../assets/Mail.png")}
+              />
+              <Text className="w-fit text-center text-lg text-secondary-light dark:text-secondary-dark">
+                Or connect with email
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
