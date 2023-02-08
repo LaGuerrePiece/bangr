@@ -189,7 +189,7 @@ const LoginScreen = () => {
                 source={require("../../assets/Mail.png")}
               />
               <Text className="w-fit text-center text-lg text-secondary-light dark:text-secondary-dark">
-                Or connect with email
+                Connect with email
               </Text>
             </View>
           </TouchableOpacity>
