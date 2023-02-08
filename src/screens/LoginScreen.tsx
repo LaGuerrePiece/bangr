@@ -154,8 +154,8 @@ const LoginScreen = () => {
             </View>
           </TouchableOpacity>
         </View>
-        <View className="">
-          <View className="mx-auto mt-6 w-full rounded-xl border bg-primary-light p-1 dark:bg-primary-dark">
+        <View>
+          <View className="mx-auto mt-6 w-full rounded-xl border-2 bg-primary-light p-1 dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
@@ -164,7 +164,7 @@ const LoginScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 font-semibold text-typo-light dark:text-typo-dark"
+              className="my-1 text-lg font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={(value) => setEmail(value)}
               value={email}
               placeholder="bob@pm.me"
