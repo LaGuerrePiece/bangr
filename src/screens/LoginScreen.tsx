@@ -83,10 +83,13 @@ const LoginScreen = () => {
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = async (loginProvider: string) => {
     const user = await web3auth.login({
-      loginProvider: LOGIN_PROVIDER.GOOGLE,
+      loginProvider: loginProvider,
       redirectUrl: resolvedRedirectUrl,
+      extraLoginOptions: {
+        login_hint: "florent@poche.fi",
+      },
     });
 
     if (user.privKey) {
@@ -104,14 +107,31 @@ const LoginScreen = () => {
         Welcome to Poche
       </Text>
 
-      <View className="mx-auto mt-32 flex h-1/4 w-2/3 justify-between">
-        <ActionButton text="Connect With Google" action={handleLogin} />
-
-        {/* <ActionButton
-          text="Recover previous account"
-          action={() => console.log("recover account")}
-          disabled={true}
-        /> */}
+      <View className="mx-auto mt-16 flex h-1/4 w-2/3 justify-between">
+        <View className="my-2">
+          <ActionButton
+            text="Connect With Google"
+            action={() => handleLogin("google")}
+          />
+        </View>
+        <View className="my-2">
+          <ActionButton
+            text="Connect With Apple"
+            action={() => handleLogin("apple")}
+          />
+        </View>
+        <View className="my-2">
+          <ActionButton
+            text="Connect With Email"
+            action={() => handleLogin("email_passwordless")}
+          />
+        </View>
+        <View className="my-2">
+          <ActionButton
+            text="Connect With Twitter"
+            action={() => handleLogin("twitter")}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
