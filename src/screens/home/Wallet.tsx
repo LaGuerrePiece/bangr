@@ -51,7 +51,7 @@ const Wallet = () => {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      {!loaded ? (
+      {loaded === undefined ? (
         <View className="h-screen border-red-500">
           <View className="m-auto">
             <Text className="text-center text-3xl">loading your bags</Text>
