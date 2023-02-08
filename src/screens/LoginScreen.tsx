@@ -88,7 +88,7 @@ const LoginScreen = () => {
       loginProvider: loginProvider,
       redirectUrl: resolvedRedirectUrl,
       extraLoginOptions: {
-        login_hint: "florent@poche.fi",
+        login_hint: "nicolas@poche.fi",
       },
     });
 
@@ -110,25 +110,25 @@ const LoginScreen = () => {
       <View className="mx-auto mt-16 flex h-1/4 w-2/3 justify-between">
         <View className="my-2">
           <ActionButton
-            text="Connect With Google"
+            text="Connect with Google"
             action={() => handleLogin("google")}
           />
         </View>
         <View className="my-2">
           <ActionButton
-            text="Connect With Apple"
+            text="Connect with Apple"
             action={() => handleLogin("apple")}
           />
         </View>
         <View className="my-2">
           <ActionButton
-            text="Connect With Email"
+            text="Connect with Email"
             action={() => handleLogin("email_passwordless")}
           />
         </View>
         <View className="my-2">
           <ActionButton
-            text="Connect With Twitter"
+            text="Connect with Twitter"
             action={() => handleLogin("twitter")}
           />
         </View>
