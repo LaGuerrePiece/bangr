@@ -85,16 +85,18 @@ const TokenScreen = () => {
   };
 
   return (
-    <View className="h-full bg-primary-light py-3 dark:bg-primary-dark">
-      <SafeAreaView className="rounded-lg p-3">
-        <TouchableWithoutFeedback onPress={navigation.goBack}>
+    <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
+      <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <View className="mx-auto w-11/12">
           <XMarkIcon
             size={36}
             color={
               colorScheme === "light" ? colors.typo.light : colors.typo.dark
             }
           />
-        </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
+      <SafeAreaView className="rounded-lg p-3">
         <View className="flex items-center">
           <Image
             className="h-10 w-10"
