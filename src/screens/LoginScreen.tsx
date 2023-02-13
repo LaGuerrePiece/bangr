@@ -8,6 +8,10 @@ import {
   useColorScheme,
 } from "react-native";
 import ActionButton from "../components/ActionButton";
+// import Web3Auth, {
+//   LOGIN_PROVIDER,
+//   OPENLOGIN_NETWORK,
+// } from "../../web3auth-react-native-sdk/src/index";
 import Web3Auth, {
   LOGIN_PROVIDER,
   OPENLOGIN_NETWORK,
