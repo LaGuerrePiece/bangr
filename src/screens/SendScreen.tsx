@@ -234,7 +234,7 @@ const SendScreen = () => {
                     (t) => ![token.symbol].includes(t.symbol)
                   )}
                   selectedToken={token}
-                  tokenToUpdate={"Send:token"}
+                  tokenToUpdate={"Send"}
                 />
               </View>
             )}
