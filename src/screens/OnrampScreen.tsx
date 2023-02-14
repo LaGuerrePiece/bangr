@@ -114,7 +114,7 @@ const OnrampScreen = () => {
             cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
             walletAddress: smartWalletAddress,
             email: userInfo?.email,
-            exchangeScreenTitle: "Add money to Bangr !",
+            // exchangeScreenTitle: "Add money to Bangr !",
             // disableWalletAddressForm: true,
             // redirectURL
             // fiatCurrency: "USD",
