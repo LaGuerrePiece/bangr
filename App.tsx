@@ -10,7 +10,6 @@ import SendScreen from "./src/screens/SendScreen";
 import ReceiveScreen from "./src/screens/ReceiveScreen";
 import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
-import "react-native-gesture-handler";
 import OnrampScreen from "./src/screens/OnrampScreen";
 
 const Stack = createNativeStackNavigator();
