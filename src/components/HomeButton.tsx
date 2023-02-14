@@ -27,7 +27,10 @@ const HomeButton = () => {
           Receive
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity className="w-1/3" onPress={showBuyToast}>
+      <TouchableOpacity
+        className="w-1/3"
+        onPress={() => navigation.navigate("Onramp" as never, {} as never)}
+      >
         <Image
           className="m-auto h-14 w-14"
           source={require("../../assets/onrampbtn.png")}
