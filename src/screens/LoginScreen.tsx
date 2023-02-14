@@ -7,11 +7,7 @@ import {
   TextInput,
   useColorScheme,
 } from "react-native";
-import ActionButton from "../components/ActionButton";
-import Web3Auth, {
-  LOGIN_PROVIDER,
-  OPENLOGIN_NETWORK,
-} from "@web3auth/react-native-sdk";
+import Web3Auth, { OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
 import Constants, { AppOwnership } from "expo-constants";
 import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
@@ -62,7 +58,10 @@ const secureSave = async (key: string, value: string) => {
 const LoginScreen = () => {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
-  const login = useUserStore((state) => state.login);
+  const { login, setUserInfo } = useUserStore((state) => ({
+    login: state.login,
+    setUserInfo: state.setUserInfo,
+  }));
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
   const fetchVaults = useVaultsStore((state) => state.fetchVaults);
   const [email, setEmail] = useState("");
@@ -108,6 +107,10 @@ const LoginScreen = () => {
       secureSave("privKey", user.privKey);
       login(new Wallet(user.privKey));
       navigation.navigate("Wallet" as never, {} as never);
+    }
+
+    if (user.userInfo) {
+      setUserInfo(user.userInfo);
     }
 
     // TODO: handle failling
