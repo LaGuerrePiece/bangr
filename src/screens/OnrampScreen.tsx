@@ -89,13 +89,7 @@ const OnrampScreen = () => {
           <RampOption
             logo={require("../../assets/bangramp.png")}
             text={""}
-            action={() => {
-              Toast.show({
-                type: "info",
-                text1: "Coming soon",
-                text2: "Stay tuned!",
-              });
-            }}
+            action={() => setOnRamp("bangramp")}
           />
           <RampOption
             logo={require("../../assets/mtpelerin.png")}
@@ -130,9 +124,15 @@ const OnrampScreen = () => {
           // onLoadStart={}    // react-native-webview prop
           // onLoadEnd={}      // react-native-webview prop
         />
+      ) : onRamp === "bangramp" ? (
+        <WebView
+          style={{ width: windowWidth }}
+          source={{ uri: "https://onramp.vercel.app" }}
+        />
       ) : (
         <View></View>
       )}
+      <Toast />
     </View>
   );
 };
