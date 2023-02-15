@@ -253,7 +253,7 @@ const SendScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+              className="text-4xl font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={handleInputChange}
               value={amountIn?.slice(0, 10) ?? ""}
               keyboardType="numeric"

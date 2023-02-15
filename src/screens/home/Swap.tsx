@@ -246,13 +246,13 @@ const Swap = () => {
           </View>
 
           <View
-            className="w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t 
+            className="h-20 w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t
           border-typo-dark
           bg-secondary-light pt-1
           dark:border-typo-dark 
           dark:bg-secondary-dark"
           >
-            <View className="ml-1 justify-end p-2">
+            <View className="ml-1 p-2">
               {dstToken && tokens && (
                 <SelectTokenButton
                   tokens={tokens.filter(
@@ -262,16 +262,25 @@ const Swap = () => {
                   tokenToUpdate={"Swap:dstToken"}
                 />
               )}
-              <View className="mt-2 mb-1">
+              <View className="my-2">
                 {isSearching ? (
-                  <View className="w-2/3 justify-end">
+                  <View className="w-2/3 items-center justify-end">
                     {/* @ts-ignore */}
                     <Placeholder Animation={Shine}>
-                      <PlaceholderLine height={9} width={80} />
+                      <PlaceholderLine
+                        height={9}
+                        width={80}
+                        className="mt-2"
+                        style={
+                          colorScheme === "dark"
+                            ? { backgroundColor: "#999999" }
+                            : {}
+                        }
+                      />
                     </Placeholder>
                   </View>
                 ) : (
-                  <Text className="text-typo-light dark:text-typo-dark">
+                  <Text className="mb-2 text-typo-light dark:text-typo-dark">
                     ${" "}
                     {quote && quote.totalToAmountUSD
                       ? quote.totalToAmountUSD?.toFixed(2)
@@ -282,10 +291,18 @@ const Swap = () => {
             </View>
             <View className="flex-row justify-end py-2">
               {isSearching ? (
-                <View className="w-2/3 justify-end">
+                <View className="w-2/3 items-center justify-end">
                   {/* @ts-ignore */}
                   <Placeholder Animation={Shine}>
-                    <PlaceholderLine height={20} width={80} />
+                    <PlaceholderLine
+                      height={20}
+                      width={80}
+                      style={
+                        colorScheme === "dark"
+                          ? { backgroundColor: "#999999" }
+                          : {}
+                      }
+                    />
                   </Placeholder>
                 </View>
               ) : (
@@ -302,7 +319,7 @@ const Swap = () => {
           <TouchableHighlight onPress={flip}>
             <View className="flex flex-row items-center">
               <Image
-                className="ml-3 h-6 w-6"
+                className="ml-3 mb-4 h-6 w-6"
                 source={
                   colorScheme === "light"
                     ? require("../../../assets/flip.png")
