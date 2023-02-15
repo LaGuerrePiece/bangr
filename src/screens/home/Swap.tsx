@@ -309,7 +309,7 @@ const Swap = () => {
               ) : (
                 <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
                   {quote && quote.sumOfToAmount
-                    ? cutDecimals(quote.sumOfToAmount, 5)
+                    ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
                     : "0"}{" "}
                 </Text>
               )}
