@@ -216,14 +216,15 @@ const Swap = () => {
                   {formatUnits(srcToken?.balance, srcToken?.decimals, 4)}{" "}
                   {srcToken?.symbol ?? ""}
                 </Text>
-                <View className="flex-row">
+                <View className="flex-row justify-end">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
-                    className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+                    className="my-1 w-48 text-4xl font-semibold text-typo-light dark:text-typo-dark"
                     onChangeText={handleInputChange}
                     value={amountIn?.slice(0, 10) ?? ""}
                     keyboardType="numeric"
                     placeholder="0"
+                    textAlign="right"
                   />
                 </View>
                 <TouchableHighlight onPress={max}>
@@ -308,7 +309,7 @@ const Swap = () => {
               ) : (
                 <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
                   {quote && quote.sumOfToAmount
-                    ? cutDecimals(quote.sumOfToAmount, 5)
+                    ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
                     : "0"}{" "}
                 </Text>
               )}

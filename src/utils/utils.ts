@@ -48,7 +48,10 @@ export function getExampleMultichainToken(
   swapAmountIn: string
 ): MultichainToken {
   const balance = ethers.utils
-    .parseUnits((Number(swapAmountIn) * 2).toString(), srcToken.decimals)
+    .parseUnits(
+      BigNumber.from(swapAmountIn).mul(2).toString(),
+      srcToken.decimals
+    )
     .toString();
 
   return {

@@ -11,6 +11,7 @@ import ReceiveScreen from "./src/screens/ReceiveScreen";
 import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
+import { toastConfig } from "./src/components/toasts";
 
 const Stack = createNativeStackNavigator();
 
@@ -65,7 +66,7 @@ const App = () => {
           }}
         />
       </Stack.Navigator>
-      <Toast />
+      <Toast config={toastConfig} />
     </NavigationContainer>
   );
 };
