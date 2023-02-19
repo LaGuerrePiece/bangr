@@ -17,8 +17,8 @@ const getTabImage = (tab: string, selected: string) => {
             className="mx-auto my-3 h-7 w-7"
             source={
               tab === selected
-                ? require("../../assets/swapbtn-selected.png")
-                : require("../../assets/swapbtn.png")
+                ? require("../../assets/swap-selected.png")
+                : require("../../assets/swap.png")
             }
           />
           <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
@@ -34,8 +34,8 @@ const getTabImage = (tab: string, selected: string) => {
             className="mx-auto my-3 h-7 w-7"
             source={
               tab === selected
-                ? require("../../assets/vaultbtn-selected.png")
-                : require("../../assets/vaultbtn.png")
+                ? require("../../assets/bangr.png")
+                : require("../../assets/bangrs-selected.png")
             }
           />
           <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
@@ -56,7 +56,7 @@ const getTabImage = (tab: string, selected: string) => {
             }
           />
           <Text className="mb-2 -mt-2 text-center font-bold text-typo-light dark:text-typo-dark">
-            Poche
+            Wallet
           </Text>
         </View>
       );

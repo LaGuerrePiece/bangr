@@ -234,7 +234,7 @@ const SendScreen = () => {
                     (t) => ![token.symbol].includes(t.symbol)
                   )}
                   selectedToken={token}
-                  tokenToUpdate={"Send:token"}
+                  tokenToUpdate={"Send"}
                 />
               </View>
             )}
@@ -244,7 +244,7 @@ const SendScreen = () => {
               </View>
             )}
           </View>
-          <View className="mx-auto mt-6 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <View className="mx-auto mt-6 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
@@ -253,11 +253,12 @@ const SendScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+              className="text-4xl font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={handleInputChange}
               value={amountIn?.slice(0, 10) ?? ""}
               keyboardType="numeric"
               placeholder="0"
+              textAlign="right"
             />
           </View>
           {token && (
@@ -293,7 +294,7 @@ const SendScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 text-xs font-semibold text-typo-light dark:text-typo-dark"
+              className="text-xs font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={(value) => update({ toAddress: value })}
               value={toAddress ?? ""}
               placeholder="0x..."

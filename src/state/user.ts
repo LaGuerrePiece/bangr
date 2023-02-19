@@ -7,10 +7,12 @@ import { getURLInApp } from "../utils/utils";
 import { Balance, Price } from "../types/types";
 import useTokensStore from "./tokens";
 import useVaultsStore from "./vaults";
+import { State } from "@web3auth/react-native-sdk";
 
 interface UserState {
   wallet: Wallet | undefined;
   smartWalletAddress: string | undefined;
+  userInfo: State["userInfo"] | undefined;
   login: (wallet: Wallet) => Promise<void>;
   fetchBalances: (
     scwAddress?: string | null,
@@ -19,14 +21,21 @@ interface UserState {
   fetchPrices: () => Promise<void>;
   loaded: number | undefined;
   setLoaded: (loaded: number | undefined) => void;
+  setUserInfo: (userInfo: State["userInfo"]) => void;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
   wallet: undefined,
   smartWalletAddress: undefined,
   loaded: undefined,
+  userInfo: undefined,
+
   setLoaded: (loaded: number | undefined) => {
     set({ loaded });
+  },
+
+  setUserInfo: (userInfo: State["userInfo"]) => {
+    set({ userInfo });
   },
 
   login: async (newWallet: Wallet) => {
