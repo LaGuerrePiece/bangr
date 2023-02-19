@@ -38,6 +38,7 @@ import { relay } from "../utils/signAndRelay";
 import { Quote } from "../types/types";
 import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
+import { toastConfig } from "../components/toasts";
 
 const SendScreen = () => {
   const navigation = useNavigation();
@@ -361,7 +362,7 @@ const SendScreen = () => {
             )}
           </View>
         </View>
-        <Toast />
+        <Toast config={toastConfig} />
       </View>
     </TouchableWithoutFeedback>
   );
