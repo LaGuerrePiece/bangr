@@ -94,7 +94,7 @@ const VaultDepositScreen = () => {
     );
 
     try {
-      const calls = await axios.post(`${getURLInApp()}/api/quote/vault`, {
+      const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
         action: action ? action : "deposit",

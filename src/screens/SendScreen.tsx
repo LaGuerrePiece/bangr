@@ -38,6 +38,7 @@ import { relay } from "../utils/signAndRelay";
 import { Quote } from "../types/types";
 import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
+import { toastConfig } from "../components/toasts";
 
 const SendScreen = () => {
   const navigation = useNavigation();
@@ -139,7 +140,7 @@ const SendScreen = () => {
 
     try {
       const { data: response } = await axios.post(
-        `${getURLInApp()}/api/quote/send`,
+        `${getURLInApp()}/api/v1/quote/send`,
         {
           token: token,
           amountIn: formattedAmountIn,
@@ -361,7 +362,7 @@ const SendScreen = () => {
             )}
           </View>
         </View>
-        <Toast />
+        <Toast config={toastConfig} />
       </View>
     </TouchableWithoutFeedback>
   );

@@ -16,6 +16,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
+import { toastConfig } from "../components/toasts";
 
 const ReceiveScreen = () => {
   const navigation = useNavigation();
@@ -116,7 +117,7 @@ const ReceiveScreen = () => {
         </View>
       )}
 
-      <Toast />
+      <Toast config={toastConfig} />
     </View>
   );
 };

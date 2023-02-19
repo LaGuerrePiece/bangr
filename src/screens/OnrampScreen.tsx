@@ -16,6 +16,7 @@ import TransakWebView from "@transak/react-native-sdk";
 import { useState } from "react";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
+import { toastConfig } from "../components/toasts";
 
 const OnrampScreen = () => {
   const navigation = useNavigation();
@@ -135,7 +136,7 @@ const OnrampScreen = () => {
       ) : (
         <View></View>
       )}
-      <Toast />
+      <Toast config={toastConfig} />
     </View>
   );
 };

@@ -57,7 +57,7 @@ const useUserStore = create<UserState>()((set, get) => ({
 
     try {
       const { data } = (await axios.get(
-        `${getURLInApp()}/api/v0.0.4/user?scw=${address}`
+        `${getURLInApp()}/api/v1/user?scw=${address}`
       )) as { data: Balance[] };
       console.log(`fetched ${data.length} balances`);
 
@@ -69,9 +69,7 @@ const useUserStore = create<UserState>()((set, get) => ({
 
   fetchPrices: async () => {
     try {
-      const { data } = (await axios.get(
-        `${getURLInApp()}/api/v0.0.4/prices`
-      )) as {
+      const { data } = (await axios.get(`${getURLInApp()}/api/v1/prices`)) as {
         data: Price[];
       };
       console.log(`fetched ${data.length} prices`);
