@@ -28,7 +28,8 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.poche.fi"
+      "package": "com.poche.fi",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
