@@ -244,7 +244,10 @@ const SendScreen = () => {
               </View>
             )}
           </View>
-          <View className="mx-auto mt-6 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <Text className="mt-8 text-typo-light dark:text-typo-dark">
+            Amount
+          </Text>
+          <View className="mx-auto mt-2 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
@@ -285,7 +288,11 @@ const SendScreen = () => {
             </View>
           )}
 
-          <View className="mx-auto my-4 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <Text className="mt-4 text-typo-light dark:text-typo-dark">
+            Address
+          </Text>
+
+          <View className="mx-auto mt-2 mb-4 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
