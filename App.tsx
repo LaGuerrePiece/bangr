@@ -8,7 +8,7 @@ import LoginScreen from "./src/screens/LoginScreen";
 import SelectTokenScreen from "./src/screens/SelectTokenScreen";
 import SendScreen from "./src/screens/SendScreen";
 import ReceiveScreen from "./src/screens/ReceiveScreen";
-import Toast, { BaseToast } from "react-native-toast-message";
+import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
 import { toastConfig } from "./src/components/toasts";

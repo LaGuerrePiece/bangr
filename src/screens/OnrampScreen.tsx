@@ -91,7 +91,11 @@ const OnrampScreen = () => {
             action={() => setOnRamp("bangramp")}
           />
           <RampOption
-            logo={require("../../assets/mtpelerin.png")}
+            logo={
+              colorScheme === "dark"
+                ? require("../../assets/mtpelerin_dark.png")
+                : require("../../assets/mtpelerin.png")
+            }
             text={""}
             action={() => {
               Toast.show({
