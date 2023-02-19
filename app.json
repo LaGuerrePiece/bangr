@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "Poche",
-    "slug": "poche-app",
+    "name": "bangr",
+    "slug": "bangr-app",
     "version": "0.0.5",
     "scheme": "poche",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
