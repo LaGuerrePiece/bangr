@@ -46,7 +46,7 @@ const TokenScreen = () => {
   async function getChart(token: MultichainToken) {
     const firstChain = token.chains[0];
     try {
-      const { data } = (await axios.post(`${getURLInApp()}/api/chart`, {
+      const { data } = (await axios.post(`${getURLInApp()}/api/v1/chart`, {
         tokenAddress: firstChain.address,
         chainId: firstChain.chainId,
         days: 1,

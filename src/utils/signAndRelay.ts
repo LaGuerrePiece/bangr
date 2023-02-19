@@ -118,7 +118,7 @@ const sendToRelayer = async (body: {
   scwAddress?: string;
 }) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/relay`, body, {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/relay`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",

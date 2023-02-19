@@ -107,7 +107,7 @@ const Swap = () => {
 
     try {
       const { data: response } = await axios.post(
-        `${getURLInApp()}/api/quote/swap`,
+        `${getURLInApp()}/api/v1/quote/swap`,
         {
           srcToken: token,
           dstToken: dstToken,

@@ -140,7 +140,7 @@ const SendScreen = () => {
 
     try {
       const { data: response } = await axios.post(
-        `${getURLInApp()}/api/quote/send`,
+        `${getURLInApp()}/api/v1/quote/send`,
         {
           token: token,
           amountIn: formattedAmountIn,

@@ -19,7 +19,9 @@ const useTokensStore = create<BalanceState>()(
 
     fetchTokensStatic: async () => {
       try {
-        const { data } = (await axios.get(`${getURLInApp()}/api/tokens`)) as {
+        const { data } = (await axios.get(
+          `${getURLInApp()}/api/v1/tokens`
+        )) as {
           data: MultichainToken[];
         };
         console.log(`fetched ${data.length} tokens`);
