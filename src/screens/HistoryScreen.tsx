@@ -13,44 +13,31 @@ import {
 } from "react-native-gesture-handler";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
-import useTransactionsStore from "../state/transactions";
+import useTasksStore from "../state/tasks";
 import ActionButton from "../components/ActionButton";
+import useUserStore from "../state/user";
 
-const TransactionsScreen = () => {
+const HistoryScreen = () => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
   const colorScheme = useColorScheme();
-  const { transactions, addTransactions } = useTransactionsStore((state) => ({
-    transactions: state.transactions,
-    addTransactions: state.addTransactions,
+  const { tasks, fetchTasks } = useTasksStore((state) => ({
+    tasks: state.tasks,
+    fetchTasks: state.fetchTasks,
   }));
+  
+  // get user scwAddress
+  const scw = useUserStore((state) => state.smartWalletAddress);
 
-  const addTxs = () => {
-    addTransactions(
-      {
-        type: "Deposit",
-        protocol: "Rocket Pool",
-        status: "pending",
-      },
-      {
-        type: "Withdraw",
-        protocol: "GLP",
-        status: "success",
-      },
-      {
-        type: "Deposit",
-        protocol: "jETH",
-        status: "failure",
-      },
-      {
-        type: "Deposit",
-        protocol: "Rocket Pool",
-        status: "success",
-      }
-    );
-  };
+  useEffect(() => {
+    if (!scw) return;
+    fetchTasks(scw); //fetch the tasks
+  }, []);
+
+
+
 
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
@@ -65,12 +52,11 @@ const TransactionsScreen = () => {
         </View>
       </TouchableWithoutFeedback>
       <ScrollView className="mx-auto mt-5 w-11/12 rounded-lg p-3">
-        <ActionButton text="Add Transactions" action={addTxs} />
         <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
           Pending
         </Text>
-        {transactions.length !== 0 ? (
-          transactions.map((transaction, index) => (
+        {tasks.length !== 0 ? (
+          tasks.map((task, index) => (
             <View
               className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
               key={index}
@@ -79,21 +65,21 @@ const TransactionsScreen = () => {
                 <Image
                   className="h-8 w-8"
                   source={
-                    transaction.status === "success"
+                    task.state === 1
                       ? require("../../assets/receivebtn.png")
-                      : transaction.status === "pending"
+                      : task.state === 2
                       ? require("../../assets/receivebtn.png")
                       : require("../../assets/receivebtn.png")
                   }
                 />
                 <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
-                  {transaction.type}{" "}
-                  {transaction.type === "Deposit"
+                  {task.type}{" "}
+                  {task.type === "Deposit"
                     ? "in"
-                    : transaction.type === "Withdraw"
+                    : task.type === "Withdraw"
                     ? "from"
                     : "in"}{" "}
-                  {transaction.protocol}
+                  {task.protocol}
                 </Text>
               </View>
               <Image
@@ -104,7 +90,7 @@ const TransactionsScreen = () => {
           ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
-            No transactions yet
+            No transaction yet
           </Text>
         )}
       </ScrollView>
@@ -112,4 +98,4 @@ const TransactionsScreen = () => {
   );
 };
 
-export default TransactionsScreen;
+export default HistoryScreen;

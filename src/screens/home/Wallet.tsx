@@ -15,13 +15,29 @@ import useTokensStore from "../../state/tokens";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
+import { useNavigation } from "@react-navigation/native";
 
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
   const tokens = useTokensStore((state) => state.tokens);
-  const totalPortfolioValue = tokens
-    ?.filter((token) => Number(token.balance) > 1)
-    .reduce((a, b) => a + (b.quote ?? 0), 0);
+  const fetchBalances = useUserStore((state) => state.fetchBalances);
+  const setLoaded = useUserStore((state) => state.setLoaded);
+  const loaded = useUserStore((state) => state.loaded);
+  const navigation = useNavigation();
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchBalances();
+    setRefreshing(false);
+  }, []);
+
+  useEffect(() => {
+    setLoaded(
+      tokens
+        ?.filter((token) => Number(token.balance) > 1)
+        .reduce((a, b) => a + (b.quote ?? 0), 0)
+    );
+  }, [tokens]);
 
   const showHistoryToast = () => {
     Toast.show({
@@ -50,7 +66,7 @@ const Wallet = () => {
       ) : (
         <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
           <View className="flex-row justify-between">
-            <TouchableOpacity onPress={showHistoryToast}>
+            <TouchableOpacity onPress={() => navigation.navigate("History" as never, {} as never)}>
               <Image
                 className="h-10 w-10"
                 source={require("../../../assets/history-disabled.png")}

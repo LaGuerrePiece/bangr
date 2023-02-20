@@ -12,7 +12,8 @@ import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
 import { toastConfig } from "./src/components/toasts";
-import TransactionsScreen from "./src/screens/TransactionsScreen";
+import TransactionsScreen from "./src/screens/HistoryScreen";
+import HistoryScreen from "./src/screens/HistoryScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -67,8 +68,8 @@ const App = () => {
           }}
         />
         <Stack.Screen
-          name="Transactions"
-          component={TransactionsScreen}
+          name="History"
+          component={HistoryScreen}
           options={{ presentation: "modal", headerShown: false }}
         />
       </Stack.Navigator>
