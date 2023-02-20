@@ -280,9 +280,10 @@ export function getChainWithMaxBalance(chains: MultichainToken["chains"]) {
 }
 
 export const getURLInApp = () =>
-  process.env.NODE_ENV == "development"
-    ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
-    : "https://dev.poche.fi";
+  // process.env.NODE_ENV == "development"
+  //   ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
+  //   : "https://dev.poche.fi";
+  "http://192.168.1.105:3000";
 
 export const correctInput = (input: string): string => {
   return input.replace(/,/g, ".");
