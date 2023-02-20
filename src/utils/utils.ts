@@ -15,7 +15,8 @@ import {
   Token,
   Quote,
   ContractsConfig,
-  Balances,
+  Balance,
+  Price,
 } from "../types/types";
 import contractsConfig from "../config/contracts-config.json";
 import walletFactoryAbi from "../config/abi/WalletFactory.json";
@@ -47,7 +48,10 @@ export function getExampleMultichainToken(
   swapAmountIn: string
 ): MultichainToken {
   const balance = ethers.utils
-    .parseUnits((Number(swapAmountIn) * 2).toString(), srcToken.decimals)
+    .parseUnits(
+      BigNumber.from(swapAmountIn).mul(2).toString(),
+      srcToken.decimals
+    )
     .toString();
 
   return {
@@ -201,40 +205,68 @@ export async function getSmartWalletAddress(eoa: string) {
 
 export function addBalancesToTokens(
   tokens: MultichainToken[],
-  balances: Balances[]
+  balances: Balance[]
 ) {
   //keep this weird map to update the components
   const newTokens: MultichainToken[] = tokens.map((token) => token);
 
-  newTokens.forEach((token) => {
-    if (balances.map((balance) => balance.symbol).includes(token.symbol)) {
-      token.balance = "0";
-      token.priceUSD = 0;
-      token.quote = 0;
-    }
-  });
-
   balances.forEach((balance) => {
-    const multichainTokenIndex = newTokens.findIndex(
-      (token) => token.symbol === balance.symbol
-    );
-    if (multichainTokenIndex < 0) return;
-    const multichainToken = newTokens[multichainTokenIndex];
-    const chainIndex = multichainToken.chains.findIndex(
+    if (!balance.balance) return;
+
+    const token = newTokens.find((token) => token.symbol === balance.symbol);
+    const chain = token?.chains.find(
       (chain) => chain.chainId === balance.chainId
     );
-    if (chainIndex < 0) return;
-    const chain = multichainToken.chains[chainIndex];
+    if (!token || !chain) return;
 
     chain.balance = balance.balance;
-    chain.quote = balance.quote;
-    chain.priceUSD = balance.priceUSD;
-    multichainToken.balance = BigNumber.from(multichainToken.balance)
-      .add(balance.balance ?? "0")
-      .toString();
-    multichainToken.quote = (multichainToken.quote ?? 0) + (balance.quote ?? 0);
-    //right now, priceUSD is the same for all chains (the first one)
-    multichainToken.priceUSD = balance.priceUSD ?? multichainToken.priceUSD;
+    chain.quote =
+      Number(ethers.utils.formatUnits(balance.balance, token.decimals)) *
+      (chain.priceUSD ?? 0);
+  });
+
+  newTokens.map((token) => {
+    token.balance = token.chains.reduce(
+      (partialSum, chain) =>
+        BigNumber.from(partialSum)
+          .add(BigNumber.from(chain.balance ?? "0"))
+          .toString(),
+      "0"
+    );
+    token.quote = token.chains.reduce(
+      (partialSum, chain) => partialSum + (chain.quote ?? 0),
+      0
+    );
+  });
+
+  return newTokens.sort((a, b) => Number(b.quote) - Number(a.quote));
+}
+
+export function addPricesToTokens(tokens: MultichainToken[], prices: Price[]) {
+  //keep this weird map to update the components
+  const newTokens: MultichainToken[] = tokens.map((token) => token);
+
+  prices.forEach((price) => {
+    if (!price.priceUSD) return;
+
+    const token = newTokens.find((token) => token.symbol === price.symbol);
+    const chain = token?.chains.find(
+      (chain) => chain.chainId === price.chainId
+    );
+    if (!token || !chain) return;
+
+    chain.priceUSD = price.priceUSD;
+    chain.quote =
+      Number(ethers.utils.formatUnits(chain.balance ?? 0, token.decimals)) *
+      price.priceUSD;
+  });
+
+  newTokens.map((token) => {
+    token.priceUSD = token.chains[0].priceUSD ?? token.priceUSD;
+    token.quote = token.chains.reduce(
+      (partialSum, chain) => partialSum + (chain.quote ?? 0),
+      0
+    );
   });
 
   return newTokens.sort((a, b) => Number(b.quote) - Number(a.quote));
@@ -248,9 +280,10 @@ export function getChainWithMaxBalance(chains: MultichainToken["chains"]) {
 }
 
 export const getURLInApp = () =>
-  process.env.NODE_ENV == "development"
-    ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
-    : "https://dev.poche.fi";
+  // process.env.NODE_ENV == "development"
+  //   ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
+  //   : "https://dev.poche.fi";
+  "http://192.168.1.105:3000";
 
 export const correctInput = (input: string): string => {
   return input.replace(/,/g, ".");

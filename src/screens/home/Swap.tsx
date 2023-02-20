@@ -3,10 +3,8 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   SafeAreaView,
   TextInput,
-  TouchableOpacity,
   TouchableHighlight,
   useColorScheme,
   TouchableWithoutFeedback,
@@ -18,6 +16,7 @@ import {
   EXAMPLE_WALLET_ADDRESS,
   SWAPAMOUNTIN_USD_THRESHOLD,
   SWAP_DEBOUNCE_THRESHOLD,
+  colors,
 } from "../../config/configs";
 import useUserStore from "../../state/user";
 import "@ethersproject/shims";
@@ -32,9 +31,8 @@ import useTokensStore from "../../state/tokens";
 import { cutDecimals, formatUnits } from "../../utils/format";
 import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../../tailwind.config";
 import { relay } from "../../utils/signAndRelay";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const Swap = () => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -58,13 +56,11 @@ const Swap = () => {
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
   const colorScheme = useColorScheme();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig.theme?.colors as { typo: any; typo2: any };
 
   useEffect(() => {
     if (!srcToken) {
-      const eth = tokens?.find((token) => token.symbol === "ETH");
-      if (eth) update({ srcToken: eth });
+      const dai = tokens?.find((token) => token.symbol === "DAI");
+      if (dai) update({ srcToken: dai });
     }
     if (!dstToken) {
       const usdc = tokens?.find((token) => token.symbol === "USDC");
@@ -111,7 +107,7 @@ const Swap = () => {
 
     try {
       const { data: response } = await axios.post(
-        `${getURLInApp()}/api/quote/swap`,
+        `${getURLInApp()}/api/v1/quote/swap`,
         {
           srcToken: token,
           dstToken: dstToken,
@@ -170,14 +166,22 @@ const Swap = () => {
   const swap = async () => {
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
-    await relay(
-      calls,
-      wallet,
-      smartWalletAddress,
-      value,
-      successMessage,
-      errorMessage
-    );
+    try {
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        value,
+        successMessage,
+        errorMessage
+      );
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
+    }
     clearAfterSwap();
     fetchBalances();
   };
@@ -212,14 +216,15 @@ const Swap = () => {
                   {formatUnits(srcToken?.balance, srcToken?.decimals, 4)}{" "}
                   {srcToken?.symbol ?? ""}
                 </Text>
-                <View className="flex-row">
+                <View className="flex-row justify-end">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
-                    className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+                    className="my-1 w-48 text-4xl font-semibold text-typo-light dark:text-typo-dark"
                     onChangeText={handleInputChange}
                     value={amountIn?.slice(0, 10) ?? ""}
                     keyboardType="numeric"
                     placeholder="0"
+                    textAlign="right"
                   />
                 </View>
                 <TouchableHighlight onPress={max}>
@@ -242,13 +247,13 @@ const Swap = () => {
           </View>
 
           <View
-            className="w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t 
+            className="h-20 w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t
           border-typo-dark
           bg-secondary-light pt-1
           dark:border-typo-dark 
           dark:bg-secondary-dark"
           >
-            <View className="ml-1 justify-end p-2">
+            <View className="ml-1 p-2">
               {dstToken && tokens && (
                 <SelectTokenButton
                   tokens={tokens.filter(
@@ -258,16 +263,25 @@ const Swap = () => {
                   tokenToUpdate={"Swap:dstToken"}
                 />
               )}
-              <View className="mt-2 mb-1">
+              <View className="my-2">
                 {isSearching ? (
-                  <View className="w-2/3 justify-end">
+                  <View className="w-2/3 items-center justify-end">
                     {/* @ts-ignore */}
                     <Placeholder Animation={Shine}>
-                      <PlaceholderLine height={9} width={80} />
+                      <PlaceholderLine
+                        height={9}
+                        width={80}
+                        className="mt-2"
+                        style={
+                          colorScheme === "dark"
+                            ? { backgroundColor: "#999999" }
+                            : {}
+                        }
+                      />
                     </Placeholder>
                   </View>
                 ) : (
-                  <Text className="text-typo-light dark:text-typo-dark">
+                  <Text className="mb-2 text-typo-light dark:text-typo-dark">
                     ${" "}
                     {quote && quote.totalToAmountUSD
                       ? quote.totalToAmountUSD?.toFixed(2)
@@ -278,16 +292,24 @@ const Swap = () => {
             </View>
             <View className="flex-row justify-end py-2">
               {isSearching ? (
-                <View className="w-2/3 justify-end">
+                <View className="w-2/3 items-center justify-end">
                   {/* @ts-ignore */}
                   <Placeholder Animation={Shine}>
-                    <PlaceholderLine height={20} width={80} />
+                    <PlaceholderLine
+                      height={20}
+                      width={80}
+                      style={
+                        colorScheme === "dark"
+                          ? { backgroundColor: "#999999" }
+                          : {}
+                      }
+                    />
                   </Placeholder>
                 </View>
               ) : (
                 <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
                   {quote && quote.sumOfToAmount
-                    ? cutDecimals(quote.sumOfToAmount, 5)
+                    ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
                     : "0"}{" "}
                 </Text>
               )}
@@ -298,7 +320,7 @@ const Swap = () => {
           <TouchableHighlight onPress={flip}>
             <View className="flex flex-row items-center">
               <Image
-                className="ml-3 h-6 w-6"
+                className="ml-3 mb-4 h-6 w-6"
                 source={
                   colorScheme === "light"
                     ? require("../../../assets/flip.png")

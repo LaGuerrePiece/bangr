@@ -22,7 +22,7 @@ const useSendStore = create<SendState>()(
     amountIn: null,
     debouncedAmountIn: null,
     token: null,
-    chainId: 10,
+    chainId: 137,
     toAddress: null,
     quote: null,
     calls: null,

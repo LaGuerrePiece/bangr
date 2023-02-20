@@ -53,10 +53,11 @@ export const relay = async (
     return;
   }
 
-  const relayResponse = await sendToRelayer({
+  const relayResponse = await sendTx({
     signature,
     data: callsObject,
     senderEOA: wallet.address,
+    scwAddress: scwAddress,
     value,
   });
 
@@ -109,6 +110,31 @@ export const relay = async (
   });
 };
 
+const sendTx = async (body: {
+  signature?: string;
+  data?: { Calls: CallWithNonce[] };
+  value?: string;
+  senderEOA: string;
+  scwAddress?: string;
+}) => {
+  try {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/sendTx`, body, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })) as { data: RelayerResponse };
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error sending tx: ", error.message);
+    } else {
+      console.log("unexpected error sending tx: ", error);
+    }
+  }
+};
+
+
 const sendToRelayer = async (body: {
   signature?: string;
   data?: { Calls: CallWithNonce[] };
@@ -118,7 +144,7 @@ const sendToRelayer = async (body: {
   scwAddress?: string;
 }) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/relay`, body, {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/relay`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",

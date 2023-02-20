@@ -1,17 +1,15 @@
 import { create } from "zustand";
-import { Balances, MultichainToken, Token } from "../types/types";
-import { getURL } from "../config/configs";
+import { Balance, MultichainToken, Price } from "../types/types";
 import axios from "axios";
 import { devtools } from "zustand/middleware";
 import { getURLInApp } from "../utils/utils";
-import { addBalancesToTokens } from "../utils/utils";
-// import useSwapStore from "./swap";
+import { addBalancesToTokens, addPricesToTokens } from "../utils/utils";
 
 interface BalanceState {
   tokens: MultichainToken[] | undefined;
-  addBalances: (balances: Balances[]) => void;
+  addBalances: (balances: Balance[]) => void;
+  addPrices: (prices: Price[]) => void;
   fetchTokensStatic: () => void;
-  // getToken: (tokenSymbol: string) => MultichainToken | undefined;
   clear: () => void;
 }
 
@@ -21,7 +19,9 @@ const useTokensStore = create<BalanceState>()(
 
     fetchTokensStatic: async () => {
       try {
-        const { data } = (await axios.get(`${getURLInApp()}/api/tokens`)) as {
+        const { data } = (await axios.get(
+          `${getURLInApp()}/api/v1/tokens`
+        )) as {
           data: MultichainToken[];
         };
         console.log(`fetched ${data.length} tokens`);
@@ -31,7 +31,7 @@ const useTokensStore = create<BalanceState>()(
       }
     },
 
-    addBalances: async (balances: Balances[]) => {
+    addBalances: async (balances: Balance[]) => {
       const { tokens } = get();
 
       if (!tokens) {
@@ -42,6 +42,23 @@ const useTokensStore = create<BalanceState>()(
       const newTokens = addBalancesToTokens(tokens, balances);
 
       // console.log("newTokens after adding balances:", newTokens);
+
+      set({
+        tokens: newTokens,
+      });
+    },
+
+    addPrices: async (prices: Price[]) => {
+      const { tokens } = get();
+
+      if (!tokens) {
+        console.log("error: cannot add prices to no tokens");
+        return;
+      }
+
+      const newTokens = addPricesToTokens(tokens, prices);
+
+      // console.log("newTokens after adding prices:", newTokens);
 
       set({
         tokens: newTokens,

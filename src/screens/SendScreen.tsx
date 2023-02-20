@@ -20,6 +20,7 @@ import useSendStore from "../state/send";
 import { useEffect, useLayoutEffect } from "react";
 import {
   chainData,
+  colors,
   SWAP_DEBOUNCE_THRESHOLD,
   SWAPAMOUNTIN_USD_THRESHOLD,
 } from "../config/configs";
@@ -37,6 +38,7 @@ import { relay } from "../utils/signAndRelay";
 import { Quote } from "../types/types";
 import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
+import { toastConfig } from "../components/toasts";
 
 const SendScreen = () => {
   const navigation = useNavigation();
@@ -61,9 +63,7 @@ const SendScreen = () => {
       fetchBalances: state.fetchBalances,
     })
   );
-  const fullConfig = resolveConfig(tailwindConfig);
   const colorScheme = useColorScheme();
-  const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
 
   useLayoutEffect(() => navigation.setOptions({ headerShown: false }));
 
@@ -140,7 +140,7 @@ const SendScreen = () => {
 
     try {
       const { data: response } = await axios.post(
-        `${getURLInApp()}/api/quote/send`,
+        `${getURLInApp()}/api/v1/quote/send`,
         {
           token: token,
           amountIn: formattedAmountIn,
@@ -189,14 +189,22 @@ const SendScreen = () => {
     }
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
-    await relay(
-      calls,
-      wallet,
-      smartWalletAddress,
-      value,
-      successMessage,
-      errorMessage
-    );
+    try {
+      await relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        value,
+        successMessage,
+        errorMessage
+      );
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
+    }
     clearAfterSend();
     fetchBalances();
   };
@@ -227,7 +235,7 @@ const SendScreen = () => {
                     (t) => ![token.symbol].includes(t.symbol)
                   )}
                   selectedToken={token}
-                  tokenToUpdate={"Send:token"}
+                  tokenToUpdate={"Send"}
                 />
               </View>
             )}
@@ -237,7 +245,10 @@ const SendScreen = () => {
               </View>
             )}
           </View>
-          <View className="mx-auto mt-6 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <Text className="mt-8 text-typo-light dark:text-typo-dark">
+            Amount
+          </Text>
+          <View className="mx-auto mt-2 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
@@ -246,11 +257,12 @@ const SendScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+              className="text-4xl font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={handleInputChange}
               value={amountIn?.slice(0, 10) ?? ""}
               keyboardType="numeric"
               placeholder="0"
+              textAlign="right"
             />
           </View>
           {token && (
@@ -277,7 +289,11 @@ const SendScreen = () => {
             </View>
           )}
 
-          <View className="mx-auto my-4 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <Text className="mt-4 text-typo-light dark:text-typo-dark">
+            Address
+          </Text>
+
+          <View className="mx-auto mt-2 mb-4 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
             <TextInput
               style={{
                 color:
@@ -286,7 +302,7 @@ const SendScreen = () => {
                     : colors.typo.dark,
               }}
               placeholderTextColor={colors.typo2.light}
-              className="my-1 text-xs font-semibold text-typo-light dark:text-typo-dark"
+              className="text-xs font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={(value) => update({ toAddress: value })}
               value={toAddress ?? ""}
               placeholder="0x..."
@@ -346,7 +362,7 @@ const SendScreen = () => {
             )}
           </View>
         </View>
-        <Toast />
+        <Toast config={toastConfig} />
       </View>
     </TouchableWithoutFeedback>
   );

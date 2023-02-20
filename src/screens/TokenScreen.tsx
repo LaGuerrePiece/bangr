@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   TouchableWithoutFeedback,
   ActivityIndicator,
+  useColorScheme,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import Chart, { Point } from "../components/Chart";
@@ -19,6 +20,7 @@ import ActionButton from "../components/ActionButton";
 import useSendStore from "../state/send";
 import useSwapStore from "../state/swap";
 import useTabStore from "../state/tab";
+import { colors } from "../config/configs";
 
 type TokenParams = {
   TokenScreen: {
@@ -29,6 +31,7 @@ type TokenParams = {
 const TokenScreen = () => {
   const navigation = useNavigation();
   const setTab = useTabStore((state) => state.setTab);
+  const colorScheme = useColorScheme();
 
   const { params } = useRoute<RouteProp<TokenParams, "TokenScreen">>();
   const { token } = params;
@@ -43,7 +46,7 @@ const TokenScreen = () => {
   async function getChart(token: MultichainToken) {
     const firstChain = token.chains[0];
     try {
-      const { data } = (await axios.post(`${getURLInApp()}/api/chart`, {
+      const { data } = (await axios.post(`${getURLInApp()}/api/v1/chart`, {
         tokenAddress: firstChain.address,
         chainId: firstChain.chainId,
         days: 1,
@@ -82,13 +85,18 @@ const TokenScreen = () => {
   };
 
   return (
-    <View className="h-full bg-primary-light dark:bg-primary-dark">
-      <SafeAreaView className="rounded-lg p-3">
-        <View className="my-6">
-          <TouchableWithoutFeedback onPress={navigation.goBack}>
-            <XMarkIcon size={36} />
-          </TouchableWithoutFeedback>
+    <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
+      <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <View className="mx-auto w-11/12">
+          <XMarkIcon
+            size={36}
+            color={
+              colorScheme === "light" ? colors.typo.light : colors.typo.dark
+            }
+          />
         </View>
+      </TouchableWithoutFeedback>
+      <SafeAreaView className="rounded-lg p-3">
         <View className="flex items-center">
           <Image
             className="h-10 w-10"

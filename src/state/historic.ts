@@ -12,7 +12,7 @@ const useHistoricStore = create<HistoricState>()((set) => ({
   fetchHistoric: async (address: string) => {
     console.log("getURLInApp()", getURLInApp());
     const { data } = await axios.get(
-      `${getURLInApp()}/api/historic?wallet=${address}`
+      `${getURLInApp()}/api/v1/historic?wallet=${address}`
     );
     set({ historic: data });
   },

@@ -25,7 +25,9 @@ const Asset = ({ token }: { token: MultichainToken }) => {
               {token.name}
             </Text>
             <Text className="text-typo2-light dark:text-typo2-dark">
-              {Number(ethers.utils.formatEther(token.balance || 0)).toFixed(2)}{" "}
+              {Number(
+                ethers.utils.formatUnits(token.balance || 0, token.decimals)
+              ).toFixed(2)}{" "}
               {token.symbol}
             </Text>
           </View>

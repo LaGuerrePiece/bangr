@@ -10,7 +10,8 @@ import SendScreen from "./src/screens/SendScreen";
 import ReceiveScreen from "./src/screens/ReceiveScreen";
 import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
-import "react-native-gesture-handler";
+import OnrampScreen from "./src/screens/OnrampScreen";
+import { toastConfig } from "./src/components/toasts";
 import TransactionsScreen from "./src/screens/TransactionsScreen";
 
 const Stack = createNativeStackNavigator();
@@ -57,12 +58,21 @@ const App = () => {
           options={{ presentation: "modal", headerShown: false }}
         />
         <Stack.Screen
+          name="Onramp"
+          component={OnrampScreen}
+          options={{
+            presentation: "modal",
+            headerShown: false,
+            animation: "none",
+          }}
+        />
+        <Stack.Screen
           name="Transactions"
           component={TransactionsScreen}
           options={{ presentation: "modal", headerShown: false }}
         />
       </Stack.Navigator>
-      <Toast />
+      <Toast config={toastConfig} />
     </NavigationContainer>
   );
 };

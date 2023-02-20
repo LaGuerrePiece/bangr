@@ -15,7 +15,7 @@ const useVaultsStore = create<VaultState>()(
 
     fetchVaults: async (scw?: string) => {
       const { data } = (await axios.get(
-        `${getURLInApp()}/api/vaults?address=${scw}`
+        `${getURLInApp()}/api/v1/vaults?address=${scw}`
       )) as {
         data: VaultData[];
       };
