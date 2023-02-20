@@ -80,13 +80,23 @@ const VaultDepositScreen = () => {
   const [deposited, setDeposited] = useState("");
 
   const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
+  const [debouncedAmount, setDebouncedAmount] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedAmount(amount);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [amount]);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
 
   const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
-    if (!parseFloat(amount)) {
+    if (!parseFloat(debouncedAmount)) {
       return;
     }
     const token = tokens?.find((token) =>
@@ -98,7 +108,7 @@ const VaultDepositScreen = () => {
         address: smartWalletAddress,
         vaultName: name,
         action: action ? action : "deposit",
-        amount: utils.parseUnits(amount, token?.decimals),
+        amount: utils.parseUnits(debouncedAmount, token?.decimals),
         token,
       });
 
