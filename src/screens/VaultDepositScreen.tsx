@@ -114,6 +114,17 @@ const VaultDepositScreen = () => {
     // Input token is sent : USDC when we deposit and aUSDc when we withdraw
     const token = action === "deposit" ? selectedToken : vaultTkn;
 
+    console.log(
+      "token",
+      token,
+      "amount",
+      debouncedAmount,
+      "action",
+      action,
+      "vaultName",
+      name
+    );
+
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
@@ -200,13 +211,7 @@ const VaultDepositScreen = () => {
     if (action === "deposit") {
       if (
         parseFloat(amount) >
-        parseFloat(
-          formatUnits(
-            balance,
-            selectedToken?.decimals,
-            selectedToken?.decimals || 18
-          )
-        )
+        parseFloat(ethers.utils.formatUnits(balance, selectedToken?.decimals))
       ) {
         Toast.show({
           type: "error",
@@ -216,7 +221,11 @@ const VaultDepositScreen = () => {
         return false;
       }
     } else {
-      if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
+      if (
+        parseFloat(amount) >
+        parseFloat(ethers.utils.formatUnits(deposited, vaultTkn?.decimals))
+      ) {
+        // if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
         Toast.show({
           type: "error",
           text1: "Amount too high",
