@@ -71,6 +71,10 @@ export const relay = async (
 
   console.log("Success. relayResponse :", relayResponse);
 
+  //until the cron
+  await axios.get(`${getURLInApp()}/api/v1/tRelay`)
+
+
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
   await Promise.all(
