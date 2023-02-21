@@ -14,7 +14,6 @@ import {
   Keyboard,
   ScrollView,
   useColorScheme,
-  TouchableHighlight,
 } from "react-native";
 import {
   ArrowLeftIcon,
@@ -88,7 +87,9 @@ const VaultDepositScreen = () => {
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
 
-  const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
+  const selectedToken = tokens?.find(
+    (token) => token.symbol === selectedTokenSymbol
+  );
   const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
 
   const [debouncedAmount, setDebouncedAmount] = useState("");
@@ -106,22 +107,21 @@ const VaultDepositScreen = () => {
     navigation.setOptions({ headerShown: false });
   });
 
-  const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
+  const handleAmountChange = async (action: string) => {
     if (!parseFloat(debouncedAmount)) {
       return;
     }
-
-    const token = tokens?.find((token) =>
-      token.symbol === tokenSymbol ? tokenSymbol : selectedTokenSymbol
-    );
 
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
-        action: action ?? "deposit",
-        amount: utils.parseUnits(debouncedAmount, token?.decimals),
-        token,
+        action,
+        amount: utils.parseUnits(
+          debouncedAmount,
+          action === "deposit" ? selectedToken?.decimals : vaultTkn?.decimals
+        ),
+        token: selectedToken,
       });
 
       return calls.data;
@@ -179,7 +179,7 @@ const VaultDepositScreen = () => {
 
   const validateInput = (action: string) => {
     try {
-      utils.parseUnits(amount, token?.decimals);
+      utils.parseUnits(amount, selectedToken?.decimals);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -201,7 +201,13 @@ const VaultDepositScreen = () => {
     if (action === "deposit") {
       if (
         parseFloat(amount) >
-        parseFloat(formatUnits(balance, token?.decimals, token?.decimals || 18))
+        parseFloat(
+          formatUnits(
+            balance,
+            selectedToken?.decimals,
+            selectedToken?.decimals || 18
+          )
+        )
       ) {
         Toast.show({
           type: "error",
@@ -225,7 +231,7 @@ const VaultDepositScreen = () => {
   };
 
   useEffect(() => {
-    if (amount) handleAmountChange();
+    if (amount) handleAmountChange("deposit");
   }, [amount]);
 
   useEffect(() => {
@@ -283,16 +289,18 @@ const VaultDepositScreen = () => {
             </View>
 
             <View className="my-2 flex items-center">
-              {token && (
+              {selectedToken && (
                 <SelectTokenButton
-                  tokens={[token]}
-                  selectedToken={token}
+                  tokens={[selectedToken]}
+                  selectedToken={selectedToken}
                   tokenToUpdate={""}
                 />
               )}
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Available:{" "}
-                {balance ? formatUnits(balance, token?.decimals, 3) : "0"}{" "}
+                {balance
+                  ? formatUnits(balance, selectedToken?.decimals, 3)
+                  : "0"}{" "}
                 {selectedTokenSymbol}
               </Text>
             </View>
@@ -311,8 +319,8 @@ const VaultDepositScreen = () => {
                     balance
                       ? formatUnits(
                           balance,
-                          token?.decimals,
-                          token?.decimals || 18
+                          selectedToken?.decimals,
+                          selectedToken?.decimals || 18
                         )
                       : "0"
                   );
@@ -331,8 +339,8 @@ const VaultDepositScreen = () => {
                   deposited
                     ? formatUnits(
                         deposited,
-                        token?.decimals,
-                        token?.decimals || 18
+                        selectedToken?.decimals,
+                        selectedToken?.decimals || 18
                       )
                     : "0"
                 );
@@ -340,7 +348,8 @@ const VaultDepositScreen = () => {
             >
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Deposited:{" "}
-                {deposited && utils.formatUnits(deposited, token?.decimals)}{" "}
+                {deposited &&
+                  utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
                 {selectedTokenSymbol}
               </Text>
             </TouchableOpacity>
