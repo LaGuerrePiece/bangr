@@ -122,6 +122,7 @@ export interface VaultStatic {
   name: string;
   image: string;
   description: string;
+  vaultToken?: string;
   tokens: string[];
   protocol: VaultProtocol;
   status: "active" | "inative" | "preview";
@@ -131,7 +132,7 @@ export interface VaultStatic {
 export interface VaultData extends VaultStatic {
   chains: {
     chainId?: number;
-    deposited: number;
+    deposited: string;
     apy: number;
     tvl: number;
   }[];

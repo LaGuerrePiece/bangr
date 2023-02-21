@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
-import { BigNumber, constants, utils } from "ethers";
+import { BigNumber, constants, ethers, utils } from "ethers";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Text,
@@ -14,6 +14,7 @@ import {
   Keyboard,
   ScrollView,
   useColorScheme,
+  TouchableHighlight,
 } from "react-native";
 import {
   ArrowLeftIcon,
@@ -64,8 +65,16 @@ const VaultDepositScreen = () => {
   }));
   const tokens = useTokensStore((state) => state.tokens);
 
-  const { name, image, description, protocol, status, color, chains } =
-    vaults?.find((v) => v.name === params.vault.name)!;
+  const {
+    name,
+    image,
+    description,
+    protocol,
+    status,
+    color,
+    chains,
+    vaultToken,
+  } = vaults?.find((v) => v.name === params.vault.name)!;
 
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
@@ -77,9 +86,11 @@ const VaultDepositScreen = () => {
   const [selectedTokenSymbol, setSelectedTokenSymbol] =
     useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
-  const [deposited, setDeposited] = useState("");
+  const [deposited, setDeposited] = useState("0");
 
   const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
+  const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
+
   const [debouncedAmount, setDebouncedAmount] = useState("");
 
   useEffect(() => {
@@ -99,6 +110,7 @@ const VaultDepositScreen = () => {
     if (!parseFloat(debouncedAmount)) {
       return;
     }
+
     const token = tokens?.find((token) =>
       token.symbol === tokenSymbol ? tokenSymbol : selectedTokenSymbol
     );
@@ -107,7 +119,7 @@ const VaultDepositScreen = () => {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
-        action: action ? action : "deposit",
+        action: action ?? "deposit",
         amount: utils.parseUnits(debouncedAmount, token?.decimals),
         token,
       });
@@ -149,7 +161,7 @@ const VaultDepositScreen = () => {
   const handleWithdraw = async () => {
     if (!validateInput("withdraw")) return;
 
-    const calls = await handleAmountChange("withdraw", "aUSDC");
+    const calls = await handleAmountChange("withdraw");
 
     if (wallet && smartWalletAddress)
       await relay(
@@ -199,7 +211,7 @@ const VaultDepositScreen = () => {
         return false;
       }
     } else {
-      if (parseFloat(amount) > parseFloat(deposited)) {
+      if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
         Toast.show({
           type: "error",
           text1: "Amount too high",
@@ -229,6 +241,7 @@ const VaultDepositScreen = () => {
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
+  console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -339,7 +352,8 @@ const VaultDepositScreen = () => {
                   disabled={
                     chains
                       .map((chain) => chain.deposited)
-                      .reduce((acc, cur) => acc + cur, 0) > 0
+                      .reduce((acc, cur) => acc.add(cur), BigNumber.from(0))
+                      .gt(0)
                       ? false
                       : true
                   }
