@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
-import { utils } from "ethers";
+import { BigNumber, constants, utils } from "ethers";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Text,
@@ -65,7 +65,7 @@ const VaultDepositScreen = () => {
   const tokens = useTokensStore((state) => state.tokens);
 
   const { name, image, description, protocol, status, color, chains } =
-    params.vault;
+    vaults?.find((v) => v.name === params.vault.name)!;
 
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
@@ -80,13 +80,23 @@ const VaultDepositScreen = () => {
   const [deposited, setDeposited] = useState("");
 
   const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
+  const [debouncedAmount, setDebouncedAmount] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedAmount(amount);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [amount]);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
 
   const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
-    if (!parseFloat(amount)) {
+    if (!parseFloat(debouncedAmount)) {
       return;
     }
     const token = tokens?.find((token) =>
@@ -98,7 +108,7 @@ const VaultDepositScreen = () => {
         address: smartWalletAddress,
         vaultName: name,
         action: action ? action : "deposit",
-        amount: utils.parseUnits(amount, token?.decimals),
+        amount: utils.parseUnits(debouncedAmount, token?.decimals),
         token,
       });
 
@@ -213,8 +223,8 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) => chain.deposited)
-        .reduce((acc, cur) => acc + cur, 0)
+        .map((chain) => BigNumber.from(chain.deposited))
+        .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
@@ -302,9 +312,25 @@ const VaultDepositScreen = () => {
                 </View>
               </TouchableOpacity>
             </View>
-            <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-              Deposited: {deposited} {selectedTokenSymbol}
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setAmount(
+                  deposited
+                    ? formatUnits(
+                        deposited,
+                        token?.decimals,
+                        token?.decimals || 18
+                      )
+                    : "0"
+                );
+              }}
+            >
+              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+                Deposited:{" "}
+                {deposited && utils.formatUnits(deposited, token?.decimals)}{" "}
+                {selectedTokenSymbol}
+              </Text>
+            </TouchableOpacity>
 
             {status === "active" ? (
               <View className="mt-12 flex-row justify-evenly">

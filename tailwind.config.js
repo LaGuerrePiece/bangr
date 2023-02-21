@@ -21,8 +21,8 @@ module.exports = {
           dark: "#959088",
         },
         btn: {
-          light: "#c78f39",
-          dark: "#c78f39",
+          light: "#C77B35",
+          dark: "#C77B35",
         },
         lightBlue: {
           light: "#ECF4FE",
