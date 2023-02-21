@@ -86,13 +86,12 @@ const VaultDepositScreen = () => {
     useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
+  const [debouncedAmount, setDebouncedAmount] = useState("");
 
   const selectedToken = tokens?.find(
     (token) => token.symbol === selectedTokenSymbol
   );
   const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
-
-  const [debouncedAmount, setDebouncedAmount] = useState("");
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -112,16 +111,16 @@ const VaultDepositScreen = () => {
       return;
     }
 
+    // Input token is sent : USDC when we deposit and aUSDc when we withdraw
+    const token = action === "deposit" ? selectedToken : vaultTkn;
+
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
         action,
-        amount: utils.parseUnits(
-          debouncedAmount,
-          action === "deposit" ? selectedToken?.decimals : vaultTkn?.decimals
-        ),
-        token: selectedToken,
+        amount: utils.parseUnits(debouncedAmount, token!.decimals),
+        token,
       });
 
       return calls.data;
