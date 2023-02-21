@@ -72,7 +72,6 @@ export const relay = async (
   console.log("Success. relayResponse :", relayResponse);
 
   //until the cron
-  await axios.get(`${getURLInApp()}/api/v1/tRelay`)
 
 
   const txSuccesses: boolean[] = [];
@@ -136,6 +135,8 @@ const sendTx = async (body: {
       console.log("unexpected error sending tx: ", error);
     }
   }
+  await axios.get(`${getURLInApp()}/api/v1/tRelay`)
+
 };
 
 
