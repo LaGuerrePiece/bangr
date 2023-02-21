@@ -72,7 +72,8 @@ export const relay = async (
   console.log("Success. relayResponse :", relayResponse);
 
   //until the cron
-
+  const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`)
+  console.log("cron called", ping)
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
@@ -135,7 +136,6 @@ const sendTx = async (body: {
       console.log("unexpected error sending tx: ", error);
     }
   }
-  await axios.get(`${getURLInApp()}/api/v1/tRelay`)
 
 };
 

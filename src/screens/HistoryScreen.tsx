@@ -36,9 +36,6 @@ const HistoryScreen = () => {
     fetchTasks(scw); //fetch the tasks
   }, []);
 
-
-
-
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
@@ -84,7 +81,13 @@ const HistoryScreen = () => {
               </View>
               <Image
                 className="h-8 w-8"
-                source={require("../../assets/rpl.png")}
+                source={
+                  task.state === 1
+                    ? require("../../assets/receivebtn.png")
+                    : task.state === 2
+                    ? require("../../assets/receivebtn.png")
+                    : require("../../assets/receivebtn.png")
+                }
               />
             </View>
           ))
