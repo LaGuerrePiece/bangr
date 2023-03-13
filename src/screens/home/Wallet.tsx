@@ -15,6 +15,7 @@ import useTokensStore from "../../state/tokens";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
+import Swiper from "../../components/Swiper";
 
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -62,8 +63,8 @@ const Wallet = () => {
           </View>
         </View>
       ) : (
-        <View className="mx-auto mt-20 mb-4 w-11/12 rounded-xl">
-          <View className="flex-row justify-between">
+        <View className="mx-auto mt-4 mb-4 w-11/12 rounded-xl items-center">
+          {/* <View className="flex-row justify-between">
             <TouchableOpacity onPress={showHistoryToast}>
               <Image
                 className="h-10 w-10"
@@ -81,7 +82,7 @@ const Wallet = () => {
                 source={require("../../../assets/feedback.png")}
               />
             </TouchableHighlight>
-          </View>
+          </View> */}
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
             <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
               ${loaded.toFixed(2)}
@@ -90,13 +91,14 @@ const Wallet = () => {
             <HomeButton />
           </View>
 
-          <View className="rounded-xl bg-secondary-light px-3 dark:bg-secondary-dark">
+          <View className="w-11/12">
+
             {tokens ? (
               tokens
                 .filter((token) => token.symbol !== "aUSDC")
-                .map((token) => <Asset token={token} key={token.symbol} />)
+                .map((token) => <Swiper token={token} key={token.symbol} />)
             ) : (
-              <View className="m-auto">
+              <View className="">
                 <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
                   No tokens found
                 </Text>

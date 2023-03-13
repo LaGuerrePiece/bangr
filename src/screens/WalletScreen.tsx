@@ -41,7 +41,7 @@ const WalletScreen = () => {
 
   return (
     <View
-      className="flex h-full w-full justify-between bg-primary-light dark:bg-primary-dark"
+      className="flex h-full w-full justify-between bg-secondary-light dark:bg-secondary-dark"
       style={{ paddingTop: insets.top }}
     >
       <View className="m-auto w-full grow">
@@ -52,7 +52,7 @@ const WalletScreen = () => {
         {tab === "More" && <More />}
       </View>
 
-      <NavBar tab={tab} setTab={setTab} />
+      {/* <NavBar tab={tab} setTab={setTab} /> */}
 
       <StatusBar
         barStyle={
