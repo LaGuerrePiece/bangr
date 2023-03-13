@@ -29,7 +29,7 @@ const HomeButton = () => {
           Receive
         </Text>
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         className="w-1/3"
         onPress={() => navigation.navigate("Onramp" as never, {} as never)}
       >
@@ -40,7 +40,7 @@ const HomeButton = () => {
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Buy
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         className="w-1/3"
         onPress={() => navigation.navigate("Send" as never, {} as never)}

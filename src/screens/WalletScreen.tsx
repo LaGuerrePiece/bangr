@@ -20,6 +20,10 @@ import Wallet from "./home/Wallet";
 import * as SecureStore from "expo-secure-store";
 import More from "./home/More";
 import useTabStore from "../state/tab";
+import Swiper from 'react-native-swiper'
+import ReceiveScreen from "./ReceiveScreen";
+import SendScreen from "./SendScreen";
+
 
 const WalletScreen = () => {
   const { tab, setTab } = useTabStore();
@@ -40,7 +44,20 @@ const WalletScreen = () => {
   };
 
   return (
-    <View
+    <Swiper
+    loop={false}
+    showsPagination={false}
+    index={1}>
+      <Swap></Swap>
+    <Swiper
+      horizontal={false}
+      loop={false}
+      showsPagination={false}
+      index={1}>
+      <View >
+        <ReceiveScreen></ReceiveScreen>
+      </View>
+      <View
       className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
       style={{ paddingTop: insets.top }}
     >
@@ -65,6 +82,14 @@ const WalletScreen = () => {
         }
       />
     </View>
+      <View >
+        <SendScreen></SendScreen>
+      </View>
+    </Swiper>        
+        <Invest></Invest>
+  </Swiper>
+
+
   );
 };
 

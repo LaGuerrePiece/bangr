@@ -9,13 +9,13 @@ import {
   SafeAreaView,
   RefreshControl,
 } from "react-native";
-import Asset from "../../components/Asset";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
-import Swiper from "../../components/Swiper";
+import Asset from "../../components/Asset";
+
 
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -45,6 +45,7 @@ const Wallet = () => {
       text2: "Coming soon, stay tuned!",
     });
   };
+  
 
   return (
     <ScrollView
@@ -95,8 +96,8 @@ const Wallet = () => {
 
             {tokens ? (
               tokens
-                .filter((token) => token.symbol !== "aUSDC")
-                .map((token) => <Swiper token={token} key={token.symbol} />)
+                .filter((token) => token.symbol !== "aUSDC" && token.balance && Number(token.balance) > 0)
+                .map((token) => <Asset token={token} key={token.symbol} />)
             ) : (
               <View className="">
                 <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">

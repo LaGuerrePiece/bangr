@@ -80,7 +80,7 @@ const ReceiveScreen = () => {
             logoSize={30}
             logoBackgroundColor="transparent"
             backgroundColor="transparent"
-            color={colorScheme === "light" ? colors.btn.light : colors.btn.dark}
+            color={colorScheme === "light" ? colors.typo.light : colors.secondary.light}
           />
           <View className="mx-auto my-4 rounded-xl border border-typo2-light bg-primary-light p-2 dark:border-typo-dark dark:bg-primary-dark">
             <TouchableOpacity
