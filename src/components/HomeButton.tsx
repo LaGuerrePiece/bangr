@@ -1,9 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, Image, TouchableOpacity } from "react-native";
+import { Text, View, Image, TouchableOpacity, useColorScheme } from "react-native";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 const HomeButton = () => {
   const navigation = useNavigation();
+  const colorScheme = useColorScheme();
+
 
   const showBuyToast = () => {
     Toast.show({
@@ -21,7 +23,7 @@ const HomeButton = () => {
       >
         <Image
           className="m-auto h-14 w-14"
-          source={require("../../assets/receivebtn.png")}
+          source={colorScheme === "light" ? require("../../assets/receivebtn.png") : require("../../assets/receivebtn-drk.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Receive
@@ -33,7 +35,7 @@ const HomeButton = () => {
       >
         <Image
           className="m-auto h-14 w-14"
-          source={require("../../assets/onrampbtn.png")}
+          source={colorScheme === "light" ? require("../../assets/onrampbtn.png") : require("../../assets/onrampbtn-drk.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Buy
@@ -45,7 +47,7 @@ const HomeButton = () => {
       >
         <Image
           className="m-auto h-14 w-14"
-          source={require("../../assets/sendbtn2.png")}
+          source={colorScheme === "light" ? require("../../assets/sendbtn2.png") : require("../../assets/sendbtn2-drk.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Send

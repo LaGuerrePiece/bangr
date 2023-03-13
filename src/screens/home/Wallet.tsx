@@ -83,8 +83,8 @@ const Wallet = () => {
               />
             </TouchableHighlight>
           </View> */}
-          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-primary-dark">
+            <Text className="text-center text-5xl font-bold text-typo-light dark:text-secondary-light">
               ${loaded.toFixed(2)}
             </Text>
             {/* <View className=""><Chart chart={chart} /></View> */}

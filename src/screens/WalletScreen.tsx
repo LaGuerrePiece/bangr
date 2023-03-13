@@ -41,7 +41,7 @@ const WalletScreen = () => {
 
   return (
     <View
-      className="flex h-full w-full justify-between bg-secondary-light dark:bg-secondary-dark"
+      className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
       style={{ paddingTop: insets.top }}
     >
       <View className="m-auto w-full grow">
