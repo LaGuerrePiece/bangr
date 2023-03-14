@@ -8,11 +8,9 @@ import {
   useColorScheme,
   Linking,
 } from "react-native";
-import { TouchableHighlight } from "react-native-gesture-handler";
-import { NavBar } from "../../components/NavBar";
 import Vault from "../../components/Vault";
-import useTabStore from "../../state/tab";
 import useVaultsStore from "../../state/vaults";
+import * as Haptics from "expo-haptics";
 
 const Invest = () => {
   const vaults = useVaultsStore((state) => state.vaults);
@@ -26,7 +24,8 @@ const Invest = () => {
         <View className="w-1/2">
           <TouchableOpacity
             onPress={() => {
-              // todo
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // TODO: Add navigation to main screen
             }}
           >
             <Image

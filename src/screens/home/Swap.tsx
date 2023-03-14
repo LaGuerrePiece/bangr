@@ -34,6 +34,7 @@ import useSwapStore from "../../state/swap";
 import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
 
 const Swap = () => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -128,6 +129,7 @@ const Swap = () => {
   }
 
   const flip = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     let srcTokenSave = srcToken;
     if (srcTokenSave && ["ETH", "MATIC"].includes(srcTokenSave.symbol)) {
       const dai = tokens?.find((token) => token.symbol === "DAI");
@@ -195,6 +197,7 @@ const Swap = () => {
             <TouchableOpacity
               onPress={() => {
                 // todo
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               }}
             >
               <Image

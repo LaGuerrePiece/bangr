@@ -16,6 +16,7 @@ import { XMarkIcon } from "react-native-heroicons/outline";
 import useSwapStore from "../state/swap";
 import useSendStore from "../state/send";
 import { colors } from "../config/configs";
+import * as Haptics from "expo-haptics";
 
 type SelectTokenParams = {
   SelectTokenScreen: {
@@ -53,6 +54,7 @@ export default function SelectToken() {
                 key={i}
                 className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
                   tokenToUpdate === "Swap:srcToken"
                     ? updateSrcToken(token)
                     : tokenToUpdate === "Swap:dstToken"

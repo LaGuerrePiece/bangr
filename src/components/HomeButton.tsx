@@ -1,11 +1,17 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, Image, TouchableOpacity, useColorScheme } from "react-native";
+import {
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import * as Haptics from "expo-haptics";
 
 const HomeButton = () => {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
-
 
   const showBuyToast = () => {
     Toast.show({
@@ -19,11 +25,18 @@ const HomeButton = () => {
     <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
       <TouchableOpacity
         className="w-1/3"
-        onPress={() => navigation.navigate("Receive" as never, {} as never)}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          navigation.navigate("Receive" as never, {} as never);
+        }}
       >
         <Image
           className="m-auto h-14 w-14"
-          source={colorScheme === "light" ? require("../../assets/receivebtn.png") : require("../../assets/receivebtn-drk.png")}
+          source={
+            colorScheme === "light"
+              ? require("../../assets/receivebtn.png")
+              : require("../../assets/receivebtn-drk.png")
+          }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Receive
@@ -43,11 +56,18 @@ const HomeButton = () => {
       </TouchableOpacity> */}
       <TouchableOpacity
         className="w-1/3"
-        onPress={() => navigation.navigate("Send" as never, {} as never)}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          navigation.navigate("Send" as never, {} as never);
+        }}
       >
         <Image
           className="m-auto h-14 w-14"
-          source={colorScheme === "light" ? require("../../assets/sendbtn2.png") : require("../../assets/sendbtn2-drk.png")}
+          source={
+            colorScheme === "light"
+              ? require("../../assets/sendbtn2.png")
+              : require("../../assets/sendbtn2-drk.png")
+          }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Send

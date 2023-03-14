@@ -15,6 +15,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
+import * as Haptics from "expo-haptics";
 
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
@@ -65,7 +66,12 @@ const Wallet = () => {
         <View className="mx-auto mt-4 w-11/12 items-center rounded-xl">
           <View className="w-full flex-row">
             <View className="w-1/2">
-              <TouchableOpacity onPress={showHistoryToast}>
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  console.log("swap");
+                }}
+              >
                 <Image
                   className="mr-auto h-7 w-7"
                   source={require("../../../assets/swapicon.png")}
@@ -74,7 +80,10 @@ const Wallet = () => {
             </View>
             <View className="w-1/2">
               <TouchableOpacity
-                onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  console.log("swap");
+                }}
               >
                 <Image
                   className="ml-auto h-7 w-7"

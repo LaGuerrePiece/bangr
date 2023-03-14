@@ -25,12 +25,14 @@ import ReceiveScreen from "./ReceiveScreen";
 import SendScreen from "./SendScreen";
 import * as Haptics from "expo-haptics";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { colors } from "../config/configs";
 
 const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const [swiper, setSwiper] = useState<Swiper>();
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -63,7 +65,7 @@ const MainScreen = () => {
   const activeDot = (
     <View
       style={{
-        backgroundColor: "#36220F",
+        backgroundColor: colorScheme === "light" ? "black" : "white",
         width: 12,
         height: 12,
         borderRadius: 8,
