@@ -8,6 +8,7 @@ import {
   useColorScheme,
   Linking,
 } from "react-native";
+import { TouchableHighlight } from "react-native-gesture-handler";
 import { NavBar } from "../../components/NavBar";
 import Vault from "../../components/Vault";
 import useTabStore from "../../state/tab";
@@ -21,8 +22,22 @@ const Invest = () => {
 
   return (
     <SafeAreaView className=" mx-auto mt-4 w-11/12">
+      <View className="w-full flex-row">
+        <View className="w-1/2">
+          <TouchableOpacity
+            onPress={() => {
+              // todo
+            }}
+          >
+            <Image
+              className="mr-auto h-6 w-6"
+              source={require("../../../assets/pochicon.png")}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
       <View>
-        <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
+        <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
           Invest
         </Text>
       </View>

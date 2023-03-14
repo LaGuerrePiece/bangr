@@ -30,6 +30,7 @@ const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const [swiper, setSwiper] = useState<Swiper>();
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -48,11 +49,11 @@ const MainScreen = () => {
     <View
       style={{
         backgroundColor: "rgba(0,0,0,.2)",
-        width: 16,
-        height: 16,
+        width: 12,
+        height: 12,
         borderRadius: 8,
-        marginLeft: 3,
-        marginRight: 3,
+        marginLeft: 4,
+        marginRight: 4,
         marginTop: 3,
         marginBottom: 3,
       }}
@@ -63,11 +64,11 @@ const MainScreen = () => {
     <View
       style={{
         backgroundColor: "#36220F",
-        width: 16,
-        height: 16,
+        width: 12,
+        height: 12,
         borderRadius: 8,
-        marginLeft: 3,
-        marginRight: 3,
+        marginLeft: 4,
+        marginRight: 4,
         marginTop: 3,
         marginBottom: 3,
       }}
@@ -78,7 +79,7 @@ const MainScreen = () => {
     <Swiper
       loop={false}
       showsPagination={true}
-      index={0}
+      index={1}
       showsButtons={false}
       dot={dot}
       activeDot={activeDot}
@@ -86,21 +87,9 @@ const MainScreen = () => {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }}
     >
-      <View className="m-auto w-full grow">
+      <View className="m-auto w-full grow dark:bg-primary-dark">
         <Swap />
       </View>
-      {/* <Swiper
-        horizontal={false}
-        loop={false}
-        showsPagination={false}
-        index={1}
-        showsButtons={false}
-        dot={dot}
-        activeDot={activeDot}
-      > */}
-      {/* <View>
-          <ReceiveScreen></ReceiveScreen>
-        </View> */}
       <View
         className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
         style={{ paddingTop: insets.top }}
@@ -119,11 +108,9 @@ const MainScreen = () => {
           }
         />
       </View>
-      {/* <View className="m-auto w-full grow">
-          <SendScreen />
-        </View>
-      </Swiper> */}
-      <Invest />
+      <View className="w-full dark:bg-primary-dark">
+        <Invest />
+      </View>
     </Swiper>
   );
 };

@@ -212,7 +212,7 @@ const SendScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
-        {/* <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <TouchableWithoutFeedback onPress={navigation.goBack}>
           <View className="mx-auto w-11/12">
             <XMarkIcon
               size={36}
@@ -221,7 +221,7 @@ const SendScreen = () => {
               }
             />
           </View>
-        </TouchableWithoutFeedback> */}
+        </TouchableWithoutFeedback>
         <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
           Send
         </Text>

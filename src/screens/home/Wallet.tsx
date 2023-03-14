@@ -67,20 +67,20 @@ const Wallet = () => {
             <View className="w-1/2">
               <TouchableOpacity onPress={showHistoryToast}>
                 <Image
-                  className="mr-auto h-10 w-10"
+                  className="mr-auto h-7 w-7"
                   source={require("../../../assets/swapicon.png")}
                 />
               </TouchableOpacity>
             </View>
             <View className="w-1/2">
-              <TouchableHighlight
+              <TouchableOpacity
                 onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
               >
                 <Image
-                  className="ml-auto h-10 w-10"
+                  className="ml-auto h-7 w-7"
                   source={require("../../../assets/investicon.png")}
                 />
-              </TouchableHighlight>
+              </TouchableOpacity>
             </View>
           </View>
           {refreshing && (
