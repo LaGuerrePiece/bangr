@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   RefreshControl,
+  Appearance,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
@@ -23,6 +24,7 @@ const Wallet = () => {
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -58,7 +60,11 @@ const Wallet = () => {
             <Text className="text-center text-3xl">loading your bags</Text>
             <Image
               className="m-auto h-32 w-32"
-              source={require("../../../assets/loading.gif")}
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/loading-drk.gif")
+                  : require("../../../assets/loading.gif")
+              }
             />
           </View>
         </View>
@@ -74,7 +80,11 @@ const Wallet = () => {
               >
                 <Image
                   className="mr-auto h-7 w-7"
-                  source={require("../../../assets/swapicon.png")}
+                  source={
+                    colorScheme === "dark"
+                      ? require("../../../assets/swapicon-drk.png")
+                      : require("../../../assets/swapicon.png")
+                  }
                 />
               </TouchableOpacity>
             </View>
@@ -87,7 +97,11 @@ const Wallet = () => {
               >
                 <Image
                   className="ml-auto h-7 w-7"
-                  source={require("../../../assets/investicon.png")}
+                  source={
+                    colorScheme === "dark"
+                      ? require("../../../assets/investicon-drk.png")
+                      : require("../../../assets/investicon.png")
+                  }
                 />
               </TouchableOpacity>
             </View>

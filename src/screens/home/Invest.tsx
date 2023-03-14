@@ -30,7 +30,11 @@ const Invest = () => {
           >
             <Image
               className="mr-auto h-6 w-6"
-              source={require("../../../assets/pochicon.png")}
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/pochicon-drk.png")
+                  : require("../../../assets/pochicon.png")
+              }
             />
           </TouchableOpacity>
         </View>
