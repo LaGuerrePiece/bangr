@@ -8,21 +8,25 @@ import {
   useColorScheme,
   Linking,
 } from "react-native";
+import { NavBar } from "../../components/NavBar";
 import Vault from "../../components/Vault";
+import useTabStore from "../../state/tab";
 import useVaultsStore from "../../state/vaults";
 
 const Invest = () => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
+  // const { tab, setTab } = useTabStore();
+  // setTab("Invest");
 
   return (
-    <SafeAreaView className="top-20 mx-auto h-[90%] w-11/12">
+    <SafeAreaView className=" mx-auto mt-4 w-11/12">
       <View>
         <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
           Invest
         </Text>
       </View>
-      <View className="h-[90%]">
+      <View>
         <ScrollView>
           {vaults &&
             vaults
@@ -62,6 +66,7 @@ const Invest = () => {
             </TouchableOpacity>
           </View>
         </ScrollView>
+        {/* <NavBar tab={tab} setTab={setTab} /> */}
       </View>
     </SafeAreaView>
   );

@@ -16,7 +16,6 @@ import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
 
-
 const Wallet = () => {
   const [refreshing, setRefreshing] = useState(false);
   const tokens = useTokensStore((state) => state.tokens);
@@ -45,7 +44,6 @@ const Wallet = () => {
       text2: "Coming soon, stay tuned!",
     });
   };
-  
 
   return (
     <ScrollView
@@ -64,26 +62,31 @@ const Wallet = () => {
           </View>
         </View>
       ) : (
-        <View className="mx-auto mt-4 mb-4 w-11/12 rounded-xl items-center">
-          {/* <View className="flex-row justify-between">
-            <TouchableOpacity onPress={showHistoryToast}>
-              <Image
-                className="h-10 w-10"
-                source={require("../../../assets/history-disabled.png")}
-              />
-            </TouchableOpacity>
+        <View className="mx-auto mt-4 w-11/12 items-center rounded-xl">
+          <View className="w-full flex-row">
+            <View className="w-1/2">
+              <TouchableOpacity onPress={showHistoryToast}>
+                <Image
+                  className="mr-auto h-10 w-10"
+                  source={require("../../../assets/swapicon.png")}
+                />
+              </TouchableOpacity>
+            </View>
+
             {refreshing && (
               <Text className="text-center text-lg">refreshing...</Text>
             )}
-            <TouchableHighlight
-              onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
-            >
-              <Image
-                className="h-10 w-10"
-                source={require("../../../assets/feedback.png")}
-              />
-            </TouchableHighlight>
-          </View> */}
+            <View className="w-1/2">
+              <TouchableHighlight
+                onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
+              >
+                <Image
+                  className="ml-auto h-10 w-10"
+                  source={require("../../../assets/investicon.png")}
+                />
+              </TouchableHighlight>
+            </View>
+          </View>
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-primary-dark">
             <Text className="text-center text-5xl font-bold text-typo-light dark:text-secondary-light">
               ${loaded.toFixed(2)}
@@ -93,10 +96,14 @@ const Wallet = () => {
           </View>
 
           <View className="w-11/12">
-
             {tokens ? (
               tokens
-                .filter((token) => token.symbol !== "aUSDC" && token.balance && Number(token.balance) > 0)
+                .filter(
+                  (token) =>
+                    token.symbol !== "aUSDC" &&
+                    token.balance &&
+                    Number(token.balance) > 0
+                )
                 .map((token) => <Asset token={token} key={token.symbol} />)
             ) : (
               <View className="">

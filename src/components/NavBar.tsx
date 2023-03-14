@@ -70,7 +70,7 @@ interface NavBar {
 
 export const NavBar = ({ tab, setTab }: NavBar) => {
   return (
-    <View className="mt-14 flex-row bg-secondary-light dark:bg-secondary-dark">
+    <View className="mt-14 flex-row">
       <TouchableOpacity
         className="m-auto w-1/3"
         onPress={() => setTab("Wallet")}
