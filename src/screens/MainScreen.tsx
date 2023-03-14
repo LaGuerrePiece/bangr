@@ -23,8 +23,10 @@ import useTabStore from "../state/tab";
 import Swiper from "react-native-swiper";
 import ReceiveScreen from "./ReceiveScreen";
 import SendScreen from "./SendScreen";
+import * as Haptics from "expo-haptics";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-const WalletScreen = () => {
+const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -80,6 +82,9 @@ const WalletScreen = () => {
       showsButtons={false}
       dot={dot}
       activeDot={activeDot}
+      onMomentumScrollEnd={() => {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }}
     >
       <View className="m-auto w-full grow">
         <Swap />
@@ -123,4 +128,4 @@ const WalletScreen = () => {
   );
 };
 
-export default WalletScreen;
+export default MainScreen;

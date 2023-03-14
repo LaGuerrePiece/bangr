@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import WalletScreen from "./src/screens/WalletScreen";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
 import TokenScreen from "./src/screens/TokenScreen";
@@ -14,6 +13,7 @@ import OnrampScreen from "./src/screens/OnrampScreen";
 import { toastConfig } from "./src/components/toasts";
 import Swap from "./src/screens/home/Swap";
 import Invest from "./src/screens/home/Invest";
+import MainScreen from "./src/screens/MainScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +26,7 @@ const App = () => {
           component={LoginScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Wallet" component={WalletScreen} />
+        <Stack.Screen name="Wallet" component={MainScreen} />
         <Stack.Screen
           name="VaultInfoScreen"
           component={VaultInfoScreen}
@@ -81,7 +81,6 @@ const App = () => {
           component={Invest}
           options={{ presentation: "modal", headerShown: false }}
         />
-        
       </Stack.Navigator>
       <Toast config={toastConfig} />
     </NavigationContainer>

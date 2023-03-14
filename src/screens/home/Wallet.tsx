@@ -72,10 +72,6 @@ const Wallet = () => {
                 />
               </TouchableOpacity>
             </View>
-
-            {refreshing && (
-              <Text className="text-center text-lg">refreshing...</Text>
-            )}
             <View className="w-1/2">
               <TouchableHighlight
                 onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
@@ -87,6 +83,9 @@ const Wallet = () => {
               </TouchableHighlight>
             </View>
           </View>
+          {refreshing && (
+            <Text className="text-center text-lg">refreshing...</Text>
+          )}
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-primary-dark">
             <Text className="text-center text-5xl font-bold text-typo-light dark:text-secondary-light">
               ${loaded.toFixed(2)}
