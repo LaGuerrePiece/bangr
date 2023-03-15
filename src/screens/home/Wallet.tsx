@@ -137,36 +137,22 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
-            <Swipeable
-              onRef={(ref: any) => (ref = ref)}
-              leftContent={leftContent}
-              rightContent={rightContent}
-              leftActionActivationDistance={50}
-              rightActionActivationDistance={50}
-              onRightActionRelease={() =>
-                navigation.navigate("Swap" as never, { token } as never)
-              }
-              onLeftActionRelease={() =>
-                navigation.navigate("Invest" as never, { token } as never)
-              }
-            >
-              {tokens ? (
-                tokens
-                  .filter(
-                    (token) =>
-                      token.symbol !== "aUSDC" &&
-                      token.balance &&
-                      Number(token.balance) > 0
-                  )
-                  .map((token) => <Asset token={token} key={token.symbol} />)
-              ) : (
-                <View className="">
-                  <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-                    No tokens found
-                  </Text>
-                </View>
-              )}
-            </Swipeable>
+            {tokens ? (
+              tokens
+                .filter(
+                  (token) =>
+                    token.symbol !== "aUSDC" &&
+                    token.balance &&
+                    Number(token.balance) > 0
+                )
+                .map((token) => <Asset token={token} key={token.symbol} />)
+            ) : (
+              <View className="">
+                <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+                  No tokens found
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       )}
