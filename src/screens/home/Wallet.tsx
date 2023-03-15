@@ -17,6 +17,8 @@ import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
+// @ts-ignore
+import Swipeable from "react-native-swipeable-rtl";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -47,6 +49,21 @@ const Wallet = ({ swiper }: { swiper: any }) => {
       text2: "Coming soon, stay tuned!",
     });
   };
+
+  const leftContent = [
+    <View className="flex-row items-center justify-between">
+      <Image
+        className="mx-auto my-3 h-7 w-7"
+        source={require("../../../assets/bangrs-selected.png")}
+      />
+    </View>,
+  ];
+  const rightContent = [
+    <Image
+      className="mx-auto my-3 h-7 w-7"
+      source={require("../../../assets/swap-selected.png")}
+    />,
+  ];
 
   return (
     <ScrollView
@@ -120,22 +137,36 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
-            {tokens ? (
-              tokens
-                .filter(
-                  (token) =>
-                    token.symbol !== "aUSDC" &&
-                    token.balance &&
-                    Number(token.balance) > 0
-                )
-                .map((token) => <Asset token={token} key={token.symbol} />)
-            ) : (
-              <View className="">
-                <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-                  No tokens found
-                </Text>
-              </View>
-            )}
+            <Swipeable
+              onRef={(ref: any) => (ref = ref)}
+              leftContent={leftContent}
+              rightContent={rightContent}
+              leftActionActivationDistance={50}
+              rightActionActivationDistance={50}
+              onRightActionRelease={() =>
+                navigation.navigate("Swap" as never, { token } as never)
+              }
+              onLeftActionRelease={() =>
+                navigation.navigate("Invest" as never, { token } as never)
+              }
+            >
+              {tokens ? (
+                tokens
+                  .filter(
+                    (token) =>
+                      token.symbol !== "aUSDC" &&
+                      token.balance &&
+                      Number(token.balance) > 0
+                  )
+                  .map((token) => <Asset token={token} key={token.symbol} />)
+              ) : (
+                <View className="">
+                  <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+                    No tokens found
+                  </Text>
+                </View>
+              )}
+            </Swipeable>
           </View>
         </View>
       )}
