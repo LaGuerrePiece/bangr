@@ -87,16 +87,42 @@ const TokenModal = () => {
 
   return (
     <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
-      <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
-          <XMarkIcon
-            size={36}
-            color={
-              colorScheme === "light" ? colors.typo.light : colors.typo.dark
-            }
-          />
+      <View className="w-full flex-row">
+        <View className="w-1/2">
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              console.log("swap");
+            }}
+          >
+            <Image
+              className="mr-auto h-7 w-7"
+              source={
+                colorScheme === "dark"
+                  ? require("../../assets/swapicon-drk.png")
+                  : require("../../assets/swapicon.png")
+              }
+            />
+          </TouchableOpacity>
         </View>
-      </TouchableWithoutFeedback>
+        <View className="w-1/2">
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              console.log("swap");
+            }}
+          >
+            <Image
+              className="ml-auto h-7 w-7"
+              source={
+                colorScheme === "dark"
+                  ? require("../../assets/investicon-drk.png")
+                  : require("../../assets/investicon.png")
+              }
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
       <SafeAreaView className="rounded-lg p-3">
         <View className="flex items-center">
           <Image

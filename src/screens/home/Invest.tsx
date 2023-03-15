@@ -20,7 +20,7 @@ const Invest = () => {
 
   return (
     <SafeAreaView className=" mx-auto mt-4 w-11/12">
-      <View className="w-full flex-row">
+      <View className="my-2 w-full flex-row">
         <View className="w-1/2">
           <TouchableOpacity
             onPress={() => {
