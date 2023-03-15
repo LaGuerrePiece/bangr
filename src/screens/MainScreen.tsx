@@ -111,8 +111,10 @@ const MainScreen = () => {
           }
         />
       </View>
-      <View className="w-full dark:bg-primary-dark">
-        <Invest swiper={swiper} />
+      <View className="items-center bg-secondary-light dark:bg-primary-dark">
+        <View className="dark:bg-primary-dark">
+          <Invest swiper={swiper} />
+        </View>
       </View>
     </Swiper>
   );
