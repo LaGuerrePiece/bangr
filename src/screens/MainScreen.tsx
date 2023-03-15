@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   View,
   Image,
@@ -31,7 +31,7 @@ const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const [swiper, setSwiper] = useState<Swiper>();
+  const swiper = useRef(null);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
   useLayoutEffect(() => {
@@ -80,6 +80,7 @@ const MainScreen = () => {
   return (
     <Swiper
       loop={false}
+      ref={swiper}
       showsPagination={true}
       index={1}
       showsButtons={false}
@@ -90,14 +91,14 @@ const MainScreen = () => {
       }}
     >
       <View className="m-auto w-full grow dark:bg-primary-dark">
-        <Swap />
+        <Swap swiper={swiper} />
       </View>
       <View
         className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
         style={{ paddingTop: insets.top }}
       >
         <View className="m-auto w-full grow">
-          <Wallet />
+          <Wallet swiper={swiper} />
         </View>
         <StatusBar
           barStyle={
@@ -111,7 +112,7 @@ const MainScreen = () => {
         />
       </View>
       <View className="w-full dark:bg-primary-dark">
-        <Invest />
+        <Invest swiper={swiper} />
       </View>
     </Swiper>
   );

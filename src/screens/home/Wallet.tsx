@@ -18,7 +18,7 @@ import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
 
-const Wallet = () => {
+const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
@@ -76,6 +76,7 @@ const Wallet = () => {
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("swap");
+                  swiper.current.scrollBy(-1, true);
                 }}
               >
                 <Image
@@ -92,7 +93,8 @@ const Wallet = () => {
               <TouchableOpacity
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  console.log("swap");
+                  console.log("Invest");
+                  swiper.current.scrollBy(1, true);
                 }}
               >
                 <Image

@@ -12,7 +12,7 @@ import Vault from "../../components/Vault";
 import useVaultsStore from "../../state/vaults";
 import * as Haptics from "expo-haptics";
 
-const Invest = () => {
+const Invest = ({ swiper }: { swiper: any }) => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
   // const { tab, setTab } = useTabStore();
@@ -25,7 +25,7 @@ const Invest = () => {
           <TouchableOpacity
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              // TODO: Add navigation to main screen
+              swiper.current.scrollBy(-1, true);
             }}
           >
             <Image

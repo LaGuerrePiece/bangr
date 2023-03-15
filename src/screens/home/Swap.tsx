@@ -36,7 +36,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 
-const Swap = () => {
+const Swap = ({ swiper }: { swiper: any }) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -196,8 +196,8 @@ const Swap = () => {
           <View className="w-full">
             <TouchableOpacity
               onPress={() => {
-                // todo
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                swiper.current.scrollBy(1, true);
               }}
             >
               <Image
