@@ -15,10 +15,12 @@ import MainScreen from "./src/screens/MainScreen";
 import { OnboardScreen } from "./src/screens/onboard";
 import * as SecureStore from "expo-secure-store";
 import { useCallback, useEffect, useState } from "react";
-import { Text, View, useColorScheme } from "react-native";
+import { View, useColorScheme } from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,12 @@ const App = () => {
   const [fontsLoaded] = useFonts({
     "Inter-Black": require("./assets/fonts/Inter/Inter-Black.otf"),
   });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   const colorScheme = useColorScheme();
 
@@ -43,11 +51,14 @@ const App = () => {
   }, []);
 
   if (!fontsLoaded) {
-    return <AppLoading />;
-  } else if (isOnboardingNeeded) {
+    return null;
+  }
+
+  if (isOnboardingNeeded) {
     return (
       <View
         style={{ flex: 1, backgroundColor: colors.secondary[colorScheme!] }}
+        onLayout={onLayoutRootView}
       >
         <OnboardScreen />
       </View>
@@ -56,6 +67,7 @@ const App = () => {
     return (
       <View
         style={{ flex: 1, backgroundColor: colors.secondary[colorScheme!] }}
+        onLayout={onLayoutRootView}
       >
         <NavigationContainer>
           <Stack.Navigator
