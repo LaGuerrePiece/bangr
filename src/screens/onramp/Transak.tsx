@@ -39,7 +39,22 @@ export default function Transak() {
           cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
           walletAddress: smartWalletAddress,
           email: userInfo?.email,
-          // exchangeScreenTitle: "Add money to Bangr !",
+          exchangeScreenTitle: "Add money to Bangr !",
+          // userData: encodeURIComponent(JSON.stringify({
+          //   "firstName": "Satoshi",
+          //   "lastName": "Nakamoto",
+          //   "email": "satoshi.nakamoto@transak.com",
+          //   "mobileNumber": "+15417543010",
+          //   "dob": "1994-08-26",
+          //   "address": {
+          //     "addressLine1": "170 Pine St",
+          //     "addressLine2": "San Francisco",
+          //     "city": "San Francisco",
+          //     "state": "CA",
+          //     "postCode": "94111",
+          //     "countryCode": "US"
+          //   }
+          // }))
           // disableWalletAddressForm: true,
           // redirectURL
           // fiatCurrency: "USD",
