@@ -4,6 +4,10 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
+        Inter: ["Inter"],
+        InterMedium: ["InterMedium"],
+        InterSemiBold: ["InterSemiBold"],
+        InterBold: ["InterBold"],
         InterBlack: ["InterBlack"],
       },
       colors: {
