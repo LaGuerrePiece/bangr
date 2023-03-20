@@ -24,6 +24,7 @@ import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
 import { colors } from "../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 global.Buffer = global.Buffer || Buffer;
 
 const resolvedRedirectUrl =
@@ -54,6 +55,8 @@ const web3auth = new Web3Auth(WebBrowser, SdkInitParams);
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
+
+const Stack = createNativeStackNavigator();
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -86,11 +89,14 @@ const LoginScreen = () => {
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
-    if (!privKey) return;
+    if (!privKey) {
+      // navigation.navigate("Onboard" as never);
+      return;
+    }
 
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));
-      navigation.navigate("Wallet" as never, {} as never);
+      navigation.navigate("Wallet" as never);
     }
   };
 
@@ -106,7 +112,7 @@ const LoginScreen = () => {
     if (user.privKey) {
       secureSave("privKey", user.privKey);
       login(new Wallet(user.privKey));
-      navigation.navigate("Wallet" as never, {} as never);
+      navigation.navigate("Wallet" as never);
     }
 
     if (user.userInfo) {

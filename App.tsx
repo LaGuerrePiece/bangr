@@ -1,4 +1,4 @@
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
@@ -11,79 +11,87 @@ import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
 import { toastConfig } from "./src/components/toasts";
-import Swap from "./src/screens/home/Swap";
-import Invest from "./src/screens/home/Invest";
 import MainScreen from "./src/screens/MainScreen";
+import { OnboardScreen } from "./src/screens/onboard";
+import * as SecureStore from "expo-secure-store";
+import { useEffect, useState } from "react";
+import { View, useColorScheme } from "react-native";
+import { colors, forceOnboarding } from "./src/config/configs";
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Wallet" component={MainScreen} />
-        <Stack.Screen
-          name="VaultInfoScreen"
-          component={VaultInfoScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen
-          name="Token"
-          component={TokenScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectToken"
-          component={SelectTokenScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen
-          name="SelectChain"
-          component={SelectChainScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
-        <Stack.Screen
-          name="Send"
-          component={SendScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen
-          name="Receive"
-          component={ReceiveScreen}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-        <Stack.Screen
-          name="Onramp"
-          component={OnrampScreen}
-          options={{
-            presentation: "modal",
-            headerShown: false,
-            animation: "none",
-          }}
-        />
-        <Stack.Screen
-          name="Swap"
-          component={Swap}
-          options={{
-            presentation: "modal",
-            headerShown: false,
-            animation: "none",
-          }}
-        />
-        <Stack.Screen
-          name="Invest"
-          component={Invest}
-          options={{ presentation: "modal", headerShown: false }}
-        />
-      </Stack.Navigator>
-      <Toast config={toastConfig} />
-    </NavigationContainer>
+  const colorScheme = useColorScheme();
+
+  const [isOnboardingNeeded, setIsOnboardingNeeded] = useState(true);
+  const checkIfOnboardingNeeded = async () => {
+    const privKey = await SecureStore.getItemAsync("privKeyaze"); // simulate not having account
+    if (privKey && !forceOnboarding) {
+      setIsOnboardingNeeded(false);
+    }
+  };
+
+  useEffect(() => {
+    checkIfOnboardingNeeded();
+  }, []);
+
+  return !isOnboardingNeeded ? (
+    <View style={{ flex: 1, backgroundColor: colors.secondary[colorScheme!] }}>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{ headerShown: false }}
+        >
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="VaultInfoScreen"
+            component={VaultInfoScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Token"
+            component={TokenScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="SelectToken"
+            component={SelectTokenScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="SelectChain"
+            component={SelectChainScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
+          <Stack.Screen
+            name="Send"
+            component={SendScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Receive"
+            component={ReceiveScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Onramp"
+            component={OnrampScreen}
+            options={{
+              presentation: "modal",
+              headerShown: false,
+              animation: "none",
+            }}
+          />
+        </Stack.Navigator>
+        <Toast config={toastConfig} />
+      </NavigationContainer>
+    </View>
+  ) : (
+    <View style={{ flex: 1, backgroundColor: colors.secondary[colorScheme!] }}>
+      <OnboardScreen />
+    </View>
   );
 };
 

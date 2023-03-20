@@ -1,12 +1,7 @@
 import Constants from "expo-constants";
 import "@ethersproject/shims";
 import { BigNumber, ethers } from "ethers";
-import {
-  chainData,
-  FEE_PER_CALL,
-  REFERENCE_CHAIN,
-  tokenGroups,
-} from "../config/configs";
+import { chainData, FEE_PER_CALL, REFERENCE_CHAIN } from "../config/configs";
 import {
   CallWithNonce,
   ChainData,
@@ -31,14 +26,6 @@ interface TokenWithBalanceInBn extends Omit<Token, "balance"> {
 
 export function getChain(chainId: ChainId) {
   return chainData.find((chain) => chain.chainId === chainId) as ChainData;
-}
-
-export function getTokenGroup(token: MultichainToken) {
-  for (const group of tokenGroups) {
-    if (group.tokenSymbols.includes(token.symbol)) {
-      return group;
-    }
-  }
 }
 
 // if the user is not connected, returns example balances
@@ -281,9 +268,9 @@ export function getChainWithMaxBalance(chains: MultichainToken["chains"]) {
 
 export const getURLInApp = () =>
   // process.env.NODE_ENV == "development"
-    // ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
-    // : "https://dev.poche.fi";
-    "https://dev.poche.fi";
+  // ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
+  // : "https://dev.poche.fi";
+  "https://dev.poche.fi";
 
 export const correctInput = (input: string): string => {
   return input.replace(/,/g, ".");
