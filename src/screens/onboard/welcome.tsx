@@ -14,10 +14,10 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <Text className="mt-16 text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+      <Text className="mt-16 text-center font-['InterBlack'] text-2xl text-typo-light dark:text-typo-dark">
         Welcome to Bangr
       </Text>
-      <Text style={{ fontFamily: "Inter-Black", fontSize: 30 }}>
+      <Text style={{ fontFamily: "InterBlack", fontSize: 30 }}>
         Inter Black
       </Text>
 

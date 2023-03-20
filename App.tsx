@@ -26,7 +26,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
-    "Inter-Black": require("./assets/fonts/Inter/Inter-Black.otf"),
+    InterBlack: require("./assets/fonts/Inter/Inter-Black.otf"),
   });
 
   const onLayoutRootView = useCallback(async () => {
