@@ -10,22 +10,22 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 
-export default function WelcomeScreen({ navigation }: { navigation: any }) {
-  console.log("WelcomeScreen");
+export default function InvestEasily({ navigation }: { navigation: any }) {
+  console.log("InvestEasilyScreen");
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View>
         <Text className="mt-16 text-center font-[InterBold] text-2xl text-typo-light dark:text-typo-dark">
-          Welcome to Bangr
+          Deposit anywhere in DeFi
         </Text>
         <Text className="mt-4 text-center font-[InterMedium] text-lg text-typo-light dark:text-typo-dark">
-          Managing investments is easy with Bangr
+          And watch your money grow !
         </Text>
 
         <Image
           className="mx-auto mt-32 h-56 w-56"
-          source={require("../../../assets/figma/globe.png")}
+          source={require("../../../assets/figma/phone.png")}
         />
       </View>
 
@@ -41,7 +41,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
           <ActionButton
             text="Next"
             disabled={false}
-            action={() => navigation.navigate("InvestEasily")}
+            action={() => navigation.navigate("CreateAccount")}
           />
         </View>
       </View>
