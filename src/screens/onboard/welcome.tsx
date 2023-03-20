@@ -14,8 +14,8 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <Text className="mt-16 text-center text-4xl text-typo-light dark:text-typo-dark">
-        Salut ! Ici l'onboarding
+      <Text className="mt-16 text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+        Welcome to Bangr
       </Text>
       <TouchableOpacity
         className="mx-auto mt-16 h-12 w-1/2 rounded-lg bg-primary-dark dark:bg-primary-light"
