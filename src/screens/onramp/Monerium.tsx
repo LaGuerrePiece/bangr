@@ -37,7 +37,7 @@ export default function Monerium() {
     console.log("codeChallenge", codeChallenge);
 
     const params = {
-      client_id: "fe7e8ccb-ad2d-11ed-97a8-f2eccd865638",
+      client_id: "ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9",
       redirect_uri: "https://www.youtube.com/",
       code_challenge: codeChallenge,
       code_challenge_method: "S256",
@@ -49,37 +49,10 @@ export default function Monerium() {
     };
 
     const res = await fetch(
-      `https://api.monerium.app/auth?${new URLSearchParams(params).toString()}`
+      `https://api.monerium.dev/auth?${new URLSearchParams(params).toString()}`
     );
     console.log("res.url", res.url);
     setWebWiewUri(res.url);
-
-    const resAfterFirstScreen = await fetch(
-      `https://monerium.app/api/iam/signup`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: "yarara5505@oniecan.com",
-          email: "yarara5605@oniecan.com",
-          password: "AZEaze123123!",
-          terms: true,
-          privacy: true,
-          country: "FR",
-          redirectUri:
-            "https://www.youtube.com/&code_challenge=SnwHNPP8EI2XfLDGlxfWsJvvCaSWDcZsFDvHANh0mCo&code_challenge_method=S256&partner=012bd5f8-ad2e-11ed-97a8-f2eccd865638",
-          partner: "012bd5f8-ad2e-11ed-97a8-f2eccd865638",
-        }),
-      }
-    );
-    console.log("resAfterFirstScreen json", await resAfterFirstScreen.json());
-
-  
-    // https://monerium.app/partners/012bd5f8-ad2e-11ed-97a8-f2eccd865638/auth?redirect_uri=https%3A%2F%2Fwww.youtube.com%2F%26code_challenge%3DSnwHNPP8EI2XfLDGlxfWsJvvCaSWDcZsFDvHANh0mCo%26code_challenge_method%3DS256%26partner%3D012bd5f8-ad2e-11ed-97a8-f2eccd865638&token=MDI4MDY5
-
   };
 
   useEffect(() => {
