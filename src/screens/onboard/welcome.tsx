@@ -17,6 +17,10 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
       <Text className="mt-16 text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
         Welcome to Bangr
       </Text>
+      <Text style={{ fontFamily: "Inter-Black", fontSize: 30 }}>
+        Inter Black
+      </Text>
+
       <TouchableOpacity
         className="mx-auto mt-16 h-12 w-1/2 rounded-lg bg-primary-dark dark:bg-primary-light"
         onPress={() => navigation.navigate("Password")}
