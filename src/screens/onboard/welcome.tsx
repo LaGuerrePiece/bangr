@@ -33,14 +33,12 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
         <View className="mx-auto w-36">
           <ActionButton
             text="Skip"
-            disabled={false}
             action={() => navigation.navigate("CreateAccount")}
           />
         </View>
         <View className="mx-auto w-36">
           <ActionButton
             text="Next"
-            disabled={false}
             action={() => navigation.navigate("InvestEasily")}
           />
         </View>

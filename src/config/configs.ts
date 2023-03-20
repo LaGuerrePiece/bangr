@@ -99,7 +99,9 @@ export const TOKEN_WHITELIST = [
   // "BAL",
 ];
 
-export const forceOnboarding = true;
+export const forceOnboarding = false; // to see onboarding
+
+export const forceWalletEmpty = true; // to see button to buy first coins
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone

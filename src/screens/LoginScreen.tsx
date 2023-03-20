@@ -89,10 +89,7 @@ const LoginScreen = () => {
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
-    if (!privKey) {
-      // navigation.navigate("Onboard" as never);
-      return;
-    }
+    if (!privKey) return;
 
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));

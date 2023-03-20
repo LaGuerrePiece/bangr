@@ -29,7 +29,6 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
       <View className="mx-auto mb-8 w-11/12">
         <ActionButton
           text="Create Account"
-          disabled={false}
           action={() => navigation.navigate("CreateAccount")}
         />
       </View>

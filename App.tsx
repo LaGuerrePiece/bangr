@@ -10,6 +10,8 @@ import ReceiveScreen from "./src/screens/ReceiveScreen";
 import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
+import TransakScreen from "./src/screens/onramp/Transak";
+import MoneriumScreen from "./src/screens/onramp/Monerium";
 import { toastConfig } from "./src/components/toasts";
 import MainScreen from "./src/screens/MainScreen";
 import { OnboardScreen } from "./src/screens/onboard";
@@ -44,8 +46,9 @@ const App = () => {
   const [isOnboardingNeeded, setIsOnboardingNeeded] = useState(true);
 
   const checkIfOnboardingNeeded = async () => {
-    const privKey = await SecureStore.getItemAsync("privKey"); // simulate not having account
+    const privKey = await SecureStore.getItemAsync("privKey");
     if (privKey && !forceOnboarding) {
+      console.log("skipping onboarding");
       setIsOnboardingNeeded(false);
     }
   };
@@ -116,9 +119,18 @@ const App = () => {
               component={OnrampScreen}
               options={{
                 presentation: "modal",
-                headerShown: false,
                 animation: "none",
               }}
+            />
+            <Stack.Screen
+              name="Transak"
+              component={TransakScreen}
+              options={{ presentation: "modal" }}
+            />
+            <Stack.Screen
+              name="Monerium"
+              component={MoneriumScreen}
+              options={{ presentation: "modal" }}
             />
           </Stack.Navigator>
           <Toast config={toastConfig} />

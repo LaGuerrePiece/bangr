@@ -19,6 +19,9 @@ import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
 // @ts-ignore
 import Swipeable from "react-native-swipeable-rtl";
+import { forceWalletEmpty } from "../../config/configs";
+import ActionButton from "../../components/ActionButton";
+import { useNavigation } from "@react-navigation/native";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -27,6 +30,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+  const navigation = useNavigation();
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -137,7 +141,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
-            {tokens ? (
+            {tokens && !forceWalletEmpty ? (
               tokens
                 .filter(
                   (token) =>
@@ -148,9 +152,10 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 .map((token) => <Asset token={token} key={token.symbol} />)
             ) : (
               <View className="">
-                <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-                  No tokens found
-                </Text>
+                <ActionButton
+                  text="Add your first assets"
+                  action={() => navigation.navigate("Onramp" as never)}
+                />
               </View>
             )}
           </View>
