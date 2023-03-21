@@ -1,14 +1,29 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View, Image, TouchableOpacity } from "react-native";
-import { MultichainToken } from "../types/types";
-import "@ethersproject/shims";
 import { ethers } from "ethers";
+import React from "react";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { MultichainToken } from "../types/types";
+//@ts-ignore
+import useTabStore from "../state/tab";
+import * as Haptics from "expo-haptics";
 
 const Asset = ({ token }: { token: MultichainToken }) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("Token" as never, { token } as never)}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        navigation.navigate("Token" as never, { token } as never);
+      }}
     >
       <View className="flex-row items-center justify-between py-3">
         <View className="flex-row items-center">

@@ -33,8 +33,10 @@ import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
 import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import * as Haptics from "expo-haptics";
 
-const Swap = () => {
+const Swap = ({ swiper }: { swiper: any }) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -127,6 +129,7 @@ const Swap = () => {
   }
 
   const flip = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     let srcTokenSave = srcToken;
     if (srcTokenSave && ["ETH", "MATIC"].includes(srcTokenSave.symbol)) {
       const dai = tokens?.find((token) => token.symbol === "DAI");
@@ -188,9 +191,28 @@ const Swap = () => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <SafeAreaView className="top-20 mx-auto flex h-[90%] w-11/12">
+      <SafeAreaView className="mx-auto mt-4 flex w-11/12">
+        <View className="w-full flex-row">
+          <View className="w-full">
+            <TouchableOpacity
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                swiper.current.scrollBy(1, true);
+              }}
+            >
+              <Image
+                className="ml-auto h-6 w-6"
+                source={
+                  colorScheme === "dark"
+                    ? require("../../../assets/pochicon-drk.png")
+                    : require("../../../assets/pochicon.png")
+                }
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View>
-          <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
+          <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
             Swap
           </Text>
         </View>

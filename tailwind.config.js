@@ -12,6 +12,10 @@ module.exports = {
           light: "#FFFFFF",
           dark: "#282B30",
         },
+        special: {
+          light: "#36220F",
+          dark: "#F3F0ED",
+        },
         typo: {
           light: "#000000",
           dark: "#D1D1D1",
@@ -21,8 +25,8 @@ module.exports = {
           dark: "#959088",
         },
         btn: {
-          light: "#C77B35",
-          dark: "#C77B35",
+          light: "#000000",
+          dark: "#FFFFFF",
         },
         lightBlue: {
           light: "#ECF4FE",

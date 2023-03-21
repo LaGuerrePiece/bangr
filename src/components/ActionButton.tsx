@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { Button, Text, TouchableOpacity, View, Image } from "react-native";
+import * as Haptics from "expo-haptics";
 
 interface IButton {
   text: string;
@@ -10,11 +11,16 @@ interface IButton {
 
 const ActionButton: FC<IButton> = ({ text, icon, disabled, action }) => {
   return (
-    <TouchableOpacity onPress={action} activeOpacity={disabled ? 1 : 0.2}>
+    <TouchableOpacity
+      onPress={async () => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light), action();
+      }}
+      activeOpacity={disabled ? 1 : 0.2}
+    >
       <View
         className={`flex-row items-center justify-around rounded-lg py-3 px-4 ${
           !disabled
-            ? "bg-btn-light dark:bg-btn-dark"
+            ? "bg-special-light dark:bg-special-dark"
             : "bg-typo-dark dark:bg-[#2D2D2D]"
         }`}
       >

@@ -10,20 +10,43 @@ import {
 } from "react-native";
 import Vault from "../../components/Vault";
 import useVaultsStore from "../../state/vaults";
+import * as Haptics from "expo-haptics";
 
-const Invest = () => {
+const Invest = ({ swiper }: { swiper: any }) => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
+  // const { tab, setTab } = useTabStore();
+  // setTab("Invest");
 
   return (
-    <SafeAreaView className="top-20 mx-auto h-[90%] w-11/12">
-      <View>
-        <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
-          Invest
-        </Text>
+    <SafeAreaView className="mt-4 w-11/12">
+      <View className="w-full flex-row">
+        <View className="mb-2 w-1/2">
+          <TouchableOpacity
+            onPress={() => {
+              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              swiper.current.scrollBy(-1, true);
+            }}
+          >
+            <Image
+              className="mr-auto h-6 w-6"
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/pochicon-drk.png")
+                  : require("../../../assets/pochicon.png")
+              }
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-      <View className="h-[90%]">
-        <ScrollView>
+      <View className="">
+        <ScrollView className="">
+          <View>
+            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+              Invest
+            </Text>
+          </View>
+
           {vaults &&
             vaults
               .filter(
@@ -31,7 +54,7 @@ const Invest = () => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
+          <View className="mb-8 w-full rounded-lg bg-secondary-light p-2 pr-3 dark:bg-secondary-dark">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >
@@ -39,7 +62,6 @@ const Invest = () => {
                 <View className="flex-row items-center">
                   <Image
                     className="h-6 w-6"
-                    // className="h-[16px] w-[24px]"
                     source={
                       colorScheme === "light"
                         ? require("../../../assets/idea.png")
@@ -61,6 +83,7 @@ const Invest = () => {
               </View>
             </TouchableOpacity>
           </View>
+          <View className="my-16" />
         </ScrollView>
       </View>
     </SafeAreaView>

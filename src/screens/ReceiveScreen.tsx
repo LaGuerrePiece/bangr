@@ -72,7 +72,7 @@ const ReceiveScreen = () => {
       </Text>
 
       {smartWalletAddress && (
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-secondary-light py-6  dark:bg-secondary-dark">
+        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
           <QRCode
             value={smartWalletAddress}
             logo={{ uri: base64Icon }}
@@ -80,40 +80,64 @@ const ReceiveScreen = () => {
             logoSize={30}
             logoBackgroundColor="transparent"
             backgroundColor="transparent"
-            color={colorScheme === "light" ? colors.btn.light : colors.btn.dark}
+            color={
+              colorScheme === "light" ? colors.special.light : colors.typo.dark
+            }
           />
-          <View className="mx-auto my-4 rounded-xl border border-typo2-light bg-primary-light p-2 dark:border-typo-dark dark:bg-primary-dark">
+          <View className="mx-auto flex-row">
+            <View className="mx-auto my-4 rounded-xl border border-typo2-light bg-primary-light p-2 dark:border-typo-dark dark:bg-primary-dark">
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("smartWalletAddress: ", smartWalletAddress);
+                  Clipboard.setString(smartWalletAddress ?? "");
+                  showToast(
+                    "Address copied to clipboard",
+                    "You can now paste it anywhere you want"
+                  );
+                }}
+              >
+                <Text className="text-s text-center font-bold text-typo2-light dark:text-typo2-dark">
+                  {smartWalletAddress?.substring(0, 12) +
+                    "..." +
+                    smartWalletAddress?.substring(34, 42)}
+                  <View className="h-4 w-4">
+                    <Image
+                      className="h-5 w-5"
+                      source={
+                        colorScheme === "light"
+                          ? require("../../assets/copy.png")
+                          : require("../../assets/copy-dark.png")
+                      }
+                    />
+                  </View>
+                </Text>
+              </TouchableOpacity>
+            </View>
             <TouchableOpacity
               onPress={() => {
-                console.log("smartWalletAddress: ", smartWalletAddress);
-                Clipboard.setString(smartWalletAddress ?? "");
-                showToast(
-                  "Address copied to clipboard",
-                  "You can now paste it anywhere you want"
-                );
+                onShare();
               }}
+              className="m-auto"
             >
-              <Text className="text-s text-center font-bold text-typo2-light dark:text-typo2-dark">
-                {smartWalletAddress?.substring(0, 12) +
-                  "..." +
-                  smartWalletAddress?.substring(34, 42)}
-                <View className="h-4 w-4">
-                  <Image
-                    className="h-5 w-5"
-                    source={
-                      colorScheme === "light"
-                        ? require("../../assets/copy.png")
-                        : require("../../assets/copy-dark.png")
-                    }
-                  />
-                </View>
-              </Text>
+              <Image
+                className="m-auto mx-1 h-6 w-5"
+                source={require("../../assets/share.png")}
+              />
             </TouchableOpacity>
           </View>
-          <ActionButton text="Share" disabled={false} action={onShare} />
+          {/* <ActionButton text="Share" disabled={false} action={onShare} /> */}
           <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
             Arbitrum, Optimism and Polygon
           </Text>
+          <View className="mt-8 flex-row justify-between">
+            <ActionButton
+              text="Cash"
+              disabled={false}
+              action={() => {
+                navigation.navigate("Onramp" as never, {} as never);
+              }}
+            />
+          </View>
         </View>
       )}
 

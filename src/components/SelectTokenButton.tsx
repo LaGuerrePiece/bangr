@@ -3,6 +3,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import useTokensStore from "../state/tokens";
 import { Appearance, useColorScheme } from "react-native";
+import * as Haptics from "expo-haptics";
 
 type Props = {
   tokens: MultichainToken[];
@@ -23,6 +24,7 @@ export default function SelectTokenButton({
   return (
     <TouchableOpacity
       onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         if (!tokenList) return;
         navigation.navigate(
           "SelectToken" as never,

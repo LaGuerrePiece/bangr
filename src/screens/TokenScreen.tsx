@@ -9,6 +9,7 @@ import {
   TouchableWithoutFeedback,
   ActivityIndicator,
   useColorScheme,
+  StatusBar,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import Chart, { Point } from "../components/Chart";
@@ -21,134 +22,72 @@ import useSendStore from "../state/send";
 import useSwapStore from "../state/swap";
 import useTabStore from "../state/tab";
 import { colors } from "../config/configs";
-
-type TokenParams = {
-  TokenScreen: {
-    token: MultichainToken;
-  };
-};
+import * as Haptics from "expo-haptics";
+import Swiper from "react-native-swiper";
+import Swap from "./home/Swap";
+import TokenModal from "../components/TokenModal";
+import Invest from "./home/Invest";
 
 const TokenScreen = () => {
-  const navigation = useNavigation();
-  const setTab = useTabStore((state) => state.setTab);
   const colorScheme = useColorScheme();
 
-  const { params } = useRoute<RouteProp<TokenParams, "TokenScreen">>();
-  const { token } = params;
-  const [chart, setChart] = useState<Point[]>();
-  const updateSendStore = useSendStore((state) => state.update);
-  const updateSwapSrcToken = useSwapStore((state) => state.updateSrcToken);
+  const dot = (
+    <View
+      style={{
+        backgroundColor: "rgba(0,0,0,.2)",
+        width: 12,
+        height: 12,
+        borderRadius: 8,
+        marginLeft: 4,
+        marginRight: 4,
+        marginTop: 3,
+        marginBottom: 3,
+      }}
+    />
+  );
 
-  useEffect(() => {
-    getChart(token);
-  }, [token]);
-
-  async function getChart(token: MultichainToken) {
-    const firstChain = token.chains[0];
-    try {
-      const { data } = (await axios.post(`${getURLInApp()}/api/v1/chart`, {
-        tokenAddress: firstChain.address,
-        chainId: firstChain.chainId,
-        days: 1,
-      })) as {
-        data: Point[];
-      };
-
-      const lessData = [];
-      //remove two out of three points
-      for (let i = 0; i < data.length; i++) {
-        if (i % 5 === 0) {
-          lessData.push(data[i]);
-        }
-      }
-
-      console.log(`fetched chart for ${token.symbol}`);
-      setChart(lessData);
-    } catch (error) {
-      console.log("error fetching chart:", error);
-    }
-  }
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
-
-  const swap = () => {
-    navigation.navigate("Wallet" as never, {} as never);
-    updateSwapSrcToken(token);
-    setTab("Swap");
-  };
-
-  const send = () => {
-    navigation.navigate("Send" as never, {} as never);
-    updateSendStore({ token: token });
-  };
-
+  const activeDot = (
+    <View
+      style={{
+        backgroundColor: colorScheme === "light" ? "black" : "white",
+        width: 12,
+        height: 12,
+        borderRadius: 8,
+        marginLeft: 4,
+        marginRight: 4,
+        marginTop: 3,
+        marginBottom: 3,
+      }}
+    />
+  );
   return (
-    <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
-      <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
-          <XMarkIcon
-            size={36}
-            color={
-              colorScheme === "light" ? colors.typo.light : colors.typo.dark
-            }
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      <SafeAreaView className="rounded-lg p-3">
-        <View className="flex items-center">
-          <Image
-            className="h-10 w-10"
-            source={
-              token.logoURI
-                ? { uri: token.logoURI }
-                : require("../../assets/poche.png")
-            }
-          />
-          <Text className="p-1 text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-            {token.name}
-          </Text>
-          <Text className="text-2xl font-bold text-typo-light dark:text-typo-dark">
-            ${token.priceUSD}
-          </Text>
-        </View>
-        <View className="my-4 rounded-lg bg-secondary-light dark:bg-secondary-dark">
-          {chart ? <Chart chart={chart} /> : <ActivityIndicator />}
-        </View>
-
-        <View className="mt-2 rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark">
-          <View className="flex-row justify-between">
-            <Text className="text-2xl font-semibold text-typo-light dark:text-typo-dark">
-              Balance
-            </Text>
-            <View className="flex items-end">
-              <Text className="text-lg font-bold text-typo-light dark:text-typo-dark">
-                ${cutDecimals(token.quote || 0, 2)}
-              </Text>
-              <Text className="mt-1 text-gray-500">
-                {formatUnits(token.balance, token.decimals, 4)} {token.symbol}
-              </Text>
-            </View>
+    <Swiper
+      loop={false}
+      showsPagination={true}
+      index={1}
+      showsButtons={false}
+      dot={dot}
+      activeDot={activeDot}
+      onMomentumScrollEnd={() => {
+        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      }}
+    >
+      <View className="m-auto w-full grow dark:bg-primary-dark">
+        <Swap />
+      </View>
+      <View className="items-center bg-secondary-light dark:bg-primary-dark">
+        <View className="flex h-full w-11/12 justify-between bg-secondary-light  dark:bg-primary-dark">
+          <View className="m-auto w-full grow">
+            <TokenModal />
           </View>
         </View>
-
-        <View className="my-6 flex-row justify-evenly">
-          <ActionButton
-            text="Swap"
-            disabled={false}
-            action={swap}
-            icon={require("../../assets/flip_white.png")}
-          />
-          <ActionButton
-            text="Send"
-            disabled={false}
-            action={send}
-            icon={require("../../assets/arrow_up_white.png")}
-          />
+      </View>
+      <View className="items-center bg-secondary-light dark:bg-primary-dark">
+        <View className="dark:bg-primary-dark">
+          <Invest />
         </View>
-      </SafeAreaView>
-    </View>
+      </View>
+    </Swiper>
   );
 };
 

@@ -127,7 +127,7 @@ const LoginScreen = () => {
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
       <Text className="mt-16 text-center text-4xl text-typo-light dark:text-typo-dark">
-        Welcome to Poche
+        Welcome to Bangr
       </Text>
 
       <View className="mx-auto mt-16 flex w-2/3">
