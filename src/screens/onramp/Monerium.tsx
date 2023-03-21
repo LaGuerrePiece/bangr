@@ -27,8 +27,6 @@ export default function Monerium() {
     wallet: state.wallet,
   }));
 
-  const wallet = Wallet.createRandom();
-
   const [codeVerifier, setCodeVerifier] = useState<string>();
   const [webWiewUri, setWebWiewUri] = useState<string>("");
   const [webViewReturnUrl, setWebViewReturnUrl] = useState<string>("");
@@ -36,8 +34,16 @@ export default function Monerium() {
   const [accessToken, setAccessToken] = useState<string>("");
   const [profile, setProfile] = useState<string>("");
 
+  useEffect(() => {
+    authenticateAsync();
+  }, []);
+
   const authenticateAsync = async () => {
     if (codeVerifier) return;
+
+    const wallet = Wallet.createRandom();
+    console.log("privateKey", wallet.privateKey);
+
     if (!wallet) return;
     const verifier = new Array(128).join().replace(/(.|$)/g, function () {
       return ((Math.random() * 36) | 0).toString(36);
@@ -121,17 +127,17 @@ export default function Monerium() {
   };
 
   const fetchDataAndOrder = async () => {
-    // const response3 = await fetch(
-    //   `https://api.monerium.dev/profiles/${profile}`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${accessToken}`,
-    //     },
-    //   }
-    // );
-    // console.log("response3.json()", await response3.json());
+    const response3 = await fetch(
+      `https://api.monerium.dev/profiles/${profile}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    console.log("response3.json()", await response3.json());
 
     const balances = await fetch(
       `https://api.monerium.dev/profiles/${profile}/balances`,
@@ -147,26 +153,47 @@ export default function Monerium() {
     console.log("balancesJson[0].balances", balancesJson[0].balances);
 
     // let's send some money !
-    // const formData = {
-    //   client_id: clientId,
-    //   redirect_uri: "https://www.youtube.com/",
-    //   grant_type: "authorization_code",
-    //   code: code,
-    //   code_verifier: codeVerifier!,
-    // };
+    const newWallet = new Wallet(
+      "0x38bb7066dfab8cf4e2005404644c6c022d229e728f2ed8190d67e73c71eab68a"
+    );
+    const date = new Date().toISOString();
+    console.log("date", date);
+    const message = `Send EUR 1000 to GR1601101250000000012300695 at ${date}`;
+    const signature = await newWallet.signMessage(message);
 
-    // const response = await fetch(`https://api.monerium.dev/auth/token`, {
-    //   method: "POST",
-    //   body: QueryString.stringify(formData),
-    //   headers: {
-    //     "content-type": "application/x-www-form-urlencoded",
-    //   },
-    // });
+    const response = await fetch(`https://api.monerium.dev/orders`, {
+      method: "POST",
+      body: JSON.stringify({
+        kind: "redeem",
+        amount: "700",
+        signature: signature,
+        address: "0x220e86419ce6217E238b889cBAe9507F263Ec673",
+        currency: "eur",
+        // treasuryAccountId: "02a9b1fa-c7e9-11ed-a39d-2a9518932f3d",
+        counterpart: {
+          identifier: {
+            standard: "iban",
+            iban: "GR16 0110 1250 0000 0001 2300 695",
+          },
+          details: {
+            firstName: "Satoshi",
+            lastName: "Nakamoto",
+            country: "FR",
+          },
+        },
+        message: message,
+        memo: "Let us withdraw",
+        chain: "polygon",
+        network: "mumbai",
+      }),
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    const json = await response.json();
+    console.log("json", json);
   };
-
-  useEffect(() => {
-    authenticateAsync();
-  }, []);
 
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
