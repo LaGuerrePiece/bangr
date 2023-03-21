@@ -22,7 +22,7 @@ import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
-import { colors } from "../config/configs";
+import { colors, skipBiometrics } from "../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 global.Buffer = global.Buffer || Buffer;
@@ -75,6 +75,7 @@ const LoginScreen = () => {
   }, []);
 
   const loginThroughBiometrics = async () => {
+    if (skipBiometrics) return true;
     if (
       (await LocalAuthentication.hasHardwareAsync()) &&
       (await LocalAuthentication.isEnrolledAsync())

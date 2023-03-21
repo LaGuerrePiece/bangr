@@ -21,6 +21,7 @@ import { View, useColorScheme } from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import "react-native-url-polyfill/auto";
 
 SplashScreen.preventAutoHideAsync();
 
