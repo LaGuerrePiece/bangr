@@ -50,21 +50,6 @@ const Wallet = ({ swiper }: { swiper: any }) => {
     });
   };
 
-  const leftContent = [
-    <View className="flex-row items-center justify-between">
-      <Image
-        className="mx-auto my-3 h-7 w-7"
-        source={require("../../../assets/bangrs-selected.png")}
-      />
-    </View>,
-  ];
-  const rightContent = [
-    <Image
-      className="mx-auto my-3 h-7 w-7"
-      source={require("../../../assets/swap-selected.png")}
-    />,
-  ];
-
   return (
     <ScrollView
       refreshControl={
@@ -100,8 +85,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                   className="mr-auto h-7 w-7"
                   source={
                     colorScheme === "dark"
-                      ? require("../../../assets/swapicon-drk.png")
-                      : require("../../../assets/swapicon.png")
+                      ? require("../../../assets/swap-drk.png")
+                      : require("../../../assets/swap.png")
                   }
                 />
               </TouchableOpacity>
@@ -118,8 +103,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                   className="ml-auto h-7 w-7"
                   source={
                     colorScheme === "dark"
-                      ? require("../../../assets/investicon-drk.png")
-                      : require("../../../assets/investicon.png")
+                      ? require("../../../assets/invest-drk.png")
+                      : require("../../../assets/invest.png")
                   }
                 />
               </TouchableOpacity>
