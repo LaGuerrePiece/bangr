@@ -13,7 +13,7 @@ module.exports = {
           dark: "#282B30",
         },
         special: {
-          light: "#36220F",
+          light: "#1E1E1E",
           dark: "#F3F0ED",
         },
         typo: {
