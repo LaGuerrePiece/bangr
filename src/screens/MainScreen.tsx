@@ -50,7 +50,7 @@ const MainScreen = () => {
   const dot = (
     <View
       style={{
-        backgroundColor: "rgba(0,0,0,.2)",
+        backgroundColor: colorScheme === "light" ? "white" : "black",
         width: 12,
         height: 12,
         borderRadius: 8,
@@ -58,6 +58,8 @@ const MainScreen = () => {
         marginRight: 4,
         marginTop: 3,
         marginBottom: 3,
+        borderWidth: 2,
+        borderColor: colorScheme === "light" ? "black" : "white",
       }}
     />
   );
