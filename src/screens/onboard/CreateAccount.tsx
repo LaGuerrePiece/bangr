@@ -10,14 +10,43 @@ import {
   Animated,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
+import * as SecureStore from "expo-secure-store";
+import * as LocalAuthentication from "expo-local-authentication";
+import { colors, skipBiometrics } from "../../config/configs";
+import useUserStore from "../../state/user";
+import { Wallet } from "ethers";
+
+const secureSave = async (key: string, value: string) => {
+  await SecureStore.setItemAsync(key, value);
+};
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
+  const { wallet, login } = useUserStore((state) => ({
+    wallet: state.wallet,
+    login: state.login,
+  }));
+
   const [heroSentence, setHeroSentence] = useState(
     "Generating your account..."
   );
   const [intro, setIntro] = useState(true);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
+
+  const createAccount = async () => {
+    const privKey = await SecureStore.getItemAsync("privKey");
+    if (privKey) {
+      console.log("already an account here !");
+      return;
+    }
+    const wallet = Wallet.createRandom();
+    await secureSave("privKey", wallet.privateKey);
+    login(wallet);
+  };
+
+  useEffect(() => {
+    createAccount();
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -49,7 +78,9 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     }, 4000);
   }, []);
 
-  const secureAccount = () => {};
+  const secureAccount = () => {
+    navigation.navigate("Wallet" as never);
+  };
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
@@ -84,7 +115,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         </Animated.View>
         <ActionButton
           text="Secure my account"
-          spinner={intro ? true : false}
+          spinner={intro}
           bold
           rounded
           action={secureAccount}
