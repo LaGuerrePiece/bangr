@@ -20,7 +20,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
 
   return (
     <SafeAreaView className="mt-4 w-11/12">
-      <View className="w-full flex-row">
+      <View className="w-full flex-row ">
         <View className="mb-2 w-1/2">
           <TouchableOpacity
             onPress={() => {
@@ -54,7 +54,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="mb-8 w-full rounded-lg bg-secondary-light p-2 pr-3 dark:bg-secondary-dark">
+          <View className="mb-8 w-full rounded-lg bg-secondary-light shadow-xl shadow-inner p-2 pr-3 dark:bg-secondary-dark bg-secondary-light">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >

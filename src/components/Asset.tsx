@@ -19,6 +19,7 @@ const Asset = ({ token }: { token: MultichainToken }) => {
   const navigation = useNavigation();
 
   return (
+    <View className="">
     <TouchableOpacity
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -54,6 +55,7 @@ const Asset = ({ token }: { token: MultichainToken }) => {
         </View>
       </View>
     </TouchableOpacity>
+    </View>
   );
 };
 
