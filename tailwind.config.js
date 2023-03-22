@@ -35,6 +35,7 @@ module.exports = {
         icon : {
           light: "#595654",
           dark: "#BFB7B0",
+          special  : "#282828"
         }
       },
     },
