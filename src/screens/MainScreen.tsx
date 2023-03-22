@@ -33,19 +33,12 @@ const MainScreen = () => {
   const swiper = useRef(null);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
-  console.log("MainScreen");
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
       gestureEnabled: false,
     });
   });
-
-  const logOut = async () => {
-    const privKey = await SecureStore.getItemAsync("privKey");
-    if (privKey) await SecureStore.deleteItemAsync("privKey");
-    navigation.navigate("Login" as never);
-  };
 
   const dot = (
     <View

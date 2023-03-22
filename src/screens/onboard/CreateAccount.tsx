@@ -15,6 +15,7 @@ import * as LocalAuthentication from "expo-local-authentication";
 import { colors, skipBiometrics } from "../../config/configs";
 import useUserStore from "../../state/user";
 import { Wallet } from "ethers";
+import useTokensStore from "../../state/tokens";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -25,6 +26,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     wallet: state.wallet,
     login: state.login,
   }));
+  const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
 
   const [heroSentence, setHeroSentence] = useState(
     "Generating your account..."
@@ -80,6 +82,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
   const secureAccount = () => {
     // Secure Account
+    fetchTokensStatic();
     navigation.navigate("Wallet");
   };
 
@@ -123,7 +126,10 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         />
         <TouchableOpacity
           className={intro ? "opacity-0" : ""}
-          onPress={() => navigation.navigate("Wallet")}
+          onPress={() => {
+            navigation.navigate("Wallet");
+            fetchTokensStatic();
+          }}
         >
           <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
             I don't want to secure my account now
