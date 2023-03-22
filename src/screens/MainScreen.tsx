@@ -28,12 +28,12 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { colors } from "../config/configs";
 
 const MainScreen = () => {
-  // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const swiper = useRef(null);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
+  console.log("MainScreen");
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,

@@ -36,7 +36,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
   const createAccount = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
     if (privKey) {
-      console.log("already an account here !");
+      console.log("Already an account here !");
       return;
     }
     const wallet = Wallet.createRandom();
@@ -55,7 +55,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         duration: 500,
         useNativeDriver: true,
       }).start();
-    }, 4000);
+    }, 3000);
   }, [fadeAnim]);
 
   useEffect(() => {
@@ -75,11 +75,12 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
   useEffect(() => {
     setTimeout(() => {
       setIntro(false);
-    }, 4000);
+    }, 3000);
   }, []);
 
   const secureAccount = () => {
-    navigation.navigate("Wallet" as never);
+    // Secure Account
+    navigation.navigate("Wallet");
   };
 
   return (
@@ -122,7 +123,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         />
         <TouchableOpacity
           className={intro ? "opacity-0" : ""}
-          onPress={() => navigation.navigate("MainScreen")}
+          onPress={() => navigation.navigate("Wallet")}
         >
           <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
             I don't want to secure my account now

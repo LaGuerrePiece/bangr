@@ -2,15 +2,27 @@ import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
-import { OnboardScreen } from "./src/screens/onboard";
-import { HomeScreen } from "./src/screens";
 import { useCallback, useEffect, useState } from "react";
 import { View, useColorScheme } from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import * as SecureStore from "expo-secure-store";
 import "react-native-url-polyfill/auto";
-import useUserStore from "./src/state/user";
+import VaultInfoScreen from "./src/screens/VaultInfoScreen";
+import VaultDepositScreen from "./src/screens/VaultDepositScreen";
+import TokenScreen from "./src/screens/TokenScreen";
+import LoginScreen from "./src/screens/LoginScreen";
+import SelectTokenScreen from "./src/screens/SelectTokenScreen";
+import SendScreen from "./src/screens/SendScreen";
+import ReceiveScreen from "./src/screens/ReceiveScreen";
+import SelectChainScreen from "./src/screens/SelectChainScreen";
+import OnrampScreen from "./src/screens/OnrampScreen";
+import TransakScreen from "./src/screens/onramp/Transak";
+import MoneriumScreen from "./src/screens/onramp/Monerium";
+import MainScreen from "./src/screens/MainScreen";
+import WelcomeScreen from "./src/screens/onboard/Welcome";
+import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -18,7 +30,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const colorScheme = useColorScheme();
-  const wallet = useUserStore((state) => state.wallet);
+  const [initialRouteName, setInitialRouteName] = useState("Login");
   const [fontsLoaded] = useFonts({
     InterBlack: require("./assets/fonts/Inter/Inter-Black.otf"),
     Inter: require("./assets/fonts/Inter/Inter-Regular.otf"),
@@ -33,6 +45,17 @@ const App = () => {
     }
   }, [fontsLoaded]);
 
+  const checkifOnboardingNeeded = async () => {
+    const privKey = await SecureStore.getItemAsync("privKey");
+    if (!privKey || forceOnboarding) {
+      setInitialRouteName("Welcome");
+    }
+  };
+
+  useEffect(() => {
+    checkifOnboardingNeeded();
+  }, []);
+
   if (!fontsLoaded) {
     return null;
   }
@@ -43,12 +66,64 @@ const App = () => {
       onLayout={onLayoutRootView}
     >
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {!wallet || forceOnboarding ? (
-            <Stack.Screen name="Onboard" component={OnboardScreen} />
-          ) : (
-            <Stack.Screen name="Home" component={HomeScreen} />
-          )}
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName={initialRouteName}
+        >
+          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
+
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="VaultInfoScreen"
+            component={VaultInfoScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Token"
+            component={TokenScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="SelectToken"
+            component={SelectTokenScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="SelectChain"
+            component={SelectChainScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
+          <Stack.Screen
+            name="Send"
+            component={SendScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Receive"
+            component={ReceiveScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Onramp"
+            component={OnrampScreen}
+            options={{
+              presentation: "modal",
+              animation: "none",
+            }}
+          />
+          <Stack.Screen
+            name="Transak"
+            component={TransakScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Monerium"
+            component={MoneriumScreen}
+            options={{ presentation: "modal" }}
+          />
         </Stack.Navigator>
         <Toast config={toastConfig} />
       </NavigationContainer>

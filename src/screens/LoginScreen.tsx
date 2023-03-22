@@ -21,8 +21,7 @@ import useVaultsStore from "../state/vaults";
 import { colors, skipBiometrics } from "../config/configs";
 global.Buffer = global.Buffer || Buffer;
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
+const LoginScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
   const { login, setUserInfo } = useUserStore((state) => ({
     login: state.login,
@@ -48,15 +47,19 @@ const LoginScreen = () => {
         })
       ).success;
     }
+    // handle no biometrics available
   };
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
-    if (!privKey) return;
+    if (!privKey) {
+      navigation.navigate("Welcome");
+      return;
+    }
 
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));
-      navigation.navigate("Wallet" as never);
+      navigation.navigate("Wallet");
     }
   };
 

@@ -11,8 +11,6 @@ import {
 import ActionButton from "../../components/ActionButton";
 
 export default function WelcomeScreen({ navigation }: { navigation: any }) {
-  console.log("WelcomeScreen");
-
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="mt-8 p-8">
