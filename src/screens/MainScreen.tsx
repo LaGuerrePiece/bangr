@@ -12,20 +12,14 @@ import {
   Button,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { NavBar } from "../components/NavBar";
-import Card from "./home/Card";
 import Invest from "./home/Invest";
 import Swap from "./home/Swap";
 import Wallet from "./home/Wallet";
 import * as SecureStore from "expo-secure-store";
-import More from "./home/More";
-import useTabStore from "../state/tab";
-import Swiper from "react-native-swiper";
-import ReceiveScreen from "./ReceiveScreen";
-import SendScreen from "./SendScreen";
 import * as Haptics from "expo-haptics";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
+
 
 const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
@@ -59,7 +53,7 @@ const MainScreen = () => {
         marginTop: 3,
         marginBottom: 3,
         borderWidth: 2,
-        borderColor: colorScheme === "light" ? "black" : "white",
+        borderColor: colorScheme === "light" ? colors.icon.light : colors.icon.dark,
       }}
     />
   );
@@ -67,7 +61,7 @@ const MainScreen = () => {
   const activeDot = (
     <View
       style={{
-        backgroundColor: colorScheme === "light" ? "black" : "white",
+        backgroundColor: colorScheme === "light" ? colors.icon.light : colors.icon.dark,
         width: 12,
         height: 12,
         borderRadius: 8,
@@ -80,7 +74,7 @@ const MainScreen = () => {
   );
 
   return (
-    <Swiper
+    <ButtonSwiper
       loop={false}
       ref={swiper}
       showsPagination={true}
@@ -113,12 +107,12 @@ const MainScreen = () => {
           }
         />
       </View>
-      <View className="items-center bg-secondary-light dark:bg-primary-dark">
+      <View className="items-center bg-primary-light dark:bg-primary-dark">
         <View className="dark:bg-primary-dark">
           <Invest swiper={swiper} />
         </View>
       </View>
-    </Swiper>
+    </ButtonSwiper>
   );
 };
 
