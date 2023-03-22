@@ -16,6 +16,11 @@ import { colors, skipBiometrics } from "../../config/configs";
 import useUserStore from "../../state/user";
 import { Wallet } from "ethers";
 import useTokensStore from "../../state/tokens";
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from "@react-native-google-signin/google-signin";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -80,8 +85,29 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     }, 3000);
   }, []);
 
-  const secureAccount = () => {
+  const secureAccount = async () => {
     // Secure Account
+    GoogleSignin.configure({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"],
+      // https://www.googleapis.com/auth/drive
+      // https://www.googleapis.com/auth/drive.file
+    });
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log("userInfo", userInfo);
+    } catch (error: any) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+
     fetchTokensStatic();
     navigation.navigate("Wallet");
   };

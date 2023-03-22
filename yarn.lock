@@ -2174,6 +2174,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-9.3.5.tgz#0c60c798b5e0e14dd3b3fbab629a6e9609f709fd"
   integrity sha512-Mqbh/J8YCfc+EqSjq5OJn2USmcD8On4048pKEfyCsCDty3lQs1SNcmHqJdu9idNU2v//aM73T8F+re59cf78Ig==
 
+"@react-native-google-signin/google-signin@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-9.0.2.tgz#fd9d0cbb58591265c2ea9404b2d2ea7e514b9ea9"
+  integrity sha512-oTD0ZT6ZSH7CZjM1i6hR/gFAXv9As7nxhN99XGliNxf6SChZcQRwGeaz1DjoYrWExWDVX00EH1Per3dMjhAWkQ==
+
 "@react-native-masked-view/masked-view@^0.2.8":
   version "0.2.8"
   resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
@@ -5360,6 +5365,39 @@ expo-constants@~14.0.0, expo-constants@~14.0.2:
   dependencies:
     "@expo/config" "~7.0.2"
     uuid "^3.3.2"
+
+expo-dev-client@~2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/expo-dev-client/-/expo-dev-client-2.0.1.tgz#f5878807c96a60d90fc219b6535654cb6ddb9214"
+  integrity sha512-+OXXZKKo/CplqklpaZasHAX7qaRrzC83biqXTFa1z5NiFW41uqtAqTFx6gmPi4kx3YgwtD+ep6R3SRrKjdCukg==
+  dependencies:
+    expo-dev-launcher "2.0.2"
+    expo-dev-menu "2.0.2"
+    expo-dev-menu-interface "1.0.0"
+    expo-manifests "~0.4.0"
+    expo-updates-interface "~0.8.0"
+
+expo-dev-launcher@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/expo-dev-launcher/-/expo-dev-launcher-2.0.2.tgz#bbcde0dd35e81ed6a415dc5b246da68e9b365255"
+  integrity sha512-MQT7VSOHJQrEs3YAv5BQLYs3Uk7P1dNqBw6kKrj3jKBq0z92k2LLg1aCk7nP8OGJVDvrb2jTXBka8VXVqF0ECg==
+  dependencies:
+    expo-dev-menu "2.0.2"
+    resolve-from "^5.0.0"
+    semver "^7.3.5"
+
+expo-dev-menu-interface@1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/expo-dev-menu-interface/-/expo-dev-menu-interface-1.0.0.tgz#00204cb7e1c43cc8a4eee9cb74f6e5760b512d75"
+  integrity sha512-4lsVofTwV9oBM+zo7XhtmvbfiXD4I7I3Rqns6U0i6IOnH7OGBDpKvGZ5YikWPFGn6NOu8loqqd8S7inFIaxC0A==
+
+expo-dev-menu@2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/expo-dev-menu/-/expo-dev-menu-2.0.2.tgz#9a2d7a00097d4eafe54cf8e9a5c727174e101e4c"
+  integrity sha512-SxR5riXgm+VVKsDKC/bOLuOJ0CKutW07G+OqJ9eYfxwGfxa8omLJHwagbCsd8FwUPGkzvzgfRJRGLo5J6REMow==
+  dependencies:
+    expo-dev-menu-interface "1.0.0"
+    semver "^7.3.5"
 
 expo-eas-client@~0.4.0:
   version "0.4.1"

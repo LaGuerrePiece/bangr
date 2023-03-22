@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "bangr",
-    "slug": "bangr-app",
+    "slug": "poche-app",
     "version": "0.0.5",
     "scheme": "poche",
     "orientation": "portrait",
@@ -37,6 +37,17 @@
     "extra": {
       "eas": {
         "projectId": "d6d44490-5584-4b9c-85b4-d5e2ff08b185"
+      }
+    },
+    "plugin": {
+      "expo": {
+        "android": {
+          "googleServicesFile": "./google-services.json"
+        },
+        "ios": {
+          "googleServicesFile": "./GoogleService-Info.plist"
+        },
+        "plugins": ["@react-native-google-signin/google-signin"]
       }
     }
   }
