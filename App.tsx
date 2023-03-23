@@ -20,6 +20,7 @@ import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
 import TransakScreen from "./src/screens/onramp/Transak";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
+import BangrampScreen from "./src/screens/onramp/Bangramp";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
@@ -122,6 +123,11 @@ const App = () => {
           <Stack.Screen
             name="Monerium"
             component={MoneriumScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Bangramp"
+            component={BangrampScreen}
             options={{ presentation: "modal" }}
           />
         </Stack.Navigator>

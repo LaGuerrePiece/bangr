@@ -12,26 +12,25 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
 import { toastConfig } from "../components/toasts";
 
-const OnrampScreen = () => {
-  const navigation = useNavigation();
+const OnrampScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
 
   const RampOption = ({
     logo,
     text,
     title,
-    action,
+    screen,
   }: {
     logo: number;
     text: string;
     title: string;
-    action: any;
+    screen: string;
   }) => {
     return (
       <TouchableOpacity
         className="my-3 w-11/12"
         onPress={() => {
-          navigation.navigate(action as never);
+          navigation.navigate(screen);
         }}
       >
         <View className="flex items-center rounded-xl bg-secondary-light p-4 text-xl dark:bg-secondary-dark">
@@ -64,8 +63,8 @@ const OnrampScreen = () => {
           logo={require("../../assets/figma/ethereum.png")}
           text={"For a small amount (<$100), the simplest is to pay by card"}
           title={"Card"}
-          action={"Transak"}
-          // action={() => {}}
+          // screen={"Transak"}
+          screen={"Bangramp"}
         />
         <RampOption
           logo={require("../../assets/figma/ethereum3.png")}
@@ -73,8 +72,7 @@ const OnrampScreen = () => {
             "For a bigger amount, the best is bank transfer. You'll have to KYC."
           }
           title={"Bank transfer"}
-          action={"Monerium"}
-          // action={() => {}}
+          screen={"Monerium"}
         />
       </View>
       <Toast config={toastConfig} />

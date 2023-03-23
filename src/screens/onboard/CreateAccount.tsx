@@ -39,15 +39,17 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     const privKey = await SecureStore.getItemAsync("privKey");
     if (privKey) {
       console.log("Already an account here !");
+      login(new Wallet(privKey));
       return;
     }
-    const wallet = Wallet.createRandom();
-    await secureSave("privKey", wallet.privateKey);
-    login(wallet);
+    const newWallet = Wallet.createRandom();
+    await secureSave("privKey", newWallet.privateKey);
+    login(newWallet);
   };
 
   useEffect(() => {
     createAccount();
+    fetchTokensStatic();
   }, []);
 
   useEffect(() => {
@@ -82,7 +84,6 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
   const secureAccount = () => {
     // Secure Account
-    fetchTokensStatic();
     navigation.navigate("Wallet");
   };
 

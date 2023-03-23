@@ -154,6 +154,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               <View className="">
                 <ActionButton
                   text="Add your first assets"
+                  bold
                   action={() => navigation.navigate("Onramp" as never)}
                 />
               </View>
