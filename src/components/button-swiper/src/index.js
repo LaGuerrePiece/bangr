@@ -20,19 +20,14 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { color } from "react-native-reanimated";
+import useModalStore from "../../../state/modal";
 
 /**
  * Default styles
  * @type {StyleSheetPropType}
  */
 
-state = {
-  modalVisible: false,
-};
 
-toggleModal = (visible) => {
-  this.setState({ modalVisible: visible });
-};
 
 const styles = {
   container: {
@@ -112,11 +107,15 @@ const styles = {
 // missing `module.exports = exports['default'];` with babel6
 // export default React.createClass({
 export default class extends Component {
+  
+  
+  
+  
   /**
    * Props Validation
    * @type {Object}
    */
-
+  
   static propTypes = {
     horizontal: PropTypes.bool,
     children: PropTypes.node.isRequired,
@@ -639,6 +638,7 @@ export default class extends Component {
     return overrides;
   };
 
+  
   /**
    * Render pagination
    * @return {object} react-dom
@@ -781,8 +781,9 @@ export default class extends Component {
 
         <View className="flex items-center">
           <TouchableOpacity
-          // border here for button
-            className="mx-36 rounded-2xl px-1 py-1 shadow-xl"
+            // border here for button
+            // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
+            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
             pointerEvents="none"
             visible={this.state.modalVisible == false}
             onPressIn={() => {

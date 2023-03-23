@@ -59,7 +59,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
       {loaded === undefined ? (
         <View className="h-screen border-red-500">
           <View className="m-auto">
-            <Text className="text-center text-3xl">loading your bags</Text>
+            {/* <Text className="text-center text-3xl">loading your bags</Text> */}
             <Image
               className="m-auto h-32 w-32"
               source={
@@ -110,9 +110,9 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               </TouchableOpacity>
             </View>
           </View>
-          {refreshing && (
+          {/* {refreshing && (
             <Text className="text-center text-lg">refreshing...</Text>
-          )}
+          )} */}
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6 dark:bg-primary-dark">
             <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
               ${loaded.toFixed(2)}
@@ -134,7 +134,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                     || token.symbol === "USDC"
                     )
                 )
-                .map((token) => <Asset token={token} key={token.symbol} />)
+                .map((token) => <Asset token={token} key={token.symbol} swiper={swiper} />)
             ) : (
               <View className="">
                 <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
