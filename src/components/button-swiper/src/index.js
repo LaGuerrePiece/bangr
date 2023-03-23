@@ -707,17 +707,17 @@ export default class extends Component {
               this.setState({ modalVisible: false });
             }}
           >
-            <View className="mt-auto h-1/2 rounded-lg bg-secondary-light px-2 pt-4">
+            <View className="mt-auto h-1/2 rounded-lg bg-primary-light px-2 pt-4">
               <View className="bg-seconday-light flex">
                 <TouchableOpacity
-                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     this.scrollTo(1);
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center bg-secondary-light px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/pochicon.png")}
@@ -731,14 +731,14 @@ export default class extends Component {
               </View>
               <View className="flex">
                 <TouchableOpacity
-                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     this.scrollTo(2);
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center bg-secondary-light px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/invest.png")}
@@ -754,7 +754,7 @@ export default class extends Component {
               </View>
               <View className="flex">
                 <TouchableOpacity
-                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                     this.scrollTo(0);
