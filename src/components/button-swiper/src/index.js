@@ -708,7 +708,7 @@ export default class extends Component {
             }}
           >
             <View className="mt-auto h-1/2 rounded-lg bg-secondary-light px-2 pt-4">
-              <View className="flex">
+              <View className="bg-seconday-light flex">
                 <TouchableOpacity
                   className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
                   onPress={() => {
@@ -717,7 +717,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-secondary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/pochicon.png")}
@@ -738,7 +738,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-secondary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/invest.png")}
@@ -781,7 +781,8 @@ export default class extends Component {
 
         <View className="flex items-center">
           <TouchableOpacity
-            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
+          // border here for button
+            className="mx-36 rounded-2xl px-1 py-1 shadow-xl"
             pointerEvents="none"
             visible={this.state.modalVisible == false}
             onPressIn={() => {
