@@ -99,7 +99,8 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
               </LineChart>
             </LineChart.Provider>
           ) : (
-            <ActivityIndicator />
+            // <ActivityIndicator />
+            <View />
           )}
         </View>
         <View className="flex-row items-center justify-between py-3">

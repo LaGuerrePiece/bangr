@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Appearance,
+  ActivityIndicator,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
@@ -60,14 +61,15 @@ const Wallet = ({ swiper }: { swiper: any }) => {
         <View className="h-screen border-red-500">
           <View className="m-auto">
             {/* <Text className="text-center text-3xl">loading your bags</Text> */}
-            <Image
+            {/* <Image
               className="m-auto h-32 w-32"
               source={
                 colorScheme === "dark"
                   ? require("../../../assets/loading-drk.gif")
                   : require("../../../assets/loading.gif")
               }
-            />
+            /> */}
+            <ActivityIndicator />
           </View>
         </View>
       ) : (
