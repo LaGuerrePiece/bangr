@@ -44,7 +44,7 @@ const MainScreen = () => {
   const dot = (
     <View
       style={{
-        backgroundColor: colorScheme === "light" ? "white" : "black",
+        backgroundColor: colorScheme === "light" ? "rgba(0,0,0,0)" : "transparent",
         width: 12,
         height: 12,
         borderRadius: 8,

@@ -691,102 +691,98 @@ export default class extends Component {
     }
 
     return (
-      <View >
-        <View>
-          <Modal
-            animationType={"slide"}
-            transparent={true}
-            visible={this.state.modalVisible == true}
-            onRequestClose={() => {
-              console.log("Modal has been closed.");
+      <View>
+        <Modal
+          animationType={"slide"}
+          transparent={true}
+          visible={this.state.modalVisible == true}
+          onRequestClose={() => {
+            console.log("Modal has been closed.");
+          }}
+        >
+          <TouchableOpacity
+            style={styles.container}
+            activeOpacity={1}
+            onPress={() => {
+              this.setState({ modalVisible: false });
             }}
           >
-            <TouchableOpacity
-              style={styles.container}
-              activeOpacity={1}
-              onPress={() => {
-                this.setState({ modalVisible: false });
-              }}
-            >
-              <View className="mt-auto h-1/2 rounded-lg bg-secondary-light px-2 pt-4">
-                <View className="flex">
-                  <TouchableOpacity
-                    className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
-                    onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      this.scrollTo(1);
-                      this.setState({ modalVisible: false });
-                    }}
-                  >
-                    <View className="mx-2 flex-row items-center px-2 py-2">
-                      <Image
-                        className="h-12 w-12"
-                        source={require("../../../../assets/pochicon.png")}
-                      />
-                      <View className="ml-4 flex">
-                        <Text className="text-lg font-semibold">Wallet</Text>
-                        <Text className="text-md ml-auto">
-                          View your assets
-                        </Text>
-                      </View>
+            <View className="mt-auto h-1/2 rounded-lg bg-secondary-light px-2 pt-4">
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(1);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/pochicon.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Wallet</Text>
+                      <Text className="text-md ml-auto">View your assets</Text>
                     </View>
-                  </TouchableOpacity>
-                </View>
-                <View className="flex">
-                  <TouchableOpacity
-                    className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
-                    onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      this.scrollTo(2);
-                      this.setState({ modalVisible: false });
-                    }}
-                  >
-                    <View className="mx-2 flex-row items-center px-2 py-2">
-                      <Image
-                        className="h-12 w-12"
-                        source={require("../../../../assets/invest.png")}
-                      />
-                      <View className="ml-4 flex">
-                        <Text className="text-lg font-semibold">Invest</Text>
-                        <Text className="text-md ml-auto">
-                          Grow your money with DeFi
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View className="flex">
-                  <TouchableOpacity
-                    className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
-                    onPress={() => {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                      this.scrollTo(0);
-                      this.setState({ modalVisible: false });
-                    }}
-                  >
-                    <View className="mx-2 flex-row items-center px-2 py-2">
-                      <Image
-                        className="h-12 w-12"
-                        source={require("../../../../assets/swap.png")}
-                      />
-                      <View className="ml-4 flex">
-                        <Text className="text-lg font-semibold">Swap</Text>
-                        <Text className="text-md ml-auto">
-                          Exchange tokens in seconds
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </View>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </Modal>
-        </View>
-        <View className="">
-          {/* <View className="w-2/5"/> */}
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(2);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/invest.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Invest</Text>
+                      <Text className="text-md ml-auto">
+                        Grow your money with DeFi
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(0);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/swap.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Swap</Text>
+                      <Text className="text-md ml-auto">
+                        Exchange tokens in seconds
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableOpacity>
+        </Modal>
+
+        <View className="flex items-center">
           <TouchableOpacity
-            className="w-1/5 rounded-full border-2 border-icon-light p-1 py-2"
-            pointerEvents=""
+            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
+            pointerEvents="none"
             visible={this.state.modalVisible == false}
             onPressIn={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -806,7 +802,6 @@ export default class extends Component {
           >
             {dots}
           </TouchableOpacity>
-          {/* <View className="w-2/5"/> */}
         </View>
       </View>
     );
