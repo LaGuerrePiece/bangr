@@ -81,7 +81,7 @@ const ReceiveScreen = () => {
             logoBackgroundColor="transparent"
             backgroundColor="transparent"
             color={
-              colorScheme === "light" ? colors.special.light : colors.typo.dark
+              colorScheme === "light" ? colors.icon.special : colors.icon.dark
             }
           />
           <View className="mx-auto flex-row">

@@ -113,8 +113,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           {refreshing && (
             <Text className="text-center text-lg">refreshing...</Text>
           )}
-          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-primary-dark">
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-secondary-light">
+          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6 dark:bg-primary-dark">
+            <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
               ${loaded.toFixed(2)}
             </Text>
             {/* <View className=""><Chart chart={chart} /></View> */}

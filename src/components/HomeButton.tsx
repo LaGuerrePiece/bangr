@@ -31,11 +31,11 @@ const HomeButton = () => {
         }}
       >
         <Image
-          className="m-auto h-14 w-14"
+          className="m-auto h-8 w-8"
           source={
             colorScheme === "light"
-              ? require("../../assets/receivebtn.png")
-              : require("../../assets/receivebtn-drk.png")
+              ? require("../../assets/receive.png")
+              : require("../../assets/receive-drk.png")
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
@@ -62,11 +62,11 @@ const HomeButton = () => {
         }}
       >
         <Image
-          className="m-auto h-14 w-14"
+          className="m-auto h-8 w-8"
           source={
             colorScheme === "light"
-              ? require("../../assets/sendbtn2.png")
-              : require("../../assets/sendbtn2-drk.png")
+              ? require("../../assets/send.png")
+              : require("../../assets/send-drk.png")
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">

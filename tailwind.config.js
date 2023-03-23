@@ -32,6 +32,11 @@ module.exports = {
           light: "#ECF4FE",
           dark: "#3A5A83",
         },
+        icon : {
+          light: "#595654",
+          dark: "#BFB7B0",
+          special  : "#282828"
+        }
       },
     },
   },
