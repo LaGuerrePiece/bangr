@@ -32,9 +32,8 @@ const resolvedRedirectUrl =
     ? Linking.createURL("web3auth", {})
     : Linking.createURL("web3auth", { scheme: "poche" });
 
-// My own clientId for testing purposes
-const clientId =
-  "BA8En8WOfQp35-DO3S578DeRyygudn38Ri1HYV43SAZb0CeqH6LNKe9qeZCgqBK60EEbb_g0mpHKFQRLYaL8Xc8";
+// client id from openlogin 
+const clientId = "BA8En8WOfQp35-DO3S578DeRyygudn38Ri1HYV43SAZb0CeqH6LNKe9qeZCgqBK60EEbb_g0mpHKFQRLYaL8Xc8";
 
 const SdkInitParams = {
   clientId,
@@ -86,6 +85,7 @@ const LoginScreen = () => {
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
+    console.log(privKey);
     if (!privKey) return;
 
     if (await loginThroughBiometrics()) {

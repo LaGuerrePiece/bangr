@@ -20,7 +20,7 @@ import Chart, { Point } from "./Chart";
 import { getURLInApp } from "../utils/utils";
 import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
-// import { getColorFromURL } from "rn-dominant-color";
+import { getColorFromURL } from "rn-dominant-color";
 
 const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
   const navigation = useNavigation();
