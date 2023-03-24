@@ -20,6 +20,7 @@ import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
 // @ts-ignore
 import Swipeable from "react-native-swipeable-rtl";
+import { useNavigation } from "@react-navigation/native";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -28,6 +29,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+  const navigation = useNavigation();
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);

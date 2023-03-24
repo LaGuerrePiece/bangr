@@ -130,7 +130,13 @@ const OnrampScreen = () => {
         />
       ) : onRamp === "bangramp" ? (
         <WebView
-          style={{ width: windowWidth }}
+        injectedJavaScript={`document.getElementsByClassName("mr-6 cursor-pointer py-3 text-right text-lg text-black hover:underline dark:text-white")[0].style.visibility = 'hidden';
+        document.getElementsByClassName("mt-24 text-center text-3xl text-black dark:text-white md:text-5xl")[0].textContent = "bangramp!";
+        `}
+        
+  
+
+          style={{  width: windowWidth }}
           source={{ uri: "https://onramp.vercel.app" }}
         />
       ) : (
