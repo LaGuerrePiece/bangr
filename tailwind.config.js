@@ -19,6 +19,10 @@ module.exports = {
           light: "#FFFFFF",
           dark: "#282B30",
         },
+        tertiary: {
+          light: "#FFFFFF",
+          dark: "#3c414a",
+        },
         special: {
           light: "#36220F",
           dark: "#F3F0ED",
