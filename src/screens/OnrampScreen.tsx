@@ -71,7 +71,8 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             "For a bigger amount, the best is bank transfer. You'll have to KYC."
           }
           title={"Bank transfer"}
-          screen={"Monerium"}
+          // screen={"Monerium"}
+          screen={"Wallet"}
         />
       </View>
       <Toast config={toastConfig} />
