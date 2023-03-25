@@ -75,13 +75,13 @@ const TokenModal = () => {
   });
 
   const swap = () => {
-    navigation.navigate("Wallet" as never, {} as never);
+    navigation.navigate("Wallet" as never);
     updateSwapSrcToken(token);
     setTab("Swap");
   };
 
   const send = () => {
-    navigation.navigate("Send" as never, {} as never);
+    navigation.navigate("Send" as never);
     updateSendStore({ token: token });
   };
 

@@ -22,7 +22,6 @@ import { colors } from "../config/configs";
 
 
 const MainScreen = () => {
-  // const { tab, setTab } = useTabStore();
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const swiper = useRef(null);
@@ -34,12 +33,6 @@ const MainScreen = () => {
       gestureEnabled: false,
     });
   });
-
-  const logOut = async () => {
-    const privKey = await SecureStore.getItemAsync("privKey");
-    if (privKey) await SecureStore.deleteItemAsync("privKey");
-    navigation.navigate("Login" as never);
-  };
 
   const dot = (
     <View

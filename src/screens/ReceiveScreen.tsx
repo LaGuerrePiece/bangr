@@ -134,7 +134,7 @@ const ReceiveScreen = () => {
               text="Cash"
               disabled={false}
               action={() => {
-                navigation.navigate("Onramp" as never, {} as never);
+                navigation.navigate("Onramp" as never);
               }}
             />
           </View>
