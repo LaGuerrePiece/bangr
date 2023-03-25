@@ -6,8 +6,10 @@ import {
   View,
   Image,
   ActivityIndicator,
+  useColorScheme,
 } from "react-native";
 import * as Haptics from "expo-haptics";
+import { colors } from "../config/configs";
 
 interface IButton {
   text: string;
@@ -28,6 +30,7 @@ const ActionButton: FC<IButton> = ({
   rounded,
   spinner,
 }) => {
+  const colorScheme = useColorScheme();
   return (
     <TouchableOpacity
       onPress={async () => {
@@ -46,7 +49,14 @@ const ActionButton: FC<IButton> = ({
       >
         {icon ? <Image className="mr-2 h-7 w-7" source={icon} /> : null}
         {spinner ? (
-          <ActivityIndicator size="large" color="#000" />
+          <ActivityIndicator
+            size="large"
+            color={
+              colorScheme === "dark"
+                ? colors.primary.dark
+                : colors.primary.light
+            }
+          />
         ) : (
           <Text
             className={`w-fit text-center text-2xl ${bold ? "font-bold" : ""} ${
