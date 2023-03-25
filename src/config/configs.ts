@@ -86,7 +86,7 @@ export const TOKEN_WHITELIST = [
 
 export const forceOnboarding = false; // to see onboarding
 
-export const forceWalletEmpty = true; // to see button to buy first coins
+export const forceWalletEmpty = false; // to see button to buy first coins
 
 export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
 
