@@ -26,6 +26,8 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     wallet: state.wallet,
     login: state.login,
   }));
+  const colorScheme = useColorScheme();
+
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
 
   const [heroSentence, setHeroSentence] = useState(
@@ -93,7 +95,11 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         <View className="flex-row">
           <Image
             className="h-6 w-6"
-            source={require("../../../assets/newlogo.png")}
+            source={
+              colorScheme === "dark"
+                ? require("../../../assets/newlogo.png")
+                : require("../../../assets/newlogo_black.png")
+            }
           />
           <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
             Welcome to Bangr

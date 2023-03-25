@@ -77,7 +77,7 @@ export default function Bangramp({ navigation }: { navigation: any }) {
     const { error } = await presentPaymentSheet();
 
     if (error) {
-      if (error.code !== "Canceled") return;
+      if (error.code == "Canceled") return;
       Alert.alert(
         `It seems like an error occured: ${error.code}`,
         `${error.message}. Please contact us !`

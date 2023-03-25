@@ -11,13 +11,19 @@ import {
 import ActionButton from "../../components/ActionButton";
 
 export default function WelcomeScreen({ navigation }: { navigation: any }) {
+  const colorScheme = useColorScheme();
+
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="mt-8 p-8">
         <View className="flex-row">
           <Image
             className="h-6 w-6"
-            source={require("../../../assets/newlogo.png")}
+            source={
+              colorScheme === "dark"
+                ? require("../../../assets/newlogo.png")
+                : require("../../../assets/newlogo_black.png")
+            }
           />
           <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
             Welcome to Bangr
