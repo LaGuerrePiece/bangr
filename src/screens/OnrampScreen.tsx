@@ -5,7 +5,6 @@ import {
   useColorScheme,
   Image,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";

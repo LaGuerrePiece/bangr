@@ -47,7 +47,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         })
       ).success;
     }
-    // handle no biometrics available
+    // handle no biometrics available. For now, just goes to wallet
+    navigation.navigate("Wallet");
   };
 
   const checkPreviousUser = async () => {
@@ -66,7 +67,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
       <Text className="mt-16 text-center text-4xl text-typo-light dark:text-typo-dark">
-        Welcome to Poche
+        Welcome to Bangr. Please login to continue.
       </Text>
     </SafeAreaView>
   );

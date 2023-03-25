@@ -8,6 +8,7 @@ import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
+import * as Linking from "expo-linking";
 import "react-native-url-polyfill/auto";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
@@ -21,10 +22,11 @@ import OnrampScreen from "./src/screens/OnrampScreen";
 import TransakScreen from "./src/screens/onramp/Transak";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
 import BangrampScreen from "./src/screens/onramp/Bangramp";
-import BangrampInfoScreen from "./src/screens/onramp/Bangramp/Info";
+import OrderConfirmedScreen from "./src/screens/onramp/Bangramp/OrderConfirmed";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
+import { handleURLCallback } from "@stripe/stripe-react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -57,6 +59,37 @@ const App = () => {
   useEffect(() => {
     checkifOnboardingNeeded();
   }, []);
+
+  // Handle getting out for 2FA and returning on ios
+  const handleDeepLink = useCallback(
+    async (url: string | null) => {
+      if (url) {
+        const stripeHandled = await handleURLCallback(url);
+        if (stripeHandled) {
+          console.log("Stripe handled the URL back to the right screen");
+        }
+      }
+    },
+    [handleURLCallback]
+  );
+
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      handleDeepLink(initialUrl);
+    };
+
+    getUrlAsync();
+
+    const deepLinkListener = Linking.addEventListener(
+      "url",
+      (event: { url: string }) => {
+        handleDeepLink(event.url);
+      }
+    );
+
+    return () => deepLinkListener.remove();
+  }, [handleDeepLink]);
 
   if (!fontsLoaded) {
     return null;
@@ -111,10 +144,7 @@ const App = () => {
           <Stack.Screen
             name="Onramp"
             component={OnrampScreen}
-            options={{
-              presentation: "modal",
-              animation: "none",
-            }}
+            options={{ presentation: "modal" }}
           />
           <Stack.Screen
             name="Transak"
@@ -132,8 +162,8 @@ const App = () => {
             options={{ presentation: "modal" }}
           />
           <Stack.Screen
-            name="BangrampInfo"
-            component={BangrampInfoScreen}
+            name="OrderConfirmed"
+            component={OrderConfirmedScreen}
             options={{ presentation: "modal" }}
           />
         </Stack.Navigator>

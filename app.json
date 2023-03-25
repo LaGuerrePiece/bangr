@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Poche uses FaceId to authenticate you."
+        "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you."
       },
       "bundleIdentifier": "com.poche.fi"
     },
@@ -38,6 +38,16 @@
       "eas": {
         "projectId": "d6d44490-5584-4b9c-85b4-d5e2ff08b185"
       }
-    }
+    },
+    "plugins": [
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "<merchant identifier here>",
+          "enableGooglePay": true
+
+        }
+      ]
+    ]
   }
 }
