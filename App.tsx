@@ -18,9 +18,10 @@ import SelectTokenScreen from "./src/screens/SelectTokenScreen";
 import SendScreen from "./src/screens/SendScreen";
 import ReceiveScreen from "./src/screens/ReceiveScreen";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
-import OnrampScreen from "./src/screens/OnrampScreen";
+import OnrampScreen from "./src/screens/onramp";
 import TransakScreen from "./src/screens/onramp/Transak";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
+import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import BangrampScreen from "./src/screens/onramp/Bangramp";
 import OrderConfirmedScreen from "./src/screens/onramp/Bangramp/OrderConfirmed";
 import MainScreen from "./src/screens/MainScreen";
@@ -110,7 +111,6 @@ const App = () => {
         >
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
-
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Wallet" component={MainScreen} />
           <Stack.Screen
@@ -144,6 +144,7 @@ const App = () => {
             component={ReceiveScreen}
             options={{ presentation: "modal" }}
           />
+          {/* Onramps */}
           <Stack.Screen
             name="Onramp"
             component={OnrampScreen}
@@ -157,6 +158,11 @@ const App = () => {
           <Stack.Screen
             name="Monerium"
             component={MoneriumScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="MoneriumWebview"
+            component={MoneriumWebviewScreen}
             options={{ presentation: "modal" }}
           />
           <Stack.Screen

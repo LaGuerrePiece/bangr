@@ -73,6 +73,7 @@ export const TOKEN_WHITELIST = [
   "LINK",
   "aUSDC",
   "jEUR",
+  "EURe",
   // "QI",
   // "DHT",
   // "MKR",
@@ -86,9 +87,9 @@ export const TOKEN_WHITELIST = [
 
 export const forceOnboarding = false; // to see onboarding
 
-export const forceWalletEmpty = false; // to see button to buy first coins
+export const forceWalletEmpty = true; // to see button to buy first coins
 
-export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
+export const skipBiometrics = true; // skips the need for biometrics. Never push true to prod !
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone

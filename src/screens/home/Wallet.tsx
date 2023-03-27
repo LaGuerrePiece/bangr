@@ -131,18 +131,20 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 .filter(
                   (token) =>
                     token.symbol !== "aUSDC" &&
-                    token.balance && (
-                      // token balance not 0 or token symbol is eth or usdc
-                    Number(token.balance) > 0
-                    || token.symbol === "ETH"
-                    || token.symbol === "USDC"
-                    )
+                    token.balance &&
+                    // token balance not 0 or token symbol is eth or usdc
+                    (Number(token.balance) > 0 ||
+                      token.symbol === "ETH" ||
+                      token.symbol === "USDC")
                 )
-                .map((token) => <Asset token={token} key={token.symbol} swiper={swiper} />)
+                .map((token) => (
+                  <Asset token={token} key={token.symbol} swiper={swiper} />
+                ))
             ) : (
               <View className="">
                 <ActionButton
                   text="Add your first assets"
+                  rounded
                   bold
                   action={() => navigation.navigate("Onramp" as never)}
                 />

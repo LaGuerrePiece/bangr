@@ -11,11 +11,10 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
-import * as LocalAuthentication from "expo-local-authentication";
-import { colors, skipBiometrics } from "../../config/configs";
 import useUserStore from "../../state/user";
-import { Wallet } from "ethers";
+import { Wallet, ethers } from "ethers";
 import useTokensStore from "../../state/tokens";
+import "react-native-get-random-values";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -43,10 +42,14 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
       console.log("Already an account here !");
       login(new Wallet(privKey));
       return;
+    } else {
+      const privateKeyBytes = new Uint8Array(32);
+      crypto.getRandomValues(privateKeyBytes);
+      const privateKey = Buffer.from(privateKeyBytes);
+      const newWallet = new ethers.Wallet(privateKey);
+      await secureSave("privKey", newWallet.privateKey);
+      login(newWallet);
     }
-    const newWallet = Wallet.createRandom();
-    await secureSave("privKey", newWallet.privateKey);
-    login(newWallet);
   };
 
   useEffect(() => {

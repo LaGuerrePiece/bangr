@@ -12,30 +12,35 @@ import { State } from "@web3auth/react-native-sdk";
 interface UserState {
   wallet: Wallet | undefined;
   smartWalletAddress: string | undefined;
-  userInfo: State["userInfo"] | undefined;
+  loaded: number | undefined;
+  name: string | undefined;
+  iban: string | undefined;
   login: (wallet: Wallet) => Promise<void>;
   fetchBalances: (
     scwAddress?: string | null,
     getPrices?: boolean
   ) => Promise<void>;
   fetchPrices: () => Promise<void>;
-  loaded: number | undefined;
   setLoaded: (loaded: number | undefined) => void;
-  setUserInfo: (userInfo: State["userInfo"]) => void;
+  update: (patch: any) => void;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
   wallet: undefined,
   smartWalletAddress: undefined,
   loaded: undefined,
-  userInfo: undefined,
+  name: undefined,
+  iban: undefined,
 
   setLoaded: (loaded: number | undefined) => {
     set({ loaded });
   },
 
-  setUserInfo: (userInfo: State["userInfo"]) => {
-    set({ userInfo });
+  update: (patch) => {
+    set({
+      ...get(),
+      ...patch,
+    });
   },
 
   login: async (wallet: Wallet) => {
