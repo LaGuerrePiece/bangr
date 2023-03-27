@@ -126,28 +126,32 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
-            {tokens && !forceWalletEmpty ? (
+            {tokens &&
               tokens
                 .filter(
                   (token) =>
                     token.symbol !== "aUSDC" &&
-                    token.balance && (
-                      // token balance not 0 or token symbol is eth or usdc
-                    Number(token.balance) > 0
-                    || token.symbol === "ETH"
-                    || token.symbol === "USDC"
-                    )
+                    token.balance &&
+                    // token balance not 0 or token symbol is eth or usdc
+                    (Number(token.balance) > 0 ||
+                      token.symbol === "ETH" ||
+                      token.symbol === "USDC")
                 )
-                .map((token) => <Asset token={token} key={token.symbol} swiper={swiper} />)
-            ) : (
-              <View className="">
-                <ActionButton
-                  text="Add your first assets"
-                  bold
-                  action={() => navigation.navigate("Onramp" as never)}
-                />
-              </View>
-            )}
+                .map((token) => (
+                  <Asset token={token} key={token.symbol} swiper={swiper} />
+                ))}
+            {tokens &&
+              (forceWalletEmpty ||
+                tokens?.reduce((a, token) => a + Number(token.balance), 0)) && (
+                <View>
+                  <ActionButton
+                    text="Get your first assets"
+                    bold
+                    rounded
+                    action={() => navigation.navigate("Onramp" as never)}
+                  />
+                </View>
+              )}
           </View>
         </View>
       )}

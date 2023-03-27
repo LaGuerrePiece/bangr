@@ -54,7 +54,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="mb-8 w-full rounded-lg bg-secondary-light shadow-xl shadow-inner p-2 pr-3 dark:bg-secondary-dark bg-secondary-light">
+          <View className="mb-8 w-full rounded-lg bg-secondary-light p-2 pr-3 shadow-xl shadow-inner dark:bg-secondary-dark">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >

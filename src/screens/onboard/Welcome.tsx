@@ -15,7 +15,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mt-8 p-8">
+      <View className="mx-auto mt-20 w-11/12">
         <View className="flex-row">
           <Image
             className="h-6 w-6"
@@ -29,7 +29,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
             Welcome to Bangr
           </Text>
         </View>
-        <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
+        <Text className="mt-2 mr-4 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
           Managing investments is easy with Bangr
         </Text>
 

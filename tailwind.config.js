@@ -8,6 +8,7 @@ module.exports = {
         InterMedium: ["InterMedium"],
         InterSemiBold: ["InterSemiBold"],
         InterBold: ["InterBold"],
+        InterExtraBold: ["InterExtraBold"],
         InterBlack: ["InterBlack"],
       },
       colors: {

@@ -131,8 +131,8 @@ const ReceiveScreen = () => {
           </Text>
           <View className="mt-8 flex-row justify-between">
             <ActionButton
-              text="Cash"
-              disabled={false}
+              text="Add funds"
+              rounded
               action={() => {
                 navigation.navigate("Onramp" as never);
               }}

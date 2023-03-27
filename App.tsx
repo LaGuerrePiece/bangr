@@ -39,11 +39,12 @@ const App = () => {
 
   const [initialRouteName, setInitialRouteName] = useState("Login");
   const [fontsLoaded] = useFonts({
-    InterBlack: require("./assets/fonts/Inter/Inter-Black.otf"),
     Inter: require("./assets/fonts/Inter/Inter-Regular.otf"),
     InterMedium: require("./assets/fonts/Inter/Inter-Medium.otf"),
     InterSemiBold: require("./assets/fonts/Inter/Inter-SemiBold.otf"),
     InterBold: require("./assets/fonts/Inter/Inter-Bold.otf"),
+    InterExtraBold: require("./assets/fonts/Inter/Inter-ExtraBold.otf"),
+    InterBlack: require("./assets/fonts/Inter/Inter-Black.otf"),
   });
 
   const onLayoutRootView = useCallback(async () => {

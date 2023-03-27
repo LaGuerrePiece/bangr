@@ -33,11 +33,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         }}
       >
         <View className="flex items-center rounded-xl bg-secondary-light p-4 text-xl dark:bg-secondary-dark">
-          <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
+          <Text className="text-center text-3xl font-bold text-typo-light dark:text-typo-dark">
             {title}
           </Text>
-          <Image className="h-48 w-48" source={logo} />
-          <Text className="text-center text-typo-light dark:text-typo-dark">
+          <Image className="h-36 w-36" source={logo} />
+          <Text className="text-center text-lg text-typo-light dark:text-typo-dark">
             {text}
           </Text>
         </View>
@@ -57,7 +57,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <View className="flex w-full items-center">
+      <View className="flex w-full items-center justify-between">
         <RampOption
           logo={require("../../assets/figma/ethereum.png")}
           text={"For a small amount (<$100), the simplest is to pay by card"}
