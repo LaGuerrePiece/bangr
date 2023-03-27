@@ -6,9 +6,9 @@ import useUserStore from "../../../state/user";
 import { ethers } from "ethers";
 import "react-native-get-random-values";
 
-// export const MONERIUM_CLIENT_ID = "ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9";
-export const MONERIUM_CLIENT_ID = "fe7e8ccb-ad2d-11ed-97a8-f2eccd865638";
-export const MONERIUM_ENV = "prod";
+export const MONERIUM_CLIENT_ID = "ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9";
+// export const MONERIUM_CLIENT_ID = "fe7e8ccb-ad2d-11ed-97a8-f2eccd865638";
+export const MONERIUM_ENV: "test" | "prod" = "test";
 
 export function getMoneriumUrl() {
   if (MONERIUM_ENV === "prod") {

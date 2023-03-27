@@ -5,18 +5,22 @@ import {
   useColorScheme,
   Dimensions,
   Image,
+  ActivityIndicator,
+  StyleSheet,
+  BackHandler,
 } from "react-native";
 import { WebView } from "react-native-webview";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Wallet, ethers } from "ethers";
 import ActionButton from "../../../components/ActionButton";
 import QueryString from "query-string";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import useUserStore from "../../../state/user";
 import { MONERIUM_CLIENT_ID, getMoneriumUrl } from ".";
+import { Camera } from "expo-camera";
 
 type MoneriumWebviewParams = {
   MoneriumWebviewScreen: {
@@ -151,6 +155,38 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
     // console.log("json", json);
   };
 
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  // const webViewRef = useRef(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+
+  // useEffect(() => {
+  //   const backAction = () => {
+  //     // @ts-ignore
+  //     if (webViewRef.current) webViewRef.current.goBack();
+  //     return true;
+  //   };
+
+  //   const backHandler = BackHandler.addEventListener(
+  //     "hardwareBackPress",
+  //     backAction
+  //   );
+
+  //   return () => backHandler.remove();
+  // }, []);
+
+  if (hasPermission === null) {
+    return <Text>Waiting for access</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera given</Text>;
+  }
+
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       {returnCode === "" ? (
@@ -160,7 +196,7 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
           onNavigationStateChange={(webViewState) => {
             setWebViewReturnUrl(webViewState.url);
           }}
-          incognito={true}
+          // incognito={true}
         />
       ) : (
         <>
@@ -226,3 +262,23 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
 //  --data-urlencode 'code=r99_ukmyRuaJgWoJ-Q6yFg' \
 //  --data-urlencode 'code_verifier=z81y68jal7h81628fc049m3aia5f3sr2etc9bwj0q5unu43gkag5il167679bwm5p8guu4m6e2wn731bseloflkk1kgwlm9hy6gzgu95ybw8toxzh950z6qu9v416jha' \
 //  --data-urlencode 'redirect_uri=https://www.youtube.com/'
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#1c4154",
+    paddingTop: 20,
+  },
+  activityContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    backgroundColor: "#fff",
+    height: "100%",
+    width: "100%",
+  },
+  view: {
+    borderColor: "red",
+  },
+});
