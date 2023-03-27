@@ -25,8 +25,6 @@ const useTokensStore = create<BalanceState>()(
           data: MultichainToken[];
         };
         console.log(`fetched ${data.length} tokens`);
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-
         set({ tokens: data });
       } catch (error) {
         console.log("error fetching tokens:", error);
