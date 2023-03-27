@@ -85,15 +85,15 @@ const Swap = ({ swiper }: { swiper: any }) => {
 
   async function updateQuote() {
     if (!debouncedAmountIn || !srcToken || !dstToken) return;
-    if (
-      Number(debouncedAmountIn) * (srcToken.priceUSD ?? 0) <
-      SWAPAMOUNTIN_USD_THRESHOLD
-    ) {
-      console.log(
-        `amountIn ${debouncedAmountIn} below $${SWAPAMOUNTIN_USD_THRESHOLD} so cannot quote`
-      );
-      return;
-    }
+    // if (
+    //   Number(debouncedAmountIn) * (srcToken.priceUSD ?? 0) <
+    //   SWAPAMOUNTIN_USD_THRESHOLD
+    // ) {
+    //   console.log(
+    //     `amountIn ${debouncedAmountIn} below $${SWAPAMOUNTIN_USD_THRESHOLD} so cannot quote`
+    //   );
+    //   return;
+    // }
 
     const formattedAmountIn = ethers.utils
       .parseUnits(debouncedAmountIn, srcToken.decimals)
@@ -370,9 +370,9 @@ const Swap = ({ swiper }: { swiper: any }) => {
               text={
                 !debouncedAmountIn
                   ? "Enter Amount"
-                  : Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
-                    SWAPAMOUNTIN_USD_THRESHOLD
-                  ? "Swap Amount too low"
+                  // : Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
+                  //   SWAPAMOUNTIN_USD_THRESHOLD
+                  // ? "Swap Amount too low"
                   : srcToken &&
                     ethers.utils
                       .parseUnits(debouncedAmountIn, srcToken.decimals)

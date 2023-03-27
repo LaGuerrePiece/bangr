@@ -249,7 +249,12 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) => BigNumber.from(chain.deposited))
+        // fast fix, TODO: improve
+        .map((chain) => {
+          console.log("chain.deposited", chain.deposited);
+          console.log("chain.deposited.replace", chain.deposited.replace(".", ""));
+          BigNumber.from(chain.deposited.replace(".", ""));
+        })
         .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );

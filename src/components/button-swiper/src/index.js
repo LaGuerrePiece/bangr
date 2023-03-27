@@ -783,7 +783,7 @@ export default class extends Component {
           <TouchableOpacity
             // border here for button
             // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
-            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
+            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl border-icon-light background-primary-light"
             pointerEvents="none"
             visible={this.state.modalVisible == false}
             onPressIn={() => {
