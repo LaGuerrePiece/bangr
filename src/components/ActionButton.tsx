@@ -34,6 +34,7 @@ const ActionButton: FC<IButton> = ({
   return (
     <TouchableOpacity
       onPress={async () => {
+        if (disabled) return;
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light), action();
       }}
       activeOpacity={disabled ? 1 : 0.2}
