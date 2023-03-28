@@ -20,8 +20,8 @@ const ActionButton: FC<IButton> = ({ text, icon, disabled, action }) => {
       <View
         className={`flex-row items-center justify-around rounded-lg py-3 px-4 ${
           !disabled
-            ? "bg-special-light dark:bg-special-dark"
-            : "bg-typo-dark dark:bg-[#2D2D2D]"
+            ? "bg-icon-special dark:bg-special-dark"
+            : "bg-icon-light dark:bg-[#2D2D2D]"
         }`}
       >
         {icon ? <Image className="mr-2 h-7 w-7" source={icon} /> : null}

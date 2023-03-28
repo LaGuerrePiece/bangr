@@ -20,6 +20,11 @@ export const relay = async (
   wallet: ethers.Wallet,
   scwAddress: string,
   value: string,
+  type: string,
+  protocol: string,
+  asset1: string,
+  asset2: string,
+  amount: string,
   successMessage: string,
   errorMessage: string
 ) => {
@@ -53,11 +58,18 @@ export const relay = async (
     return;
   }
 
-  const relayResponse = await sendToRelayer({
+  const relayResponse = await sendTx({
     signature,
     data: callsObject,
     senderEOA: wallet.address,
+    scwAddress: scwAddress,
+    type,
+    protocol,
+    asset1,
+    asset2,
+    amount,
     value,
+
   });
 
   if (!relayResponse) {
@@ -69,6 +81,10 @@ export const relay = async (
   }
 
   console.log("Success. relayResponse :", relayResponse);
+
+  //until the cron
+  const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
+  console.log("cron called", ping);
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
@@ -109,6 +125,35 @@ export const relay = async (
   });
 };
 
+const sendTx = async (body: {
+  signature?: string;
+  data?: { Calls: CallWithNonce[] };
+  value?: string;
+  senderEOA: string;
+  scwAddress?: string;
+  type?: string;
+  asset1?: string;
+  asset2?: string;
+  amount?: string;
+  protocol?: string;
+}) => {
+  try {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/sendTx`, body, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })) as { data: RelayerResponse };
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error sending tx: ", error.message);
+    } else {
+      console.log("unexpected error sending tx: ", error);
+    }
+  }
+};
+
 const sendToRelayer = async (body: {
   signature?: string;
   data?: { Calls: CallWithNonce[] };
@@ -116,6 +161,11 @@ const sendToRelayer = async (body: {
   senderEOA: string;
   deploy?: ChainId[];
   scwAddress?: string;
+  type?: string;
+  asset1?: string;
+  asset2?: string;
+  amount?: string;
+  protocol?: string;
 }) => {
   try {
     const { data } = (await axios.post(`${getURLInApp()}/api/v1/relay`, body, {

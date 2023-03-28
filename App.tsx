@@ -11,8 +11,6 @@ import Toast from "react-native-toast-message";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/OnrampScreen";
 import { toastConfig } from "./src/components/toasts";
-import Swap from "./src/screens/home/Swap";
-import Invest from "./src/screens/home/Invest";
 import MainScreen from "./src/screens/MainScreen";
 
 const Stack = createNativeStackNavigator();
@@ -67,20 +65,7 @@ const App = () => {
             animation: "none",
           }}
         />
-        <Stack.Screen
-          name="Swap"
-          component={Swap}
-          options={{
-            presentation: "modal",
-            headerShown: false,
-            animation: "none",
-          }}
-        />
-        <Stack.Screen
-          name="Invest"
-          component={Invest}
-          options={{ presentation: "modal", headerShown: false }}
-        />
+  
       </Stack.Navigator>
       <Toast config={toastConfig} />
     </NavigationContainer>

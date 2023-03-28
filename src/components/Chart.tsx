@@ -11,8 +11,8 @@ export type Point = {
 function Chart({ chart }: { chart: Point[] }) {
   const colorScheme = useColorScheme();
   return (
-    <LineChart.Provider data={chart}>
-      <LineChart width={(screenWidth * 11) / 12} height={150} yGutter={16}>
+    <LineChart.Provider data={chart} >
+      <LineChart width={(screenWidth * 10) / 12 + 5}  yGutter={16}>
         <LineChart.Path
           color={colorScheme === "light" ? colors.typo.light : colors.typo.dark}
         />

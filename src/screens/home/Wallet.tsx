@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Appearance,
+  ActivityIndicator,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
@@ -19,6 +20,7 @@ import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
 // @ts-ignore
 import Swipeable from "react-native-swipeable-rtl";
+import { useNavigation } from "@react-navigation/native";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -27,6 +29,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+  const navigation = useNavigation();
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -50,21 +53,6 @@ const Wallet = ({ swiper }: { swiper: any }) => {
     });
   };
 
-  const leftContent = [
-    <View className="flex-row items-center justify-between">
-      <Image
-        className="mx-auto my-3 h-7 w-7"
-        source={require("../../../assets/bangrs-selected.png")}
-      />
-    </View>,
-  ];
-  const rightContent = [
-    <Image
-      className="mx-auto my-3 h-7 w-7"
-      source={require("../../../assets/swap-selected.png")}
-    />,
-  ];
-
   return (
     <ScrollView
       refreshControl={
@@ -74,15 +62,16 @@ const Wallet = ({ swiper }: { swiper: any }) => {
       {loaded === undefined ? (
         <View className="h-screen border-red-500">
           <View className="m-auto">
-            <Text className="text-center text-3xl">loading your bags</Text>
-            <Image
+            {/* <Text className="text-center text-3xl">loading your bags</Text> */}
+            {/* <Image
               className="m-auto h-32 w-32"
               source={
                 colorScheme === "dark"
                   ? require("../../../assets/loading-drk.gif")
                   : require("../../../assets/loading.gif")
               }
-            />
+            /> */}
+            <ActivityIndicator />
           </View>
         </View>
       ) : (
@@ -100,8 +89,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                   className="mr-auto h-7 w-7"
                   source={
                     colorScheme === "dark"
-                      ? require("../../../assets/swapicon-drk.png")
-                      : require("../../../assets/swapicon.png")
+                      ? require("../../../assets/swap-drk.png")
+                      : require("../../../assets/swap.png")
                   }
                 />
               </TouchableOpacity>
@@ -118,18 +107,18 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                   className="ml-auto h-7 w-7"
                   source={
                     colorScheme === "dark"
-                      ? require("../../../assets/investicon-drk.png")
-                      : require("../../../assets/investicon.png")
+                      ? require("../../../assets/invest-drk.png")
+                      : require("../../../assets/invest.png")
                   }
                 />
               </TouchableOpacity>
             </View>
           </View>
-          {refreshing && (
+          {/* {refreshing && (
             <Text className="text-center text-lg">refreshing...</Text>
-          )}
-          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6  dark:bg-primary-dark">
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-secondary-light">
+          )} */}
+          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6 dark:bg-primary-dark">
+            <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
               ${loaded.toFixed(2)}
             </Text>
             {/* <View className=""><Chart chart={chart} /></View> */}
@@ -142,10 +131,14 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 .filter(
                   (token) =>
                     token.symbol !== "aUSDC" &&
-                    token.balance &&
+                    token.balance && (
+                      // token balance not 0 or token symbol is eth or usdc
                     Number(token.balance) > 0
+                    || token.symbol === "ETH"
+                    || token.symbol === "USDC"
+                    )
                 )
-                .map((token) => <Asset token={token} key={token.symbol} />)
+                .map((token) => <Asset token={token} key={token.symbol} swiper={swiper} />)
             ) : (
               <View className="">
                 <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">

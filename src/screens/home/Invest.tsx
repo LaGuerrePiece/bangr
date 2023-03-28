@@ -19,9 +19,9 @@ const Invest = ({ swiper }: { swiper: any }) => {
   // setTab("Invest");
 
   return (
-    <SafeAreaView className=" mx-auto mt-4 w-11/12">
-      <View className="my-2 w-full flex-row">
-        <View className="w-1/2">
+    <SafeAreaView className="mt-4 w-11/12">
+      <View className="w-full flex-row ">
+        <View className="mb-2 w-1/2">
           <TouchableOpacity
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -39,13 +39,14 @@ const Invest = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View>
-        <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
-          Invest
-        </Text>
-      </View>
-      <View>
-        <ScrollView>
+      <View className="">
+        <ScrollView className="">
+          <View>
+            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+              Invest
+            </Text>
+          </View>
+
           {vaults &&
             vaults
               .filter(
@@ -53,7 +54,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
+          <View className="mb-8 w-full rounded-lg bg-secondary-light shadow-xl shadow-inner p-2 pr-3 dark:bg-secondary-dark bg-secondary-light">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >
@@ -61,7 +62,6 @@ const Invest = ({ swiper }: { swiper: any }) => {
                 <View className="flex-row items-center">
                   <Image
                     className="h-6 w-6"
-                    // className="h-[16px] w-[24px]"
                     source={
                       colorScheme === "light"
                         ? require("../../../assets/idea.png")
@@ -83,8 +83,8 @@ const Invest = ({ swiper }: { swiper: any }) => {
               </View>
             </TouchableOpacity>
           </View>
+          <View className="my-16" />
         </ScrollView>
-        {/* <NavBar tab={tab} setTab={setTab} /> */}
       </View>
     </SafeAreaView>
   );

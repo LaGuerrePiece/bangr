@@ -5,7 +5,7 @@ module.exports = {
     extend: {
       colors: {
         primary: {
-          light: "#EFEEEC",
+          light: "#F8F8F8",
           dark: "#1B1C1E",
         },
         secondary: {
@@ -13,7 +13,7 @@ module.exports = {
           dark: "#282B30",
         },
         special: {
-          light: "#36220F",
+          light: "#1E1E1E",
           dark: "#F3F0ED",
         },
         typo: {
@@ -32,6 +32,11 @@ module.exports = {
           light: "#ECF4FE",
           dark: "#3A5A83",
         },
+        icon : {
+          light: "#595654",
+          dark: "#BFB7B0",
+          special  : "#282828"
+        }
       },
     },
   },

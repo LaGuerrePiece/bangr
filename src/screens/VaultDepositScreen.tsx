@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
-import { utils } from "ethers";
+import { BigNumber, constants, ethers, utils } from "ethers";
 import { useEffect, useLayoutEffect, useState } from "react";
 import {
   Text,
@@ -64,8 +64,16 @@ const VaultDepositScreen = () => {
   }));
   const tokens = useTokensStore((state) => state.tokens);
 
-  const { name, image, description, protocol, status, color, chains } =
-    params.vault;
+  const {
+    name,
+    image,
+    description,
+    protocol,
+    status,
+    color,
+    chains,
+    vaultToken,
+  } = vaults?.find((v) => v.name === params.vault.name)!;
 
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
@@ -77,28 +85,52 @@ const VaultDepositScreen = () => {
   const [selectedTokenSymbol, setSelectedTokenSymbol] =
     useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
-  const [deposited, setDeposited] = useState("");
+  const [deposited, setDeposited] = useState("0");
+  const [debouncedAmount, setDebouncedAmount] = useState("");
 
-  const token = tokens?.find((token) => token.symbol === selectedTokenSymbol);
+  const selectedToken = tokens?.find(
+    (token) => token.symbol === selectedTokenSymbol
+  );
+  const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedAmount(amount);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [amount]);
 
   useLayoutEffect(() => {
     navigation.setOptions({ headerShown: false });
   });
 
-  const handleAmountChange = async (action?: string, tokenSymbol?: string) => {
-    if (!parseFloat(amount)) {
+  const handleAmountChange = async (action: string) => {
+    if (!parseFloat(debouncedAmount)) {
       return;
     }
-    const token = tokens?.find((token) =>
-      token.symbol === tokenSymbol ? tokenSymbol : selectedTokenSymbol
+
+    // Input token is sent : USDC when we deposit and aUSDc when we withdraw
+    const token = action === "deposit" ? selectedToken : vaultTkn;
+
+    console.log(
+      "token",
+      token,
+      "amount",
+      debouncedAmount,
+      "action",
+      action,
+      "vaultName",
+      name
     );
 
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
-        action: action ? action : "deposit",
-        amount: utils.parseUnits(amount, token?.decimals),
+        action,
+        amount: utils.parseUnits(debouncedAmount, token!.decimals),
         token,
       });
 
@@ -139,7 +171,7 @@ const VaultDepositScreen = () => {
   const handleWithdraw = async () => {
     if (!validateInput("withdraw")) return;
 
-    const calls = await handleAmountChange("withdraw", "aUSDC");
+    const calls = await handleAmountChange("withdraw");
 
     if (wallet && smartWalletAddress)
       await relay(
@@ -157,7 +189,7 @@ const VaultDepositScreen = () => {
 
   const validateInput = (action: string) => {
     try {
-      utils.parseUnits(amount, token?.decimals);
+      utils.parseUnits(amount, selectedToken?.decimals);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -179,7 +211,7 @@ const VaultDepositScreen = () => {
     if (action === "deposit") {
       if (
         parseFloat(amount) >
-        parseFloat(formatUnits(balance, token?.decimals, token?.decimals || 18))
+        parseFloat(ethers.utils.formatUnits(balance, selectedToken?.decimals))
       ) {
         Toast.show({
           type: "error",
@@ -189,7 +221,11 @@ const VaultDepositScreen = () => {
         return false;
       }
     } else {
-      if (parseFloat(amount) > parseFloat(deposited)) {
+      if (
+        parseFloat(amount) >
+        parseFloat(ethers.utils.formatUnits(deposited, vaultTkn?.decimals))
+      ) {
+        // if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
         Toast.show({
           type: "error",
           text1: "Amount too high",
@@ -203,7 +239,7 @@ const VaultDepositScreen = () => {
   };
 
   useEffect(() => {
-    if (amount) handleAmountChange();
+    if (amount) handleAmountChange("deposit");
   }, [amount]);
 
   useEffect(() => {
@@ -213,12 +249,18 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) => chain.deposited)
-        .reduce((acc, cur) => acc + cur, 0)
+        // fast fix, TODO: improve
+        .map((chain) => {
+          console.log("chain.deposited", chain.deposited);
+          console.log("chain.deposited.replace", chain.deposited.replace(".", ""));
+          BigNumber.from(chain.deposited.replace(".", ""));
+        })
+        .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
+  console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -260,16 +302,18 @@ const VaultDepositScreen = () => {
             </View>
 
             <View className="my-2 flex items-center">
-              {token && (
+              {selectedToken && (
                 <SelectTokenButton
-                  tokens={[token]}
-                  selectedToken={token}
+                  tokens={[selectedToken]}
+                  selectedToken={selectedToken}
                   tokenToUpdate={""}
                 />
               )}
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Available:{" "}
-                {balance ? formatUnits(balance, token?.decimals, 3) : "0"}{" "}
+                {balance
+                  ? formatUnits(balance, selectedToken?.decimals, 3)
+                  : "0"}{" "}
                 {selectedTokenSymbol}
               </Text>
             </View>
@@ -288,8 +332,8 @@ const VaultDepositScreen = () => {
                     balance
                       ? formatUnits(
                           balance,
-                          token?.decimals,
-                          token?.decimals || 18
+                          selectedToken?.decimals,
+                          selectedToken?.decimals || 18
                         )
                       : "0"
                   );
@@ -302,9 +346,26 @@ const VaultDepositScreen = () => {
                 </View>
               </TouchableOpacity>
             </View>
-            <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-              Deposited: {deposited} {selectedTokenSymbol}
-            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                setAmount(
+                  deposited
+                    ? formatUnits(
+                        deposited,
+                        selectedToken?.decimals,
+                        selectedToken?.decimals || 18
+                      )
+                    : "0"
+                );
+              }}
+            >
+              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+                Deposited:{" "}
+                {deposited &&
+                  utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
+                {selectedTokenSymbol}
+              </Text>
+            </TouchableOpacity>
 
             {status === "active" ? (
               <View className="mt-12 flex-row justify-evenly">
@@ -313,7 +374,8 @@ const VaultDepositScreen = () => {
                   disabled={
                     chains
                       .map((chain) => chain.deposited)
-                      .reduce((acc, cur) => acc + cur, 0) > 0
+                      .reduce((acc, cur) => acc.add(cur), BigNumber.from(0))
+                      .gt(0)
                       ? false
                       : true
                   }

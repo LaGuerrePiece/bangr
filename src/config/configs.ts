@@ -4,16 +4,12 @@ import tailwindConfig from "../../tailwind.config";
 import resolveConfig from "tailwindcss/resolveConfig";
 
 const fullConfig = resolveConfig(tailwindConfig);
+
 export const colors = fullConfig?.theme?.colors as {
   typo: any;
   btn: any;
   typo2: any;
 };
-
-export const getURL = () =>
-  process.env.NODE_ENV == "development"
-    ? "http://localhost:3000"
-    : "https://beta.poche.fi";
 
 export const chainData = [
   {
@@ -64,16 +60,6 @@ export const chainData = [
     //https://polygon-rpc.com
     relayerFundRate: "0.2",
   },
-  // {
-  //   name: "Binance Smart Chain",
-  //   chainId: 56,
-  //   image: "/bsc.png",
-  //   nativeTokenSymbol : "BNB",
-  //   coingeckoIdentifier: "binance-smart-chain",
-  //   provider: process.env.DEV_MODE === "TRUE"
-  //   ? new ethers.providers.JsonRpcProvider("http://127.0.0.1:10001/")
-  //   : new ethers.providers.JsonRpcProvider("https://bsc-mainnet.public.blastapi.io")
-  // },
 ] as const;
 
 // alchemyProvider({ apiKey: 'VkrAJOLRBt1bb5p3ypYrQj84QElpex8g' }),
