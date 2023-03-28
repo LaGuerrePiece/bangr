@@ -21,7 +21,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
   const navigation = useNavigation();
 
   return (
-    <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark shadow-xl shadow-inner">
+    <View className="m-auto mt-1 mb-3 w-full rounded-lg bg-secondary-light p-3 shadow-xl shadow-inner dark:bg-secondary-dark">
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(
@@ -52,8 +52,11 @@ const Vault = ({ vault }: { vault: VaultData }) => {
             Earn up to
           </Text>
           <View className="flex-row items-end justify-between">
-            <Text className="mt-2 text-4xl font-bold" style={{ color }}>
-              {apy}% <Text className="text-3xl">APY</Text>
+            <Text
+              className="mt-2 text-4xl font-bold opacity-100"
+              style={{ color }}
+            >
+              {apy}% <Text className="text-3xl opacity-50">APY</Text>
             </Text>
             <Image
               className="h-[16px] w-[24px]"

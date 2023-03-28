@@ -37,6 +37,11 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import Asset from "../../components/Asset";
 
+type ButtonStatus = {
+  disabled: boolean;
+  text: string;
+};
+
 const Swap = ({ swiper }: { swiper: any }) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -196,6 +201,48 @@ const Swap = ({ swiper }: { swiper: any }) => {
     }
     clearAfterSwap();
     fetchBalances();
+  };
+
+  const buttonStatus = (): ButtonStatus => {
+    if (!debouncedAmountIn) {
+      return {
+        disabled: true,
+        text: "Enter amount",
+      };
+    } else if (
+      Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
+      SWAPAMOUNTIN_USD_THRESHOLD
+    ) {
+      return {
+        disabled: true,
+        text: `Amount too small`,
+      };
+    } else if (
+      srcToken &&
+      ethers.utils
+        .parseUnits(debouncedAmountIn, srcToken.decimals)
+        .gt(srcToken.balance ?? "0")
+    ) {
+      return {
+        disabled: true,
+        text: `Insufficient balance`,
+      };
+    } else if (isSearching) {
+      return {
+        disabled: true,
+        text: "Computing route...",
+      };
+    } else if (!calls) {
+      return {
+        disabled: true,
+        text: "No route found",
+      };
+    } else {
+      return {
+        disabled: false,
+        text: "Swap",
+      };
+    }
   };
 
   return (
@@ -387,39 +434,12 @@ const Swap = ({ swiper }: { swiper: any }) => {
             </TouchableHighlight>
           </View>
 
-          <View className="flex-row justify-evenly">
-            {/* {!debouncedAmountIn ||
-          !calls ||
-          isSearching ||
-          Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
-            SWAPAMOUNTIN_USD_THRESHOLD ||
-          (srcToken &&
-            ethers.utils
-              .parseUnits(debouncedAmountIn, srcToken.decimals)
-              .gt(srcToken.balance ?? "0")) ? (
-            <ActionButton
-              text={
-                !debouncedAmountIn
-                  ? "Enter Amount"
-                  // : Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
-                  //   SWAPAMOUNTIN_USD_THRESHOLD
-                  // ? "Swap Amount too low"
-                  : srcToken &&
-                    ethers.utils
-                      .parseUnits(debouncedAmountIn, srcToken.decimals)
-                      .gt(srcToken.balance ?? "0")
-                  ? "Balance too low"
-                  : isSearching
-                  ? "Computing route..."
-                  : "No route found."
-              }
-              disabled={true}
-              action={() => {}}
-            />
-          ) : ( */}
-            <ActionButton text="Swap" disabled={false} action={swap} />
-            {/* )} */}
-          </View>
+        <View className="flex-row justify-evenly">
+          <ActionButton
+            text={buttonStatus().text}
+            disabled={buttonStatus().disabled}
+            action={swap}
+          />
         </View>
       </TouchableWithoutFeedback>
     </View>

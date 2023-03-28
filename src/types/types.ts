@@ -50,15 +50,6 @@ export type Price = {
   priceUSD?: number;
 };
 
-export type TokenGroup = {
-  name: string;
-  symbol: string;
-  balance: string;
-  decimals: number;
-  logoURI: string;
-  tokens: [];
-};
-
 export type Call = {
   to: string;
   cid: ChainId;

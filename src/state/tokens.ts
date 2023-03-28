@@ -32,37 +32,42 @@ const useTokensStore = create<BalanceState>()(
     },
 
     addBalances: async (balances: Balance[]) => {
-      const { tokens } = get();
-
-      if (!tokens) {
-        console.log("error: cannot add balances to no tokens");
-        return;
+      for (let i = 0; i < 10; i++) {
+        const { tokens } = get();
+        if (tokens) {
+          const newTokens = addBalancesToTokens(tokens, balances);
+          set({
+            tokens: newTokens,
+          });
+          if (i > 0) console.log("finally added balances after", i, "seconds");
+          return;
+        }
+        console.log(
+          "Cannot add balances to no tokens. Waiting for tokens...",
+          i
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-
-      const newTokens = addBalancesToTokens(tokens, balances);
-
-      // console.log("newTokens after adding balances:", newTokens);
-
-      set({
-        tokens: newTokens,
-      });
+      console.log("Error: tokens did not arrive after 10 seconds.");
+      return;
     },
 
     addPrices: async (prices: Price[]) => {
-      const { tokens } = get();
-
-      if (!tokens) {
-        console.log("error: cannot add prices to no tokens");
-        return;
+      for (let i = 0; i < 10; i++) {
+        const { tokens } = get();
+        if (tokens) {
+          const newTokens = addPricesToTokens(tokens, prices);
+          set({
+            tokens: newTokens,
+          });
+          if (i > 0) console.log("finally added prices after", i, "seconds");
+          return;
+        }
+        console.log("Cannot add prices to no tokens. Waiting for tokens...", i);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
-
-      const newTokens = addPricesToTokens(tokens, prices);
-
-      // console.log("newTokens after adding prices:", newTokens);
-
-      set({
-        tokens: newTokens,
-      });
+      console.log("Error: tokens did not arrive after 10 seconds.");
+      return;
     },
 
     clear: () => {

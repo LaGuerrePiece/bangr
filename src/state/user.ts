@@ -38,11 +38,11 @@ const useUserStore = create<UserState>()((set, get) => ({
     set({ userInfo });
   },
 
-  login: async (newWallet: Wallet) => {
-    const scwAddress = await getSmartWalletAddress(newWallet.address);
+  login: async (wallet: Wallet) => {
+    const scwAddress = await getSmartWalletAddress(wallet.address);
 
     set({
-      wallet: newWallet,
+      wallet,
       smartWalletAddress: scwAddress,
     });
 

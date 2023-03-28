@@ -20,6 +20,8 @@ import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
 // @ts-ignore
 import Swipeable from "react-native-swipeable-rtl";
+import { forceWalletEmpty } from "../../config/configs";
+import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
@@ -126,26 +128,33 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
-            {tokens ? (
-              tokens
-                .filter(
-                  (token) =>
-                    token.symbol !== "aUSDC" &&
-                    token.balance && (
+            {tokens
+              ? tokens
+                  .filter(
+                    (token) =>
+                      token.symbol !== "aUSDC" &&
+                      token.balance &&
                       // token balance not 0 or token symbol is eth or usdc
-                    Number(token.balance) > 0
-                    || token.symbol === "ETH"
-                    || token.symbol === "USDC"
-                    )
-                )
-                .map((token) => <Asset token={token} key={token.symbol} swiper={swiper} />)
-            ) : (
-              <View className="">
-                <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-                  No tokens found
-                </Text>
+                      (Number(token.balance) > 0 ||
+                        token.symbol === "ETH" ||
+                        token.symbol === "USDC")
+                  )
+                  .map((token) => (
+                    <Asset token={token} key={token.symbol} swiper={swiper} />
+                  ))
+              : null}
+            {tokens &&
+            (forceWalletEmpty ||
+              tokens?.reduce((a, token) => a + Number(token.balance), 0)) ? (
+              <View>
+                <ActionButton
+                  text="Get your first assets"
+                  bold
+                  rounded
+                  action={() => navigation.navigate("Onramp" as never)}
+                />
               </View>
-            )}
+            ) : null}
           </View>
         </View>
       )}

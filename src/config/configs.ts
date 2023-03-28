@@ -4,12 +4,7 @@ import tailwindConfig from "../../tailwind.config";
 import resolveConfig from "tailwindcss/resolveConfig";
 
 const fullConfig = resolveConfig(tailwindConfig);
-
-export const colors = fullConfig?.theme?.colors as {
-  typo: any;
-  btn: any;
-  typo2: any;
-};
+export const colors = fullConfig?.theme?.colors as any;
 
 export const chainData = [
   {
@@ -66,18 +61,6 @@ export const chainData = [
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export interface TokenGroups {
-  groupName: string;
-  tokenSymbols: string[];
-}
-
-export const tokenGroups: TokenGroups[] = [
-  {
-    groupName: "USD",
-    tokenSymbols: ["USDC", "DAI"],
-  },
-];
-
 export const TOKEN_WHITELIST = [
   "ETH",
   "MATIC",
@@ -100,6 +83,12 @@ export const TOKEN_WHITELIST = [
   // "BIFI",
   // "BAL",
 ];
+
+export const forceOnboarding = false; // to see onboarding
+
+export const forceWalletEmpty = false; // to see button to buy first coins
+
+export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone

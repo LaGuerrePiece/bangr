@@ -3,6 +3,14 @@ module.exports = {
   content: ["./App.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        Inter: ["Inter"],
+        InterMedium: ["InterMedium"],
+        InterSemiBold: ["InterSemiBold"],
+        InterBold: ["InterBold"],
+        InterExtraBold: ["InterExtraBold"],
+        InterBlack: ["InterBlack"],
+      },
       colors: {
         primary: {
           light: "#F8F8F8",
@@ -11,6 +19,10 @@ module.exports = {
         secondary: {
           light: "#FFFFFF",
           dark: "#282B30",
+        },
+        tertiary: {
+          light: "#FFFFFF",
+          dark: "#3c414a",
         },
         special: {
           light: "#1E1E1E",

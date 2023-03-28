@@ -19,11 +19,8 @@ import * as SecureStore from "expo-secure-store";
 import * as Haptics from "expo-haptics";
 import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
-import HistoryScreen from "./HistoryScreen";
 
-const MainScreen = () => {
-  // const { tab, setTab } = useTabStore();
-  const navigation = useNavigation();
+const MainScreen = ({ navigation }: { navigation: any }) => {
   const insets = useSafeAreaInsets();
   const swiper = useRef(null);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
@@ -34,12 +31,6 @@ const MainScreen = () => {
       gestureEnabled: false,
     });
   });
-
-  const logOut = async () => {
-    const privKey = await SecureStore.getItemAsync("privKey");
-    if (privKey) await SecureStore.deleteItemAsync("privKey");
-    navigation.navigate("Login" as never);
-  };
 
   const dot = (
     <View
@@ -74,6 +65,15 @@ const MainScreen = () => {
         marginBottom: 3,
       }}
     />
+  );
+
+  // Prevents user from going back to CreateAccount/Login screen
+  useEffect(
+    () =>
+      navigation.addListener("beforeRemove", (e: any) => {
+        e.preventDefault();
+      }),
+    [navigation]
   );
 
   return (
