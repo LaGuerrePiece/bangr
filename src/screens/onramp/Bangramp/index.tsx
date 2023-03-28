@@ -13,8 +13,10 @@ import { TextInput } from "react-native-gesture-handler";
 import { colors } from "../../../config/configs";
 import { useEffect, useState } from "react";
 import WebView from "react-native-webview";
-const windowWidth = Dimensions.get("window").width;
+import * as Linking from "expo-linking";
 import WertWidget from "@wert-io/widget-initializer";
+
+const windowWidth = Dimensions.get("window").width;
 
 export default function Bangramp({ navigation }: { navigation: any }) {
   const [amountIn, setAmountIn] = useState<string>("50");
@@ -35,21 +37,24 @@ export default function Bangramp({ navigation }: { navigation: any }) {
   //   baseCurrencyCode: "eur",
   //   baseCurrencyAmount: "30",
   //   paymentMethod: "credit_debit_card",
-  //   redirectURL: "bangr://",
+  //   redirectURL: "poche://",
   // };
 
+  console.log('Linking.createURL("home")', Linking.createURL("home"));
   const params = {
-    partner_id: "default",
     currency_amount: "30",
-    commodity: "USDC:polygon",
+    click_id: "123456789",
+    commodity: "ETH",
+    // commodity: "USDC:polygon",
     address: "0x9D392187c08fc28A86e1354aD63C70897165b982",
-    redirect_url: "bangr://",
-    phone: "+33644621318",
-    email: "i@poche.fi",
+    redirect_url: Linking.createURL("home"),
+    phone: "+33695801180",
+    email: "florent.tavernier@gmail.com",
+    theme: "dark",
     lang: "fr",
   };
 
-  const url = `https://widget.wert.io?${new URLSearchParams(
+  const url = `https://sandbox.wert.io/01GWKZ7NZB7W8PQ4X509EM13YV/redirect?${new URLSearchParams(
     params
   ).toString()}`;
   console.log("url", url);
