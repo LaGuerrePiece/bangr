@@ -21,6 +21,7 @@ const windowWidth = Dimensions.get("window").width;
 export default function Bangramp({ navigation }: { navigation: any }) {
   const [amountIn, setAmountIn] = useState<string>("50");
   const [showWebview, setShowWebview] = useState<boolean>(false);
+  const [webViewReturnUrl, setWebViewReturnUrl] = useState<string>("");
 
   const exchangeRate = 0.98;
 
@@ -47,12 +48,20 @@ export default function Bangramp({ navigation }: { navigation: any }) {
     commodity: "ETH",
     // commodity: "USDC:polygon",
     address: "0x9D392187c08fc28A86e1354aD63C70897165b982",
-    redirect_url: Linking.createURL("home"),
+    redirect_url: "https://www.youtube.com/",
+    // redirect_url: Linking.createURL("home"),
     phone: "+33695801180",
     email: "florent.tavernier@gmail.com",
     theme: "dark",
     lang: "fr",
   };
+
+  useEffect(() => {
+    if (webViewReturnUrl.includes("wert")) return;
+    if (webViewReturnUrl.includes("youtube")) {
+      navigation.navigate("OrderConfirmed");
+    }
+  }, [webViewReturnUrl]);
 
   const url = `https://sandbox.wert.io/01GWKZ7NZB7W8PQ4X509EM13YV/redirect?${new URLSearchParams(
     params
@@ -66,6 +75,9 @@ export default function Bangramp({ navigation }: { navigation: any }) {
           style={{ width: windowWidth }}
           source={{
             uri: url,
+          }}
+          onNavigationStateChange={(webViewState) => {
+            setWebViewReturnUrl(webViewState.url);
           }}
           incognito={true}
         />
