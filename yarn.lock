@@ -1095,7 +1095,7 @@
   dependencies:
     regenerator-runtime "^0.13.11"
 
-"@babel/runtime@^7.20.0", "@babel/runtime@^7.7.2":
+"@babel/runtime@^7.15.4", "@babel/runtime@^7.20.0", "@babel/runtime@^7.7.2":
   version "7.21.0"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.21.0.tgz#5b55c9d394e5fcf304909a8b00c07dc217b56673"
   integrity sha512-xwII0//EObnq89Ji5AKYQaRYiW/nZ3llSv29d49IuxPhKbtJoLP+9QUUZ4nVragQVtaVGeZrpB+ZtG/Pdy/POw==
@@ -2234,6 +2234,21 @@
   dependencies:
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
+
+"@ramp-network/ramp-instant-sdk@^2.5.0":
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-2.5.2.tgz#8f1ff2d2c079123646b285cbc0eb1aa3c258707c"
+  integrity sha512-cfZdFZGz6j3gren+Gua7hANJNKx9ZnjMy4koR3gAqxRFhhqB0JhbrK8ySbpmfU2LTMAn0X1uiDVdSD78ldN9/g==
+  dependencies:
+    body-scroll-lock "^2.6.4"
+
+"@ramp-network/react-native-sdk@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@ramp-network/react-native-sdk/-/react-native-sdk-0.4.0.tgz#b77c30c322c27d18b043543787383402280c601c"
+  integrity sha512-SAZnx+t96M2vd0KdUh452fpIQTDvU/5tnbCzV2b0qFPCzrncWKp9YJ6PNOtsWHD1UUXyjH6qzRKcCAnXaPdcyg==
+  dependencies:
+    "@babel/runtime" "^7.15.4"
+    "@ramp-network/ramp-instant-sdk" "^2.5.0"
 
 "@react-native-clipboard/clipboard@^1.11.1":
   version "1.11.1"
@@ -3650,6 +3665,11 @@ body-parser@1.20.1, body-parser@^1.20.1:
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+body-scroll-lock@^2.6.4:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.7.1.tgz#caf3f9c91773af1ffb684cd66ed9137b5b737014"
+  integrity sha512-hS53SQ8RhM0e4DsQ3PKz6Gr2O7Kpdh59TWU98GHjaQznL7y4dFycEPk7pFQAikqBaUSCArkc5E3pe7CWIt2fZA==
 
 bonjour-service@^1.0.11:
   version "1.1.1"
