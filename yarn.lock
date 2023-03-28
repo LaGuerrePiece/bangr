@@ -3097,6 +3097,11 @@
     "@webassemblyjs/ast" "1.11.1"
     "@xtuc/long" "4.2.2"
 
+"@wert-io/widget-initializer@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@wert-io/widget-initializer/-/widget-initializer-2.0.3.tgz#6d885b32569cd150f0f466f1340cb4eb8c2d6742"
+  integrity sha512-y9jR388c6EvcAKlw2g3VgxCQAlfKvgowqlzlXtJt/sQBmkLHReH8R5m1JNFqE2g5fXCapQXUof/OB1znJOVXOw==
+
 "@xmldom/xmldom@~0.7.0", "@xmldom/xmldom@~0.7.7":
   version "0.7.9"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.9.tgz#7f9278a50e737920e21b297b8a35286e9942c056"

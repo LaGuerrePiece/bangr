@@ -21,6 +21,7 @@
     "@transak/react-native-sdk": "^1.2.1",
     "@types/crypto-js": "^4.1.1",
     "@web3auth/react-native-sdk": "^3.3.0",
+    "@wert-io/widget-initializer": "^2.0.3",
     "add": "^2.0.6",
     "axios": "^1.2.2",
     "chart.js": "^4.1.2",

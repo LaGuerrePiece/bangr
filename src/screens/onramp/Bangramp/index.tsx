@@ -14,6 +14,7 @@ import { colors } from "../../../config/configs";
 import { useEffect, useState } from "react";
 import WebView from "react-native-webview";
 const windowWidth = Dimensions.get("window").width;
+import WertWidget from "@wert-io/widget-initializer";
 
 export default function Bangramp({ navigation }: { navigation: any }) {
   const [amountIn, setAmountIn] = useState<string>("50");
@@ -21,23 +22,36 @@ export default function Bangramp({ navigation }: { navigation: any }) {
 
   const exchangeRate = 0.98;
 
+  const wertWidget = new WertWidget();
+  console.log("wertWidget", wertWidget);
+
+  // const params = {
+  //   apiKey: "pk_live_q9RGNNxVw8kvQF87xk9SgL5ZwAfT4O5h",
+  //   currencyCode: "usdc", //put polygon here
+  //   walletAddress: "0x9D392187c08fc28A86e1354aD63C70897165b982", //il faut signer pour que ça marche
+  //   colorCode: "#0000FF",
+  //   theme: "dark",
+  //   email: "f@poche.fi",
+  //   baseCurrencyCode: "eur",
+  //   baseCurrencyAmount: "30",
+  //   paymentMethod: "credit_debit_card",
+  //   redirectURL: "bangr://",
+  // };
+
   const params = {
-    apiKey: "pk_live_q9RGNNxVw8kvQF87xk9SgL5ZwAfT4O5h",
-    currencyCode: "usdc", //put polygon here
-    walletAddress: "0x9D392187c08fc28A86e1354aD63C70897165b982", //il faut signer pour que ça marche
-    colorCode: "#0000FF",
-    theme: "dark",
-    email: "f@poche.fi",
-    baseCurrencyCode: "eur",
-    baseCurrencyAmount: "30",
-    paymentMethod: "credit_debit_card",
-    redirectURL: "bangr://",
+    partner_id: "default",
+    currency_amount: "30",
+    commodity: "USDC:polygon",
+    address: "0x9D392187c08fc28A86e1354aD63C70897165b982",
+    redirect_url: "bangr://",
+    phone: "+33644621318",
+    email: "i@poche.fi",
+    lang: "fr",
   };
 
-  const url = `https://buy.moonpay.com?${new URLSearchParams(
+  const url = `https://widget.wert.io?${new URLSearchParams(
     params
   ).toString()}`;
-
   console.log("url", url);
 
   return (
