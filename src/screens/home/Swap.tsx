@@ -435,7 +435,6 @@ const Swap = ({ swiper }: { swiper: any }) => {
               </View>
             </TouchableHighlight>
           </View>
-        </View>
 
         <View className="flex-row justify-evenly">
           <ActionButton
@@ -444,6 +443,8 @@ const Swap = ({ swiper }: { swiper: any }) => {
             action={swap}
           />
         </View>
+        </View>
+
       </TouchableWithoutFeedback>
     </View>
   );
