@@ -9,6 +9,9 @@ export type Task = {
   chainId: number;
   txHash: string;
   state: number;
+  asset1: string;
+  asset2: string;
+  amount: string;
 };
 
 interface TasksState {
@@ -33,6 +36,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         data: Task[];
       };
       console.log(`fetched ${data.length} tasks`);
+      console.log(data);
       set({ tasks: data });
     } catch (error) {
       console.log("error fetching tasks:", error);

@@ -19,7 +19,7 @@ import * as SecureStore from "expo-secure-store";
 import * as Haptics from "expo-haptics";
 import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
-
+import HistoryScreen from "./HistoryScreen";
 
 const MainScreen = () => {
   // const { tab, setTab } = useTabStore();
@@ -44,7 +44,8 @@ const MainScreen = () => {
   const dot = (
     <View
       style={{
-        backgroundColor: colorScheme === "light" ? "rgba(0,0,0,0)" : "transparent",
+        backgroundColor:
+          colorScheme === "light" ? "rgba(0,0,0,0)" : "transparent",
         width: 12,
         height: 12,
         borderRadius: 8,
@@ -53,7 +54,8 @@ const MainScreen = () => {
         marginTop: 3,
         marginBottom: 3,
         borderWidth: 2,
-        borderColor: colorScheme === "light" ? colors.icon.light : colors.icon.dark,
+        borderColor:
+          colorScheme === "light" ? colors.icon.light : colors.icon.dark,
       }}
     />
   );
@@ -61,7 +63,8 @@ const MainScreen = () => {
   const activeDot = (
     <View
       style={{
-        backgroundColor: colorScheme === "light" ? colors.icon.light : colors.icon.dark,
+        backgroundColor:
+          colorScheme === "light" ? colors.icon.light : colors.icon.dark,
         width: 12,
         height: 12,
         borderRadius: 8,
@@ -78,7 +81,7 @@ const MainScreen = () => {
       loop={false}
       ref={swiper}
       showsPagination={true}
-      index={1}
+      index={2}
       showsButtons={false}
       dot={dot}
       activeDot={activeDot}
@@ -87,8 +90,12 @@ const MainScreen = () => {
       }}
     >
       <View className="m-auto w-full grow dark:bg-primary-dark">
+        <HistoryScreen swiper={swiper} />
+      </View>
+      <View className="m-auto w-full grow dark:bg-primary-dark">
         <Swap swiper={swiper} />
       </View>
+
       <View
         className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
         style={{ paddingTop: insets.top }}

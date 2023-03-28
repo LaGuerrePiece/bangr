@@ -27,8 +27,6 @@ import useModalStore from "../../../state/modal";
  * @type {StyleSheetPropType}
  */
 
-
-
 const styles = {
   container: {
     backgroundColor: "transparent",
@@ -107,15 +105,11 @@ const styles = {
 // missing `module.exports = exports['default'];` with babel6
 // export default React.createClass({
 export default class extends Component {
-  
-  
-  
-  
   /**
    * Props Validation
    * @type {Object}
    */
-  
+
   static propTypes = {
     horizontal: PropTypes.bool,
     children: PropTypes.node.isRequired,
@@ -638,7 +632,6 @@ export default class extends Component {
     return overrides;
   };
 
-  
   /**
    * Render pagination
    * @return {object} react-dom
@@ -682,13 +675,20 @@ export default class extends Component {
         ]}
       />
     );
-    for (let i = 0; i < this.state.total; i++) {
-      dots.push(
-        i === this.state.index
-          ? React.cloneElement(ActiveDot, { key: i })
-          : React.cloneElement(Dot, { key: i })
-      );
+    for (let i = 1; i < this.state.total; i++) {
+      if (this.state.index === 0 && i === 1) {
+        dots.push(React.cloneElement(ActiveDot, { key: i }));
+      } else {
+        dots.push(
+          i === this.state.index
+            ? React.cloneElement(ActiveDot, { key: i })
+            : React.cloneElement(Dot, { key: i })
+        );
+      }
     }
+
+    console.log("current page: " + this.state.index);
+
 
     return (
       <View>
@@ -708,33 +708,13 @@ export default class extends Component {
             }}
           >
             <View className="mt-auto h-1/2 rounded-lg bg-primary-light px-2 pt-4">
-              <View className="bg-seconday-light flex">
+            <View className="flex">
                 <TouchableOpacity
                   className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(1);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/pochicon.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">Wallet</Text>
-                      <Text className="text-md ml-auto">View your assets</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View className="flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(2);
+                    //scrol to invest
+                    this.scrollTo(3);
                     this.setState({ modalVisible: false });
                   }}
                 >
@@ -752,12 +732,34 @@ export default class extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
+              <View className="bg-seconday-light flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(2);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/pochicon.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Wallet</Text>
+                      <Text className="text-md ml-auto">View your assets</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+
               <View className="flex">
                 <TouchableOpacity
                   className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(0);
+                    this.scrollTo(1);
                     this.setState({ modalVisible: false });
                   }}
                 >
@@ -775,15 +777,38 @@ export default class extends Component {
                   </View>
                 </TouchableOpacity>
               </View>
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(0);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/history.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">History</Text>
+                      <Text className="text-md ml-auto">
+                        Have a look at your past transactions
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </TouchableOpacity>
         </Modal>
 
-        <View className="flex items-center">
+        <View className="flex items-center position-absolute">
           <TouchableOpacity
             // border here for button
             // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
-            className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl border-icon-light background-primary-light"
+            className="background-primary-light mx-36 rounded-2xl border-2 border-icon-light px-1 py-1 shadow-xl"
             pointerEvents="none"
             visible={this.state.modalVisible == false}
             onPressIn={() => {
@@ -997,5 +1022,8 @@ export default class extends Component {
         {showsButtons && this.renderButtons()}
       </View>
     );
+    console.log("render");
+    // log current page
+    console.log("current page: " + this.state.index);
   }
 }
