@@ -126,32 +126,33 @@ const Wallet = ({ swiper }: { swiper: any }) => {
           </View>
 
           <View className="w-11/12">
+            {tokens
+              ? tokens
+                  .filter(
+                    (token) =>
+                      token.symbol !== "aUSDC" &&
+                      token.balance &&
+                      // token balance not 0 or token symbol is eth or usdc
+                      (Number(token.balance) > 0 ||
+                        token.symbol === "ETH" ||
+                        token.symbol === "USDC")
+                  )
+                  .map((token) => (
+                    <Asset token={token} key={token.symbol} swiper={swiper} />
+                  ))
+              : null}
             {tokens &&
-              tokens
-                .filter(
-                  (token) =>
-                    token.symbol !== "aUSDC" &&
-                    token.balance &&
-                    // token balance not 0 or token symbol is eth or usdc
-                    (Number(token.balance) > 0 ||
-                      token.symbol === "ETH" ||
-                      token.symbol === "USDC")
-                )
-                .map((token) => (
-                  <Asset token={token} key={token.symbol} swiper={swiper} />
-                ))}
-            {tokens &&
-              (forceWalletEmpty ||
-                tokens?.reduce((a, token) => a + Number(token.balance), 0)) && (
-                <View>
-                  <ActionButton
-                    text="Get your first assets"
-                    bold
-                    rounded
-                    action={() => navigation.navigate("Onramp" as never)}
-                  />
-                </View>
-              )}
+            (forceWalletEmpty ||
+              tokens?.reduce((a, token) => a + Number(token.balance), 0)) ? (
+              <View>
+                <ActionButton
+                  text="Get your first assets"
+                  bold
+                  rounded
+                  action={() => navigation.navigate("Onramp" as never)}
+                />
+              </View>
+            ) : null}
           </View>
         </View>
       )}
