@@ -42,7 +42,7 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchTasks(scw);
+    await fetchTasks(scw!);
     setRefreshing(false);
   }, []);
 
