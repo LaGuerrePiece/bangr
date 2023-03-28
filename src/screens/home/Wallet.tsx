@@ -145,7 +145,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               : null}
             {tokens &&
             (forceWalletEmpty ||
-              tokens?.reduce((a, token) => a + Number(token.balance), 0)) ? (
+              tokens?.reduce((a, token) => a + Number(token.balance), 0) ===
+                0) ? (
               <View>
                 <ActionButton
                   text="Get your first assets"
