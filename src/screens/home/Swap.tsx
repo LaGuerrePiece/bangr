@@ -444,8 +444,6 @@ const Swap = ({ swiper }: { swiper: any }) => {
             />
           </View>
         </View>
-        </View>
-
       </TouchableWithoutFeedback>
     </View>
   );
