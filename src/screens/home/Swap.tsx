@@ -188,7 +188,9 @@ const Swap = ({ swiper }: { swiper: any }) => {
         value,
         type,
         protocol,
-        asset1, asset2, amount!.toString(),
+        asset1,
+        asset2,
+        amount!.toString(),
         successMessage,
         errorMessage
       );
@@ -433,6 +435,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
               </View>
             </TouchableHighlight>
           </View>
+        </View>
 
         <View className="flex-row justify-evenly">
           <ActionButton
