@@ -152,6 +152,11 @@ const VaultDepositScreen = () => {
           wallet,
           smartWalletAddress,
           "0",
+          "Invest",
+          name,
+          selectedTokenSymbol,
+          "",
+          amount,
           "Deposit successful",
           "Deposit failed"
         );
@@ -179,8 +184,13 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Withdrawal successful",
-        "Withdrawal failed"
+        "Invest",
+        name,
+        selectedTokenSymbol,
+        "",
+        amount,
+        "Deposit successful",
+        "Deposit failed"
       );
 
     fetchBalances(smartWalletAddress);
@@ -249,13 +259,12 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        // fast fix, TODO: improve
         .map((chain) => {
           console.log("chain.deposited", chain.deposited);
-          console.log("chain.deposited.replace", chain.deposited.replace(".", ""));
-          BigNumber.from(chain.deposited.replace(".", ""));
+          // console.log("chain.deposited.replace", chain.deposited.replace(".", ""));
+          ethers.utils.parseEther(chain.deposited);
         })
-        .reduce((acc, cur) => acc.add(cur), constants.Zero)
+        // .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
