@@ -21,12 +21,13 @@ import {
 import * as Haptics from "expo-haptics";
 import { color } from "react-native-reanimated";
 import useModalStore from "../../../state/modal";
+import { useNavigation } from "@react-navigation/native";
 
 /**
  * Default styles
  * @type {StyleSheetPropType}
  */
-
+const navigation = useNavigation();
 
 
 const styles = {
@@ -770,6 +771,28 @@ export default class extends Component {
                       <Text className="text-lg font-semibold">Swap</Text>
                       <Text className="text-md ml-auto">
                         Exchange tokens in seconds
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-secondary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    navigation.navigate("Settings");
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/swap.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Settings</Text>
+                      <Text className="text-md ml-auto">
+                        Edit your preferences
                       </Text>
                     </View>
                   </View>

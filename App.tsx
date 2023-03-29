@@ -28,6 +28,7 @@ import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import { useStripe } from "@stripe/stripe-react-native";
 import { Platform } from "react-native";
+import SettingsScreen from "./src/screens/SettingsScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -145,6 +146,12 @@ const App = () => {
             component={ReceiveScreen}
             options={{ presentation: "modal" }}
           />
+          <Stack.Screen
+            name="Settings"
+            component={SettingsScreen}
+            options={{ presentation: "modal" }}
+          />
+
           <Stack.Screen
             name="Onramp"
             component={OnrampScreen}
