@@ -16,30 +16,82 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
 
   const RampOption = ({
     logo,
-    text,
-    title,
+    description,
+    name,
     screen,
+    instant,
+    fees,
+    methods,
   }: {
     logo: number;
-    text: string;
-    title: string;
+    description: string;
+    name: string;
     screen: string;
+    instant: boolean;
+    fees: string;
+    methods: string[];
   }) => {
     return (
       <TouchableOpacity
-        className="my-3 w-11/12"
+        className="my-3 w-10/12"
         onPress={() => {
           navigation.navigate(screen);
         }}
       >
-        <View className="flex items-center rounded-xl bg-secondary-light p-4 text-xl dark:bg-secondary-dark">
-          <Text className="text-center text-2xl font-bold text-typo-light dark:text-typo-dark">
-            {title}
+        <View className="rounded-2xl bg-secondary-light p-3 text-xl shadow-2xl dark:bg-secondary-dark">
+          <View className="flex-row">
+            <Image className="h-8 w-8 rounded-full" source={logo} />
+            <Text className="ml-2 text-2xl font-bold text-typo-light dark:text-typo-dark">
+              {name}
+            </Text>
+          </View>
+          <Text className="my-1 text-lg leading-6 text-typo-light dark:text-typo-dark">
+            {description}
           </Text>
-          <Image className="h-48 w-48" source={logo} />
-          <Text className="text-center text-typo-light dark:text-typo-dark">
-            {text}
-          </Text>
+          <View className="flex-row justify-between">
+            <View>
+              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
+                Instant
+              </Text>
+              <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+                {instant ? "Yes" : "No"}
+              </Text>
+            </View>
+            <View>
+              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
+                Fees
+              </Text>
+              <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+                {fees}
+              </Text>
+            </View>
+            <View>
+              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
+                Methods
+              </Text>
+              <View className="flex-row justify-center">
+                {methods.map((method) => {
+                  if (method === "card") {
+                    return (
+                      <Image
+                        key={method}
+                        className="h-8 w-8 rounded-full"
+                        source={require("../../../assets/onramps/card.png")}
+                      />
+                    );
+                  } else {
+                    return (
+                      <Image
+                        key={method}
+                        className="h-8 w-8 rounded-full"
+                        source={require("../../../assets/onramps/bank.png")}
+                      />
+                    );
+                  }
+                })}
+              </View>
+            </View>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -58,22 +110,35 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         </View>
       </TouchableWithoutFeedback>
       <View className="flex w-full items-center">
+        <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
+          Choose a payment option
+        </Text>
         <RampOption
-          logo={require("../../../assets/figma/ethereum.png")}
-          text={"For a small amount (<$100), the simplest is to pay by card"}
-          title={"Card"}
-          // screen={"Transak"}
-          screen={"Bangramp"}
+          logo={require("../../../assets/onramps/transak_logo.png")}
+          description={"Cards, banks and international options."}
+          name={"Transak"}
+          screen={"Transak"}
+          instant={true}
+          fees={"1-3.5%"}
+          methods={["card", "bank"]}
         />
         <RampOption
-          logo={require("../../../assets/figma/ethereum3.png")}
-          text={
-            "For a bigger amount, the best is bank transfer. You'll have to KYC."
-          }
-          title={"Bank transfer"}
+          logo={require("../../../assets/onramps/monerium_logo.png")}
+          description={"For large amounts, Monerium is the best."}
+          name={"Monerium"}
           screen={"Monerium"}
-          // screen={"Wallet"}
+          instant={true}
+          fees={"0%"}
+          methods={["bank"]}
         />
+        {/* <RampOption
+          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
+          description={
+            "Cards, banks and international options."
+          }
+          name={"Mt Pelerin"}
+          screen={"Wallet"}
+        /> */}
       </View>
       <Toast config={toastConfig} />
     </View>

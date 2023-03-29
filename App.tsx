@@ -23,7 +23,7 @@ import TransakScreen from "./src/screens/onramp/Transak";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
 import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import BangrampScreen from "./src/screens/onramp/Bangramp";
-import OrderConfirmedScreen from "./src/screens/onramp/Bangramp/OrderConfirmed";
+import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
