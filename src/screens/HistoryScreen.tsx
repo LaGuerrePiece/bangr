@@ -36,13 +36,13 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
 
   useEffect(() => {
     if (!scw) return;
-    fetchTasks(scw); //fetch the tasks
+    fetchTasks(); //fetch the tasks
     console.log("fetching tasks");
   }, []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchTasks(scw!);
+    await fetchTasks();
     setRefreshing(false);
   }, []);
 
@@ -89,65 +89,70 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
             </View>
           </View>
         </View>
-        <ScrollView className="mx-auto mt-5 w-11/12 rounded-lg"
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
-          {tasks.forEach((task) => {console.log(task.type);})}
+        <ScrollView
+          className="mx-auto mt-5 w-11/12 rounded-lg"
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {tasks.forEach((task) => {
+            console.log(task.type);
+          })}
           {tasks.length !== 0 ? (
-            tasks.slice(0).reverse().map((task, index) => (
-              <View
-                className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
-                key={index}
-              >
-                <View className="flex-row items-center py-2 px-2">
-                  <Image
-                    className="h-8 w-8"
-                    source={
-                      task.type === "Swap"
-                        ? require("../../assets/swap.png")
-                        : task.type === "Deposit"
-                        ? require("../../assets/receivebtn.png")
-                        : require("../../assets/receivebtn.png")
-                    }
-                  />
+            tasks
+              .slice(0)
+              .reverse()
+              .map((task, index) => (
+                <View
+                  className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
+                  key={index}
+                >
+                  <View className="flex-row items-center py-2 px-2">
+                    <Image
+                      className="h-8 w-8"
+                      source={
+                        task.type === "Swap"
+                          ? require("../../assets/swap.png")
+                          : task.type === "Invest"
+                          ? require("../../assets/invest.png")
+                          : require("../../assets/receivebtn.png")
+                      }
+                    />
                   </View>
                   <View className="flex-row">
-                  {/* <Image
+                    {/* <Image
                   className="h-5 w-5"
                   source={require("../../assets/" + task.asset1 + ".png")}
                   /> */}
 
-
-                  <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
-                    {task.type}{"ed "}
-                    {task.amount} {task.asset1} {" "}
-                    {task.type === "Deposit"
-                      ? "in"
-                      : task.type === "Withdraw"
-                      ? "from"
-                      : "to"}{" "}
-                    {task.asset2}
-                    {/* {task.protocol} */}
-                  </Text>
-                    
-
+                    <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
+                      {task.type}
+                      {"ed "}
+                      {task.amount} {task.asset1} {""}
+                      {task.type === "Invest"
+                        ? "into"
+                        : task.type === "Withdraw"
+                        ? "from"
+                        : "to"}{" "}
+                      {task.type === "Swap" ? task.asset2 : task.type === "Invest" ? task.protocol: task.asset2}
+                      {/* {task.protocol} */}
+                    </Text>
                   </View>
-                <View>
-                <Image
-                  className="h-8 w-8 mr-1"
-                  source={
-                    // task is 1 or 0
-                    task.state === 1 || task.state === 0
-                      ? require("../../assets/task-1.png")
-                      : task.state === 2
-                      ? require("../../assets/task-2.png")
-                      : require("../../assets/task-error.png")
-                  }
-                />
+                  <View>
+                    <Image
+                      className="mr-1 h-8 w-8"
+                      source={
+                        // task is 1 or 0
+                        task.state === 1 || task.state === 0
+                          ? require("../../assets/task-1.png")
+                          : task.state === 2
+                          ? require("../../assets/task-2.png")
+                          : require("../../assets/task-error.png")
+                      }
+                    />
+                  </View>
                 </View>
-              </View>
-            ))
+              ))
           ) : (
             <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
               No transaction yet

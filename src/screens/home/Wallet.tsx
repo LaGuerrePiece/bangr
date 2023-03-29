@@ -132,12 +132,12 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               ? tokens
                   .filter(
                     (token) =>
-                      token.symbol !== "aUSDC" &&
                       token.balance &&
                       // token balance not 0 or token symbol is eth or usdc
                       (Number(token.balance) > 0 ||
                         token.symbol === "ETH" ||
-                        token.symbol === "USDC")
+                        token.symbol === "USDC") 
+                        || token.symbol === "USDT"
                   )
                   .map((token) => (
                     <Asset token={token} key={token.symbol} swiper={swiper} />

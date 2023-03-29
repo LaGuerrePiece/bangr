@@ -61,14 +61,14 @@ export const relay = async (
   const relayResponse = await sendTx({
     signature,
     data: callsObject,
+    value,
     senderEOA: wallet.address,
     scwAddress: scwAddress,
     type,
-    protocol,
     asset1,
     asset2,
     amount,
-    value,
+    protocol,
 
   });
 
@@ -83,11 +83,18 @@ export const relay = async (
   console.log("Success. relayResponse :", relayResponse);
 
   //until the cron
-  const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
-  console.log("cron called", ping);
+  // const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
+  // console.log("cron called", ping);
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
+  if (relayResponse.error) {
+    Toast.show({
+      type: "error",
+      text1: "error relaying transaction",
+    });
+    return;
+  }
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
       const chainId = Number(cid) as ChainId;

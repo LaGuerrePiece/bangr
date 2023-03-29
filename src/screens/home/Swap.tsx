@@ -205,6 +205,63 @@ const Swap = ({ swiper }: { swiper: any }) => {
     fetchBalances();
   };
 
+  // test
+  const swapAndInvest = async () => {
+    if (!calls || !wallet || !quote || !smartWalletAddress) return;
+    const value = getRelayerValueToSend(quote);
+    const type = "Swap";
+    const protocol = "bangrswap";
+    const asset1 = srcToken!.symbol;
+    const asset2 = dstToken!.symbol;
+    const amount = amountIn;
+    const dcalls = await axios.post(`${getURLInApp()}/api/v1/quote/swap`, {
+      srcToken: dstToken,
+      dstToken: srcToken,
+      amountIn: ethers.utils.parseUnits(quote.sumOfToAmount!),
+      fromAddress: EXAMPLE_WALLET_ADDRESS,
+
+    });
+    try {
+      Promise.all([
+        relay(
+          calls,
+          wallet,
+          smartWalletAddress,
+          value,
+          type,
+          protocol,
+          asset1,
+          asset2,
+          "2",
+          successMessage,
+          errorMessage
+        ),
+        relay(
+          dcalls.data,
+          wallet,
+          smartWalletAddress,
+          "0",
+          type,
+          protocol,
+          asset2,
+          asset1,
+          "1",
+          "🦄 Invest successful!",
+          "🤯 Invest failed. Please try again later or contact us."
+        ),
+      ]);
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
+    }
+    clearAfterSwap();
+    fetchBalances();
+    console.log("swap and invest done");
+  };
+
   const buttonStatus = (): ButtonStatus => {
     if (!debouncedAmountIn) {
       return {
@@ -440,7 +497,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
             <ActionButton
               text={buttonStatus().text}
               disabled={buttonStatus().disabled}
-              action={swap}
+              action={swapAndInvest}
             />
           </View>
         </View>
