@@ -259,16 +259,16 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) => {
-          console.log("chain.deposited", chain.deposited);
-          // console.log("chain.deposited.replace", chain.deposited.replace(".", ""));
-          ethers.utils.parseEther(chain.deposited);
-        })
-        // .reduce((acc, cur) => acc.add(cur), constants.Zero)
+        .map((chain) =>
+          ethers.utils.parseUnits(chain.deposited, vaultTkn?.decimals ?? 18)
+        )
+        .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
+  console.log("balance", balance);
+  console.log("deposited", deposited);
   console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
