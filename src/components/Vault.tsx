@@ -38,10 +38,10 @@ const Vault = ({ vault }: { vault: VaultData }) => {
       />*/}
         <View className="flex-row justify-between">
           <View className="w-4/5">
-            <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+            <Text className="text-2xl font-bold text-typo-light dark:text-typo-dark">
               {name}
             </Text>
-            <Text className="text-typo-light dark:text-typo-dark">
+            <Text className="text-[17px] text-typo-light dark:text-typo-dark">
               {description}
             </Text>
           </View>
