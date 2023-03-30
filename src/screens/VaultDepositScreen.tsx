@@ -152,6 +152,11 @@ const VaultDepositScreen = () => {
           wallet,
           smartWalletAddress,
           "0",
+          "Invest",
+          name,
+          selectedTokenSymbol,
+          "",
+          amount,
           "Deposit successful",
           "Deposit failed"
         );
@@ -179,8 +184,13 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Withdrawal successful",
-        "Withdrawal failed"
+        "Invest",
+        name,
+        selectedTokenSymbol,
+        "",
+        amount,
+        "Deposit successful",
+        "Deposit failed"
       );
 
     fetchBalances(smartWalletAddress);
@@ -249,12 +259,16 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) => BigNumber.from(chain.deposited))
+        .map((chain) =>
+          ethers.utils.parseUnits(chain.deposited, vaultTkn?.decimals ?? 18)
+        )
         .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
+  console.log("balance", balance);
+  console.log("deposited", deposited);
   console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

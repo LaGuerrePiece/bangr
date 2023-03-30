@@ -20,7 +20,7 @@ import Chart, { Point } from "./Chart";
 import { getURLInApp } from "../utils/utils";
 import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
-// import { getColorFromURL } from "rn-dominant-color";
+import { getColorFromURL } from "rn-dominant-color";
 
 const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
   const navigation = useNavigation();
@@ -29,7 +29,7 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
     getChart(token);
   }, [token]);
 
-  const [chartColor, setChartColor] = useState("rgba(0, 0, 0, 0.1)");
+  // const [chartColor, setChartColor] = useState("rgba(0, 0, 0, 0.1)");
 
   const colorScheme = useColorScheme();
 
@@ -63,11 +63,7 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
     }
   }
 
-  // getColorFromURL(token.logoURI).then((colors: any) => {
-  //   console.log("tokenURI", token.logoURI);
-  //   // console.log(colors.primary);
-  //   // setChartColor(colors.primary);
-  // });
+
 
   return (
     <View
@@ -84,22 +80,23 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
           swiper.current.scrollBy(-1, true);
         }}
       >
-        <View className="absolute">
+        <View className="absolute ml-8">
           {chart ? (
             <LineChart.Provider data={chart}>
-              <LineChart width={width} height={height} yGutter={16}>
+              <LineChart width={width - width/10} height={height} yGutter={16}>
                 <LineChart.Path
                   color={
                     colorScheme === "dark"
-                      ? "rgba(255, 255, 255, 0.1)"
-                      : "rgba(0, 0, 0, 0.1)"
+                      ? token.color
+                      : token.color
                   }
                 />
                 <LineChart.CursorCrosshair />
               </LineChart>
             </LineChart.Provider>
           ) : (
-            <ActivityIndicator />
+            // <ActivityIndicator />
+            <View />
           )}
         </View>
         <View className="flex-row items-center justify-between py-3">

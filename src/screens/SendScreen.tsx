@@ -189,14 +189,25 @@ const SendScreen = () => {
     }
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
+    const type = "send";
+    const protocol = getChain(calls[0].cid).name;
+    const asset1 = token?.symbol;
+    const asset2 = "";
+    const amount = amountIn
+
     try {
       await relay(
         calls,
         wallet,
         smartWalletAddress,
         value,
+        type,
+        protocol,
+        asset1!,
+        asset2,
+        amount!,
         successMessage,
-        errorMessage
+        errorMessage,
       );
     } catch (error) {
       console.log(error);
