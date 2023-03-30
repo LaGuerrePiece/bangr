@@ -63,7 +63,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
                 {instant ? (
                   <Image
                     className="h-7 w-7 rounded-full"
-                    source={require("../../../assets/onramps/bolt.png")}
+                    source={
+                      colorScheme === "dark"
+                        ? require("../../../assets/onramps/bolt_white.png")
+                        : require("../../../assets/onramps/bolt.png")
+                    }
                   />
                 ) : null}
                 <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
@@ -90,7 +94,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
                       <Image
                         key={method}
                         className="h-8 w-8 rounded-full"
-                        source={require("../../../assets/onramps/card.png")}
+                        source={
+                          colorScheme === "dark"
+                            ? require("../../../assets/onramps/card_white.png")
+                            : require("../../../assets/onramps/card.png")
+                        }
                       />
                     );
                   } else {
@@ -98,7 +106,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
                       <Image
                         key={method}
                         className="h-8 w-8 rounded-full"
-                        source={require("../../../assets/onramps/bank.png")}
+                        source={
+                          colorScheme === "dark"
+                            ? require("../../../assets/onramps/bank_white.png")
+                            : require("../../../assets/onramps/bank.png")
+                        }
                       />
                     );
                   }
