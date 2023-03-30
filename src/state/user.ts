@@ -13,8 +13,6 @@ interface UserState {
   wallet: Wallet | undefined;
   smartWalletAddress: string | undefined;
   loaded: number | undefined;
-  name: string | undefined;
-  iban: string | undefined;
   login: (wallet: Wallet) => Promise<void>;
   fetchBalances: (
     scwAddress?: string | null,
@@ -29,8 +27,6 @@ const useUserStore = create<UserState>()((set, get) => ({
   wallet: undefined,
   smartWalletAddress: undefined,
   loaded: undefined,
-  name: undefined,
-  iban: undefined,
 
   setLoaded: (loaded: number | undefined) => {
     set({ loaded });

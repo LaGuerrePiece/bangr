@@ -53,9 +53,17 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
               <Text className="text-lg text-typo2-light dark:text-typo2-dark">
                 Instant
               </Text>
-              <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                {instant ? "Yes" : "No"}
-              </Text>
+              <View className="flex-row">
+                {instant ? (
+                  <Image
+                    className="h-7 w-7 rounded-full"
+                    source={require("../../../assets/onramps/bolt.png")}
+                  />
+                ) : null}
+                <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+                  {instant ? "Yes" : "No"}
+                </Text>
+              </View>
             </View>
             <View>
               <Text className="text-lg text-typo2-light dark:text-typo2-dark">

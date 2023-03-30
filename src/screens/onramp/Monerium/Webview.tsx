@@ -1,26 +1,15 @@
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  useColorScheme,
-  Dimensions,
-  Image,
-  ActivityIndicator,
-  StyleSheet,
-  BackHandler,
-} from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useRef, useState } from "react";
-import { Wallet, ethers } from "ethers";
 import ActionButton from "../../../components/ActionButton";
 import QueryString from "query-string";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import useUserStore from "../../../state/user";
-import { MONERIUM_CLIENT_ID, getMoneriumUrl } from ".";
+import { MONERIUM_SETTINGS } from ".";
 import { Camera } from "expo-camera";
+import useMoneriumStore from "../../../state/monerium";
 
 type MoneriumWebviewParams = {
   MoneriumWebviewScreen: {
@@ -36,7 +25,7 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
   const { webWiewUri, codeVerifier } = params;
   const windowWidth = Dimensions.get("window").width;
 
-  const { name, iban, update } = useUserStore((state) => ({
+  const { name, iban, update } = useMoneriumStore((state) => ({
     name: state.name,
     iban: state.iban,
     update: state.update,
@@ -60,14 +49,14 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
     if (accessToken !== "") return;
 
     const formData = {
-      client_id: MONERIUM_CLIENT_ID,
+      client_id: MONERIUM_SETTINGS.clientId,
       redirect_uri: "https://www.youtube.com/",
       grant_type: "authorization_code",
       code: code,
       code_verifier: codeVerifier!,
     };
 
-    const response = await fetch(`${getMoneriumUrl()}/auth/token`, {
+    const response = await fetch(`${MONERIUM_SETTINGS.url}/auth/token`, {
       method: "POST",
       body: QueryString.stringify(formData),
       headers: {
@@ -81,13 +70,16 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
     setAccessToken(access_token);
     setProfile(profile);
 
-    const userDataRaw = await fetch(`${getMoneriumUrl()}/profiles/${profile}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${access_token}`,
-      },
-    });
+    const userDataRaw = await fetch(
+      `${MONERIUM_SETTINGS.url}/profiles/${profile}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
     const userData = await userDataRaw.json();
     console.log("userData :", userData);
     if (!userData.accounts) return;
@@ -100,7 +92,7 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
 
   const fetchDataAndOrder = async () => {
     const balances = await fetch(
-      `${getMoneriumUrl()}/profiles/${profile}/balances`,
+      `${MONERIUM_SETTINGS.url}/profiles/${profile}/balances`,
       {
         method: "GET",
         headers: {
@@ -181,7 +173,7 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
   // }, []);
 
   if (hasPermission === null) {
-    return <Text>Waiting for access</Text>;
+    return <View></View>;
   }
   if (hasPermission === false) {
     return <Text>No access to camera given</Text>;
@@ -196,7 +188,7 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
           onNavigationStateChange={(webViewState) => {
             setWebViewReturnUrl(webViewState.url);
           }}
-          // incognito={true}
+          incognito={true}
         />
       ) : (
         <>

@@ -22,7 +22,7 @@ import OnrampScreen from "./src/screens/onramp";
 import TransakScreen from "./src/screens/onramp/Transak";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
 import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
-import BangrampScreen from "./src/screens/onramp/Bangramp";
+import IbanScreen from "./src/screens/onramp/Monerium/Iban";
 import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
@@ -166,8 +166,8 @@ const App = () => {
             options={{ presentation: "modal" }}
           />
           <Stack.Screen
-            name="Bangramp"
-            component={BangrampScreen}
+            name="Iban"
+            component={IbanScreen}
             options={{ presentation: "modal" }}
           />
           <Stack.Screen

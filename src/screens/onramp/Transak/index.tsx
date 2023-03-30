@@ -1,10 +1,10 @@
-import { View, Text, useColorScheme, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import useUserStore from "../../state/user";
+import { Dimensions } from "react-native";
+import useUserStore from "../../../state/user";
 // @ts-ignore
 import TransakWebView from "@transak/react-native-sdk";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { WebViewNavigation } from "react-native-webview";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 export default function Transak({ navigation }: { navigation: any }) {
   const windowWidth = Dimensions.get("window").width;
@@ -16,10 +16,20 @@ export default function Transak({ navigation }: { navigation: any }) {
     switch (event) {
       case "ORDER_PROCESSING":
         console.log(data);
+        Toast.show({
+          type: "info",
+          text1: "Order processing...",
+          text2: "Your order should arrive soon",
+        });
         break;
 
       case "ORDER_COMPLETED":
         console.log(data);
+        Toast.show({
+          type: "success",
+          text1: "Order Completed",
+          text2: "Your order is arrived !",
+        });
         break;
 
       default:
@@ -49,6 +59,8 @@ export default function Transak({ navigation }: { navigation: any }) {
 
           // possible de faire un form custom et de passer toutes les infos:
 
+          // fiatAmount: "100",
+          // fiatCurrency: "EUR",
           // email: userInfo?.email,
           // userData: encodeURIComponent(JSON.stringify({
           //   "firstName": "Satoshi",
