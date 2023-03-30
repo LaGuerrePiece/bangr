@@ -22,6 +22,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
     instant,
     fees,
     methods,
+    comingSoon,
   }: {
     logo: number;
     description: string;
@@ -30,6 +31,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
     instant: boolean;
     fees: string;
     methods: string[];
+    comingSoon: boolean;
   }) => {
     return (
       <TouchableOpacity
@@ -37,8 +39,12 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         onPress={() => {
           navigation.navigate(screen);
         }}
+        disabled={comingSoon}
       >
-        <View className="rounded-2xl bg-secondary-light p-3 text-xl shadow-2xl dark:bg-secondary-dark">
+        <View
+          className="rounded-2xl bg-secondary-light p-3 text-xl shadow-2xl dark:bg-secondary-dark"
+          style={comingSoon ? { opacity: 0.4 } : {}}
+        >
           <View className="flex-row">
             <Image className="h-8 w-8 rounded-full" source={logo} />
             <Text className="ml-2 text-2xl font-bold text-typo-light dark:text-typo-dark">
@@ -101,6 +107,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             </View>
           </View>
         </View>
+        {comingSoon ? (
+          <Text className="absolute bottom-20 left-20 text-2xl font-bold text-typo-light dark:text-typo-dark">
+            Coming soon
+          </Text>
+        ) : null}
       </TouchableOpacity>
     );
   };
@@ -129,6 +140,17 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"1-3.5%"}
           methods={["card", "bank"]}
+          comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
+          description={"0% fee on first bank transfer up to 500€."}
+          name={"Mt Pelerin"}
+          screen={"MtPelerin"}
+          instant={true}
+          fees={"0-2.5%"}
+          methods={["card", "bank"]}
+          comingSoon={true}
         />
         <RampOption
           logo={require("../../../assets/onramps/monerium_logo.png")}
@@ -138,15 +160,8 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"0%"}
           methods={["bank"]}
+          comingSoon={true}
         />
-        {/* <RampOption
-          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
-          description={
-            "Cards, banks and international options."
-          }
-          name={"Mt Pelerin"}
-          screen={"Wallet"}
-        /> */}
       </View>
       <Toast config={toastConfig} />
     </View>

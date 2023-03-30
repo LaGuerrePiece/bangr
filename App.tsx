@@ -20,6 +20,7 @@ import ReceiveScreen from "./src/screens/ReceiveScreen";
 import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/onramp";
 import TransakScreen from "./src/screens/onramp/Transak";
+import MtPelerinScreen from "./src/screens/onramp/MtPelerin";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
 import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import IbanScreen from "./src/screens/onramp/Monerium/Iban";
@@ -153,6 +154,11 @@ const App = () => {
           <Stack.Screen
             name="Transak"
             component={TransakScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="MtPelerin"
+            component={MtPelerinScreen}
             options={{ presentation: "modal" }}
           />
           <Stack.Screen
