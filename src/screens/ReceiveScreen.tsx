@@ -75,7 +75,7 @@ const ReceiveScreen = () => {
         <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
           <QRCode
             value={smartWalletAddress}
-            logo={{ uri: base64Icon }}
+            // logo={{ uri: base64Icon }}
             size={200}
             logoSize={30}
             logoBackgroundColor="transparent"
