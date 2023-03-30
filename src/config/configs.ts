@@ -73,6 +73,7 @@ export const TOKEN_WHITELIST = [
   "LINK",
   "aUSDC",
   "jEUR",
+  "EURe",
   // "QI",
   // "DHT",
   // "MKR",

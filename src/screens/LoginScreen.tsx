@@ -8,24 +8,21 @@ import {
   useColorScheme,
 } from "react-native";
 import { Buffer } from "buffer";
-import { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useEffect } from "react";
 import * as SecureStore from "expo-secure-store";
 import * as LocalAuthentication from "expo-local-authentication";
 import useUserStore from "../state/user";
-import "react-native-get-random-values";
 import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
-import { colors, skipBiometrics } from "../config/configs";
+import { skipBiometrics } from "../config/configs";
 global.Buffer = global.Buffer || Buffer;
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
-  const { login, setUserInfo } = useUserStore((state) => ({
+  const { login } = useUserStore((state) => ({
     login: state.login,
-    setUserInfo: state.setUserInfo,
   }));
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
   const fetchVaults = useVaultsStore((state) => state.fetchVaults);

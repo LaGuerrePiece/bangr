@@ -13,14 +13,6 @@ const HomeButton = () => {
   const navigation = useNavigation();
   const colorScheme = useColorScheme();
 
-  const showBuyToast = () => {
-    Toast.show({
-      type: "info",
-      text1: "Not available yet",
-      text2: "We are working on simple on-ramping, stay tuned!",
-    });
-  };
-
   return (
     <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
       <TouchableOpacity
