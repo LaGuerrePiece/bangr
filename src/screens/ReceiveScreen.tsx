@@ -121,7 +121,7 @@ const ReceiveScreen = () => {
             >
               <Image
                 className="m-auto mx-1 h-6 w-5"
-                source={require("../../assets/share.png")}
+                source={colorScheme === "light" ? require("../../assets/share.png") : require("../../assets/share-drk.png")}
               />
             </TouchableOpacity>
           </View>
