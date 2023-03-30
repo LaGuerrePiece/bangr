@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   RefreshControl,
   Appearance,
+  ActivityIndicator,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
@@ -64,14 +65,15 @@ const Wallet = ({ swiper }: { swiper: any }) => {
         <View className="h-screen border-red-500">
           <View className="m-auto">
             {/* <Text className="text-center text-3xl">loading your bags</Text> */}
-            <Image
+            {/* <Image
               className="m-auto h-32 w-32"
               source={
                 colorScheme === "dark"
                   ? require("../../../assets/loading-drk.gif")
                   : require("../../../assets/loading.gif")
               }
-            />
+            /> */}
+            <ActivityIndicator />
           </View>
         </View>
       ) : (
@@ -130,12 +132,12 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               ? tokens
                   .filter(
                     (token) =>
-                      token.symbol !== "aUSDC" &&
                       token.balance &&
                       // token balance not 0 or token symbol is eth or usdc
                       (Number(token.balance) > 0 ||
                         token.symbol === "ETH" ||
-                        token.symbol === "USDC")
+                        token.symbol === "USDC") 
+                        || token.symbol === "USDT"
                   )
                   .map((token) => (
                     <Asset token={token} key={token.symbol} swiper={swiper} />

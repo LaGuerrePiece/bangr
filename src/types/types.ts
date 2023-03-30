@@ -35,6 +35,7 @@ export type MultichainToken = Omit<Token, "chainId" | "address"> & {
     quote?: number;
     priceUSD?: number;
   }[];
+  color?: string;
 };
 
 export type Balance = {
