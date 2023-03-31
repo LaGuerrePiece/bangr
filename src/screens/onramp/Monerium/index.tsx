@@ -11,7 +11,7 @@ import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-export const MONERIUM_ENV: any = "test";
+export const MONERIUM_ENV: any = "prod";
 
 export const MONERIUM_SETTINGS =
   MONERIUM_ENV === "prod"

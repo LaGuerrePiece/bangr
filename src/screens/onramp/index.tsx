@@ -162,7 +162,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"0-2.5%"}
           methods={["card", "bank"]}
-          comingSoon={false}
+          comingSoon={true}
         />
         <RampOption
           logo={require("../../../assets/onramps/monerium_logo.png")}
@@ -172,7 +172,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"0%"}
           methods={["bank"]}
-          comingSoon={true}
+          comingSoon={false}
         />
       </View>
       <Toast config={toastConfig} />
