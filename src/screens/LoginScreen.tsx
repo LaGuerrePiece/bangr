@@ -49,12 +49,12 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const checkPreviousUser = async () => {
-    const privKey = await SecureStore.getItemAsync("privKey");
+    // const privKey = await SecureStore.getItemAsync("privKey");
+    const privKey = null;
     if (!privKey) {
       navigation.navigate("Welcome");
       return;
     }
-
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));
       navigation.navigate("Wallet");

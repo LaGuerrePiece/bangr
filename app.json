@@ -23,7 +23,8 @@
       "infoPlist": {
         "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you."
       },
-      "bundleIdentifier": "com.poche.fi"
+      "bundleIdentifier": "com.poche.fi",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +32,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.poche.fi",
-      "versionCode": 2
+      "versionCode": 2,
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -43,6 +45,7 @@
     },
     "owner": "ndlz",
     "plugins": [
+      ["@react-native-google-signin/google-signin"],
       [
         "expo-build-properties",
         {

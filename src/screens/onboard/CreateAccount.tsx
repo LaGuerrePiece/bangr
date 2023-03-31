@@ -15,12 +15,55 @@ import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
 import useTokensStore from "../../state/tokens";
 import "react-native-get-random-values";
+import { makeRedirectUri, startAsync } from 'expo-auth-session';
+import { supabase, supabaseUrl } from './supabase';
+import GDrive from "expo-google-drive-api-wrapper";
+
+
+export const googleSignIn = async (key: string) => {
+
+
+  const redirectUrl = makeRedirectUri({
+    path: '/auth/callback',
+  });
+
+  const authResponse = await startAsync({
+    authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUrl}`,
+    returnUrl: redirectUrl,
+  });
+
+
+  if (authResponse.type === 'success') {
+    // supabase.auth.setSession({
+    //   access_token: authResponse.params.access_token,
+    //   refresh_token: authResponse.params.refresh_token,
+    // });
+    console.log(authResponse.params.access_token);
+    await GDrive.setAccessToken(authResponse.params.access_token);
+    await GDrive.init();
+    GDrive.isInitialized() ? console.log("initialized") : console.log("not initialized");
+    let directoryId = await GDrive.files.safeCreateFolder({
+      name: "bangr backups",
+      parents: ['root'],
+    });
+    // const file = await GDrive.files.createFileMultipart(
+    //   key,
+    //   "text/plain", {
+    //     parents: [directoryId],
+    //     name: "wallet"
+    // },
+    //   true
+    // );
+    
+  }
+};
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
+
   const { wallet, login } = useUserStore((state) => ({
     wallet: state.wallet,
     login: state.login,
@@ -87,9 +130,21 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     }, 3000);
   }, []);
 
-  const secureAccount = () => {
+  const secureAccount = async() => {
     // Secure Account
-    navigation.navigate("Wallet");
+    // navigation.navigate("Wallet");
+
+    // Secure Account
+    const key = await SecureStore.getItemAsync("privKey");
+    await googleSignIn(key!);
+    
+    // GDrive.files.createFileMultipart(
+    //   key,
+    //     "corresponding mime type", {
+    //         parents: ["root"],
+    //         name: "My file"
+    //     },
+    //     false);
   };
 
   return (
