@@ -1,100 +1,83 @@
-import { Dimensions } from "react-native";
+import {
+  Dimensions,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  useColorScheme,
+} from "react-native";
 import useUserStore from "../../../state/user";
-// @ts-ignore
-import TransakWebView from "@transak/react-native-sdk";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { WebViewNavigation } from "react-native-webview";
+import WebView, { WebViewNavigation } from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+// @ts-ignore
+import MtPelerinOnOfframp from "react-native-mtp-onofframp";
 
 export default function MtPelerinScreen({ navigation }: { navigation: any }) {
+  const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
   const { smartWalletAddress } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
   }));
 
-  const transakEventHandler = (event: string, data: any) => {
-    switch (event) {
-      case "ORDER_PROCESSING":
-        console.log(data);
-        Toast.show({
-          type: "info",
-          text1: "Order processing...",
-          text2: "Your order should arrive soon",
-        });
-        break;
-
-      case "ORDER_COMPLETED":
-        console.log(data);
-        Toast.show({
-          type: "success",
-          text1: "Order Completed",
-          text2: "Your order is arrived !",
-        });
-        break;
-
-      default:
-        console.log(data);
-    }
+  const params = {
+    type: "webview",
+    // type: "direct-link",
+    tab: "buy",
+    bsc: "EUR",
+    bdc: "USDC",
+    crys: "agEUR,DAI,ETH,jEUR,LUSD,MATIC,USDC,USDT,WBTC,WETH",
+    net: "matic_mainnet",
+    // nets: "matic_mainnet,arbitrum_mainnet,optimism_mainnet", //not now, as they do not check EIP1271 on them
+    // lang: "fr",
+    // primary: "000000",
+    // success: "000000",
+    addr: smartWalletAddress as string,
+    code: "1234",
+    chain: "polygon_mainnet",
+    rfr: "iDQd63GK",
+    mylogo: "https://i.imgur.com/AOy1ol7.png",
+    mode: colorScheme as string,
   };
 
-  return (
+  const urls = {
+    production: "https://widget.mtpelerin.com",
+    development: "https://widget-staging.mtpelerin.com",
+    real: "https://buy.mtpelerin.com",
+  };
+
+  const webWiewUri = `${urls.development}/?${new URLSearchParams(
+    params
+  ).toString()}`;
+
+  console.log("webWiewUri", webWiewUri);
+
+  //buy.mtpelerin.com/?type=direct-link&tabs=buy&bsc=EUR&bdc=BNB&crys=BNB&nets=bsc_mainnet&addr=0x270402aeB8f4dAc8203915fC26F0768feA61b532&code=1234&hash=/37KcpG6mEp+1oAan8/HLEvcfZFXUi6kTOxTHNjD3ZloxS8DL70v7lCmXiEyDOATm4hvewMzBO2d1n25QdJ8WBw=
+
+  https: return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <TransakWebView
-        queryParams={{
-          apiKey: "c99e44a4-8c0e-4831-952d-2edc91cd0bc9",
-          // apiKey: "64265438-8e6b-4784-9de4-c9164e92be2a",
-          environment: "PRODUCTION",
-          // environment: "STAGING",
-          networks: "polygon,optimism,arbitrum",
-          defaultNetwork: "polygon",
-          defaultCryptoCurrency: "USDC",
-          cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
-          walletAddress: smartWalletAddress,
-          defaultFiatAmount: "100",
-          exchangeScreenTitle: "Add money to Bangr !",
-          disableWalletAddressForm: true,
-          isDisableCrypto: true,
-          redirectURL: "https://www.youtube.com/",
-          // themeColor: "000000",
-
-          // possible de faire un form custom et de passer toutes les infos:
-
-          // fiatAmount: "100",
-          // fiatCurrency: "EUR",
-          // email: userInfo?.email,
-          // userData: encodeURIComponent(JSON.stringify({
-          //   "firstName": "Satoshi",
-          //   "lastName": "Nakamoto",
-          //   "email": "satoshi.nakamoto@transak.com",
-          //   "mobileNumber": "+15417543010",
-          //   "dob": "1994-08-26",
-          //   "address": {
-          //     "addressLine1": "170 Pine St",
-          //     "addressLine2": "San Francisco",
-          //     "city": "San Francisco",
-          //     "state": "CA",
-          //     "postCode": "94111",
-          //     "countryCode": "US"
-          //   }
-          // }))
-        }}
-        onTransakEventHandler={transakEventHandler}
+      <WebView
         style={{ width: windowWidth }}
-        onNavigationStateChange={(webViewState: WebViewNavigation) => {
-          if (webViewState.url.includes("transak")) return;
-          if (webViewState.url.includes("youtube")) {
-            const urlParams = new URLSearchParams(webViewState.url);
-            navigation.navigate("OrderConfirmed");
-          }
-        }}
+        source={{ uri: webWiewUri }}
+        // incognito={true}
       />
+      {/* <MtPelerinOnOfframp
+        // onGetAddresses={() => this.onGetAddresses()}
+        // onSignPersonalMessage={params => this.onSignPersonalMessage(params)}
+        // onSendTransaction={params => this.onSendTransaction(params)}
+        onOffRampOptions={{
+          tab: "sell",
+          ssc: "MATIC",
+          sdc: "CHF",
+          type: "web",
+        }}
+      >
+        <View style={[overlay, topOverlay] as any}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={whiteText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </MtPelerinOnOfframp> */}
     </SafeAreaView>
   );
-}
-
-{
-  /* <WebView
-  style={{ width: windowWidth }}
-  source={{ uri: "https://onramp.vercel.app" }}
-/> */
 }
