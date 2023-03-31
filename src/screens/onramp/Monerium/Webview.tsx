@@ -86,8 +86,9 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
     const accountWithIban = userData.accounts.find(
       (account: any) => account.iban
     );
-    // right now, puts it in state. Later: send it to the backend
+    // right now, puts it in state. TODO: send it to the backend
     update({ name: userData.name, iban: accountWithIban.iban });
+    navigation.navigate("Iban");
   };
 
   const fetchDataAndOrder = async () => {
@@ -181,96 +182,14 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      {returnCode === "" ? (
-        <WebView
-          style={{ width: windowWidth }}
-          source={{ uri: webWiewUri }}
-          onNavigationStateChange={(webViewState) => {
-            setWebViewReturnUrl(webViewState.url);
-          }}
-          incognito={true}
-        />
-      ) : (
-        <>
-          <View>
-            <Text className="my-12 text-center font-[InterBold] text-2xl text-typo-light dark:text-typo-dark">
-              Great ! Account created.
-            </Text>
-
-            <Text className="mx-auto my-5 font-[Inter] text-base text-typo-light dark:text-typo-dark">
-              You can now use these details to fund your account :
-            </Text>
-
-            <View className="mx-auto my-2 w-11/12 rounded-md bg-secondary-light p-2 dark:bg-secondary-dark">
-              <Text className="font-[Inter] text-typo-light dark:text-typo-dark">
-                Beneficiary
-              </Text>
-              <Text className="font-[InterMedium] text-lg text-typo-light dark:text-typo-dark">
-                {name}
-              </Text>
-            </View>
-
-            <View className="mx-auto my-2 w-11/12 rounded-md bg-secondary-light p-2 dark:bg-secondary-dark">
-              <Text className="font-[Inter] text-typo-light dark:text-typo-dark">
-                IBAN
-              </Text>
-              <Text className="font-[InterMedium] text-lg text-typo-light dark:text-typo-dark">
-                {iban}
-              </Text>
-            </View>
-
-            <View className="mx-auto my-2 w-11/12 rounded-md bg-secondary-light p-2 dark:bg-secondary-dark">
-              <Text className="font-[Inter] text-typo-light dark:text-typo-dark">
-                BIC
-              </Text>
-              <Text className="font-[InterMedium] text-lg text-typo-light dark:text-typo-dark">
-                EAPFESM2XXX
-              </Text>
-            </View>
-
-            <Text className="mx-auto my-5 font-[Inter] text-base text-typo-light dark:text-typo-dark">
-              When the funds are received, euros will be credited instantly to
-              your account.
-            </Text>
-          </View>
-
-          <View className="mx-auto mb-8 flex-row">
-            <ActionButton
-              text="Back to Home"
-              rounded
-              action={() => navigation.navigate("Wallet")}
-            />
-          </View>
-        </>
-      )}
+      <WebView
+        style={{ width: windowWidth }}
+        source={{ uri: webWiewUri }}
+        onNavigationStateChange={(webViewState) => {
+          setWebViewReturnUrl(webViewState.url);
+        }}
+        // incognito={true}
+      />
     </SafeAreaView>
   );
 }
-
-// curl --location --request POST 'https://api.monerium.dev/auth/token' \
-//  --header 'Content-Type: application/x-www-form-urlencoded' \
-//  --data-urlencode 'grant_type=authorization_code' \
-//  --data-urlencode 'client_id=ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9' \
-//  --data-urlencode 'code=r99_ukmyRuaJgWoJ-Q6yFg' \
-//  --data-urlencode 'code_verifier=z81y68jal7h81628fc049m3aia5f3sr2etc9bwj0q5unu43gkag5il167679bwm5p8guu4m6e2wn731bseloflkk1kgwlm9hy6gzgu95ybw8toxzh950z6qu9v416jha' \
-//  --data-urlencode 'redirect_uri=https://www.youtube.com/'
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1c4154",
-    paddingTop: 20,
-  },
-  activityContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    left: 0,
-    backgroundColor: "#fff",
-    height: "100%",
-    width: "100%",
-  },
-  view: {
-    borderColor: "red",
-  },
-});

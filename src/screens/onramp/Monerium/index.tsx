@@ -22,9 +22,8 @@ export const MONERIUM_SETTINGS =
 
 const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
-  const { smartWalletAddress, wallet } = useUserStore((state) => ({
+  const { smartWalletAddress } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
-    wallet: state.wallet,
   }));
   const { iban } = useMoneriumStore((state) => ({
     iban: state.iban,
@@ -43,7 +42,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   }, []);
 
   const authenticateAsync = async () => {
-    if (codeVerifier || !wallet || !smartWalletAddress) return;
+    if (codeVerifier || !smartWalletAddress) return;
 
     const verifier = new Array(128).join().replace(/(.|$)/g, function () {
       return ((Math.random() * 36) | 0).toString(36);
@@ -53,18 +52,17 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
       CryptoJS.SHA256(verifier)
     );
 
-    console.log("privateKey", wallet.privateKey);
     console.log("verifier", verifier);
     console.log("codeChallenge", codeChallenge);
     console.log("smartWalletAddress", smartWalletAddress);
-    console.log("eoa", wallet.address);
 
     const params = {
       client_id: MONERIUM_SETTINGS.clientId,
       redirect_uri: "https://www.youtube.com/",
       code_challenge: codeChallenge,
       code_challenge_method: "S256",
-      // automate the wallet connect step by adding the following optional parameters. If user connects with existing account, it's disgarded, which is a big fucking problem
+      // automate the wallet connect step by adding the following optional parameters.
+      //If user connects with existing account, it's disgarded, which is a big fucking problem
       address: smartWalletAddress,
       signature: "0x",
       chain: "polygon",
