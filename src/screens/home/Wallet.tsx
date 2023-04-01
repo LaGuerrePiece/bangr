@@ -64,62 +64,46 @@ const Wallet = ({ swiper }: { swiper: any }) => {
       {loaded === undefined ? (
         <View className="h-screen border-red-500">
           <View className="m-auto">
-            {/* <Text className="text-center text-3xl">loading your bags</Text> */}
-            {/* <Image
-              className="m-auto h-32 w-32"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/loading-drk.gif")
-                  : require("../../../assets/loading.gif")
-              }
-            /> */}
             <ActivityIndicator />
           </View>
         </View>
       ) : (
-        <View className="mx-auto mt-4 w-11/12 items-center rounded-xl">
-          <View className="w-full flex-row">
-            <View className="w-1/2">
-              <TouchableOpacity
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  console.log("swap");
-                  swiper.current.scrollBy(-1, true);
-                }}
-              >
-                <Image
-                  className="mr-auto h-7 w-7"
-                  source={
-                    colorScheme === "dark"
-                      ? require("../../../assets/swap-drk.png")
-                      : require("../../../assets/swap.png")
-                  }
-                />
-              </TouchableOpacity>
-            </View>
-            <View className="w-1/2">
-              <TouchableOpacity
-                onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  console.log("Invest");
-                  swiper.current.scrollBy(1, true);
-                }}
-              >
-                <Image
-                  className="ml-auto h-7 w-7"
-                  source={
-                    colorScheme === "dark"
-                      ? require("../../../assets/invest-drk.png")
-                      : require("../../../assets/invest.png")
-                  }
-                />
-              </TouchableOpacity>
-            </View>
+        <View className="mx-auto mt-4 w-11/12 items-center">
+          <View className="w-full flex-row justify-between">
+            <TouchableOpacity
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                console.log("swap");
+                swiper.current.scrollBy(-1, true);
+              }}
+            >
+              <Image
+                className="h-7 w-7"
+                source={
+                  colorScheme === "dark"
+                    ? require("../../../assets/swap-drk.png")
+                    : require("../../../assets/swap.png")
+                }
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                console.log("Invest");
+                swiper.current.scrollBy(1, true);
+              }}
+            >
+              <Image
+                className="h-7 w-7"
+                source={
+                  colorScheme === "dark"
+                    ? require("../../../assets/invest-drk.png")
+                    : require("../../../assets/invest.png")
+                }
+              />
+            </TouchableOpacity>
           </View>
-          {/* {refreshing && (
-            <Text className="text-center text-lg">refreshing...</Text>
-          )} */}
-          <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6 dark:bg-primary-dark">
+          <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
             <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
               ${loaded.toFixed(2)}
             </Text>
@@ -132,12 +116,12 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               ? tokens
                   .filter(
                     (token) =>
-                      token.balance &&
-                      // token balance not 0 or token symbol is eth or usdc
-                      (Number(token.balance) > 0 ||
-                        token.symbol === "ETH" ||
-                        token.symbol === "USDC") 
-                        || token.symbol === "USDT"
+                      (token.balance &&
+                        // token balance not 0 or token symbol is eth or usdc
+                        (Number(token.balance) > 0 ||
+                          token.symbol === "ETH" ||
+                          token.symbol === "USDC")) ||
+                      token.symbol === "USDT"
                   )
                   .map((token) => (
                     <Asset token={token} key={token.symbol} swiper={swiper} />
@@ -147,7 +131,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
             (forceWalletEmpty ||
               tokens?.reduce((a, token) => a + Number(token.balance), 0) ===
                 0) ? (
-              <View>
+              <View className="my-2">
                 <ActionButton
                   text="Get your first assets"
                   bold

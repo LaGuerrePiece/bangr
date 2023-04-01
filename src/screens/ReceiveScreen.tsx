@@ -100,16 +100,14 @@ const ReceiveScreen = () => {
                   {smartWalletAddress?.substring(0, 12) +
                     "..." +
                     smartWalletAddress?.substring(34, 42)}
-                  <View className="h-4 w-4">
-                    <Image
-                      className="h-5 w-5"
-                      source={
-                        colorScheme === "light"
-                          ? require("../../assets/copy.png")
-                          : require("../../assets/copy-dark.png")
-                      }
-                    />
-                  </View>
+                  <Image
+                    className="m-auto h-5 w-5"
+                    source={
+                      colorScheme === "light"
+                        ? require("../../assets/copy.png")
+                        : require("../../assets/copy-dark.png")
+                    }
+                  />
                 </Text>
               </TouchableOpacity>
             </View>

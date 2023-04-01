@@ -91,15 +91,15 @@ const Swap = ({ swiper }: { swiper: any }) => {
 
   async function updateQuote() {
     if (!debouncedAmountIn || !srcToken || !dstToken) return;
-    // if (
-    //   Number(debouncedAmountIn) * (srcToken.priceUSD ?? 0) <
-    //   SWAPAMOUNTIN_USD_THRESHOLD
-    // ) {
-    //   console.log(
-    //     `amountIn ${debouncedAmountIn} below $${SWAPAMOUNTIN_USD_THRESHOLD} so cannot quote`
-    //   );
-    //   return;
-    // }
+    if (
+      Number(debouncedAmountIn) * (srcToken.priceUSD ?? 0) <
+      SWAPAMOUNTIN_USD_THRESHOLD
+    ) {
+      console.log(
+        `amountIn ${debouncedAmountIn} below $${SWAPAMOUNTIN_USD_THRESHOLD} so cannot quote`
+      );
+      return;
+    }
 
     const formattedAmountIn = ethers.utils
       .parseUnits(debouncedAmountIn, srcToken.decimals)
@@ -219,7 +219,6 @@ const Swap = ({ swiper }: { swiper: any }) => {
       dstToken: srcToken,
       amountIn: ethers.utils.parseUnits(quote.sumOfToAmount!),
       fromAddress: EXAMPLE_WALLET_ADDRESS,
-
     });
     try {
       Promise.all([
@@ -497,7 +496,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
             <ActionButton
               text={buttonStatus().text}
               disabled={buttonStatus().disabled}
-              action={swapAndInvest}
+              action={swap}
             />
           </View>
         </View>
