@@ -4,6 +4,7 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
   Image,
+  ScrollView,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../../config/configs";
@@ -140,10 +141,13 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <View className="flex w-full items-center">
-        <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
-          Choose a payment option
-        </Text>
+      <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
+        Choose a payment option
+      </Text>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center" }}
+        className="w-full"
+      >
         <RampOption
           logo={require("../../../assets/onramps/transak_logo.png")}
           description={"Cards, banks and international options."}
@@ -151,6 +155,26 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           screen={"Transak"}
           instant={true}
           fees={"1-3.5%"}
+          methods={["card", "bank"]}
+          comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/monerium_logo.png")}
+          description={"For large amounts, Monerium is the best."}
+          name={"Monerium"}
+          screen={"Monerium"}
+          instant={true}
+          fees={"0%"}
+          methods={["bank"]}
+          comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/coinbase_logo.png")}
+          description={"Already have an account in a exchange ?"}
+          name={"Exchange"}
+          screen={"Exchange"}
+          instant={true}
+          fees={"0-3%"}
           methods={["card", "bank"]}
           comingSoon={false}
         />
@@ -164,17 +188,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           methods={["card", "bank"]}
           comingSoon={true}
         />
-        <RampOption
-          logo={require("../../../assets/onramps/monerium_logo.png")}
-          description={"For large amounts, Monerium is the best."}
-          name={"Monerium"}
-          screen={"Monerium"}
-          instant={true}
-          fees={"0%"}
-          methods={["bank"]}
-          comingSoon={false}
-        />
-      </View>
+      </ScrollView>
       <Toast config={toastConfig} />
     </View>
   );

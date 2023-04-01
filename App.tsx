@@ -25,6 +25,7 @@ import MoneriumScreen from "./src/screens/onramp/Monerium";
 import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import IbanScreen from "./src/screens/onramp/Monerium/Iban";
 import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
+import ExchangeScreen from "./src/screens/onramp/Exchange";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
@@ -180,6 +181,11 @@ const App = () => {
           <Stack.Screen
             name="OrderConfirmed"
             component={OrderConfirmedScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
+            name="Exchange"
+            component={ExchangeScreen}
             options={{ presentation: "modal" }}
           />
         </Stack.Navigator>
