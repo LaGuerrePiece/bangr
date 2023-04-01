@@ -687,7 +687,7 @@ export default class extends Component {
       }
     }
 
-    console.log("current page: " + this.state.index);
+    // console.log("current page: " + this.state.index);
 
 
     return (
