@@ -304,7 +304,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
   };
 
   return (
-    <SafeAreaView className="h-full bg-secondary-light dark:bg-secondary-dark">
+    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
