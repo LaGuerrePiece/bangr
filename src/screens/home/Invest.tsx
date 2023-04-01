@@ -15,11 +15,9 @@ import * as Haptics from "expo-haptics";
 const Invest = ({ swiper }: { swiper: any }) => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
-  // const { tab, setTab } = useTabStore();
-  // setTab("Invest");
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
