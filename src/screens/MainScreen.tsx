@@ -90,36 +90,10 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }}
     >
-        <View className="m-auto w-full grow dark:bg-primary-dark">
-          <HistoryScreen swiper={swiper} />
-        </View>
-        <View className="m-auto w-full grow dark:bg-primary-dark">
-          <Swap swiper={swiper} />
-        </View>
-
-        <View
-          className="flex h-full w-full justify-between bg-secondary-light dark:bg-primary-dark"
-          style={{ paddingTop: insets.top }}
-        >
-          <View className="m-auto w-full grow">
-            <Wallet swiper={swiper} />
-          </View>
-          <StatusBar
-            barStyle={
-              Appearance.getColorScheme() === "light"
-                ? "dark-content"
-                : "light-content"
-            }
-            backgroundColor={
-              Appearance.getColorScheme() === "light" ? "white" : "black"
-            }
-          />
-        </View>
-        <View className="items-center bg-primary-light dark:bg-primary-dark">
-          <View className="dark:bg-primary-dark ">
-            <Invest swiper={swiper} />
-          </View>
-        </View>
+      <HistoryScreen swiper={swiper} />
+      <Swap swiper={swiper} />
+      <Wallet swiper={swiper} />
+      <Invest swiper={swiper} />
     </ButtonSwiper>
   );
 };

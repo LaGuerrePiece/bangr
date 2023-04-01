@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
 import { useCallback, useEffect, useState } from "react";
-import { View, useColorScheme } from "react-native";
+import { Appearance, StatusBar, View, useColorScheme } from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -190,6 +190,16 @@ const App = () => {
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />
+        <StatusBar
+          barStyle={
+            Appearance.getColorScheme() === "light"
+              ? "dark-content"
+              : "light-content"
+          }
+          backgroundColor={
+            Appearance.getColorScheme() === "light" ? "white" : "black"
+          }
+        />
       </NavigationContainer>
     </View>
   );

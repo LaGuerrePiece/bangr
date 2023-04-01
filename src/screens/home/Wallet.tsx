@@ -56,94 +56,96 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   };
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      {loaded === undefined ? (
-        <View className="h-screen border-red-500">
-          <View className="m-auto">
-            <ActivityIndicator />
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {loaded === undefined ? (
+          <View className="h-screen border-red-500">
+            <View className="m-auto">
+              <ActivityIndicator />
+            </View>
           </View>
-        </View>
-      ) : (
-        <View className="mx-auto mt-4 w-11/12 items-center">
-          <View className="w-full flex-row justify-between">
-            <TouchableOpacity
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                console.log("swap");
-                swiper.current.scrollBy(-1, true);
-              }}
-            >
-              <Image
-                className="h-7 w-7"
-                source={
-                  colorScheme === "dark"
-                    ? require("../../../assets/swap-drk.png")
-                    : require("../../../assets/swap.png")
-                }
-              />
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                console.log("Invest");
-                swiper.current.scrollBy(1, true);
-              }}
-            >
-              <Image
-                className="h-7 w-7"
-                source={
-                  colorScheme === "dark"
-                    ? require("../../../assets/invest-drk.png")
-                    : require("../../../assets/invest.png")
-                }
-              />
-            </TouchableOpacity>
-          </View>
-          <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
-            <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
-              ${loaded.toFixed(2)}
-            </Text>
-            {/* <View className=""><Chart chart={chart} /></View> */}
-            <HomeButton />
-          </View>
-
-          <View className="w-11/12">
-            {tokens
-              ? tokens
-                  .filter(
-                    (token) =>
-                      (token.balance &&
-                        // token balance not 0 or token symbol is eth or usdc
-                        (Number(token.balance) > 0 ||
-                          token.symbol === "ETH" ||
-                          token.symbol === "USDC")) ||
-                      token.symbol === "USDT"
-                  )
-                  .map((token) => (
-                    <Asset token={token} key={token.symbol} swiper={swiper} />
-                  ))
-              : null}
-            {tokens &&
-            (forceWalletEmpty ||
-              tokens?.reduce((a, token) => a + Number(token.balance), 0) ===
-                0) ? (
-              <View className="my-2">
-                <ActionButton
-                  text="Get your first assets"
-                  bold
-                  rounded
-                  action={() => navigation.navigate("Onramp" as never)}
+        ) : (
+          <View className="mx-auto mt-4 w-11/12 items-center">
+            <View className="w-full flex-row justify-between">
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  console.log("swap");
+                  swiper.current.scrollBy(-1, true);
+                }}
+              >
+                <Image
+                  className="h-7 w-7"
+                  source={
+                    colorScheme === "dark"
+                      ? require("../../../assets/swap-drk.png")
+                      : require("../../../assets/swap.png")
+                  }
                 />
-              </View>
-            ) : null}
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  console.log("Invest");
+                  swiper.current.scrollBy(1, true);
+                }}
+              >
+                <Image
+                  className="h-7 w-7"
+                  source={
+                    colorScheme === "dark"
+                      ? require("../../../assets/invest-drk.png")
+                      : require("../../../assets/invest.png")
+                  }
+                />
+              </TouchableOpacity>
+            </View>
+            <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
+              <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
+                ${loaded.toFixed(2)}
+              </Text>
+              {/* <View className=""><Chart chart={chart} /></View> */}
+              <HomeButton />
+            </View>
+
+            <View className="w-11/12">
+              {tokens
+                ? tokens
+                    .filter(
+                      (token) =>
+                        (token.balance &&
+                          // token balance not 0 or token symbol is eth or usdc
+                          (Number(token.balance) > 0 ||
+                            token.symbol === "ETH" ||
+                            token.symbol === "USDC")) ||
+                        token.symbol === "USDT"
+                    )
+                    .map((token) => (
+                      <Asset token={token} key={token.symbol} swiper={swiper} />
+                    ))
+                : null}
+              {tokens &&
+              (forceWalletEmpty ||
+                tokens?.reduce((a, token) => a + Number(token.balance), 0) ===
+                  0) ? (
+                <View className="my-2">
+                  <ActionButton
+                    text="Get your first assets"
+                    bold
+                    rounded
+                    action={() => navigation.navigate("Onramp" as never)}
+                  />
+                </View>
+              ) : null}
+            </View>
           </View>
-        </View>
-      )}
-    </ScrollView>
+        )}
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
