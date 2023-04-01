@@ -10,12 +10,31 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { MONERIUM_SETTINGS } from ".";
 import { Camera } from "expo-camera";
 import useMoneriumStore from "../../../state/monerium";
+import useUserStore from "../../../state/user";
 
 type MoneriumWebviewParams = {
   MoneriumWebviewScreen: {
     webWiewUri: string;
     codeVerifier: string;
   };
+};
+
+type MoneriumUserData = {
+  id: string;
+  name: string;
+  kyc: {
+    outcome: string;
+    state: string;
+  };
+  accounts: {
+    address: string;
+    chain: string;
+    currency: string;
+    id: string;
+    network: string;
+    iban?: string;
+    standard?: string;
+  }[];
 };
 
 export default function MoneriumWebview({ navigation }: { navigation: any }) {
@@ -30,6 +49,8 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
     iban: state.iban,
     update: state.update,
   }));
+
+  const smartWalletAddress = useUserStore((state) => state.smartWalletAddress);
 
   const [webViewReturnUrl, setWebViewReturnUrl] = useState<string>("");
   const [returnCode, setReturnCode] = useState<string>("");
@@ -80,14 +101,19 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
         },
       }
     );
-    const userData = await userDataRaw.json();
+    const userData: MoneriumUserData = await userDataRaw.json();
     console.log("userData :", userData);
     if (!userData.accounts) return;
     const accountWithIban = userData.accounts.find(
-      (account: any) => account.iban
+      (account) =>
+        account.iban &&
+        account.address.toLowerCase() ===
+          (smartWalletAddress as string).toLowerCase()
     );
+    console.log("accountsWithIban :", accountWithIban);
+
     // right now, puts it in state. TODO: send it to the backend
-    update({ name: userData.name, iban: accountWithIban.iban });
+    update({ name: userData.name, iban: accountWithIban?.iban });
     navigation.navigate("Iban");
   };
 

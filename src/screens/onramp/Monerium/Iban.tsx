@@ -12,6 +12,26 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
   const routes = navigation.getState()?.routes;
   const previousScreen = routes[routes.length - 2];
 
+  if (name && !iban) {
+    return (
+      <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
+        <Text className="mx-auto my-5 w-11/12 font-[Inter] text-base text-typo-light dark:text-typo-dark">
+          It seems like you already had an account at Monerium, so your new
+          wallet address could not be linked to it. Please contact us for more
+          details.
+        </Text>
+
+        <View className="mx-auto mb-8 flex-row">
+          <ActionButton
+            text="Back to Home"
+            rounded
+            action={() => navigation.navigate("Wallet")}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="mx-auto w-11/12">
