@@ -9,6 +9,29 @@ import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
+const newABI = [
+  ...walletLogicABI,
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "hash",
+        type: "bytes32",
+      },
+    ],
+    name: "signedMessages",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
+
 export const getMtPelerinHashAndCode = (smartWalletAddress: string) => {
   let decimalAddress = ethers.BigNumber.from(smartWalletAddress as string).mod(
     10000
@@ -64,7 +87,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
 
     const smartWallet = new ethers.Contract(
       smartWalletAddress as string,
-      walletLogicABI,
+      newABI,
       getChain(137).provider
     );
 
@@ -73,6 +96,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
     try {
       const supports = await smartWallet.signedMessages(hash);
 
+      console.log("supports", supports);
       if (supports) setSupportsMtPelerin(true);
     } catch (e) {
       console.log(e);
@@ -115,7 +139,8 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
                   smartWalletAddress as string
                 );
                 setLoading(false);
-                setSupportsMtPelerin(true);
+                setWalletDeployed(walletDeployed);
+                setSupportsMtPelerin(true); // new ones do
               }}
             />
           </>
@@ -127,22 +152,6 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
               {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
               {/* car on ne supportait pas l'upgrade relayée */}
             </Text>
-
-            {/* <ActionButton
-              text="Update"
-              bold
-              rounded
-              action={() => {
-                setLoading(true);
-                Toast.show({
-                  type: "info",
-                  text1: "Transaction sent",
-                  text2: "Waiting for confirmation...",
-                });
-                // update implementation
-                setLoading(false);
-              }}
-            /> */}
           </>
         ) : null}
       </View>
@@ -153,7 +162,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
           bold
           rounded
           disabled={!supportsMtPelerin}
-          action={() => navigation.navigate("MoneriumWebview")}
+          action={() => navigation.navigate("MtPelerinWebview")}
         />
       </View>
     </SafeAreaView>

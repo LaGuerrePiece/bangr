@@ -3,7 +3,7 @@ import useUserStore from "../../../state/user";
 import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { ethers } from "ethers";
+import { getMtPelerinHashAndCode } from ".";
 
 const urls = {
   production: "https://widget.mtpelerin.com",
@@ -14,28 +14,13 @@ const urls = {
 export default function MtPelerinScreen({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
-  const { smartWalletAddress } = useUserStore((state) => ({
+  const { smartWalletAddress, wallet } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
+    wallet: state.wallet,
   }));
 
-  let decimalAddress = ethers.BigNumber.from(smartWalletAddress as string).mod(
-    10000
-  );
-
-  if (Number(decimalAddress.toString()) < 1000) {
-    decimalAddress = ethers.BigNumber.from("0").add(1000).add(decimalAddress);
-  }
-
-  console.log("code: ", decimalAddress.toString());
-
-  const code = decimalAddress.toString();
-  const message = "MtPelerin-" + code;
-  const hash = ethers.utils.hashMessage(message);
-
-  console.log("hash", hash);
-
-  const base64Hash = Buffer.from(hash.replace("0x", ""), "hex").toString(
-    "base64"
+  const MtPelerinHashAndCode = getMtPelerinHashAndCode(
+    smartWalletAddress as string
   );
 
   const params = {
@@ -49,8 +34,8 @@ export default function MtPelerinScreen({ navigation }: { navigation: any }) {
     // primary: "000000",
     // success: "000000",
     addr: smartWalletAddress as string,
-    code,
-    hash: base64Hash,
+    code: MtPelerinHashAndCode.code,
+    hash: MtPelerinHashAndCode.base64Hash,
     chain: "polygon_mainnet",
     rfr: "iDQd63GK",
     mylogo: "https://i.imgur.com/AOy1ol7.png",
