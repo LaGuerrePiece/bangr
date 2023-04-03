@@ -104,11 +104,11 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
                 : require("../../../assets/newlogo_black.png")
             }
           />
-          <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+          <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
             Welcome to Bangr
           </Text>
         </View>
-        <Text className="mt-2 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+        <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
           {heroSentence}
         </Text>
 
@@ -120,10 +120,10 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
       <View className="mx-auto mb-8 w-11/12">
         <Animated.View style={{ opacity: fadeAnim }}>
-          <Text className="my-2 text-center font-[InterBold] text-lg text-typo-light dark:text-typo-dark">
+          <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
             Your account is now ready
           </Text>
-          <Text className="mx-auto mb-5 w-52 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
+          <Text className="mx-auto mb-5 w-52 text-center font-Inter text-base text-typo-light dark:text-typo-dark">
             Before we take you to it, let's secure it !
           </Text>
         </Animated.View>

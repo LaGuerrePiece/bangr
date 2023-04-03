@@ -113,10 +113,10 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="p-5">
-        <Text className="mt-6 text-center font-[InterBold] text-[22px] text-typo-light dark:text-typo-dark">
+        <Text className="mt-6 text-center font-InterBold text-[22px] text-typo-light dark:text-typo-dark">
           Add euros from your bank account with our partner Monerium
         </Text>
-        <Text className="mt-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+        <Text className="mt-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
           Monerium allows EU users to convert euros into crypto for a record 0%
           fee. {"\n\n"}
           At the end of the process, Monerium will create a personal IBAN for
@@ -126,7 +126,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
 
         {implementationAddress === ethers.constants.AddressZero ? (
           <>
-            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
               Before continuing, deploy your smart wallet by clicking here
             </Text>
             <ActionButton
@@ -152,31 +152,15 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
           </>
         ) : implementationAddress === oldImplementationAddress ? (
           <>
-            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
               Unfortunately, your smart wallet is not compatible with Monerium
               right now. Please contact us to resolve this.
               {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
               {/* car on ne supportait pas l'upgrade relayée */}
             </Text>
-
-            <ActionButton
-              text="Update"
-              bold
-              rounded
-              action={() => {
-                setLoading(true);
-                Toast.show({
-                  type: "info",
-                  text1: "Transaction sent",
-                  text2: "Waiting for confirmation...",
-                });
-                // update implementation
-                setLoading(false);
-              }}
-            />
           </>
         ) : implementationAddress === newImplementationAddress ? null : (
-          <Text className="font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+          <Text className="font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
             Your implementation version is unknown.{"\n"}
             If you know what your are doing, go on.
             {/* Smart wallet should be deployed and have signed the Monerium message */}

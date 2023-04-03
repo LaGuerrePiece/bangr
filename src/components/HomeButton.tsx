@@ -10,7 +10,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 
 const HomeButton = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
 
   return (
@@ -19,7 +19,7 @@ const HomeButton = () => {
         className="w-1/3"
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          navigation.navigate("Receive" as never, {} as never);
+          navigation.navigate("Receive", {});
         }}
       >
         <Image
@@ -36,7 +36,7 @@ const HomeButton = () => {
       </TouchableOpacity>
       {/* <TouchableOpacity
         className="w-1/3"
-        onPress={() => navigation.navigate("Onramp" as never, {} as never)}
+        onPress={() => navigation.navigate("Onramp", {})}
       >
         <Image
           className="m-auto h-14 w-14"
@@ -50,7 +50,7 @@ const HomeButton = () => {
         className="w-1/3"
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          navigation.navigate("Send" as never, {} as never);
+          navigation.navigate("Send", {});
         }}
       >
         <Image

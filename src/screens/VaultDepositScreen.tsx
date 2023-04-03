@@ -49,7 +49,7 @@ type VaultParams = {
 const VaultDepositScreen = () => {
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation() as any;
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -281,18 +281,15 @@ const VaultDepositScreen = () => {
             <View className="flex">
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(
-                    "Vault" as never,
-                    {
-                      name,
-                      image,
-                      description,
-                      protocol,
-                      status,
-                      color,
-                      apy,
-                    } as never
-                  )
+                  navigation.navigate("Vault", {
+                    name,
+                    image,
+                    description,
+                    protocol,
+                    status,
+                    color,
+                    apy,
+                  })
                 }
               ></TouchableOpacity>
               <View className="mb-6 flex-row justify-between">
@@ -475,10 +472,9 @@ const VaultDepositScreen = () => {
             <View className="m-auto mt-6 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(
-                    "VaultInfoScreen" as never,
-                    { vault: params.vault } as never
-                  )
+                  navigation.navigate("VaultInfoScreen", {
+                    vault: params.vault,
+                  })
                 }
               >
                 <View className="flex-row items-center justify-between">

@@ -60,7 +60,7 @@ export const getMtPelerinHashAndCode = (smartWalletAddress: string) => {
   };
 };
 
-const MoneriumScreen = ({ navigation }: { navigation: any }) => {
+const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
   const { smartWalletAddress, wallet } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
@@ -106,11 +106,11 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="p-5">
-        <Text className="mt-6 text-center font-[InterBold] text-[22px] text-typo-light dark:text-typo-dark">
+        <Text className="mt-6 text-center font-InterBold text-[22px] text-typo-light dark:text-typo-dark">
           Add euros from your bank account or your card with our partner
           MtPelerin
         </Text>
-        <Text className="mt-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+        <Text className="mt-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
           The first 500 euros by bank transfer have a 0% fee {"\n\n"}
           You will have to verify your identity, otherwise your funds will only
           be delivered after a 7-days withholding period.{"\n\n"}
@@ -118,7 +118,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
 
         {!walletDeployed ? (
           <>
-            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
               Before continuing, deploy your smart wallet by clicking here
             </Text>
             <ActionButton
@@ -146,7 +146,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
           </>
         ) : !supportsMtPelerin ? (
           <>
-            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
               Unfortunately, your smart wallet is not compatible with MtPelerin
               right now. Please contact us to resolve this.
               {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
@@ -169,4 +169,4 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   );
 };
 
-export default MoneriumScreen;
+export default MtPelerinScreen;

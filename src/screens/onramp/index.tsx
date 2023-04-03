@@ -120,11 +120,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             </View>
           </View>
         </View>
-        {comingSoon ? (
+        {/* {comingSoon ? (
           <Text className="absolute bottom-20 left-20 text-2xl font-bold text-typo-light dark:text-typo-dark">
             Coming soon
           </Text>
-        ) : null}
+        ) : null} */}
       </TouchableOpacity>
     );
   };
@@ -141,7 +141,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
+      <Text className="mt-2 mr-4 font-InterBold text-[22px] leading-9 text-typo-light dark:text-typo-dark">
         Choose a payment option
       </Text>
       <ScrollView
@@ -169,16 +169,6 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           comingSoon={false}
         />
         <RampOption
-          logo={require("../../../assets/onramps/coinbase_logo.png")}
-          description={"Already have an account in a exchange ?"}
-          name={"Exchange"}
-          screen={"Exchange"}
-          instant={true}
-          fees={"0-3%"}
-          methods={["card", "bank"]}
-          comingSoon={false}
-        />
-        <RampOption
           logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
           description={"0% fee on first bank transfer up to 500€."}
           name={"Mt Pelerin"}
@@ -187,6 +177,16 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           fees={"0-2.5%"}
           methods={["card", "bank"]}
           comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/coinbase_logo.png")}
+          description={"Already have an account in a exchange ?"}
+          name={"Exchange"}
+          screen={"Exchange"}
+          instant={true}
+          fees={"0-3%"}
+          methods={["card", "bank"]}
+          comingSoon={true}
         />
       </ScrollView>
       <Toast config={toastConfig} />

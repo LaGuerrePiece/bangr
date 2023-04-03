@@ -25,11 +25,11 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
                 : require("../../../assets/newlogo_black.png")
             }
           />
-          <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+          <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
             Welcome to Bangr
           </Text>
         </View>
-        <Text className="mt-2 mr-4 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+        <Text className="mt-2 mr-4 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
           Managing investments is easy with Bangr
         </Text>
 

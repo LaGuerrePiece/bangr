@@ -11,7 +11,11 @@ const urls = {
   real: "https://buy.mtpelerin.com",
 };
 
-export default function MtPelerinScreen({ navigation }: { navigation: any }) {
+export default function MtPelerinWebviewScreen({
+  navigation,
+}: {
+  navigation: any;
+}) {
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
   const { smartWalletAddress, wallet } = useUserStore((state) => ({

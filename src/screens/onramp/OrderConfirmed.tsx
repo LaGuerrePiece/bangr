@@ -17,7 +17,7 @@ export default function OrderConfirmed({ navigation }: { navigation: any }) {
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View>
         <View className="mt-2 p-8">
-          <Text className="text-center font-[InterBold] text-2xl text-typo-light dark:text-typo-dark">
+          <Text className="text-center font-InterBold text-2xl text-typo-light dark:text-typo-dark">
             Your order is confirmed !
           </Text>
         </View>
