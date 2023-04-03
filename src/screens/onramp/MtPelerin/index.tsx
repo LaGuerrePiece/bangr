@@ -139,7 +139,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
                   smartWalletAddress as string
                 );
                 setLoading(false);
-                setWalletDeployed(walletDeployed);
+                setWalletDeployed(true);
                 setSupportsMtPelerin(true); // new ones do
               }}
             />
