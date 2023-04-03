@@ -139,7 +139,7 @@ export function getRelayerValueToSend(quote: Quote) {
   for (const singleQuote of quote.singleQuotes) {
     if (singleQuote.type === "lifi") {
       valueToSend = valueToSend.add(
-        (singleQuote.transactionRequest.value ?? "0")
+        singleQuote.transactionRequest.value ?? "0"
       );
       if (
         singleQuote.fromToken.symbol === "ETH" ||
@@ -270,8 +270,6 @@ export const getURLInApp = () =>
   process.env.NODE_ENV == "development"
     ? `http://${Constants.manifest?.debuggerHost?.split(":").shift()}:3000`
     : "https://dev.poche.fi";
-
-
 
 export const correctInput = (input: string): string => {
   return input.replace(/,/g, ".");

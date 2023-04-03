@@ -186,7 +186,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"0-2.5%"}
           methods={["card", "bank"]}
-          comingSoon={true}
+          comingSoon={false}
         />
       </ScrollView>
       <Toast config={toastConfig} />
