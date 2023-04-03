@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,9 +9,78 @@ import {
   useColorScheme,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
+import * as SecureStore from "expo-secure-store";
+import GDrive from "expo-google-drive-api-wrapper";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
+import { decrypt } from "./encrypt";
+import { FallbackProvider } from "@ethersproject/providers";
+
+WebBrowser.maybeCompleteAuthSession();
+
+const secureSave = async (key: string, value: string) => {
+  await SecureStore.setItemAsync(key, value);
+};
 
 export default function WelcomeScreen({ navigation }: { navigation: any }) {
+  const [token, setToken] = useState("");
+  const [step, setStep] = useState(0);
   const colorScheme = useColorScheme();
+
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+    // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
+    clientId:
+      "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
+    expoClientId:
+      "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
+    // scopes: ["drive.file"],
+    // scopes: ["file"],
+    scopes: ["email", "profile", "https://www.googleapis.com/auth/drive.file"],
+    // redirectUri: "https://auth.expo.io/@ndlz/poche",
+    redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+
+    // usePKCE: true,
+  });
+
+  const connectDrive = async () => {
+    await promptAsync();
+    if (response?.type === "success") {
+      setToken(response!.authentication!.accessToken);
+    }
+    await GDrive.setAccessToken(token);
+    await GDrive.init();
+    (await GDrive.isInitialized())
+      ? setStep(1)
+      : console.log("not initialized");
+  };
+
+  const restoreAccount = async () => {
+    const directoryId = await GDrive.files.safeCreateFolder({
+      name: "bangr backups",
+      parents: ["root"],
+    });
+    console.log("directoryId", directoryId);
+    const file = await GDrive.files.getId(
+      "bangr.wallet",
+      [directoryId],
+      "text/plain",
+    );
+    console.log("file", file);
+    const queryParams = { alt: "media", source: "downloadUrl" };
+    const fileContent = await GDrive.files.get([file.id], queryParams);
+    console.log("file", fileContent);
+    const decrypted = await decrypt(fileContent, "");
+    console.log(decrypted);
+    // secureSave("privKey", decrypted);
+    // navigation.navigate("Wallet");
+  };
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      setToken(response!.authentication!.accessToken);
+    }
+  }, [response, token]);
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
@@ -39,12 +108,24 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
         />
       </View>
 
-      <View className="mx-auto mb-8 w-11/12">
+      <View className="mx-auto w-11/12">
         <ActionButton
           text="Create my account"
           bold
           rounded
+          visible={step === 0 ? true : false}
           action={() => navigation.navigate("CreateAccount")}
+        />
+      </View>
+      <View className="mx-auto mb-8 w-11/12">
+        <ActionButton
+          text={step === 0 ? "Connect to my Drive" : "Restore my account"}
+          bold
+          rounded
+          action={
+            () => (step === 0 ? connectDrive() : restoreAccount())
+            // connect to google drive
+          }
         />
       </View>
     </SafeAreaView>

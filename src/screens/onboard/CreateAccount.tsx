@@ -20,10 +20,9 @@ import { supabase, supabaseUrl } from "./supabase";
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { encrypt } from "./encrypt"; 
+import { encrypt } from "./encrypt";
 
 WebBrowser.maybeCompleteAuthSession();
-
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -124,18 +123,20 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
   const connectDrive = async () => {
     await promptAsync();
+    if (response?.type === "success") {
+      setToken(response!.authentication!.accessToken);
+    }
     // await GDrive.setAccessToken(authResponse.params.access_token);
     await GDrive.setAccessToken(token);
-    GDrive.init()
-    GDrive.isInitialized()
+    await GDrive.init();
+    (await GDrive.isInitialized())
       ? setStep(1)
       : console.log("not initialized");
-
   };
 
   const secureAccount = async () => {
     const key = await SecureStore.getItemAsync("privKey");
-    const encryptedKey = await encrypt(key!, password);
+    const encryptedKey = await (await encrypt(key!, password)).toString();
 
     console.log(encryptedKey);
     let directoryId = await GDrive.files.safeCreateFolder({
@@ -181,14 +182,28 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
       </View>
 
       <View className="mx-auto mb-8 w-11/12">
-        <Animated.View style={{ opacity: fadeAnim }}>
-          <Text className="my-2 text-center font-[InterBold] text-lg text-typo-light dark:text-typo-dark">
-            Your account is now ready
+        {/* the password field */}
+        {step === 1 ? (
+          <View className="flex mb-10">
+          <Text className="font-[Inter] text-base text-typo-light dark:text-typo-dark">
+            Password
           </Text>
-          <Text className="mx-auto mb-5 w-52 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-            Before we take you to it, let's secure it !
-          </Text>
-        </Animated.View>
+          <TextInput
+            secureTextEntry={true}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+          />
+          </View>
+        ) : (
+          <Animated.View style={{ opacity: fadeAnim }}>
+            <Text className="my-2 text-center font-[InterBold] text-lg text-typo-light dark:text-typo-dark">
+              Your account is now ready
+            </Text>
+            <Text className="mx-auto mb-5 w-52 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
+              Before we take you to it, let's secure it !
+            </Text>
+          </Animated.View>
+        )}
         <ActionButton
           text={step === 0 ? "Connect to Google Drive" : "Secure my account"}
           spinner={intro}
