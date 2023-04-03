@@ -1,75 +1,132 @@
-import { Dimensions, View, useColorScheme } from "react-native";
+import { View, Text, useColorScheme, Image, SafeAreaView } from "react-native";
+import ActionButton from "../../../components/ActionButton";
+import { useEffect, useState } from "react";
 import useUserStore from "../../../state/user";
-import { SafeAreaView } from "react-native-safe-area-context";
-import WebView from "react-native-webview";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { ethers } from "ethers";
+import "react-native-get-random-values";
+import { getChain } from "../../../utils/utils";
+import walletLogicABI from "../../../config/abi/WalletLogic.json";
+import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-const urls = {
-  production: "https://widget.mtpelerin.com",
-  development: "https://widget-staging.mtpelerin.com",
-  real: "https://buy.mtpelerin.com",
-};
+const oldImplementationAddress = "0xf2b56c7c214b0b4a74e32034c96903b255d698f9";
+const newImplementationAddress = "...";
 
-export default function MtPelerinScreen({ navigation }: { navigation: any }) {
+const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
-  const windowWidth = Dimensions.get("window").width;
-  const { smartWalletAddress } = useUserStore((state) => ({
+  const { smartWalletAddress, wallet } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
+    wallet: state.wallet,
   }));
 
-  let decimalAddress = ethers.BigNumber.from(smartWalletAddress as string).mod(
-    10000
-  );
+  const [implementationAddress, setImplementationAddress] =
+    useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
-  if (Number(decimalAddress.toString()) < 1000) {
-    decimalAddress = ethers.BigNumber.from("0").add(1000).add(decimalAddress);
-  }
+  useEffect(() => {
+    checkImplementationVersion();
+  }, []);
 
-  console.log("code: ", decimalAddress.toString());
+  const checkImplementationVersion = async () => {
+    const _IMPLEMENTATION_SLOT =
+      "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc";
 
-  const code = decimalAddress.toString();
-  const message = "MtPelerin-" + code;
-  const hash = ethers.utils.hashMessage(message);
+    const implementation = await getChain(137).provider.getStorageAt(
+      smartWalletAddress as string,
+      _IMPLEMENTATION_SLOT
+    );
 
-  console.log("hash", hash);
+    const implementationAddress = ethers.utils.defaultAbiCoder
+      .decode(["address"], implementation)[0]
+      .toLowerCase();
 
-  const base64Hash = Buffer.from(hash.replace("0x", ""), "hex").toString(
-    "base64"
-  );
-
-  const params = {
-    type: "webview",
-    tab: "buy",
-    bsc: "EUR",
-    bdc: "USDC",
-    crys: "agEUR,DAI,ETH,jEUR,LUSD,MATIC,USDC,USDT,WBTC,WETH",
-    net: "matic_mainnet",
-    // lang: "fr",
-    // primary: "000000",
-    // success: "000000",
-    addr: smartWalletAddress as string,
-    code,
-    hash: base64Hash,
-    chain: "polygon_mainnet",
-    rfr: "iDQd63GK",
-    mylogo: "https://i.imgur.com/AOy1ol7.png",
-    mode: colorScheme as string,
+    setImplementationAddress(implementationAddress);
   };
 
-  const webWiewUri = `${urls.production}/?${new URLSearchParams(
-    params
-  ).toString()}`;
-
-  console.log("webWiewUri", webWiewUri);
-
   return (
-    <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <WebView
-        style={{ width: windowWidth }}
-        source={{ uri: webWiewUri }}
-        // incognito={true}
-      />
+    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
+      <View className="p-5">
+        <Text className="mt-6 text-center font-[InterBold] text-[22px] text-typo-light dark:text-typo-dark">
+          Add euros from your bank account or your card with our partner
+          MtPelerin
+        </Text>
+        <Text className="mt-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+          The first 500 euros by bank transfer have a 0% fee {"\n\n"}
+          You will have to verify your identity, otherwise your funds will only
+          be delivered after a 7-days withholding period.{"\n\n"}
+        </Text>
+
+        {implementationAddress === ethers.constants.AddressZero ? (
+          <>
+            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+              Before continuing, deploy your smart wallet by clicking here
+            </Text>
+            <ActionButton
+              text="Deploy"
+              bold
+              rounded
+              spinner={loading}
+              action={async () => {
+                setLoading(true);
+                Toast.show({
+                  type: "info",
+                  text1: "Transaction sent",
+                  text2: "Waiting for confirmation...",
+                });
+                await deployWalletsIfNotDeployed(
+                  [137],
+                  (wallet as ethers.Wallet).address,
+                  smartWalletAddress as string
+                );
+                setLoading(false);
+              }}
+            />
+          </>
+        ) : implementationAddress === oldImplementationAddress ? (
+          <>
+            <Text className="mb-6 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+              Unfortunately, your smart wallet is not compatible with Monerium
+              right now. Please contact us to resolve this.
+              {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
+              {/* car on ne supportait pas l'upgrade relayée */}
+            </Text>
+
+            {/* <ActionButton
+              text="Update"
+              bold
+              rounded
+              action={() => {
+                setLoading(true);
+                Toast.show({
+                  type: "info",
+                  text1: "Transaction sent",
+                  text2: "Waiting for confirmation...",
+                });
+                // update implementation
+                setLoading(false);
+              }}
+            /> */}
+          </>
+        ) : implementationAddress === newImplementationAddress ? null : (
+          <Text className="font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
+            Your implementation version is unknown.{"\n"}
+            If you know what your are doing, go on.
+            {/* Smart wallet should be deployed and have signed the Monerium message */}
+          </Text>
+        )}
+      </View>
+
+      <View className="mx-auto mb-8 w-11/12">
+        <ActionButton
+          text="Next"
+          bold
+          rounded
+          disabled={implementationAddress === oldImplementationAddress}
+          action={() => navigation.navigate("MoneriumWebview")}
+        />
+      </View>
     </SafeAreaView>
   );
-}
+};
+
+export default MoneriumScreen;
