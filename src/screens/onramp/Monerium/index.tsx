@@ -25,7 +25,7 @@ export const MONERIUM_SETTINGS =
       };
 
 const oldImplementationAddress = "0xf2b56c7c214b0b4a74e32034c96903b255d698f9";
-const newImplementationAddress = "...";
+const newImplementationAddress = "0xaa2d1d0263ee6da02508044bc5fb6d0d784bc8ee";
 
 const MoneriumScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
