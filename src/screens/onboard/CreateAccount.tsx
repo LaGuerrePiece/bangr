@@ -15,73 +15,37 @@ import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
 import useTokensStore from "../../state/tokens";
 import "react-native-get-random-values";
-import { makeRedirectUri, startAsync } from 'expo-auth-session';
-import { supabase, supabaseUrl } from './supabase';
+import { makeRedirectUri, startAsync } from "expo-auth-session";
+import { supabase, supabaseUrl } from "./supabase";
 import GDrive from "expo-google-drive-api-wrapper";
-
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
+import { encrypt } from "./encrypt"; 
 
 WebBrowser.maybeCompleteAuthSession();
 
-// export const googleSignIn = async (key: string) => {
-
-
-  // const redirectUrl = makeRedirectUri({
-  //   path: '/auth/callback',
-  // });
-
-  // const authResponse = await startAsync({
-  //   authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&redirect_to=${redirectUrl}`,
-  //   returnUrl: redirectUrl,
-  // });
-
-
-  // if (authResponse.type === 'success') {
-    // supabase.auth.setSession({
-    //   access_token: authResponse.params.access_token,
-    //   refresh_token: authResponse.params.refresh_token,
-    // });
-    // console.log(authResponse.params.access_token);
-    // await GDrive.setAccessToken(authResponse.params.access_token);
-
-    // await GDrive.init();
-    // GDrive.isInitialized() ? console.log("initialized") : console.log("not initialized");
-    // let directoryId = await GDrive.files.safeCreateFolder({
-    //   name: "bangr backups",
-    //   parents: ['root'],
-    // });
-    // const file = await GDrive.files.createFileMultipart(
-    //   key,
-    //   "text/plain", {
-    //     parents: [directoryId],
-    //     name: "My file"
-    // },
-    //   true
-    // );
-    
-  // }
-// };
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
-
   const [token, setToken] = useState("");
+  const [step, setStep] = useState(0);
+  const [password, setPassword] = useState("");
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
     // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
-    clientId: "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
-    expoClientId: "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
+    clientId:
+      "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
+    expoClientId:
+      "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
     // scopes: ["drive.file"],
     // scopes: ["file"],
-    scopes: ["email", "profile","https://www.googleapis.com/auth/drive.file"],
+    scopes: ["email", "profile", "https://www.googleapis.com/auth/drive.file"],
     // redirectUri: "https://auth.expo.io/@ndlz/poche",
-    redirectUri : "https://auth.expo.io/@ndlz/poche-app",
-    
+    redirectUri: "https://auth.expo.io/@ndlz/poche-app",
 
     // usePKCE: true,
   });
@@ -158,32 +122,36 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     }, 3000);
   }, []);
 
-  const secureAccount = async() => {
-    // Secure Account
-    // navigation.navigate("Wallet");
-
-    // Secure Account
-    const key = await SecureStore.getItemAsync("privKey");
+  const connectDrive = async () => {
     await promptAsync();
     // await GDrive.setAccessToken(authResponse.params.access_token);
-    await  GDrive.setAccessToken(token);
-    await GDrive.init();
-    GDrive.isInitialized() ? console.log("initialized") : console.log("not initialized");
+    await GDrive.setAccessToken(token);
+    GDrive.init()
+    GDrive.isInitialized()
+      ? setStep(1)
+      : console.log("not initialized");
+
+  };
+
+  const secureAccount = async () => {
+    const key = await SecureStore.getItemAsync("privKey");
+    const encryptedKey = await encrypt(key!, password);
+
+    console.log(encryptedKey);
     let directoryId = await GDrive.files.safeCreateFolder({
       name: "bangr backups",
-      parents: ['root'],
+      parents: ["root"],
     });
     const file = await GDrive.files.createFileMultipart(
-      key,
-      "text/plain", {
+      encryptedKey,
+      "text/plain",
+      {
         parents: [directoryId],
-        name: "bangr wallet"
-    },
+        name: "bangr.wallet",
+      },
       false
     );
-
     navigation.navigate("Wallet");
-
   };
 
   return (
@@ -222,11 +190,19 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
           </Text>
         </Animated.View>
         <ActionButton
-          text="Secure my account"
+          text={step === 0 ? "Connect to Google Drive" : "Secure my account"}
           spinner={intro}
           bold
           rounded
-          action={secureAccount}
+          action={
+            step === 0
+              ? () => {
+                  connectDrive();
+                }
+              : () => {
+                  secureAccount();
+                }
+          }
         />
         <TouchableOpacity
           className={intro ? "opacity-0" : ""}
