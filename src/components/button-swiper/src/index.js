@@ -725,227 +725,77 @@ export default class extends Component {
 
     return (
       <View>
-        <Modal
-          animationType={"slide"}
-          transparent={true}
-          visible={this.state.modalVisible == true}
-          onRequestClose={() => {
-            console.log("Modal has been closed.");
-          }}
-        >
-          <TouchableOpacity
-            style={styles.container}
-            activeOpacity={1}
-            onPress={() => {
-              this.setState({ modalVisible: false });
-            }}
-          >
-            <View className="items-center">
-              {/* <Image
-              className="h-12 w-12 rotate-180"
-            source={require("../../../../assets/mainbtn.png")}></Image> */}
-            </View>
-            <View className="h-4/7 mt-auto rounded-lg bg-primary-light px-2 pt-4">
-              <View className="flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    //scrol to invest
-                    this.scrollTo(3);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-1">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/invest.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">Invest</Text>
-                      <Text className="text-md ml-auto">
-                        Grow your money with DeFi
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View className="bg-seconday-light flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(2);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-1">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/pochicon.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">Wallet</Text>
-                      <Text className="text-md ml-auto">View your assets</Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-
-              <View className="flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(1);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center px-2 py-1">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/swap.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">Swap</Text>
-                      <Text className="text-md ml-auto">
-                        Exchange tokens in seconds
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View className="flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(0);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center px-2 py-1">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/history.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">History</Text>
-                      <Text className="text-md ml-auto">
-                        Have a look at your past transactions
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <View className="flex">
-                <TouchableOpacity
-                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
-                  onPress={() => {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(4);
-                    this.setState({ modalVisible: false });
-                  }}
-                >
-                  <View className="mx-2 flex-row items-center px-2 py-1">
-                    <Image
-                      className="h-12 w-12"
-                      source={require("../../../../assets/settings.png")}
-                    />
-                    <View className="ml-4 flex">
-                      <Text className="text-lg font-semibold">Settings</Text>
-                      <Text className="text-md ml-auto">
-                        Configure your app
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                // border here for button
-                className="background-primary-light m-auto mb-5  rounded-2xl border-icon-light px-1 py-2 shadow-xl"
-                pointerEvents="none"
-                visible={this.state.modalVisible}
-                onPressIn={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  this.setState({ modalVisible: false });
-                }}
-              >
-                <Image
-                  className="h-12 w-12 rotate-180"
-                  source={require("../../../../assets/mainbtn.png")}
-                ></Image>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        </Modal>
-
-        <View className="position-absolute flex items-center">
-          <TouchableOpacity
-            // border here for button
-            // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
-            className={
-              this.state.index == 3
-                ? "background-primary-light mx-36 rounded-2xl border-icon-light px-1 py-1 shadow-xl opacity-30"
-                : "background-primary-light mx-36 rounded-2xl border-icon-light px-1 py-1 shadow-xl"
-            }
-            pointerEvents="none"
-            visible={this.state.modalVisible}
-            onPressIn={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-            }}
-            onPressOut={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              if (this.state.modalVisible == true) {
-                this.setState({ modalVisible: false });
-              } else {
-                this.setState({ modalVisible: true });
+        <View className="position-absolute flex-row items-center">
+          <View className="w-1/5 p-4 items-center">
+            <TouchableOpacity className="flex"
+            onPress={
+              () => {
+                this.scrollTo(0)
               }
-            }}
-            style={[
-              styles["pagination_" + this.state.dir],
-              this.props.paginationStyle,
-            ]}
-          >
-            {this.state.index == 2 ? (
-              <Animated.Image
-                className="h-12 w-12"
-                source={require("../../../../assets/mainbtn.png")}
-              ></Animated.Image>
-            ) : this.state.index == 1 ? (
-              <Animated.Image
-                className="h-12 w-12 rotate-12"
-                source={require("../../../../assets/mainbtn.png")}
-              ></Animated.Image>
-            ) : this.state.index == 0 ? (
-              <Animated.Image
-                className="h-12 w-12 rotate-45"
-                source={require("../../../../assets/mainbtn.png")}
-              ></Animated.Image>
-            ) : this.state.index == 3 ? (
-              <Animated.Image
-                className="h-12 w-12 -rotate-12"
-                source={require("../../../../assets/mainbtn.png")}
-              ></Animated.Image>
-            ) : this.state.index == 4 ? (
-              <Animated.Image
-                className="h-12 w-12 -rotate-45"
-                source={require("../../../../assets/mainbtn.png")}
-              ></Animated.Image>
-            ) : null}
-
-            {/* {
-              this.state.index == 2 ? rotateValueHolder = new Animated.Value(0) : 
-              rotateValueHolder = new Animated.Value(30)
-
-            }
-            {/* <Animated.Image
-              className="h-12 w-12"
-              style={{
-                transform: [{rotate: rotateData}],
-              }}              source={require("../../../../assets/mainbtn.png")}
-            ></Animated.Image> */}
-          </TouchableOpacity>
+            }>
+              <Image
+                className="h-8 w-8"
+                source={require("../../../../assets/history.png")}
+              ></Image>
+              <Text className="text-xs">History</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="w-1/5 p-4 items-center">
+            <TouchableOpacity className="flex"
+            onPress={
+              () => {
+                this.scrollTo(1)
+              }
+            }>
+              <Image
+                className="h-8 w-8"
+                source={require("../../../../assets/swap.png")}
+              ></Image>
+              <Text className="text-xs">Swap</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="w-1/5 p-4 items-center">
+            <TouchableOpacity className="flex"
+            onPress={
+              () => {
+                this.scrollTo(2)
+              }
+            }>
+              <Image
+                className="h-8 w-8"
+                source={require("../../../../assets/pochicon.png")}
+              ></Image>
+              <Text className="text-xs">Wallet</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="w-1/5 p-4 items-center">
+            <TouchableOpacity className="flex"
+            onPress={
+              () => {
+                this.scrollTo(3)
+              }
+            }>
+              <Image
+                className="h-8 w-8"
+                source={require("../../../../assets/invest.png")}
+              ></Image>
+              <Text className="text-xs">Invest</Text>
+            </TouchableOpacity>
+          </View>
+          <View className="w-1/5 p-4 items-center">
+            <TouchableOpacity className="flex"
+            onPress={
+              () => {
+                this.scrollTo(4)
+              }
+            }>
+              <Image
+                className="h-8 w-8"
+                source={require("../../../../assets/settings.png")}
+              ></Image>
+              <Text className="text-xs">Setting</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
