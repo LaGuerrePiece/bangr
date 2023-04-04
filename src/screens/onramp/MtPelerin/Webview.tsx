@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import WebView from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { getMtPelerinHashAndCode } from ".";
+import { toastConfig } from "../../../components/toasts";
 
 const urls = {
   production: "https://widget.mtpelerin.com",
@@ -60,6 +61,7 @@ export default function MtPelerinWebviewScreen({
         source={{ uri: webWiewUri }}
         // incognito={true}
       />
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
 }
