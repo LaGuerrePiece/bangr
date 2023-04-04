@@ -31,7 +31,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "host.exp.exponent",
+      "package": "com.poche.fi",
       "versionCode": 2,
       "googleServicesFile": "./google-services.json"
     },
