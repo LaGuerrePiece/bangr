@@ -184,7 +184,7 @@ const VaultDepositScreen = () => {
         wallet,
         smartWalletAddress,
         "0",
-        "Invest",
+        "Withdraw",
         name,
         selectedTokenSymbol,
         "",
