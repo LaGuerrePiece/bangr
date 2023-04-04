@@ -1,5 +1,4 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import {
   Text,
   View,
@@ -25,7 +24,7 @@ type VaultParams = {
 
 const getInfo = (name: string) => {
   switch (name) {
-    case "Aave USDC":
+    case "Aave | USDC":
       return [
         {
           type: "text",
@@ -45,7 +44,7 @@ const getInfo = (name: string) => {
           ],
         },
       ];
-    case "RocketPool":
+    case "Rocket Pool | Ether":
       return [
         {
           type: "text",
@@ -273,10 +272,6 @@ const VaultInfoScreen = () => {
   const { name, image, description, color } = vault;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const apy = vault.chains
     ? averageApy(vault.chains.map((chain) => chain.apy)).toString()

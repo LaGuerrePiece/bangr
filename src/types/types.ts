@@ -114,6 +114,7 @@ export interface VaultStatic {
   name: string;
   image: string;
   description: string;
+  longDescription?: string;
   vaultToken?: string;
   tokens: string[];
   protocol: VaultProtocol;

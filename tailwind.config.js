@@ -24,6 +24,10 @@ module.exports = {
           light: "#FFFFFF",
           dark: "#3c414a",
         },
+        quaternary: {
+          light: "#FFFFFF",
+          dark: "#43464D",
+        },
         special: {
           light: "#1E1E1E",
           dark: "#F3F0ED",

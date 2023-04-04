@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
 import { BigNumber, constants, ethers, utils } from "ethers";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -67,7 +67,7 @@ const VaultDepositScreen = () => {
   const {
     name,
     image,
-    description,
+    longDescription,
     protocol,
     status,
     color,
@@ -101,10 +101,6 @@ const VaultDepositScreen = () => {
       clearTimeout(handler);
     };
   }, [amount]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const handleAmountChange = async (action: string) => {
     if (!parseFloat(debouncedAmount)) {
@@ -273,41 +269,21 @@ const VaultDepositScreen = () => {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
-        <ScrollView className="h-full">
-          <View
-            onStartShouldSetResponder={() => true}
-            className="mx-auto w-11/12 rounded-lg p-3"
-          >
-            <View className="flex">
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Vault", {
-                    name,
-                    image,
-                    description,
-                    protocol,
-                    status,
-                    color,
-                    apy,
-                  })
-                }
-              ></TouchableOpacity>
-              <View className="mb-6 flex-row justify-between">
-                <View className="w-4/5">
-                  <View className="flex-row items-center">
-                    <TouchableOpacity onPress={navigation.goBack}>
-                      <ArrowLeftIcon size={24} color="#3A5A83" />
-                    </TouchableOpacity>
-                    <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
-                      Deposit in {name}
-                    </Text>
-                  </View>
-                </View>
-                <Image className="h-8 w-8" source={{ uri: image }} />
+        <ScrollView onStartShouldSetResponder={() => true} className="h-full">
+          <View className="mx-auto w-11/12 p-3">
+            <View className="mb-6 flex-row justify-between">
+              <View className="flex-row items-center">
+                <TouchableOpacity onPress={navigation.goBack}>
+                  <ArrowLeftIcon size={24} color="#3A5A83" />
+                </TouchableOpacity>
+                <Text className="ml-3 text-2xl font-bold text-typo-light dark:text-typo-dark">
+                  Deposit in {protocol}
+                </Text>
               </View>
+              <Image className="h-10 w-10" source={{ uri: image }} />
             </View>
 
-            <View className="my-2 flex items-center">
+            <View className="my-2 items-center">
               {selectedToken && (
                 <SelectTokenButton
                   tokens={[selectedToken]}
@@ -315,7 +291,7 @@ const VaultDepositScreen = () => {
                   tokenToUpdate={""}
                 />
               )}
-              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+              <Text className="mt-2 text-typo-light dark:text-typo-dark">
                 Available:{" "}
                 {balance
                   ? formatUnits(balance, selectedToken?.decimals, 3)
@@ -336,16 +312,15 @@ const VaultDepositScreen = () => {
                 onPress={() => {
                   setAmount(
                     balance
-                      ? formatUnits(
+                      ? ethers.utils.formatUnits(
                           balance,
-                          selectedToken?.decimals,
                           selectedToken?.decimals || 18
                         )
                       : "0"
                   );
                 }}
               >
-                <View className="rounded-xl bg-btn-light px-3 py-1 dark:bg-btn-dark">
+                <View className="rounded-full bg-btn-light px-3 py-1 dark:bg-btn-dark">
                   <Text className="text-secondary-light dark:text-secondary-dark">
                     MAX
                   </Text>
@@ -356,9 +331,8 @@ const VaultDepositScreen = () => {
               onPress={() => {
                 setAmount(
                   deposited
-                    ? formatUnits(
+                    ? ethers.utils.formatUnits(
                         deposited,
-                        selectedToken?.decimals,
                         selectedToken?.decimals || 18
                       )
                     : "0"
@@ -367,46 +341,34 @@ const VaultDepositScreen = () => {
             >
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Deposited:{" "}
-                {deposited &&
-                  utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
+                {ethers.utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
                 {selectedTokenSymbol}
               </Text>
             </TouchableOpacity>
 
             {status === "active" ? (
-              <View className="mt-12 flex-row justify-evenly">
+              <View className="my-6 flex-row justify-evenly">
+                {Number(deposited) > 0 ? (
+                  <ActionButton
+                    text="WITHDRAW"
+                    rounded
+                    bold
+                    action={handleWithdraw}
+                  />
+                ) : null}
                 <ActionButton
-                  text="WITHDRAW"
-                  disabled={
-                    chains
-                      .map((chain) => chain.deposited)
-                      .reduce((acc, cur) => acc.add(cur), BigNumber.from(0))
-                      .gt(0)
-                      ? false
-                      : true
-                  }
-                  action={handleWithdraw}
-                />
-                <ActionButton
-                  text="DEPOSIT"
+                  text=" DEPOSIT  "
+                  additionalCss={Number(deposited) > 0 ? `` : `min-w-[200px]`}
+                  rounded
+                  bold
                   disabled={false}
                   action={handleDeposit}
                 />
               </View>
             ) : (
-              <View className="mt-12 flex-row justify-evenly">
+              <View className="my-6 flex-row justify-evenly">
                 <ActionButton
-                  text="COMING"
-                  disabled={true}
-                  action={() => {
-                    Toast.show({
-                      type: "info",
-                      text1: "Coming soon !",
-                    });
-                  }}
-                />
-                <ActionButton
-                  text="SOON™"
+                  text="Coming soon™"
                   disabled={true}
                   action={() => {
                     Toast.show({
@@ -418,7 +380,11 @@ const VaultDepositScreen = () => {
               </View>
             )}
 
-            <View className="mt-6 h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
+            {/* <Text className="my-1 text-[17px] text-typo-light dark:text-typo-dark">
+              {longDescription}
+            </Text> */}
+
+            <View className="h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
               <View className="flex-row items-center">
                 <Text className="font-bold text-typo-light dark:text-typo-dark">
                   Estimated returns based on current APY
