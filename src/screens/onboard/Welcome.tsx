@@ -1,108 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   View,
   Text,
   SafeAreaView,
   TouchableOpacity,
   Image,
-  TextInput,
   useColorScheme,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
-import * as SecureStore from "expo-secure-store";
-// @ts-ignore
-import GDrive from "expo-google-drive-api-wrapper";
-import * as WebBrowser from "expo-web-browser";
-import * as Google from "expo-auth-session/providers/google";
-import { decrypt, encrypt } from "./encrypt";
-import * as FileSystem from "expo-file-system";
-import CryptoES from "crypto-es";
-import { ethers } from "ethers";
-import useUserStore from "../../state/user";
-
-WebBrowser.maybeCompleteAuthSession();
-
-const secureSave = async (key: string, value: string) => {
-  await SecureStore.setItemAsync(key, value);
-};
+import useTokensStore from "../../state/tokens";
 
 export default function WelcomeScreen({ navigation }: { navigation: any }) {
-  const [token, setToken] = useState("");
-  const [step, setStep] = useState(0);
   const colorScheme = useColorScheme();
-  const login = useUserStore((state) => state.login);
-
-  const [request, response, promptAsync] = Google.useAuthRequest({
-    // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
-    // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
-    clientId:
-      "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
-    expoClientId:
-      "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
-    // scopes: ["drive.file"],
-    // scopes: ["file"],
-    scopes: ["https://www.googleapis.com/auth/drive.file"],
-    // redirectUri: "https://auth.expo.io/@ndlz/poche",
-    redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-
-    // usePKCE: true,
-  });
-
-  const connectDrive = async () => {
-    await promptAsync();
-    if (response?.type === "success") {
-      setToken(response!.authentication!.accessToken);
-    }
-    await GDrive.setAccessToken(token);
-    await GDrive.init();
-    (await GDrive.isInitialized())
-      ? setStep(1)
-      : console.log("not initialized");
-  };
-
-  const restoreAccount = async () => {
-    const directoryId = await GDrive.files.safeCreateFolder({
-      name: "bangr backups",
-      parents: ["root"],
-    });
-    console.log("directoryId", directoryId);
-    const fileid = await GDrive.files.getId(
-      "bangr.wallet",
-      [directoryId],
-      "text/plain"
-    );
-    console.log("file", fileid);
-    const queryParams = {
-      mimeType: "text/plain",
-    };
-    const fileContent = await GDrive.files.download([fileid], queryParams);
-    console.log("fileContent", fileContent.uri);
-    // get the file content with FileSystem
-    FileSystem.readAsStringAsync(fileContent.uri)
-      .then(async (content) => {
-        // console.log(content);
-        // uncrypt the content
-        const decrypted = await decrypt(content, "123456");
-        // console.log(decrypted);
-        secureSave("privKey", decrypted);
-        login(new ethers.Wallet(decrypted));
-        // delete the file with FileSystem
-        await FileSystem.deleteAsync(fileContent.uri);
-        //
-        navigation.navigate("Wallet");
-      })
-      .catch((error) => console.error(error));
-  };
+  const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
 
   useEffect(() => {
-    if (response?.type === "success") {
-      setToken(response!.authentication!.accessToken);
-    }
-  }, [response, token]);
+    fetchTokensStatic();
+  });
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-20 w-11/12">
+      <View className="mx-auto mt-12 w-11/12">
         <View className="flex-row">
           <Image
             className="h-6 w-6"
@@ -126,25 +44,22 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
         />
       </View>
 
-      <View className="mx-auto w-11/12">
+      <View className="mx-auto mb-8 w-11/12">
         <ActionButton
           text="Create my account"
           bold
           rounded
-          disabled={step !== 0}
           action={() => navigation.navigate("CreateAccount")}
         />
-      </View>
-      <View className="mx-auto mb-8 w-11/12">
-        <ActionButton
-          text={step === 0 ? "Connect to my Drive" : "Restore my account"}
-          bold
-          rounded
-          action={
-            () => (step === 0 ? connectDrive() : restoreAccount())
-            // connect to google drive
-          }
-        />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("RestoreAccount");
+          }}
+        >
+          <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
+            Restore a previous account
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

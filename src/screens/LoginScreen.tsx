@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  TextInput,
   useColorScheme,
 } from "react-native";
 import { Buffer } from "buffer";
