@@ -28,6 +28,8 @@ import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
+import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
+import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
 import { useStripe } from "@stripe/stripe-react-native";
 import { Platform } from "react-native";
 
@@ -113,6 +115,14 @@ const App = () => {
         >
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
+          <Stack.Screen
+            name="RestoreAccount"
+            component={RestoreAccountScreen}
+          />
+          <Stack.Screen
+            name="ChoosePassword"
+            component={ChoosePasswordScreen}
+          />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Wallet" component={MainScreen} />
           <Stack.Screen
