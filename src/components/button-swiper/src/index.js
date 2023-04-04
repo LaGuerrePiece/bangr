@@ -638,6 +638,7 @@ export default class extends Component {
    * @return {object} react-dom
    */
   renderPagination = () => {
+    console.log("renderPagination");
     // By default, dots only show when `total` >= 2
     if (this.state.total <= 1) return null;
 
@@ -744,7 +745,7 @@ export default class extends Component {
               className="h-12 w-12 rotate-180"
             source={require("../../../../assets/mainbtn.png")}></Image> */}
             </View>
-            <View className="mt-auto h-4/7 rounded-lg bg-primary-light px-2 pt-4">
+            <View className="h-4/7 mt-auto rounded-lg bg-primary-light px-2 pt-4">
               <View className="flex">
                 <TouchableOpacity
                   className="rounded-xl bg-primary-light p-1.5 shadow-xl"
@@ -862,7 +863,7 @@ export default class extends Component {
               </View>
               <TouchableOpacity
                 // border here for button
-                className="background-primary-light m-auto rounded-2xl  border-icon-light px-1 mb-5 py-2 shadow-xl"
+                className="background-primary-light m-auto mb-5  rounded-2xl border-icon-light px-1 py-2 shadow-xl"
                 pointerEvents="none"
                 visible={this.state.modalVisible}
                 onPressIn={() => {
@@ -876,7 +877,6 @@ export default class extends Component {
                 ></Image>
               </TouchableOpacity>
             </View>
-            
           </TouchableOpacity>
         </Modal>
 
@@ -884,7 +884,11 @@ export default class extends Component {
           <TouchableOpacity
             // border here for button
             // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
-            className="background-primary-light mx-36 rounded-2xl  border-icon-light px-1 py-1 shadow-xl"
+            className={
+              this.state.index == 3
+                ? "background-primary-light mx-36 rounded-2xl border-icon-light px-1 py-1 shadow-xl opacity-30"
+                : "background-primary-light mx-36 rounded-2xl border-icon-light px-1 py-1 shadow-xl"
+            }
             pointerEvents="none"
             visible={this.state.modalVisible}
             onPressIn={() => {
