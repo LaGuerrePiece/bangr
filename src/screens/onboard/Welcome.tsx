@@ -13,9 +13,10 @@ import * as SecureStore from "expo-secure-store";
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { decrypt } from "./encrypt";
+import { decrypt, encrypt } from "./encrypt";
 import { FallbackProvider } from "@ethersproject/providers";
 import * as FileSystem from "expo-file-system";
+import CryptoES from "crypto-es";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -68,38 +69,27 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
       "text/plain"
     );
     console.log("file", fileid);
-
-    // const key = await readFile(file.id);
-    // console.log("key", key);
-
     const queryParams = {
-      // alt: "media",
-      // source: "downloadUrl",
-      // supportsAllDrives: true,
-      // fields: 'webContentLink',
       mimeType: "text/plain",
     };
     const fileContent = await GDrive.files.download([fileid], queryParams);
-    // const filExport = await GDrive.files.export([fileid], queryParams);
-    // const content = await GDrive.files.export(file, 'text/plain', {alt:'media'});
-    // console.log("fileExport", filExport);
-    // console.log("fileExport", filExport);
-    // console.log("filexport as text", filExport);
     console.log("fileContent", fileContent.uri);
-    // read file at path fileContent.url
-    const path = fileContent.url;
+    // get the file content with FileSystem
     FileSystem.readAsStringAsync(fileContent.uri)
-      .then((content) => 
-        console.log(content)
-      )
+      .then(async (content) => {
+        // console.log(content);
+        // uncrypt the content
+        const decrypted = await decrypt(content, "123456");
+        // console.log(decrypted);
+        secureSave("privKey", decrypted);
+        await FileSystem.deleteAsync(fileContent.uri);
+        navigation.navigate("Wallet");
+
+
+      })
       .catch((error) => console.error(error));
+    // delete the file with FileSystem
 
-  
-
-    const decrypted = await decrypt(fileContent, "");
-    console.log(decrypted);
-    secureSave("privKey", decrypted);
-    navigation.navigate("Wallet");
   };
 
   useEffect(() => {

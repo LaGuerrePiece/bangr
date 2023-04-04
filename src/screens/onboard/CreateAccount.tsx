@@ -136,9 +136,10 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
   const secureAccount = async () => {
     const key = await SecureStore.getItemAsync("privKey");
-    const encryptedKey = await (await encrypt(key!, password)).toString();
-
+    const encryptedKey = await encrypt(key!, password);
     console.log(encryptedKey);
+    const decryptedKey = await encrypt(encryptedKey, password);
+    console.log(decryptedKey);
     let directoryId = await GDrive.files.safeCreateFolder({
       name: "bangr backups",
       parents: ["root"],
