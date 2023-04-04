@@ -23,6 +23,7 @@ import Swipeable from "react-native-swipeable-rtl";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
+import useCurrencyStore from "../../state/currency";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -32,6 +33,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const loaded = useUserStore((state) => state.loaded);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
   const navigation = useNavigation();
+  const currency = useCurrencyStore((state) => state.currency);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -106,7 +108,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
             </View>
             <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
               <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
-                ${loaded.toFixed(2)}
+               {currency === "Dollar" ? "$" : ""}{currency == "Euro" ? (loaded*0.91)?.toFixed(2): loaded?.toFixed(2)}{currency === "Euro" ? "€" : ""}
               </Text>
               {/* <View className=""><Chart chart={chart} /></View> */}
               <HomeButton />

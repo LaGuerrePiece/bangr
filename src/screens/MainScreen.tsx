@@ -20,6 +20,7 @@ import * as Haptics from "expo-haptics";
 import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
 import HistoryScreen from "./HistoryScreen";
+import Settings from "./home/Settings";
 
 const MainScreen = ({ navigation }: { navigation: any }) => {
   const insets = useSafeAreaInsets();
@@ -94,6 +95,7 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
       <Swap swiper={swiper} />
       <Wallet swiper={swiper} />
       <Invest swiper={swiper} />
+      <Settings swiper={swiper} />
     </ButtonSwiper>
   );
 };
