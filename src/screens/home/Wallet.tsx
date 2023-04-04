@@ -23,6 +23,7 @@ import Swipeable from "react-native-swipeable-rtl";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
+import useCurrencyStore from "../../state/currency";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -32,6 +33,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const loaded = useUserStore((state) => state.loaded);
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
   const navigation = useNavigation();
+  const currency = useCurrencyStore((state) => state.currency);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -120,9 +122,16 @@ const Wallet = ({ swiper }: { swiper: any }) => {
             <Text className="text-center text-lg">refreshing...</Text>
           )} */}
           <View className="mt-4 mb-2 rounded-xl bg-secondary-light py-6 dark:bg-primary-dark">
-            <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
-              ${loaded.toFixed(2)}
-            </Text>
+            {/* {console.log(currency)} */}
+            {currency == "Dollar" ? (
+              <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
+                ${loaded.toFixed(2)}
+              </Text>
+            ) : (
+              <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
+                {(loaded * 0.91).toFixed(2)}€
+              </Text>
+            )}
             {/* <View className=""><Chart chart={chart} /></View> */}
             <HomeButton />
           </View>
@@ -132,12 +141,12 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               ? tokens
                   .filter(
                     (token) =>
-                      token.balance &&
-                      // token balance not 0 or token symbol is eth or usdc
-                      (Number(token.balance) > 0 ||
-                        token.symbol === "ETH" ||
-                        token.symbol === "USDC") 
-                        || token.symbol === "USDT"
+                      (token.balance &&
+                        // token balance not 0 or token symbol is eth or usdc
+                        (Number(token.balance) > 0 ||
+                          token.symbol === "ETH" ||
+                          token.symbol === "USDC")) ||
+                      token.symbol === "USDT"
                   )
                   .map((token) => (
                     <Asset token={token} key={token.symbol} swiper={swiper} />
