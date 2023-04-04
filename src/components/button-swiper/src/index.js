@@ -718,7 +718,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-1">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/invest.png")}
@@ -741,7 +741,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
+                  <View className="mx-2 flex-row items-center bg-primary-light px-2 py-1">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/pochicon.png")}
@@ -763,7 +763,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center px-2 py-2">
+                  <View className="mx-2 flex-row items-center px-2 py-1">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/swap.png")}
@@ -786,7 +786,7 @@ export default class extends Component {
                     this.setState({ modalVisible: false });
                   }}
                 >
-                  <View className="mx-2 flex-row items-center px-2 py-2">
+                  <View className="mx-2 flex-row items-center px-2 py-1">
                     <Image
                       className="h-12 w-12"
                       source={require("../../../../assets/history.png")}
@@ -795,6 +795,29 @@ export default class extends Component {
                       <Text className="text-lg font-semibold">History</Text>
                       <Text className="text-md ml-auto">
                         Have a look at your past transactions
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(0);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-1">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/settings.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Settings</Text>
+                      <Text className="text-md ml-auto">
+                      Configure your app
                       </Text>
                     </View>
                   </View>
