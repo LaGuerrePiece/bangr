@@ -10,6 +10,7 @@ import {
   Text,
   Appearance,
   Button,
+  Settings,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Invest from "./home/Invest";
@@ -118,6 +119,11 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         <View className="items-center bg-primary-light dark:bg-primary-dark">
           <View className="dark:bg-primary-dark ">
             <Invest swiper={swiper} />
+          </View>
+        </View>
+        <View className="items-center bg-primary-light dark:bg-primary-dark">
+          <View className="dark:bg-primary-dark ">
+            {/* <Settings swiper={swiper} /> */}
           </View>
         </View>
     </ButtonSwiper>

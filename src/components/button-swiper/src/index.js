@@ -19,7 +19,7 @@ import {
   Appearance,
 } from "react-native";
 import * as Haptics from "expo-haptics";
-import { color } from "react-native-reanimated";
+import Animated, { color, Easing } from "react-native-reanimated";
 import useModalStore from "../../../state/modal";
 
 /**
@@ -183,6 +183,7 @@ export default class extends Component {
     autoplayTimeout: 2.5,
     autoplayDirection: true,
     index: 0,
+
     onIndexChanged: () => null,
   };
 
@@ -688,7 +689,38 @@ export default class extends Component {
     }
 
     console.log("current page: " + this.state.index);
+    // let rotateValueHolder = new Animated.Value(20);
+    // const rotateData = rotateValueHolder.interpolate({
+    //   inputRange: [0, 1],
+    //   outputRange: ['0deg', '360deg'],
+    // });
 
+    // rotateData.setValue(20);
+    // Animated.timing(rotateValueHolder, {
+    //   toValue: 1,
+    //   duration: 3000,
+    //   easing: Easing.linear,
+    //   useNativeDriver: false,
+    // }).start()
+
+    let rotateValueHolder = new Animated.Value(0);
+
+    const startImageRotateFunction = () => {
+      rotateValueHolder.setValue(0);
+      Animated.timing(rotateValueHolder, {
+        toValue: 0.5,
+        duration: 100,
+        easing: Easing.linear,
+        useNativeDriver: false,
+      }).start(() => startImageRotateFunction());
+    };
+
+    const rotateData = rotateValueHolder.interpolate({
+      inputRange: [0, 1],
+      outputRange: ["0deg", "360deg"],
+    });
+
+    startImageRotateFunction();
 
     return (
       <View>
@@ -707,8 +739,13 @@ export default class extends Component {
               this.setState({ modalVisible: false });
             }}
           >
-            <View className="mt-auto h-1/2 rounded-lg bg-primary-light px-2 pt-4">
-            <View className="flex">
+            <View className="items-center">
+              {/* <Image
+              className="h-12 w-12 rotate-180"
+            source={require("../../../../assets/mainbtn.png")}></Image> */}
+            </View>
+            <View className="mt-auto h-4/7 rounded-lg bg-primary-light px-2 pt-4">
+              <View className="flex">
                 <TouchableOpacity
                   className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
@@ -805,7 +842,7 @@ export default class extends Component {
                   className="rounded-xl bg-primary-light p-1.5 shadow-xl"
                   onPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    this.scrollTo(0);
+                    this.scrollTo(4);
                     this.setState({ modalVisible: false });
                   }}
                 >
@@ -817,23 +854,39 @@ export default class extends Component {
                     <View className="ml-4 flex">
                       <Text className="text-lg font-semibold">Settings</Text>
                       <Text className="text-md ml-auto">
-                      Configure your app
+                        Configure your app
                       </Text>
                     </View>
                   </View>
                 </TouchableOpacity>
               </View>
+              <TouchableOpacity
+                // border here for button
+                className="background-primary-light m-auto rounded-2xl  border-icon-light px-1 mb-5 py-2 shadow-xl"
+                pointerEvents="none"
+                visible={this.state.modalVisible}
+                onPressIn={() => {
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  this.setState({ modalVisible: false });
+                }}
+              >
+                <Image
+                  className="h-12 w-12 rotate-180"
+                  source={require("../../../../assets/mainbtn.png")}
+                ></Image>
+              </TouchableOpacity>
             </View>
+            
           </TouchableOpacity>
         </Modal>
 
-        <View className="flex items-center position-absolute">
+        <View className="position-absolute flex items-center">
           <TouchableOpacity
             // border here for button
             // className="mx-36 rounded-2xl border-2 px-1 py-1 shadow-xl"
-            className="background-primary-light mx-36 rounded-2xl border-2 border-icon-light px-1 py-1 shadow-xl"
+            className="background-primary-light mx-36 rounded-2xl  border-icon-light px-1 py-1 shadow-xl"
             pointerEvents="none"
-            visible={this.state.modalVisible == false}
+            visible={this.state.modalVisible}
             onPressIn={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
             }}
@@ -850,7 +903,44 @@ export default class extends Component {
               this.props.paginationStyle,
             ]}
           >
-            {dots}
+            {this.state.index == 2 ? (
+              <Animated.Image
+                className="h-12 w-12"
+                source={require("../../../../assets/mainbtn.png")}
+              ></Animated.Image>
+            ) : this.state.index == 1 ? (
+              <Animated.Image
+                className="h-12 w-12 rotate-12"
+                source={require("../../../../assets/mainbtn.png")}
+              ></Animated.Image>
+            ) : this.state.index == 0 ? (
+              <Animated.Image
+                className="h-12 w-12 rotate-45"
+                source={require("../../../../assets/mainbtn.png")}
+              ></Animated.Image>
+            ) : this.state.index == 3 ? (
+              <Animated.Image
+                className="h-12 w-12 -rotate-12"
+                source={require("../../../../assets/mainbtn.png")}
+              ></Animated.Image>
+            ) : this.state.index == 4 ? (
+              <Animated.Image
+                className="h-12 w-12 -rotate-45"
+                source={require("../../../../assets/mainbtn.png")}
+              ></Animated.Image>
+            ) : null}
+
+            {/* {
+              this.state.index == 2 ? rotateValueHolder = new Animated.Value(0) : 
+              rotateValueHolder = new Animated.Value(30)
+
+            }
+            {/* <Animated.Image
+              className="h-12 w-12"
+              style={{
+                transform: [{rotate: rotateData}],
+              }}              source={require("../../../../assets/mainbtn.png")}
+            ></Animated.Image> */}
           </TouchableOpacity>
         </View>
       </View>
