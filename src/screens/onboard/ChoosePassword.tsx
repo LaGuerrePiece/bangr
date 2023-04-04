@@ -1,23 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   Image,
   TextInput,
   useColorScheme,
-  Animated,
   Platform,
   ActivityIndicator,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
-import useUserStore from "../../state/user";
-import { Wallet, ethers } from "ethers";
 import "react-native-get-random-values";
-import { makeRedirectUri, startAsync } from "expo-auth-session";
-import { supabase, supabaseUrl } from "./supabase";
 // @ts-ignore
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
