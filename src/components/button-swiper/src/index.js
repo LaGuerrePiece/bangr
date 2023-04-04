@@ -110,6 +110,7 @@ export default class extends Component {
    * @type {Object}
    */
 
+  colorScheme = useColorScheme();
   static propTypes = {
     horizontal: PropTypes.bool,
     children: PropTypes.node.isRequired,
@@ -721,7 +722,7 @@ export default class extends Component {
                   <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
-                      source={require("../../../../assets/invest.png")}
+                      source={this.colorScheme == "dark" ? rrequire("../../../../assets/invest-drk.png") : require("../../../../assets/invest.png")}
                     />
                     <View className="ml-4 flex">
                       <Text className="text-lg font-semibold">Invest</Text>
@@ -744,7 +745,7 @@ export default class extends Component {
                   <View className="mx-2 flex-row items-center bg-primary-light px-2 py-2">
                     <Image
                       className="h-12 w-12"
-                      source={require("../../../../assets/pochicon.png")}
+                      source={this.colorScheme == "dark" ? rrequire("../../../../assets/pochicon-drk.png") : require("../../../../assets/pochicon.png")}
                     />
                     <View className="ml-4 flex">
                       <Text className="text-lg font-semibold">Wallet</Text>
@@ -766,7 +767,7 @@ export default class extends Component {
                   <View className="mx-2 flex-row items-center px-2 py-2">
                     <Image
                       className="h-12 w-12"
-                      source={require("../../../../assets/swap.png")}
+                      source={this.colorScheme == "dark" ? rrequire("../../../../assets/swap-drk.png") : require("../../../../assets/swap.png")}
                     />
                     <View className="ml-4 flex">
                       <Text className="text-lg font-semibold">Swap</Text>
@@ -789,12 +790,35 @@ export default class extends Component {
                   <View className="mx-2 flex-row items-center px-2 py-2">
                     <Image
                       className="h-12 w-12"
-                      source={require("../../../../assets/history.png")}
+                      source={this.colorScheme == "dark" ? rrequire("../../../../assets/history-drk.png") : require("../../../../assets/history.png")}
                     />
                     <View className="ml-4 flex">
                       <Text className="text-lg font-semibold">History</Text>
                       <Text className="text-md ml-auto">
                         Have a look at your past transactions
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+              <View className="flex">
+                <TouchableOpacity
+                  className="rounded-xl bg-primary-light p-1.5 shadow-xl"
+                  onPress={() => {
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                    this.scrollTo(0);
+                    this.setState({ modalVisible: false });
+                  }}
+                >
+                  <View className="mx-2 flex-row items-center px-2 py-2">
+                    <Image
+                      className="h-12 w-12"
+                      source={require("../../../../assets/history.png")}
+                    />
+                    <View className="ml-4 flex">
+                      <Text className="text-lg font-semibold">Settings</Text>
+                      <Text className="text-md ml-auto">
+                        Configure your bangr app
                       </Text>
                     </View>
                   </View>
