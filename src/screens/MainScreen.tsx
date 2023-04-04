@@ -10,7 +10,6 @@ import {
   Text,
   Appearance,
   Button,
-  Settings,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Invest from "./home/Invest";
@@ -21,6 +20,7 @@ import * as Haptics from "expo-haptics";
 import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
 import HistoryScreen from "./HistoryScreen";
+import Settings from "./home/Settings";
 
 const MainScreen = ({ navigation }: { navigation: any }) => {
   const insets = useSafeAreaInsets();
@@ -123,7 +123,7 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
         </View>
         <View className="items-center bg-primary-light dark:bg-primary-dark">
           <View className="dark:bg-primary-dark ">
-            {/* <Settings swiper={swiper} /> */}
+            <Settings swiper={swiper} />
           </View>
         </View>
     </ButtonSwiper>
