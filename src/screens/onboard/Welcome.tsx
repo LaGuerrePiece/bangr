@@ -82,14 +82,11 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
         const decrypted = await decrypt(content, "123456");
         // console.log(decrypted);
         secureSave("privKey", decrypted);
+        // delete the file with FileSystem
         await FileSystem.deleteAsync(fileContent.uri);
         navigation.navigate("Wallet");
-
-
       })
       .catch((error) => console.error(error));
-    // delete the file with FileSystem
-
   };
 
   useEffect(() => {

@@ -185,15 +185,15 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
       <View className="mx-auto mb-8 w-11/12">
         {/* the password field */}
         {step === 1 ? (
-          <View className="flex mb-10">
-          <Text className="font-[Inter] text-base text-typo-light dark:text-typo-dark">
-            Password
-          </Text>
-          <TextInput
-            secureTextEntry={true}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
+          <View className="mb-10 flex">
+            <Text className="font-[Inter] text-base text-typo-light dark:text-typo-dark">
+              Password
+            </Text>
+            <TextInput
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
           </View>
         ) : (
           <Animated.View style={{ opacity: fadeAnim }}>

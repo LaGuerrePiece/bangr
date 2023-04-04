@@ -49,8 +49,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   };
 
   const checkPreviousUser = async () => {
-    // const privKey = await SecureStore.getItemAsync("privKey");
-    const privKey = null;
+    const privKey = await SecureStore.getItemAsync("privKey");
+    // const privKey = null;
     if (!privKey) {
       navigation.navigate("Welcome");
       return;
