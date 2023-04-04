@@ -19,6 +19,7 @@ import useTasksStore from "../state/tasks";
 import ActionButton from "../components/ActionButton";
 import useUserStore from "../state/user";
 import * as Haptics from "expo-haptics";
+import { cutDecimals } from "../utils/format";
 
 const HistoryScreen = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
@@ -92,10 +93,10 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                     className="h-8 w-8"
                     source={
                       task.type === "Swap"
-                        ? require("../../assets/swap.png")
+                        ? (colorScheme == "light" ? require("../../assets/swap.png") : require("../../assets/swap-drk.png"))
                         : task.type === "Invest"
-                        ? require("../../assets/invest.png")
-                        : require("../../assets/receivebtn.png")
+                        ? (colorScheme == "light" ? require("../../assets/invest.png") : require("../../assets/invest-drk.png"))
+                        : (colorScheme == "light" ? require("../../assets/receive.png") : require("../../assets/receive-drk.png"))
                     }
                   />
                 </View>
@@ -106,9 +107,9 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                   /> */}
 
                   <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
-                    {task.type}
-                    {"ed "}
-                    {task.amount} {task.asset1} {""}
+                    {/* {task.type}
+                    {"ed "} */}
+                    {cutDecimals(task.amount, 2)} {task.asset1} {""}
                     {task.type === "Invest"
                       ? "into"
                       : task.type === "Withdraw"
@@ -128,10 +129,10 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                     source={
                       // task is 1 or 0
                       task.state === 1 || task.state === 0
-                        ? require("../../assets/task-1.png")
+                        ? (colorScheme == "light" ? require("../../assets/task-1.png") : require("../../assets/task-1-drk.png"))
                         : task.state === 2
-                        ? require("../../assets/task-2.png")
-                        : require("../../assets/task-error.png")
+                        ? (colorScheme == "light" ? require("../../assets/task-2.png") : require("../../assets/task-2-drk.png"))
+                        : (colorScheme == "light" ? require("../../assets/task-error.png") : require("../../assets/task-error-drk.png"))
                     }
                   />
                 </View>
