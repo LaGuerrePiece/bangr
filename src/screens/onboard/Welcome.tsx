@@ -10,13 +10,15 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
+// @ts-ignore
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { decrypt, encrypt } from "./encrypt";
-import { FallbackProvider } from "@ethersproject/providers";
 import * as FileSystem from "expo-file-system";
 import CryptoES from "crypto-es";
+import { ethers } from "ethers";
+import useUserStore from "../../state/user";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -28,6 +30,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
   const [token, setToken] = useState("");
   const [step, setStep] = useState(0);
   const colorScheme = useColorScheme();
+  const login = useUserStore((state) => state.login);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
@@ -82,8 +85,10 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
         const decrypted = await decrypt(content, "123456");
         // console.log(decrypted);
         secureSave("privKey", decrypted);
+        login(new ethers.Wallet(decrypted));
         // delete the file with FileSystem
         await FileSystem.deleteAsync(fileContent.uri);
+        //
         navigation.navigate("Wallet");
       })
       .catch((error) => console.error(error));
@@ -126,7 +131,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
           text="Create my account"
           bold
           rounded
-          visible={step === 0 ? true : false}
+          disabled={step !== 0}
           action={() => navigation.navigate("CreateAccount")}
         />
       </View>
