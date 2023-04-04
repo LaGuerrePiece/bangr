@@ -42,7 +42,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
       "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
     // scopes: ["drive.file"],
     // scopes: ["file"],
-    scopes: ["email", "profile", "https://www.googleapis.com/auth/drive.file"],
+    scopes: ["https://www.googleapis.com/auth/drive.file"],
     // redirectUri: "https://auth.expo.io/@ndlz/poche",
     redirectUri: "https://auth.expo.io/@ndlz/poche-app",
 

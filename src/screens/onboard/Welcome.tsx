@@ -15,6 +15,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { decrypt } from "./encrypt";
 import { FallbackProvider } from "@ethersproject/providers";
+import * as FileSystem from "expo-file-system";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -36,7 +37,7 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
       "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
     // scopes: ["drive.file"],
     // scopes: ["file"],
-    scopes: ["email", "profile", "https://www.googleapis.com/auth/drive.file"],
+    scopes: ["https://www.googleapis.com/auth/drive.file"],
     // redirectUri: "https://auth.expo.io/@ndlz/poche",
     redirectUri: "https://auth.expo.io/@ndlz/poche-app",
 
@@ -61,19 +62,44 @@ export default function WelcomeScreen({ navigation }: { navigation: any }) {
       parents: ["root"],
     });
     console.log("directoryId", directoryId);
-    const file = await GDrive.files.getId(
+    const fileid = await GDrive.files.getId(
       "bangr.wallet",
       [directoryId],
-      "text/plain",
+      "text/plain"
     );
-    console.log("file", file);
-    const queryParams = { alt: "media", source: "downloadUrl" };
-    const fileContent = await GDrive.files.get([file.id], queryParams);
-    console.log("file", fileContent);
+    console.log("file", fileid);
+
+    // const key = await readFile(file.id);
+    // console.log("key", key);
+
+    const queryParams = {
+      // alt: "media",
+      // source: "downloadUrl",
+      // supportsAllDrives: true,
+      // fields: 'webContentLink',
+      mimeType: "text/plain",
+    };
+    const fileContent = await GDrive.files.download([fileid], queryParams);
+    // const filExport = await GDrive.files.export([fileid], queryParams);
+    // const content = await GDrive.files.export(file, 'text/plain', {alt:'media'});
+    // console.log("fileExport", filExport);
+    // console.log("fileExport", filExport);
+    // console.log("filexport as text", filExport);
+    console.log("fileContent", fileContent.uri);
+    // read file at path fileContent.url
+    const path = fileContent.url;
+    FileSystem.readAsStringAsync(fileContent.uri)
+      .then((content) => 
+        console.log(content)
+      )
+      .catch((error) => console.error(error));
+
+  
+
     const decrypted = await decrypt(fileContent, "");
     console.log(decrypted);
-    // secureSave("privKey", decrypted);
-    // navigation.navigate("Wallet");
+    secureSave("privKey", decrypted);
+    navigation.navigate("Wallet");
   };
 
   useEffect(() => {
