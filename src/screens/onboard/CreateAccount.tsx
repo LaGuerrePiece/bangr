@@ -21,8 +21,7 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
-  const { wallet, login } = useUserStore((state) => ({
-    wallet: state.wallet,
+  const { login } = useUserStore((state) => ({
     login: state.login,
   }));
   const colorScheme = useColorScheme();
