@@ -30,10 +30,10 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export const googleConfig = {
-  // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
   // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
-  clientId:
-    "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
+  // clientId:
+    // "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
   expoClientId:
     "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
   // scopes: ["drive.file"],

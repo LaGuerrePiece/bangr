@@ -85,7 +85,7 @@ export const TOKEN_WHITELIST = [
   // "BAL",
 ];
 
-export const forceOnboarding = true; // to see onboarding
+export const forceOnboarding = false; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins
 
