@@ -17,6 +17,7 @@ import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { toastConfig } from "../components/toasts";
+import { getChain } from "../utils/utils";
 
 const ReceiveScreen = () => {
   const navigation = useNavigation();
@@ -127,13 +128,28 @@ const ReceiveScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          {/* <ActionButton text="Share" disabled={false} action={onShare} /> */}
-          <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
-            Arbitrum, Optimism and Polygon
+          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+            Send funds on any of the following networks:
+          </Text>
+          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+            <View className="flex-row">
+              <Image className="h-7 w-7" source={getChain(10).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Optimism,{" "}
+              </Text>
+              <Image className="h-7 w-7" source={getChain(42161).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Arbitrum,{" "}
+              </Text>
+              <Image className="h-7 w-7" source={getChain(137).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Polygon
+              </Text>
+            </View>
           </Text>
           <View className="mt-8 flex-row justify-between">
             <ActionButton
-              text="Add funds"
+              text="Buy crypto"
               rounded
               action={() => {
                 navigation.navigate("Onramp" as never);
