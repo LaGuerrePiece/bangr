@@ -119,6 +119,8 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                       ? task.asset2
                       : task.type === "Invest"
                       ? task.protocol
+                      : task.type === "Withdraw"
+                      ? task.protocol
                       : task.asset2}
                     {/* {task.protocol} */}
                   </Text>
