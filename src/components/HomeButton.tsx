@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 
 const HomeButton = () => {

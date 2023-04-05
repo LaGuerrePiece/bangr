@@ -122,7 +122,7 @@ const ReceiveScreen = () => {
             Polygon, Arbitrum, Optimism
           </Text>
           <ActionButton
-            text="Done      "
+            text="Done"
             rounded
             bold
             action={() => {

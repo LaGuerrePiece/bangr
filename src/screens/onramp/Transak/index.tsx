@@ -5,6 +5,7 @@ import TransakWebView from "@transak/react-native-sdk";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { WebViewNavigation } from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { toastConfig } from "../../../components/toasts";
 
 export default function Transak({ navigation }: { navigation: any }) {
   const windowWidth = Dimensions.get("window").width;
@@ -88,6 +89,7 @@ export default function Transak({ navigation }: { navigation: any }) {
           }
         }}
       />
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
 }

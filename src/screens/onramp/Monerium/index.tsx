@@ -10,6 +10,7 @@ import { getChain } from "../../../utils/utils";
 import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { toastConfig } from "../../../components/toasts";
 
 export const MONERIUM_ENV: any = "prod";
 
@@ -182,6 +183,7 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
           }
         />
       </View>
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
 };

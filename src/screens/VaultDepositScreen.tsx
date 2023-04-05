@@ -180,6 +180,8 @@ const VaultDepositScreen = () => {
 
     const calls = await handleAmountChange("withdraw");
 
+    console.log("amount", amount);
+
     if (wallet && smartWalletAddress)
     console.log("relay");
     console.log("calls", calls);
@@ -248,7 +250,6 @@ const VaultDepositScreen = () => {
         parseFloat(amount) >
         parseFloat(ethers.utils.formatUnits(deposited, vaultTkn?.decimals))
       ) {
-        // if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
         Toast.show({
           type: "error",
           text1: "Amount too high",
@@ -272,17 +273,12 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) =>
-          ethers.utils.parseUnits(chain.deposited, vaultTkn?.decimals ?? 18)
-        )
+        .map((chain) => chain.deposited)
         .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
-  console.log("balance", balance);
-  console.log("deposited", deposited);
-  console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -369,19 +365,16 @@ const VaultDepositScreen = () => {
               onPress={() => {
                 setAmount(
                   deposited
-                    ? formatUnits(
-                        deposited,
-                        selectedToken?.decimals,
-                        selectedToken?.decimals || 18
-                      )
+                    ? utils.formatUnits(deposited, vaultTkn?.decimals)
                     : "0"
                 );
               }}
             >
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Deposited:{" "}
-                {deposited &&
-                  utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
+                {deposited
+                  ? utils.formatUnits(deposited, vaultTkn?.decimals)
+                  : "0"}{" "}
                 {selectedTokenSymbol}
               </Text>
             </TouchableOpacity>
@@ -390,14 +383,7 @@ const VaultDepositScreen = () => {
               <View className="mt-12 flex-row justify-evenly">
                 <ActionButton
                   text="WITHDRAW"
-                  disabled={
-                    chains
-                      .map((chain) => chain.deposited)
-                      .reduce((acc, cur) => acc.add(cur), BigNumber.from(0))
-                      .gt(0)
-                      ? false
-                      : true
-                  }
+                  disabled={!ethers.BigNumber.from(deposited).gt(0)}
                   action={handleWithdraw}
                 />
                 <ActionButton

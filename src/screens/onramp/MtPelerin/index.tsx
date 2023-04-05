@@ -8,6 +8,7 @@ import { getChain } from "../../../utils/utils";
 import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { toastConfig } from "../../../components/toasts";
 
 const newABI = [
   ...walletLogicABI,
@@ -165,6 +166,7 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
           action={() => navigation.navigate("MtPelerinWebview")}
         />
       </View>
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
 };

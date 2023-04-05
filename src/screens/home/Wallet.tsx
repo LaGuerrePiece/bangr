@@ -13,7 +13,6 @@ import {
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
@@ -48,14 +47,6 @@ const Wallet = ({ swiper }: { swiper: any }) => {
         .reduce((a, b) => a + (b.quote ?? 0), 0)
     );
   }, [tokens]);
-
-  const showHistoryToast = () => {
-    Toast.show({
-      type: "info",
-      text1: "History",
-      text2: "Coming soon, stay tuned!",
-    });
-  };
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
