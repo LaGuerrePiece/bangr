@@ -726,7 +726,7 @@ export default class extends Component {
     return (
       <View>
         <View className="position-absolute flex-row items-center">
-          <View className="w-1/5 p-4 items-center">
+        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -740,7 +740,7 @@ export default class extends Component {
               <Text className="text-xs">History</Text>
             </TouchableOpacity>
           </View>
-          <View className="w-1/5 p-4 items-center">
+            <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -754,7 +754,7 @@ export default class extends Component {
               <Text className="text-xs">Swap</Text>
             </TouchableOpacity>
           </View>
-          <View className="w-1/5 p-4 items-center">
+          <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -768,7 +768,7 @@ export default class extends Component {
               <Text className="text-xs">Wallet</Text>
             </TouchableOpacity>
           </View>
-          <View className="w-1/5 p-4 items-center">
+          <View className={this.state.index == 3 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -782,7 +782,7 @@ export default class extends Component {
               <Text className="text-xs">Invest</Text>
             </TouchableOpacity>
           </View>
-          <View className="w-1/5 p-4 items-center">
+          <View className={this.state.index == 4 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
