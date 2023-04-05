@@ -58,6 +58,7 @@ export const relay = async (
     return;
   }
 
+  console.log("sendTx", calls);
   const relayResponse = await sendTx({
     signature,
     data: callsObject,

@@ -78,6 +78,7 @@ const VaultDepositScreen = () => {
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
+    // const apy = "0";
 
   const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
 
@@ -174,15 +175,24 @@ const VaultDepositScreen = () => {
   };
 
   const handleWithdraw = async () => {
+    console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
 
     const calls = await handleAmountChange("withdraw");
 
     if (wallet && smartWalletAddress)
+    console.log("relay");
+    console.log("calls", calls);
+    console.log("wallet", wallet);
+    console.log("smartWalletAddress", smartWalletAddress);
+    console.log("name", name);
+    console.log("selectedTokenSymbol", selectedTokenSymbol);
+    console.log("amount", amount);
+    
       await relay(
         calls,
-        wallet,
-        smartWalletAddress,
+        wallet!,
+        smartWalletAddress!,
         "0",
         "Withdraw",
         name,
@@ -199,6 +209,9 @@ const VaultDepositScreen = () => {
 
   const validateInput = (action: string) => {
     try {
+      console.log("amount", amount);
+      console.log("selectedToken?.decimals", selectedToken?.decimals);
+      console.log("selectedToken", selectedToken);
       utils.parseUnits(amount, selectedToken?.decimals);
     } catch (error) {
       Toast.show({
