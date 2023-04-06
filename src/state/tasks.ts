@@ -17,9 +17,9 @@ export type Task = {
 
 interface TasksState {
   tasks: Task[];
-  addTasks: (...tasks: Task[]) => void; 
+  addTasks: (...tasks: Task[]) => void;
   // fuction to fetch tasks for a scwAddress
-  fetchTasks: () => void;
+  fetchTasks: () => Promise<void>;
 }
 
 const useTasksStore = create<TasksState>()((set, get) => ({
@@ -32,7 +32,6 @@ const useTasksStore = create<TasksState>()((set, get) => ({
   fetchTasks: async () => {
     try {
       const wallet = useUserStore.getState().wallet;
-      console.log("wallet", wallet);
       if (!wallet) return;
       const scwAddress = await getSmartWalletAddress(wallet.address);
       console.log("Get tasks for ", scwAddress);
@@ -44,12 +43,11 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         data: Task[];
       };
       console.log(`fetched ${data.length} tasks`);
-      console.log(data);
       set({ tasks: data });
     } catch (error) {
       console.log("error fetching tasks:", error);
     }
-  }
+  },
 }));
 
 export default useTasksStore;

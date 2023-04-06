@@ -8,35 +8,26 @@ import {
   View,
   useColorScheme,
 } from "react-native";
-import {
-  RefreshControl,
-  ScrollView,
-  TouchableWithoutFeedback,
-} from "react-native-gesture-handler";
-import { XMarkIcon } from "react-native-heroicons/outline";
-import { colors } from "../config/configs";
+import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import useTasksStore from "../state/tasks";
-import ActionButton from "../components/ActionButton";
 import useUserStore from "../state/user";
 import * as Haptics from "expo-haptics";
 import { cutDecimals } from "../utils/format";
 
 const HistoryScreen = ({ swiper }: { swiper: any }) => {
-  const [refreshing, setRefreshing] = useState(false);
   const colorScheme = useColorScheme();
   const { tasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
     fetchTasks: state.fetchTasks,
   }));
-
-  // get user scwAddress
   const scw = useUserStore((state) => state.smartWalletAddress);
+
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     if (!scw) return;
     fetchTasks(); //fetch the tasks
-    console.log("fetching tasks");
-  }, []);
+  }, [scw]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -89,10 +80,16 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                     className="h-8 w-8"
                     source={
                       task.type === "Swap"
-                        ? (colorScheme == "light" ? require("../../assets/swap.png") : require("../../assets/swap-drk.png"))
+                        ? colorScheme == "light"
+                          ? require("../../assets/swap.png")
+                          : require("../../assets/swap-drk.png")
                         : task.type === "Invest"
-                        ? (colorScheme == "light" ? require("../../assets/invest.png") : require("../../assets/invest-drk.png"))
-                        : (colorScheme == "light" ? require("../../assets/receive.png") : require("../../assets/receive-drk.png"))
+                        ? colorScheme == "light"
+                          ? require("../../assets/invest.png")
+                          : require("../../assets/invest-drk.png")
+                        : colorScheme == "light"
+                        ? require("../../assets/receive.png")
+                        : require("../../assets/receive-drk.png")
                     }
                   />
                 </View>
@@ -127,10 +124,16 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                     source={
                       // task is 1 or 0
                       task.state === 1 || task.state === 0
-                        ? (colorScheme == "light" ? require("../../assets/task-1.png") : require("../../assets/task-1-drk.png"))
+                        ? colorScheme == "light"
+                          ? require("../../assets/task-1.png")
+                          : require("../../assets/task-1-drk.png")
                         : task.state === 2
-                        ? (colorScheme == "light" ? require("../../assets/task-2.png") : require("../../assets/task-2-drk.png"))
-                        : (colorScheme == "light" ? require("../../assets/task-error.png") : require("../../assets/task-error-drk.png"))
+                        ? colorScheme == "light"
+                          ? require("../../assets/task-2.png")
+                          : require("../../assets/task-2-drk.png")
+                        : colorScheme == "light"
+                        ? require("../../assets/task-error.png")
+                        : require("../../assets/task-error-drk.png")
                     }
                   />
                 </View>
