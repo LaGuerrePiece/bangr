@@ -14,6 +14,27 @@ import {
   signTypedDataDomain,
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
+import { Task } from "../types/types";
+import useHistoricStore  from "../state/historic";
+
+const getTasks = async (scwAddress: string) => {
+  try {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/tasks`, scwAddress, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })) as { data: Task[] };
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error relaying transaction: ", error.message);
+    } else {
+      console.log("unexpected error relaying transaction: ", error);
+    }
+  }
+};
+
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -28,6 +49,8 @@ export const relay = async (
   successMessage: string,
   errorMessage: string
 ) => {
+  const fetchHistoric = useHistoricStore((state) => state.fetchHistoric);
+
   Toast.show({
     type: "info",
     text1: "Transaction sent",
@@ -126,10 +149,36 @@ export const relay = async (
   );
 
   if (txSuccesses.includes(false)) return;
-  Toast.show({
-    type: "success",
-    text1: successMessage,
-  });
+
+  // get user tasks by making a request to the tasks api every 5 seconds and check if this tx has state 2
+  // if yes, show success toast
+
+  const ping = setInterval(() => {
+    getTasks(scwAddress).then((tasks) => {
+      const task = tasks!.find((t) => t.signature == signature);
+      console.log("task", task?.state);
+      if (task && task.state === 2) {
+        Toast.show({
+          type: "success",
+          text1: successMessage,
+        });
+        console.log("success");
+        clearTimeout(ping);
+        fetchHistoric(scwAddress);
+        return;
+      }
+    });
+  }, 2500);
+
+
+
+
+  
+
+  // Toast.show({
+  //   type: "success",
+  //   text1: successMessage,
+  // });
 };
 
 const sendTx = async (body: {
