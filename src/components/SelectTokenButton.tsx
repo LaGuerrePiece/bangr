@@ -9,12 +9,14 @@ import { VAULT_TOKENS } from "../config/configs";
 type Props = {
   tokens: MultichainToken[];
   selectedToken: MultichainToken;
-  tokenToUpdate: string;
+  paramsToPassBack?: any;
+  tokenToUpdate?: string;
 };
 
 export default function SelectTokenButton({
   tokens,
   selectedToken,
+  paramsToPassBack,
   tokenToUpdate,
 }: Props) {
   const navigation = useNavigation() as any;
@@ -27,9 +29,13 @@ export default function SelectTokenButton({
   return (
     <TouchableOpacity
       onPress={() => {
+        if (!tokenList || tokenList.length < 2) return;
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        if (!tokenList) return;
-        navigation.navigate("SelectToken", { tokenList, tokenToUpdate });
+        navigation.navigate("SelectToken", {
+          tokenList,
+          paramsToPassBack,
+          tokenToUpdate,
+        });
       }}
     >
       <View className="flex flex-row items-center">

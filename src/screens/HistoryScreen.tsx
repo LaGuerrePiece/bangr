@@ -26,7 +26,7 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
 
   useEffect(() => {
     if (!scw) return;
-    fetchTasks(); //fetch the tasks
+    fetchTasks();
   }, [scw]);
 
   const onRefresh = useCallback(async () => {
@@ -34,10 +34,6 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
     await fetchTasks();
     setRefreshing(false);
   }, []);
-
-  tasks.forEach((task) => {
-    console.log(task.type);
-  });
 
   return (
     <SafeAreaView className="h-full items-center bg-secondary-light dark:bg-primary-dark">

@@ -10,6 +10,7 @@ import {
   RefreshControl,
   Appearance,
   ActivityIndicator,
+  useColorScheme,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
@@ -17,8 +18,6 @@ import { useCallback, useEffect, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
-// @ts-ignore
-import Swipeable from "react-native-swipeable-rtl";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
@@ -30,7 +29,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
-  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+  const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const currency = useCurrencyStore((state) => state.currency);
 
@@ -99,7 +98,11 @@ const Wallet = ({ swiper }: { swiper: any }) => {
             </View>
             <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
               <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
-               {currency === "Dollar" ? "$" : ""}{currency == "Euro" ? (loaded*0.91)?.toFixed(2): loaded?.toFixed(2)}{currency === "Euro" ? "€" : ""}
+                {currency === "Dollar" ? "$" : ""}
+                {currency == "Euro"
+                  ? (loaded * 0.91)?.toFixed(2)
+                  : loaded?.toFixed(2)}
+                {currency === "Euro" ? "€" : ""}
               </Text>
               {/* <View className=""><Chart chart={chart} /></View> */}
               <HomeButton />

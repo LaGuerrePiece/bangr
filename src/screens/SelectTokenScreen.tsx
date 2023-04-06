@@ -20,18 +20,25 @@ import * as Haptics from "expo-haptics";
 type SelectTokenParams = {
   SelectTokenScreen: {
     tokenList: MultichainToken[];
-    tokenToUpdate: "Swap:srcToken" | "Swap:dstToken" | "Send" | "";
+    paramsToPassBack?: any;
+    tokenToUpdate?: string;
   };
 };
 
-export default function SelectToken() {
-  const navigation = useNavigation();
-  const { params } =
-    useRoute<RouteProp<SelectTokenParams, "SelectTokenScreen">>();
-  const { tokenList, tokenToUpdate } = params;
-  const { updateSrcToken, updateDstToken } = useSwapStore();
-  const { updateSendToken } = useSendStore();
+export default function SelectToken({
+  route,
+  navigation,
+}: {
+  route: RouteProp<SelectTokenParams, "SelectTokenScreen">;
+  navigation: any;
+}) {
+  useRoute<RouteProp<SelectTokenParams, "SelectTokenScreen">>();
+  const { tokenList, paramsToPassBack } = route.params;
   const colorScheme = useColorScheme();
+
+  const routes = navigation.getState()?.routes;
+  const previousScreen = routes[routes.length - 2];
+  console.log("previousScreen name:", previousScreen.name);
 
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
@@ -54,14 +61,15 @@ export default function SelectToken() {
                 className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  tokenToUpdate === "Swap:srcToken"
-                    ? updateSrcToken(token)
-                    : tokenToUpdate === "Swap:dstToken"
-                    ? updateDstToken(token)
-                    : tokenToUpdate === "Send"
-                    ? updateSendToken(token)
-                    : null;
-                  navigation.goBack();
+                  console.log(
+                    "previousScreen name in press:",
+                    previousScreen.name
+                  );
+                  navigation.navigate(previousScreen.name, {
+                    updatedToken: token,
+                    ...paramsToPassBack,
+                    tokenToUpdate: route.params.tokenToUpdate,
+                  });
                 }}
               >
                 <View className="flex flex-row items-center">

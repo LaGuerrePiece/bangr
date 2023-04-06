@@ -137,7 +137,6 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
           className={intro ? "opacity-0" : ""}
           onPress={() => {
             navigation.navigate("Wallet");
-            fetchTokensStatic();
           }}
         >
           <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">

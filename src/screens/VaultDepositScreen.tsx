@@ -19,7 +19,7 @@ import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
-import { VaultData } from "../types/types";
+import { MultichainToken, VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
 import { averageApy } from "../components/Vault";
@@ -43,13 +43,18 @@ const calculateGains = (
 type VaultParams = {
   VaultDepositScreen: {
     vault: VaultData;
+    updatedToken: MultichainToken | undefined;
   };
 };
 
-const VaultDepositScreen = () => {
-  const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
+const VaultDepositScreen = ({
+  route,
+  navigation,
+}: {
+  route: RouteProp<VaultParams, "VaultDepositScreen">;
+  navigation: any;
+}) => {
   const colorScheme = useColorScheme();
-  const navigation = useNavigation() as any;
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -62,7 +67,10 @@ const VaultDepositScreen = () => {
     fetchVaults: state.fetchVaults,
     vaults: state.vaults,
   }));
-  const tokens = useTokensStore((state) => state.tokens);
+  const { tokens, getToken } = useTokensStore((state) => ({
+    tokens: state.tokens,
+    getToken: state.getToken,
+  }));
 
   const {
     name,
@@ -74,12 +82,11 @@ const VaultDepositScreen = () => {
     color,
     chains,
     vaultToken,
-  } = vaults?.find((v) => v.name === params.vault.name)!;
+  } = vaults?.find((v) => v.name === route.params.vault.name)!;
 
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
-  // const apy = "0";
 
   const defaultTokenSymbol = tokensIn[0];
 
@@ -94,6 +101,12 @@ const VaultDepositScreen = () => {
     (token) => token.symbol === selectedTokenSymbol
   );
   const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
+
+  useEffect(() => {
+    if (route.params?.updatedToken) {
+      setSelectedTokenSymbol(route.params.updatedToken.symbol);
+    }
+  }, [route.params?.updatedToken]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -299,9 +312,17 @@ const VaultDepositScreen = () => {
               <View className="my-2 items-center">
                 {selectedToken && (
                   <SelectTokenButton
-                    tokens={[selectedToken]}
+                    tokens={
+                      tokensIn
+                        .map((token) => getToken(token))
+                        .filter((token) => {
+                          return token !== undefined;
+                        }) as MultichainToken[]
+                    }
                     selectedToken={selectedToken}
-                    tokenToUpdate={""}
+                    paramsToPassBack={{
+                      vault: route.params.vault,
+                    }}
                   />
                 )}
                 <Text className="mt-2 text-typo-light dark:text-typo-dark">
@@ -462,7 +483,7 @@ const VaultDepositScreen = () => {
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("VaultInfoScreen", {
-                      vault: params.vault,
+                      vault: route.params.vault,
                     })
                   }
                 >

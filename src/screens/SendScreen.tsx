@@ -33,13 +33,24 @@ import {
   getRelayerValueToSend,
 } from "../utils/utils";
 import { relay } from "../utils/signAndRelay";
-import { Quote } from "../types/types";
-import { useNavigation } from "@react-navigation/native";
+import { MultichainToken, Quote } from "../types/types";
+import { RouteProp, useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { toastConfig } from "../components/toasts";
 
-const SendScreen = () => {
-  const navigation = useNavigation();
+type SendParams = {
+  SendScreen: {
+    updatedToken: MultichainToken | undefined;
+  };
+};
+
+const SendScreen = ({
+  route,
+  navigation,
+}: {
+  route: RouteProp<SendParams, "SendScreen">;
+  navigation: any;
+}) => {
   const {
     amountIn,
     debouncedAmountIn,
@@ -62,6 +73,12 @@ const SendScreen = () => {
     })
   );
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    if (route.params?.updatedToken) {
+      update({ token: route.params.updatedToken });
+    }
+  }, [route.params?.updatedToken]);
 
   useEffect(() => {
     if (!token) {
@@ -242,7 +259,6 @@ const SendScreen = () => {
                     (t) => ![token.symbol].includes(t.symbol)
                   )}
                   selectedToken={token}
-                  tokenToUpdate={"Send"}
                 />
               </View>
             )}

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -35,13 +35,22 @@ import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
+import { MultichainToken } from "../../types/types";
 
 type ButtonStatus = {
   disabled: boolean;
   text: string;
 };
 
-const Swap = ({ swiper }: { swiper: any }) => {
+const Swap = ({
+  swiper,
+  updatedToken,
+  tokenToUpdate,
+}: {
+  swiper: any;
+  updatedToken: MultichainToken | undefined;
+  tokenToUpdate: string | undefined;
+}) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -63,6 +72,28 @@ const Swap = ({ swiper }: { swiper: any }) => {
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    if (updatedToken && tokenToUpdate) {
+      console.log("tokenToUpdate", tokenToUpdate);
+      console.log("updatedToken", updatedToken.symbol);
+      if (
+        tokenToUpdate === "srcToken" &&
+        updatedToken.symbol === dstToken?.symbol
+      ) {
+        flip();
+        return;
+      }
+      if (
+        tokenToUpdate === "dstToken" &&
+        updatedToken.symbol === srcToken?.symbol
+      ) {
+        flip();
+        return;
+      }
+      update({ [tokenToUpdate]: updatedToken });
+    }
+  }, [updatedToken, tokenToUpdate]);
 
   useEffect(() => {
     if (!srcToken) {
@@ -351,7 +382,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
                     <SelectTokenButton
                       tokens={tokens}
                       selectedToken={srcToken}
-                      tokenToUpdate={"Swap:srcToken"}
+                      tokenToUpdate={"srcToken"}
                     />
                   )}
                   <Text className="mt-2 mb-1 text-typo-light dark:text-typo-dark">
@@ -411,7 +442,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
                         (t) => !["ETH", "MATIC"].includes(t.symbol)
                       )} // quite dirty
                       selectedToken={dstToken}
-                      tokenToUpdate={"Swap:dstToken"}
+                      tokenToUpdate={"dstToken"}
                     />
                   )}
                   <View className="my-2">
