@@ -54,7 +54,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
         })
       }
     >
-      <View className="my-3 rounded-3xl bg-secondary-light dark:bg-secondary-dark">
+      <View className="my-3 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
         <View className="mr-1 flex-row justify-between p-4">
           <View className="w-11/12">
             <Image className="h-12 w-12 rounded-full" source={{ uri: image }} />
@@ -83,7 +83,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
             />
           </TouchableOpacity>
         </View>
-        <View className="rounded-b-3xl bg-[#edebeb] dark:bg-quaternary-dark">
+        <View className="rounded-b-3xl border-t border-[#4F4F4F] bg-[#DBDBDB] dark:bg-quaternary-dark">
           <View className="flex-row justify-between p-3">
             <View className="flex-row">
               <View className="ml-2">

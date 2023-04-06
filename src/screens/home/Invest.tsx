@@ -17,7 +17,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
 
   return (
-    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
@@ -50,7 +50,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="mb-8 w-full rounded-lg bg-secondary-light p-2 pr-3 dark:bg-secondary-dark">
+          <View className="mb-8 w-full rounded-lg bg-primary-light p-2 pr-3 dark:bg-secondary-dark">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >
