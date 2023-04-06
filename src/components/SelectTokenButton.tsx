@@ -1,7 +1,6 @@
 import { MultichainToken } from "../types/types";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import useTokensStore from "../state/tokens";
 import { Appearance, useColorScheme } from "react-native";
 import * as Haptics from "expo-haptics";
 
