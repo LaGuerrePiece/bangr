@@ -8,10 +8,8 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import { ChainId, MultichainToken } from "../types/types";
-import { formatUnits } from "../utils/format";
+import { ChainId } from "../types/types";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { chainData, colors } from "../config/configs";
 import useSendStore from "../state/send";

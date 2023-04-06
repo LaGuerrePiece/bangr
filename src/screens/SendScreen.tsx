@@ -9,15 +9,13 @@ import {
   Keyboard,
 } from "react-native";
 import useUserStore from "../state/user";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../tailwind.config";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
 import SelectTokenButton from "../components/SelectTokenButton";
 import SelectChainButton from "../components/SelectChainButton";
 import useTokensStore from "../state/tokens";
 import useSendStore from "../state/send";
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect } from "react";
 import {
   chainData,
   colors,
@@ -64,8 +62,6 @@ const SendScreen = () => {
     })
   );
   const colorScheme = useColorScheme();
-
-  useLayoutEffect(() => navigation.setOptions({ headerShown: false }));
 
   useEffect(() => {
     if (!token) {
@@ -193,7 +189,7 @@ const SendScreen = () => {
     const protocol = getChain(calls[0].cid).name;
     const asset1 = token?.symbol;
     const asset2 = "";
-    const amount = amountIn
+    const amount = amountIn;
 
     try {
       await relay(
@@ -207,7 +203,7 @@ const SendScreen = () => {
         asset2,
         amount!,
         successMessage,
-        errorMessage,
+        errorMessage
       );
     } catch (error) {
       console.log(error);

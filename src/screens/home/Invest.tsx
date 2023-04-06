@@ -38,7 +38,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
         </View>
       </View>
       <ScrollView>
-        <View className="mx-auto w-11/12">
+        <View className="mx-auto w-[91%]">
           <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
             Invest
           </Text>

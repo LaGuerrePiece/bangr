@@ -13,7 +13,6 @@ import useUserStore from "../state/user";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { toastConfig } from "../components/toasts";
@@ -21,10 +20,6 @@ import { getChain } from "../utils/utils";
 
 const ReceiveScreen = () => {
   const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const showToast = (text1: string, text2: string) => {
     Toast.show({

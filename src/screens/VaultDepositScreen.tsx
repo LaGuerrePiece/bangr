@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
 import { BigNumber, constants, ethers, utils } from "ethers";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -67,8 +67,9 @@ const VaultDepositScreen = () => {
   const {
     name,
     image,
-    description,
+    longDescription,
     protocol,
+    tokensIn,
     status,
     color,
     chains,
@@ -78,9 +79,9 @@ const VaultDepositScreen = () => {
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
-    // const apy = "0";
+  // const apy = "0";
 
-  const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
+  const defaultTokenSymbol = tokensIn[0];
 
   const [amount, setAmount] = useState("");
   const [selectedTokenSymbol, setSelectedTokenSymbol] =
@@ -102,10 +103,6 @@ const VaultDepositScreen = () => {
       clearTimeout(handler);
     };
   }, [amount]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const handleAmountChange = async (action: string) => {
     if (!parseFloat(debouncedAmount)) {
@@ -182,28 +179,27 @@ const VaultDepositScreen = () => {
 
     console.log("amount", amount);
 
-    if (wallet && smartWalletAddress)
-    console.log("relay");
+    if (wallet && smartWalletAddress) console.log("relay");
     console.log("calls", calls);
     console.log("wallet", wallet);
     console.log("smartWalletAddress", smartWalletAddress);
     console.log("name", name);
     console.log("selectedTokenSymbol", selectedTokenSymbol);
     console.log("amount", amount);
-    
-      await relay(
-        calls,
-        wallet!,
-        smartWalletAddress!,
-        "0",
-        "Withdraw",
-        name,
-        selectedTokenSymbol,
-        "",
-        amount,
-        "Deposit successful",
-        "Deposit failed"
-      );
+
+    await relay(
+      calls,
+      wallet!,
+      smartWalletAddress!,
+      "0",
+      "Withdraw",
+      name,
+      selectedTokenSymbol,
+      "",
+      amount,
+      "Deposit successful",
+      "Deposit failed"
+    );
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
@@ -283,224 +279,219 @@ const VaultDepositScreen = () => {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
         <ScrollView className="h-full">
-          <View
-            onStartShouldSetResponder={() => true}
-            className="mx-auto w-11/12 rounded-lg p-3"
-          >
-            <View className="flex">
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("Vault", {
-                    name,
-                    image,
-                    description,
-                    protocol,
-                    status,
-                    color,
-                    apy,
-                  })
-                }
-              ></TouchableOpacity>
+          <View onStartShouldSetResponder={() => true}>
+            <View className="mx-auto w-11/12 p-3">
               <View className="mb-6 flex-row justify-between">
-                <View className="w-4/5">
-                  <View className="flex-row items-center">
-                    <TouchableOpacity onPress={navigation.goBack}>
-                      <ArrowLeftIcon size={24} color="#3A5A83" />
-                    </TouchableOpacity>
-                    <Text className="ml-1 text-2xl font-bold text-typo-light dark:text-typo-dark">
-                      Deposit in {name}
+                <View className="flex-row items-center">
+                  <TouchableOpacity onPress={navigation.goBack}>
+                    <ArrowLeftIcon size={24} color="#3A5A83" />
+                  </TouchableOpacity>
+                  <Text className="ml-3 text-2xl font-bold text-typo-light dark:text-typo-dark">
+                    Deposit in {protocol}
+                  </Text>
+                </View>
+                <Image
+                  className="h-10 w-10 rounded-full"
+                  source={{ uri: image }}
+                />
+              </View>
+
+              <View className="my-2 items-center">
+                {selectedToken && (
+                  <SelectTokenButton
+                    tokens={[selectedToken]}
+                    selectedToken={selectedToken}
+                    tokenToUpdate={""}
+                  />
+                )}
+                <Text className="mt-2 text-typo-light dark:text-typo-dark">
+                  Available:{" "}
+                  {balance
+                    ? formatUnits(balance, selectedToken?.decimals, 3)
+                    : "0"}{" "}
+                  {selectedTokenSymbol}
+                </Text>
+              </View>
+              <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
+                <TextInput
+                  placeholderTextColor={colors.typo2.light}
+                  className="w-4/5 text-4xl font-semibold text-typo-light dark:text-typo-dark"
+                  onChangeText={(e) => setAmount(correctInput(e))}
+                  value={amount}
+                  keyboardType="numeric"
+                  placeholder="0"
+                />
+                <TouchableOpacity
+                  onPress={() => {
+                    setAmount(
+                      balance
+                        ? ethers.utils.formatUnits(
+                            balance,
+                            selectedToken?.decimals || 18
+                          )
+                        : "0"
+                    );
+                  }}
+                >
+                  <View className="rounded-full bg-btn-light px-3 py-1 dark:bg-btn-dark">
+                    <Text className="text-secondary-light dark:text-secondary-dark">
+                      MAX
                     </Text>
                   </View>
-                </View>
-                <Image className="h-8 w-8" source={{ uri: image }} />
+                </TouchableOpacity>
               </View>
-            </View>
-
-            <View className="my-2 flex items-center">
-              {selectedToken && (
-                <SelectTokenButton
-                  tokens={[selectedToken]}
-                  selectedToken={selectedToken}
-                  tokenToUpdate={""}
-                />
-              )}
-              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-                Available:{" "}
-                {balance
-                  ? formatUnits(balance, selectedToken?.decimals, 3)
-                  : "0"}{" "}
-                {selectedTokenSymbol}
-              </Text>
-            </View>
-            <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
-              <TextInput
-                placeholderTextColor={colors.typo2.light}
-                className="w-4/5 text-4xl font-semibold text-typo-light dark:text-typo-dark"
-                onChangeText={(e) => setAmount(correctInput(e))}
-                value={amount}
-                keyboardType="numeric"
-                placeholder="0"
-              />
               <TouchableOpacity
                 onPress={() => {
                   setAmount(
-                    balance
-                      ? formatUnits(
-                          balance,
-                          selectedToken?.decimals,
+                    deposited
+                      ? ethers.utils.formatUnits(
+                          deposited,
                           selectedToken?.decimals || 18
                         )
                       : "0"
                   );
                 }}
               >
-                <View className="rounded-xl bg-btn-light px-3 py-1 dark:bg-btn-dark">
-                  <Text className="text-secondary-light dark:text-secondary-dark">
-                    MAX
-                  </Text>
-                </View>
+                <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
+                  Deposited:{" "}
+                  {ethers.utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
+                  {selectedTokenSymbol}
+                </Text>
               </TouchableOpacity>
-            </View>
-            <TouchableOpacity
-              onPress={() => {
-                setAmount(
-                  deposited
-                    ? utils.formatUnits(deposited, vaultTkn?.decimals)
-                    : "0"
-                );
-              }}
-            >
-              <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
-                Deposited:{" "}
-                {deposited
-                  ? utils.formatUnits(deposited, vaultTkn?.decimals)
-                  : "0"}{" "}
-                {selectedTokenSymbol}
-              </Text>
-            </TouchableOpacity>
 
-            {status === "active" ? (
-              <View className="mt-12 flex-row justify-evenly">
-                <ActionButton
-                  text="WITHDRAW"
-                  disabled={!ethers.BigNumber.from(deposited).gt(0)}
-                  action={handleWithdraw}
-                />
-                <ActionButton
-                  text="DEPOSIT"
-                  disabled={false}
-                  action={handleDeposit}
-                />
-              </View>
-            ) : (
-              <View className="mt-12 flex-row justify-evenly">
-                <ActionButton
-                  text="COMING"
-                  disabled={true}
-                  action={() => {
-                    Toast.show({
-                      type: "info",
-                      text1: "Coming soon !",
-                    });
-                  }}
-                />
-                <ActionButton
-                  text="SOON™"
-                  disabled={true}
-                  action={() => {
-                    Toast.show({
-                      type: "info",
-                      text1: "Coming soon !",
-                    });
-                  }}
-                />
-              </View>
-            )}
-
-            <View className="mt-6 h-36 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
-              <View className="flex-row items-center">
-                <Text className="font-bold text-typo-light dark:text-typo-dark">
-                  Estimated returns based on current APY
-                </Text>
-                <InformationCircleIcon color="#1C1C1C" />
-              </View>
-              <View className="mt-3 flex-row justify-evenly">
-                <View className="h-[85%]">
-                  <Text className="text-typo-light dark:text-typo-dark">
-                    Weekly
-                  </Text>
-                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                    $
-                    {amount
-                      ? calculateGains(parseFloat(amount), parseFloat(apy), 7)
-                      : 0}
-                  </Text>
-                </View>
-                <View className="h-[85%]">
-                  <Text className="text-typo-light dark:text-typo-dark">
-                    Monthly
-                  </Text>
-                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                    $
-                    {amount
-                      ? calculateGains(parseFloat(amount), parseFloat(apy), 30)
-                      : 0}
-                  </Text>
-                </View>
-                <View className="h-[85%]">
-                  <Text className="text-typo-light dark:text-typo-dark">
-                    Annualy
-                  </Text>
-                  <Text className="m-auto text-center text-xl text-typo-light dark:text-typo-dark">
-                    $
-                    {amount
-                      ? calculateGains(parseFloat(amount), parseFloat(apy), 365)
-                      : 0}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {/* <View className="mt-2 h-24 rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
-              <View className="flex-row items-center">
-                <Text className="font-bold text-typo-light dark:text-typo-dark">
-                  Details:
-                </Text>
-              </View>
-            </View> */}
-            <View className="m-auto mt-6 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
-              <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("VaultInfoScreen", {
-                    vault: params.vault,
-                  })
-                }
-              >
-                <View className="flex-row items-center justify-between">
-                  <View className="flex-row items-center">
-                    <Image
-                      className="mr-2 ml-1 h-6 w-6"
-                      // className="h-[16px] w-[24px]"
-                      source={
-                        colorScheme === "light"
-                          ? require("../../assets/question.png")
-                          : require("../../assets/question.png")
-                      }
+              {status === "active" ? (
+                <View className="mt-3 mb-6 flex-row justify-evenly">
+                  {Number(deposited) > 0 ? (
+                    <ActionButton
+                      text="WITHDRAW"
+                      rounded
+                      bold
+                      action={handleWithdraw}
                     />
-                    <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                      How it works
-                    </Text>
-                  </View>
-                  <Image
-                    className="mr-1 h-[16px] w-[24px]"
-                    source={
-                      colorScheme === "light"
-                        ? require("../../assets/arrowright.png")
-                        : require("../../assets/arrowrightwhite.png")
-                    }
+                  ) : null}
+                  <ActionButton
+                    text=" DEPOSIT  "
+                    additionalCss={Number(deposited) > 0 ? `` : `min-w-[200px]`}
+                    rounded
+                    bold
+                    disabled={false}
+                    action={handleDeposit}
                   />
                 </View>
-              </TouchableOpacity>
+              ) : (
+                <View className="my-6 flex-row justify-evenly">
+                  <ActionButton
+                    text="Coming soon™"
+                    rounded
+                    bold
+                    disabled={true}
+                    action={() => {
+                      Toast.show({
+                        type: "info",
+                        text1: "Coming soon !",
+                      });
+                    }}
+                  />
+                </View>
+              )}
+
+              <View className="rounded-lg bg-secondary-light p-3 dark:bg-secondary-dark">
+                <View className="flex-row items-center justify-center">
+                  <Text className="font-bold text-typo-light dark:text-typo-dark">
+                    Estimated returns based on current yield
+                  </Text>
+                  {/* <InformationCircleIcon color="#1C1C1C" /> */}
+                </View>
+                <View className="mt-2 flex-row justify-evenly">
+                  <View>
+                    <Text className="text-center text-typo-light dark:text-typo-dark">
+                      Weekly
+                    </Text>
+                    <Text className="m-auto my-2 text-xl text-icon-special dark:text-secondary-light">
+                      $
+                      {amount
+                        ? calculateGains(parseFloat(amount), parseFloat(apy), 7)
+                        : 0}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text className="text-center text-typo-light dark:text-typo-dark">
+                      Monthly
+                    </Text>
+                    <Text className="m-auto my-2 text-xl text-icon-special dark:text-secondary-light">
+                      $
+                      {amount
+                        ? calculateGains(
+                            parseFloat(amount),
+                            parseFloat(apy),
+                            30
+                          )
+                        : 0}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text className="text-center text-typo-light dark:text-typo-dark">
+                      Annualy
+                    </Text>
+                    <Text className="m-auto my-2 text-xl text-icon-special dark:text-secondary-light">
+                      $
+                      {amount
+                        ? calculateGains(
+                            parseFloat(amount),
+                            parseFloat(apy),
+                            365
+                          )
+                        : 0}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+
+              {longDescription ? (
+                <View className="mt-5">
+                  <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
+                    Description
+                  </Text>
+                  <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
+                    {longDescription}
+                  </Text>
+                </View>
+              ) : null}
+
+              <View className="m-auto mt-6 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("VaultInfoScreen", {
+                      vault: params.vault,
+                    })
+                  }
+                >
+                  <View className="flex-row items-center justify-between">
+                    <View className="flex-row items-center">
+                      <Image
+                        className="mr-2 ml-1 h-6 w-6"
+                        // className="h-[16px] w-[24px]"
+                        source={
+                          colorScheme === "light"
+                            ? require("../../assets/question.png")
+                            : require("../../assets/question.png")
+                        }
+                      />
+                      <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
+                        How it works
+                      </Text>
+                    </View>
+                    <Image
+                      className="mr-1 h-[16px] w-[24px]"
+                      source={
+                        colorScheme === "light"
+                          ? require("../../assets/arrowright.png")
+                          : require("../../assets/arrowrightwhite.png")
+                      }
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </ScrollView>

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   Image,
   SafeAreaView,
@@ -23,10 +23,6 @@ import { cutDecimals } from "../utils/format";
 
 const HistoryScreen = ({ swiper }: { swiper: any }) => {
   const [refreshing, setRefreshing] = useState(false);
-  const navigation = useNavigation();
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
   const colorScheme = useColorScheme();
   const { tasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,

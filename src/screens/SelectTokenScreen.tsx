@@ -11,7 +11,6 @@ import {
 import { MultichainToken } from "../types/types";
 import { formatUnits } from "../utils/format";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import useSwapStore from "../state/swap";
 import useSendStore from "../state/send";

@@ -485,13 +485,13 @@ const Swap = ({ swiper }: { swiper: any }) => {
               </TouchableHighlight>
             </View>
 
-            <View className="flex-row justify-evenly">
-              <ActionButton
-                text={buttonStatus().text}
-                disabled={buttonStatus().disabled}
-                action={swap}
-              />
-            </View>
+            <ActionButton
+              text={buttonStatus().text}
+              rounded
+              bold
+              disabled={buttonStatus().disabled}
+              action={swap}
+            />
           </>
         </TouchableWithoutFeedback>
       </View>

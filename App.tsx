@@ -116,7 +116,11 @@ const App = () => {
           <Stack.Screen name="Welcome" component={WelcomeScreen} />
           <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="Wallet"
+            component={MainScreen}
+            options={{ gestureEnabled: false }}
+          />
           <Stack.Screen
             name="VaultInfoScreen"
             component={VaultInfoScreen}

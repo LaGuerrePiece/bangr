@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -69,10 +69,6 @@ const TokenModal = () => {
       console.log("error fetching chart:", error);
     }
   }
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const swap = () => {
     navigation.navigate("Wallet" as never);
