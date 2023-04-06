@@ -123,6 +123,7 @@ export enum Volatility {
 
 export interface VaultStatic {
   name: string;
+  uiName: string;
   image: string;
   description: string;
   longDescription?: string;
@@ -134,6 +135,7 @@ export interface VaultStatic {
   volatility?: Volatility;
   status: "active" | "inative" | "preview";
   color?: string;
+  infos?: any;
 }
 
 export interface VaultData extends VaultStatic {

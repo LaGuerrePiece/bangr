@@ -16,6 +16,7 @@ export const averageApy = (apys: number[]) => {
 const Vault = ({ vault }: { vault: VaultData }) => {
   const {
     name,
+    uiName,
     description,
     currency,
     currencyIcon,
@@ -43,7 +44,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
           <View className="w-11/12">
             <Image className="h-12 w-12 rounded-full" source={{ uri: image }} />
             <Text className="mt-2 mb-1 font-InterSemiBold text-[26px] font-bold text-icon-special dark:text-secondary-light">
-              {name}
+              {uiName ? uiName : name}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">
               {description}

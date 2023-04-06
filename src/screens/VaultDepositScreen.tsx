@@ -279,7 +279,10 @@ const VaultDepositScreen = () => {
                     Deposit in {protocol}
                   </Text>
                 </View>
-                <Image className="h-10 w-10" source={{ uri: image }} />
+                <Image
+                  className="h-10 w-10 rounded-full"
+                  source={{ uri: image }}
+                />
               </View>
 
               <View className="my-2 items-center">
@@ -368,6 +371,8 @@ const VaultDepositScreen = () => {
                 <View className="my-6 flex-row justify-evenly">
                   <ActionButton
                     text="Coming soon™"
+                    rounded
+                    bold
                     disabled={true}
                     action={() => {
                       Toast.show({
@@ -432,7 +437,7 @@ const VaultDepositScreen = () => {
               </View>
 
               {longDescription ? (
-                <View className="my-5">
+                <View className="mt-5">
                   <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
                     Description
                   </Text>
@@ -442,7 +447,7 @@ const VaultDepositScreen = () => {
                 </View>
               ) : null}
 
-              <View className="m-auto my-1 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
+              <View className="m-auto mt-6 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("VaultInfoScreen", {
