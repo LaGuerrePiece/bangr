@@ -32,8 +32,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.poche.fi",
-      "versionCode": 2,
-      "googleServicesFile": "./google-services.json"
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
