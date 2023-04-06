@@ -211,6 +211,9 @@ export default function MoneriumWebview({ navigation }: { navigation: any }) {
       <WebView
         style={{ width: windowWidth }}
         source={{ uri: webWiewUri }}
+        allowsInlineMediaPlayback={true}
+        mediaPlaybackRequiresUserAction={false}
+        androidHardwareAccelerationDisabled={true}
         onNavigationStateChange={(webViewState) => {
           setWebViewReturnUrl(webViewState.url);
         }}
