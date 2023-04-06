@@ -9297,13 +9297,6 @@ react-native-inappbrowser-reborn@^3.7.0:
     invariant "^2.2.4"
     opencollective-postinstall "^2.0.3"
 
-react-native-picker-select@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-7.0.0.tgz#4808a1177f997e234bb8505849dfffe1a01fedac"
-  integrity sha512-SO7b7wHfeM07oVTsLhBlT/VDvMXg2aP0Xy5CA+kL7+oV2Bq6nfKTVjpB2+HLVhFik9i/tlq5ROuGdUrfPhl3rg==
-  dependencies:
-    lodash.isequal "^4.5.0"
-
 react-native-qrcode-svg@^6.1.2:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/react-native-qrcode-svg/-/react-native-qrcode-svg-6.2.0.tgz#62b62c5997ff23ba22544e289a6112a08f8ea306"
