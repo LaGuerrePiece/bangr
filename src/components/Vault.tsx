@@ -5,9 +5,24 @@ import {
   Image,
   TouchableOpacity,
   useColorScheme,
+  Appearance,
 } from "react-native";
 import { VaultData, Volatility } from "../types/types";
-import useTokensStore from "../state/tokens";
+
+const turtle =
+  Appearance.getColorScheme() === "dark"
+    ? require("../../assets/turtle_white.png")
+    : require("../../assets/turtle.png");
+
+const rabbit =
+  Appearance.getColorScheme() === "dark"
+    ? require("../../assets/rabbit_white.png")
+    : require("../../assets/rabbit.png");
+
+const cheetah =
+  Appearance.getColorScheme() === "dark"
+    ? require("../../assets/cheetah_white.png")
+    : require("../../assets/cheetah.png");
 
 export const averageApy = (apys: number[]) => {
   return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
@@ -43,7 +58,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
         <View className="mr-1 flex-row justify-between p-4">
           <View className="w-11/12">
             <Image className="h-12 w-12 rounded-full" source={{ uri: image }} />
-            <Text className="mt-2 mb-1 font-InterSemiBold text-[26px] font-bold text-icon-special dark:text-secondary-light">
+            <Text className="mt-2 mb-1 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
               {uiName ? uiName : name}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">
@@ -60,11 +75,15 @@ const Vault = ({ vault }: { vault: VaultData }) => {
           >
             <Image
               className="h-8 w-8 rounded-full"
-              source={require("../../assets/i.png")}
+              source={
+                colorScheme === "dark"
+                  ? require("../../assets/i_white.png")
+                  : require("../../assets/i2.png")
+              }
             />
           </TouchableOpacity>
         </View>
-        <View className="rounded-b-3xl bg-quaternary-light dark:bg-quaternary-dark">
+        <View className="rounded-b-3xl bg-[#edebeb] dark:bg-quaternary-dark">
           <View className="flex-row justify-between p-3">
             <View className="flex-row">
               <View className="ml-2">
@@ -76,7 +95,13 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     className={`mr-0.5 h-6 ${
                       currency === "Ether" ? "w-[16px]" : "w-6"
                     } rounded-full object-contain`}
-                    source={{ uri: currencyIcon }}
+                    source={{
+                      uri:
+                        typeof currencyIcon === "string" ||
+                        typeof currencyIcon === "undefined"
+                          ? currencyIcon
+                          : currencyIcon[colorScheme as "light" | "dark"],
+                    }}
                   />
                   <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">
                     {currency}
@@ -92,10 +117,10 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     className="mr-0.5 h-7 w-7 rounded-full"
                     source={
                       volatility === Volatility.LOW
-                        ? require("../../assets/turtle_white.png")
+                        ? turtle
                         : volatility === Volatility.MEDIUM
-                        ? require("../../assets/rabbit_white.png")
-                        : require("../../assets/cheetah_white.png")
+                        ? rabbit
+                        : cheetah
                     }
                   />
                   <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">

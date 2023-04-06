@@ -130,7 +130,7 @@ export interface VaultStatic {
   vaultToken?: string;
   tokensIn: string[];
   currency?: string;
-  currencyIcon?: string;
+  currencyIcon?: string | { light: string; dark: string };
   protocol: VaultProtocol;
   volatility?: Volatility;
   status: "active" | "inative" | "preview";

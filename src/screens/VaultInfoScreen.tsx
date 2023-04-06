@@ -37,7 +37,7 @@ const VaultInfoScreen = () => {
   const LinkButton = ({ text, link }: any) => {
     return (
       <TouchableOpacity onPress={() => Linking.openURL(link)}>
-        <View className="flex-row items-center rounded-lg bg-primary-light p-1 pl-2 dark:bg-primary-dark">
+        <View className="flex-row items-center rounded-lg bg-quaternary-light p-1 pl-2 dark:bg-primary-dark">
           <Text className="text-typo-light dark:text-typo-dark">{text}</Text>
           <Image
             className="h-7 w-7"
@@ -67,7 +67,7 @@ const VaultInfoScreen = () => {
       <ScrollView className="mx-auto mt-5 w-11/12 rounded-lg p-3">
         <View className="mb-6 flex-row justify-between">
           <View className="w-4/5">
-            <Text className="mb-1 font-InterSemiBold text-3xl text-icon-special dark:text-secondary-light">
+            <Text className="mb-1 font-InterSemiBold text-3xl text-typo-light dark:text-secondary-light">
               {uiName ? uiName : name}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">

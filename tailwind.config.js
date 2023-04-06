@@ -25,7 +25,7 @@ module.exports = {
           dark: "#3c414a",
         },
         quaternary: {
-          light: "#FFFFFF",
+          light: "#D1D1D1",
           dark: "#43464D",
         },
         special: {
