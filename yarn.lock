@@ -2443,6 +2443,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
   integrity sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA==
 
+"@react-native-picker/picker@^1.8.3":
+  version "1.16.8"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.16.8.tgz#2126ca54d4a5a3e9ea5e3f39ad1e6643f8e4b3d4"
+  integrity sha512-pacdQDX6V6EmjF+HoiIh6u++qx4mTK0WnhgUHRc01B+Qt5eoeUwseBqmqfTSXTx/aHDEd6PiIw7UGvKgFoqgFQ==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -9370,6 +9375,14 @@ react-native-inappbrowser-reborn@^3.7.0:
   dependencies:
     invariant "^2.2.4"
     opencollective-postinstall "^2.0.3"
+
+react-native-picker-select@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-8.0.4.tgz#3f7f1f42df69b06e7d2c10338288332a6c40fd10"
+  integrity sha512-orBjPIwBkV5oipyVw263YNMI56f6Kj3p/ejabZoCYYNSG3AiLVVhC2RqsxMgDA7IayyURAW+AlV+mDJyVqLBkg==
+  dependencies:
+    "@react-native-picker/picker" "^1.8.3"
+    lodash.isequal "^4.5.0"
 
 react-native-qrcode-svg@^6.1.2:
   version "6.2.0"

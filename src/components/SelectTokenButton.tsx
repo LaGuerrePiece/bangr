@@ -16,7 +16,7 @@ export default function SelectTokenButton({
   selectedToken,
   tokenToUpdate,
 }: Props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
 
   const tokenList = tokens.filter((token) => token.symbol !== "aUSDC");
@@ -26,10 +26,7 @@ export default function SelectTokenButton({
       onPress={() => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         if (!tokenList) return;
-        navigation.navigate(
-          "SelectToken" as never,
-          { tokenList, tokenToUpdate } as never
-        );
+        navigation.navigate("SelectToken", { tokenList, tokenToUpdate });
       }}
     >
       <View className="flex flex-row items-center">

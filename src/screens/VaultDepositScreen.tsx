@@ -49,7 +49,7 @@ type VaultParams = {
 const VaultDepositScreen = () => {
   const { params } = useRoute<RouteProp<VaultParams, "VaultDepositScreen">>();
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
+  const navigation = useNavigation() as any;
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -78,6 +78,7 @@ const VaultDepositScreen = () => {
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
+    // const apy = "0";
 
   const defaultTokenSymbol = name === "Aave USDC" ? "USDC" : "ETH";
 
@@ -174,17 +175,28 @@ const VaultDepositScreen = () => {
   };
 
   const handleWithdraw = async () => {
+    console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
 
     const calls = await handleAmountChange("withdraw");
 
+    console.log("amount", amount);
+
     if (wallet && smartWalletAddress)
+    console.log("relay");
+    console.log("calls", calls);
+    console.log("wallet", wallet);
+    console.log("smartWalletAddress", smartWalletAddress);
+    console.log("name", name);
+    console.log("selectedTokenSymbol", selectedTokenSymbol);
+    console.log("amount", amount);
+    
       await relay(
         calls,
-        wallet,
-        smartWalletAddress,
+        wallet!,
+        smartWalletAddress!,
         "0",
-        "Invest",
+        "Withdraw",
         name,
         selectedTokenSymbol,
         "",
@@ -199,6 +211,9 @@ const VaultDepositScreen = () => {
 
   const validateInput = (action: string) => {
     try {
+      console.log("amount", amount);
+      console.log("selectedToken?.decimals", selectedToken?.decimals);
+      console.log("selectedToken", selectedToken);
       utils.parseUnits(amount, selectedToken?.decimals);
     } catch (error) {
       Toast.show({
@@ -235,7 +250,6 @@ const VaultDepositScreen = () => {
         parseFloat(amount) >
         parseFloat(ethers.utils.formatUnits(deposited, vaultTkn?.decimals))
       ) {
-        // if (ethers.utils.parseUnits(amount, vaultTkn?.decimals).gt(deposited)) {
         Toast.show({
           type: "error",
           text1: "Amount too high",
@@ -259,17 +273,12 @@ const VaultDepositScreen = () => {
     );
     setDeposited(
       chains
-        .map((chain) =>
-          ethers.utils.parseUnits(chain.deposited, vaultTkn?.decimals ?? 18)
-        )
+        .map((chain) => chain.deposited)
         .reduce((acc, cur) => acc.add(cur), constants.Zero)
         .toString()
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
-  console.log("balance", balance);
-  console.log("deposited", deposited);
-  console.log("chains", chains);
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -281,18 +290,15 @@ const VaultDepositScreen = () => {
             <View className="flex">
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(
-                    "Vault" as never,
-                    {
-                      name,
-                      image,
-                      description,
-                      protocol,
-                      status,
-                      color,
-                      apy,
-                    } as never
-                  )
+                  navigation.navigate("Vault", {
+                    name,
+                    image,
+                    description,
+                    protocol,
+                    status,
+                    color,
+                    apy,
+                  })
                 }
               ></TouchableOpacity>
               <View className="mb-6 flex-row justify-between">
@@ -359,19 +365,16 @@ const VaultDepositScreen = () => {
               onPress={() => {
                 setAmount(
                   deposited
-                    ? formatUnits(
-                        deposited,
-                        selectedToken?.decimals,
-                        selectedToken?.decimals || 18
-                      )
+                    ? utils.formatUnits(deposited, vaultTkn?.decimals)
                     : "0"
                 );
               }}
             >
               <Text className="mt-2 text-right text-typo-light dark:text-typo-dark">
                 Deposited:{" "}
-                {deposited &&
-                  utils.formatUnits(deposited, selectedToken?.decimals)}{" "}
+                {deposited
+                  ? utils.formatUnits(deposited, vaultTkn?.decimals)
+                  : "0"}{" "}
                 {selectedTokenSymbol}
               </Text>
             </TouchableOpacity>
@@ -380,14 +383,7 @@ const VaultDepositScreen = () => {
               <View className="mt-12 flex-row justify-evenly">
                 <ActionButton
                   text="WITHDRAW"
-                  disabled={
-                    chains
-                      .map((chain) => chain.deposited)
-                      .reduce((acc, cur) => acc.add(cur), BigNumber.from(0))
-                      .gt(0)
-                      ? false
-                      : true
-                  }
+                  disabled={!ethers.BigNumber.from(deposited).gt(0)}
                   action={handleWithdraw}
                 />
                 <ActionButton
@@ -475,10 +471,9 @@ const VaultDepositScreen = () => {
             <View className="m-auto mt-6 mb-3 w-full rounded-lg bg-secondary-light p-2  dark:bg-secondary-dark">
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate(
-                    "VaultInfoScreen" as never,
-                    { vault: params.vault } as never
-                  )
+                  navigation.navigate("VaultInfoScreen", {
+                    vault: params.vault,
+                  })
                 }
               >
                 <View className="flex-row items-center justify-between">

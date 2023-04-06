@@ -9,14 +9,14 @@ type Props = {
 };
 
 export default function SelectChainButton({ chainId }: Props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
   const chain = getChain(chainId);
 
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate("SelectChain" as never, { chainId } as never);
+        navigation.navigate("SelectChain", { chainId });
       }}
     >
       <View className="flex flex-row items-center px-4">

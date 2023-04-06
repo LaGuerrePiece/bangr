@@ -15,13 +15,11 @@ import * as Haptics from "expo-haptics";
 const Invest = ({ swiper }: { swiper: any }) => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
-  // const { tab, setTab } = useTabStore();
-  // setTab("Invest");
 
   return (
-    <SafeAreaView className="mt-4 w-11/12">
-      <View className="w-full flex-row ">
-        <View className="mb-2 w-1/2">
+    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto mt-4 w-11/12 items-center">
+        <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
               Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -29,7 +27,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
             }}
           >
             <Image
-              className="mr-auto h-6 w-6"
+              className="h-7 w-7"
               source={
                 colorScheme === "dark"
                   ? require("../../../assets/pochicon-drk.png")
@@ -39,13 +37,11 @@ const Invest = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
         </View>
       </View>
-      <View className="">
-        <ScrollView className="">
-          <View>
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
-              Invest
-            </Text>
-          </View>
+      <ScrollView>
+        <View className="mx-auto w-11/12">
+          <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+            Invest
+          </Text>
 
           {vaults &&
             vaults
@@ -83,9 +79,9 @@ const Invest = ({ swiper }: { swiper: any }) => {
               </View>
             </TouchableOpacity>
           </View>
-          <View className="my-16" />
-        </ScrollView>
-      </View>
+        </View>
+        <View className="my-16" />
+      </ScrollView>
     </SafeAreaView>
   );
 };

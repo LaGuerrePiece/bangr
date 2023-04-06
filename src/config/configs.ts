@@ -61,30 +61,6 @@ export const chainData = [
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export const TOKEN_WHITELIST = [
-  "ETH",
-  "MATIC",
-  "WETH",
-  "USDC",
-  "USDT",
-  "DAI",
-  "WBTC",
-  "RAI",
-  "LINK",
-  "aUSDC",
-  "jEUR",
-  "EURe",
-  // "QI",
-  // "DHT",
-  // "MKR",
-  // "FRAX",
-  // "CRV",
-  // "HOP",
-  // "STG",
-  // "BIFI",
-  // "BAL",
-];
-
 export const forceOnboarding = false; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins

@@ -45,7 +45,7 @@ export const relay = async (
   );
 
   const deployRes = await deployWalletsIfNotDeployed(
-    calls,
+    [...new Set(calls.map((c) => c.cid))],
     wallet.address,
     scwAddress
   );
@@ -58,6 +58,7 @@ export const relay = async (
     return;
   }
 
+  console.log("sendTx", calls);
   const relayResponse = await sendTx({
     signature,
     data: callsObject,
@@ -69,7 +70,6 @@ export const relay = async (
     asset2,
     amount,
     protocol,
-
   });
 
   if (!relayResponse) {
@@ -191,26 +191,25 @@ const sendToRelayer = async (body: {
   }
 };
 
-const deployWalletsIfNotDeployed = async (
-  calls: CallWithNonce[],
+export const deployWalletsIfNotDeployed = async (
+  chainsToCheck: ChainId[],
   senderEOA: string,
   scwAddress: string
 ) => {
-  const chainsToCheck = [...new Set(calls.map((c) => c.cid))];
-  const chainsOnWhichTODeploy: ChainId[] = [];
+  const chainsOnWhichToDeploy: ChainId[] = [];
 
   await Promise.all(
     chainsToCheck.map(async (chainId) => {
       const provider = getChain(chainId).provider;
       if ((await provider.getCode(scwAddress)) === "0x") {
-        chainsOnWhichTODeploy.push(chainId);
+        chainsOnWhichToDeploy.push(chainId);
       }
     })
   );
-  if (chainsOnWhichTODeploy.length === 0) return;
+  if (chainsOnWhichToDeploy.length === 0) return;
 
   const res = await sendToRelayer({
-    deploy: chainsOnWhichTODeploy,
+    deploy: chainsOnWhichToDeploy,
     senderEOA: senderEOA,
   });
 

@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
 import { useCallback, useEffect, useState } from "react";
-import { View, useColorScheme } from "react-native";
+import { Appearance, StatusBar, View, useColorScheme } from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -21,10 +21,12 @@ import SelectChainScreen from "./src/screens/SelectChainScreen";
 import OnrampScreen from "./src/screens/onramp";
 import TransakScreen from "./src/screens/onramp/Transak";
 import MtPelerinScreen from "./src/screens/onramp/MtPelerin";
+import MtPelerinWebviewScreen from "./src/screens/onramp/MtPelerin/Webview";
 import MoneriumScreen from "./src/screens/onramp/Monerium";
 import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import IbanScreen from "./src/screens/onramp/Monerium/Iban";
 import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
+import ExchangeScreen from "./src/screens/onramp/Exchange";
 import MainScreen from "./src/screens/MainScreen";
 import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
@@ -173,6 +175,11 @@ const App = () => {
             options={{ presentation: "modal" }}
           />
           <Stack.Screen
+            name="MtPelerinWebview"
+            component={MtPelerinWebviewScreen}
+            options={{ presentation: "modal" }}
+          />
+          <Stack.Screen
             name="Monerium"
             component={MoneriumScreen}
             options={{ presentation: "modal" }}
@@ -192,8 +199,23 @@ const App = () => {
             component={OrderConfirmedScreen}
             options={{ presentation: "modal" }}
           />
+          <Stack.Screen
+            name="Exchange"
+            component={ExchangeScreen}
+            options={{ presentation: "modal" }}
+          />
         </Stack.Navigator>
         <Toast config={toastConfig} />
+        <StatusBar
+          barStyle={
+            Appearance.getColorScheme() === "light"
+              ? "dark-content"
+              : "light-content"
+          }
+          backgroundColor={
+            Appearance.getColorScheme() === "light" ? "white" : "black"
+          }
+        />
       </NavigationContainer>
     </View>
   );

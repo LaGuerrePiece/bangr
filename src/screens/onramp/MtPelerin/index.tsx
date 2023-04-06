@@ -1,100 +1,174 @@
-import { Dimensions } from "react-native";
+import { View, Text, useColorScheme, Image, SafeAreaView } from "react-native";
+import ActionButton from "../../../components/ActionButton";
+import { useEffect, useState } from "react";
 import useUserStore from "../../../state/user";
-// @ts-ignore
-import TransakWebView from "@transak/react-native-sdk";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { WebViewNavigation } from "react-native-webview";
+import { ethers } from "ethers";
+import "react-native-get-random-values";
+import { getChain } from "../../../utils/utils";
+import walletLogicABI from "../../../config/abi/WalletLogic.json";
+import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { toastConfig } from "../../../components/toasts";
 
-export default function MtPelerinScreen({ navigation }: { navigation: any }) {
-  const windowWidth = Dimensions.get("window").width;
-  const { smartWalletAddress } = useUserStore((state) => ({
+const newABI = [
+  ...walletLogicABI,
+  {
+    inputs: [
+      {
+        internalType: "bytes32",
+        name: "hash",
+        type: "bytes32",
+      },
+    ],
+    name: "signedMessages",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+];
+
+export const getMtPelerinHashAndCode = (smartWalletAddress: string) => {
+  let decimalAddress = ethers.BigNumber.from(smartWalletAddress as string).mod(
+    10000
+  );
+
+  if (Number(decimalAddress.toString()) < 1000) {
+    decimalAddress = ethers.BigNumber.from("0").add(1000).add(decimalAddress);
+  }
+
+  console.log("code: ", decimalAddress.toString());
+
+  const code = decimalAddress.toString();
+  const message = "MtPelerin-" + code;
+  const hash = ethers.utils.hashMessage(message);
+
+  console.log("hash", hash);
+
+  const base64Hash = Buffer.from(hash.replace("0x", ""), "hex").toString(
+    "base64"
+  );
+
+  return {
+    code,
+    hash,
+    base64Hash,
+  };
+};
+
+const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
+  const colorScheme = useColorScheme();
+  const { smartWalletAddress, wallet } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
+    wallet: state.wallet,
   }));
 
-  const transakEventHandler = (event: string, data: any) => {
-    switch (event) {
-      case "ORDER_PROCESSING":
-        console.log(data);
-        Toast.show({
-          type: "info",
-          text1: "Order processing...",
-          text2: "Your order should arrive soon",
-        });
-        break;
+  const [walletDeployed, setWalletDeployed] = useState<boolean>(true);
+  const [supportsMtPelerin, setSupportsMtPelerin] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
-      case "ORDER_COMPLETED":
-        console.log(data);
-        Toast.show({
-          type: "success",
-          text1: "Order Completed",
-          text2: "Your order is arrived !",
-        });
-        break;
+  useEffect(() => {
+    checkWalletSupportsMtPelerin();
+  }, []);
 
-      default:
-        console.log(data);
+  const checkWalletSupportsMtPelerin = async () => {
+    const code = await getChain(137).provider.getCode(
+      smartWalletAddress as string
+    );
+
+    if (code === "0x") {
+      setWalletDeployed(false);
+      return;
+    }
+
+    const smartWallet = new ethers.Contract(
+      smartWalletAddress as string,
+      newABI,
+      getChain(137).provider
+    );
+
+    const hash = getMtPelerinHashAndCode(smartWalletAddress as string).hash;
+
+    try {
+      const supports = await smartWallet.signedMessages(hash);
+
+      console.log("supports", supports);
+      if (supports) setSupportsMtPelerin(true);
+    } catch (e) {
+      console.log(e);
     }
   };
 
   return (
-    <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <TransakWebView
-        queryParams={{
-          apiKey: "c99e44a4-8c0e-4831-952d-2edc91cd0bc9",
-          // apiKey: "64265438-8e6b-4784-9de4-c9164e92be2a",
-          environment: "PRODUCTION",
-          // environment: "STAGING",
-          networks: "polygon,optimism,arbitrum",
-          defaultNetwork: "polygon",
-          defaultCryptoCurrency: "USDC",
-          cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
-          walletAddress: smartWalletAddress,
-          defaultFiatAmount: "100",
-          exchangeScreenTitle: "Add money to Bangr !",
-          disableWalletAddressForm: true,
-          isDisableCrypto: true,
-          redirectURL: "https://www.youtube.com/",
-          // themeColor: "000000",
+    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
+      <View className="p-5">
+        <Text className="mt-6 text-center font-InterBold text-[22px] text-typo-light dark:text-typo-dark">
+          Add euros from your bank account or your card with our partner
+          MtPelerin
+        </Text>
+        <Text className="mt-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+          The first 500 euros by bank transfer have a 0% fee {"\n\n"}
+          You will have to verify your identity, otherwise your funds will only
+          be delivered after a 7-days withholding period.{"\n\n"}
+        </Text>
 
-          // possible de faire un form custom et de passer toutes les infos:
+        {!walletDeployed ? (
+          <>
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+              Before continuing, deploy your smart wallet by clicking here
+            </Text>
+            <ActionButton
+              text="Deploy"
+              bold
+              rounded
+              spinner={loading}
+              action={async () => {
+                setLoading(true);
+                Toast.show({
+                  type: "info",
+                  text1: "Transaction sent",
+                  text2: "Waiting for confirmation...",
+                });
+                await deployWalletsIfNotDeployed(
+                  [137],
+                  (wallet as ethers.Wallet).address,
+                  smartWalletAddress as string
+                );
+                setLoading(false);
+                setWalletDeployed(true);
+                setSupportsMtPelerin(true); // new ones do
+              }}
+            />
+          </>
+        ) : !supportsMtPelerin ? (
+          <>
+            <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+              Unfortunately, your smart wallet is not compatible with MtPelerin
+              right now. Please contact us to resolve this.
+              {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
+              {/* car on ne supportait pas l'upgrade relayée */}
+            </Text>
+          </>
+        ) : null}
+      </View>
 
-          // fiatAmount: "100",
-          // fiatCurrency: "EUR",
-          // email: userInfo?.email,
-          // userData: encodeURIComponent(JSON.stringify({
-          //   "firstName": "Satoshi",
-          //   "lastName": "Nakamoto",
-          //   "email": "satoshi.nakamoto@transak.com",
-          //   "mobileNumber": "+15417543010",
-          //   "dob": "1994-08-26",
-          //   "address": {
-          //     "addressLine1": "170 Pine St",
-          //     "addressLine2": "San Francisco",
-          //     "city": "San Francisco",
-          //     "state": "CA",
-          //     "postCode": "94111",
-          //     "countryCode": "US"
-          //   }
-          // }))
-        }}
-        onTransakEventHandler={transakEventHandler}
-        style={{ width: windowWidth }}
-        onNavigationStateChange={(webViewState: WebViewNavigation) => {
-          if (webViewState.url.includes("transak")) return;
-          if (webViewState.url.includes("youtube")) {
-            const urlParams = new URLSearchParams(webViewState.url);
-            navigation.navigate("OrderConfirmed");
-          }
-        }}
-      />
+      <View className="mx-auto mb-8 w-11/12">
+        <ActionButton
+          text="Next"
+          bold
+          rounded
+          disabled={!supportsMtPelerin}
+          action={() => navigation.navigate("MtPelerinWebview")}
+        />
+      </View>
+      <Toast config={toastConfig} />
     </SafeAreaView>
   );
-}
+};
 
-{
-  /* <WebView
-  style={{ width: windowWidth }}
-  source={{ uri: "https://onramp.vercel.app" }}
-/> */
-}
+export default MtPelerinScreen;

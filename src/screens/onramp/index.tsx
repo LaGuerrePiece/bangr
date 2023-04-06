@@ -4,6 +4,7 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
   Image,
+  ScrollView,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../../config/configs";
@@ -119,11 +120,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             </View>
           </View>
         </View>
-        {comingSoon ? (
+        {/* {comingSoon ? (
           <Text className="absolute bottom-20 left-20 text-2xl font-bold text-typo-light dark:text-typo-dark">
             Coming soon
           </Text>
-        ) : null}
+        ) : null} */}
       </TouchableOpacity>
     );
   };
@@ -140,10 +141,13 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <View className="flex w-full items-center">
-        <Text className="mt-2 mr-4 font-[InterBold] text-[22px] leading-9 text-typo-light dark:text-typo-dark">
-          Choose a payment option
-        </Text>
+      <Text className="mt-2 mr-4 font-InterBold text-[22px] leading-9 text-typo-light dark:text-typo-dark">
+        Choose a payment option
+      </Text>
+      <ScrollView
+        contentContainerStyle={{ alignItems: "center" }}
+        className="w-full"
+      >
         <RampOption
           logo={require("../../../assets/onramps/transak_logo.png")}
           description={"Cards, banks and international options."}
@@ -155,16 +159,6 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           comingSoon={false}
         />
         <RampOption
-          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
-          description={"0% fee on first bank transfer up to 500€."}
-          name={"Mt Pelerin"}
-          screen={"MtPelerin"}
-          instant={true}
-          fees={"0-2.5%"}
-          methods={["card", "bank"]}
-          comingSoon={true}
-        />
-        <RampOption
           logo={require("../../../assets/onramps/monerium_logo.png")}
           description={"For large amounts, Monerium is the best."}
           name={"Monerium"}
@@ -172,9 +166,29 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           instant={true}
           fees={"0%"}
           methods={["bank"]}
-          comingSoon={true}
+          comingSoon={false}
         />
-      </View>
+        <RampOption
+          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
+          description={"0% fee on first bank transfer up to 500€."}
+          name={"Mt Pelerin"}
+          screen={"MtPelerin"}
+          instant={true}
+          fees={"0-2.5%"}
+          methods={["card", "bank"]}
+          comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/coinbase_logo.png")}
+          description={"Already have an account in a exchange ?"}
+          name={"Exchange"}
+          screen={"Exchange"}
+          instant={true}
+          fees={"0-3%"}
+          methods={["card", "bank"]}
+          comingSoon={false}
+        />
+      </ScrollView>
       <Toast config={toastConfig} />
     </View>
   );
