@@ -312,10 +312,12 @@ const VaultInfoScreen = () => {
       <ScrollView className="mx-auto mt-5 w-11/12 rounded-lg p-3">
         <View className="mb-6 flex-row justify-between">
           <View className="w-4/5">
-            <Text className="mb-1 text-3xl font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mb-1 font-InterSemiBold text-3xl text-icon-special dark:text-secondary-light">
               {name}
             </Text>
-            <Text className="text-gray-500">{description}</Text>
+            <Text className="text-[17px] text-typo-light dark:text-typo-dark">
+              {description}
+            </Text>
           </View>
           <Image className="h-12 w-12" source={{ uri: image }} />
         </View>
@@ -326,7 +328,7 @@ const VaultInfoScreen = () => {
                 return (
                   <Text
                     key={index}
-                    className="my-1 text-typo-light dark:text-typo-dark"
+                    className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light"
                   >
                     {item.text}
                   </Text>
@@ -356,7 +358,7 @@ const VaultInfoScreen = () => {
               case "links":
                 return (
                   <View
-                    className="my-2 mb-12 w-full flex-row justify-around"
+                    className="my-4 mb-12 w-full flex-row justify-around"
                     key={index}
                   >
                     {item.links &&
