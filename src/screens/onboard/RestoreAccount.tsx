@@ -44,6 +44,7 @@ export const googleConfig = {
   // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
   redirectUrl : makeRedirectUri({
     path: '/auth/callback',
+    preferLocalhost: true,
   })
 
   // usePKCE: true,
