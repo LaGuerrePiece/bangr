@@ -24,7 +24,6 @@
         "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you."
       },
       "bundleIdentifier": "com.poche.fi",
-      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
