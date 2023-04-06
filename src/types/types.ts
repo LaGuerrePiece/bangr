@@ -108,6 +108,17 @@ export enum VaultProtocol {
   ROCKET_POOL = "Rocket Pool",
   GMX = "GMX",
   VELODROME = "Velodrome",
+  JonesETH = "SushiSwap",
+  Harbor = "Harbor",
+  JonesGLP = "JonesDAO",
+  Ondo = "FluxFinance",
+}
+
+export enum Volatility {
+  LOW = "Low",
+  MEDIUM = "Medium",
+  HIGH = "High",
+  DEGEN = "Degen",
 }
 
 export interface VaultStatic {
@@ -117,7 +128,10 @@ export interface VaultStatic {
   longDescription?: string;
   vaultToken?: string;
   tokens: string[];
+  currency?: string;
+  currencyIcon?: string;
   protocol: VaultProtocol;
+  volatility?: Volatility;
   status: "active" | "inative" | "preview";
   color?: string;
 }

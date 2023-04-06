@@ -6,14 +6,24 @@ import {
   TouchableOpacity,
   useColorScheme,
 } from "react-native";
-import { VaultData } from "../types/types";
+import { VaultData, Volatility } from "../types/types";
+import useTokensStore from "../state/tokens";
 
 export const averageApy = (apys: number[]) => {
   return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
 };
 
 const Vault = ({ vault }: { vault: VaultData }) => {
-  const { name, description, color, protocol, chains, image } = vault;
+  const {
+    name,
+    description,
+    currency,
+    currencyIcon,
+    volatility,
+    color,
+    protocol,
+    image,
+  } = vault;
   const apy = vault.chains
     ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
     : "0";
@@ -45,6 +55,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                 vault,
               })
             }
+            className="h-8 w-8"
           >
             <Image
               className="h-8 w-8 rounded-full"
@@ -61,11 +72,13 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                 </Text>
                 <View className="flex-row items-center">
                   <Image
-                    className="mr-0.5 h-4 w-3 rounded-full"
-                    source={require("../../assets/ethereum-grey.png")}
+                    className={`mr-0.5 h-6 ${
+                      currency === "Ether" ? "w-[16px]" : "w-6"
+                    } rounded-full object-contain`}
+                    source={{ uri: currencyIcon }}
                   />
-                  <Text className="font-InterBold text-[18px] text-icon-special dark:text-secondary-light">
-                    Ether
+                  <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">
+                    {currency}
                   </Text>
                 </View>
               </View>
@@ -75,11 +88,17 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                 </Text>
                 <View className="flex-row items-center">
                   <Image
-                    className="mr-0.5 h-4 w-3 rounded-full"
-                    source={require("../../assets/ethereum-grey.png")}
+                    className="mr-0.5 h-7 w-7 rounded-full"
+                    source={
+                      volatility === Volatility.LOW
+                        ? require("../../assets/turtle_white.png")
+                        : volatility === Volatility.MEDIUM
+                        ? require("../../assets/rabbit_white.png")
+                        : require("../../assets/cheetah_white.png")
+                    }
                   />
-                  <Text className="font-InterBold text-[18px] text-icon-special dark:text-secondary-light">
-                    Medium
+                  <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">
+                    {volatility}
                   </Text>
                 </View>
               </View>
@@ -88,7 +107,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                   Annual yield
                 </Text>
                 <View className="flex-row items-center">
-                  <Text className="font-InterBold text-[18px] text-icon-special dark:text-secondary-light">
+                  <Text className="mt-1 font-InterSemiBold text-[18px] text-icon-special dark:text-secondary-light">
                     {apy}%
                   </Text>
                 </View>
