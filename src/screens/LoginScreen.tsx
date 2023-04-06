@@ -44,8 +44,8 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         })
       ).success;
     }
-    // handle no biometrics available. For now, just goes to wallet
-    navigation.navigate("Wallet");
+    // handle no biometrics available. For now, just returns true
+    return true;
   };
 
   const checkPreviousUser = async () => {
@@ -56,6 +56,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
 
     if (await loginThroughBiometrics()) {
+      console.log("azeaze");
       login(new Wallet(privKey));
       navigation.navigate("Wallet");
     }
