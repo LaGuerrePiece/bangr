@@ -31,7 +31,8 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export const googleConfig = {
-  androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  androidClientId: "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
   // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
   // clientId:
     // "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
@@ -41,11 +42,11 @@ export const googleConfig = {
   // scopes: ["file"],
   scopes: ["https://www.googleapis.com/auth/drive.file"],
   // redirectUri: "https://auth.expo.io/@ndlz/poche",
-  // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-  redirectUrl : makeRedirectUri({
-    path: '/auth/callback',
-    preferLocalhost: true,
-  })
+  redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+  // redirectUrl : makeRedirectUri({
+  //   path: '/auth/callback',
+  //   preferLocalhost: true,
+  // })
 
   // usePKCE: true,
 };
@@ -63,6 +64,10 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
   const connectDrive = async () => {
+    console.log(makeRedirectUri({
+      path: '/auth/callback',
+      preferLocalhost: true,
+    }));
     await promptAsync();
     setStep(1);
     setLoading(true);
