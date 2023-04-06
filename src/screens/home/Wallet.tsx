@@ -24,14 +24,14 @@ import { useNavigation } from "@react-navigation/native";
 import useCurrencyStore from "../../state/currency";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
-  const [refreshing, setRefreshing] = useState(false);
+  const colorScheme = useColorScheme();
+  const navigation = useNavigation();
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
-  const colorScheme = useColorScheme();
-  const navigation = useNavigation();
   const currency = useCurrencyStore((state) => state.currency);
+  const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
