@@ -23,7 +23,7 @@
       "infoPlist": {
         "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you."
       },
-      "bundleIdentifier": "com.poche.fi",
+      "bundleIdentifier": "com.poche.fi"
     },
     "android": {
       "adaptiveIcon": {
