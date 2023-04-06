@@ -22,6 +22,7 @@ import { ethers } from "ethers";
 import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
+import { makeRedirectUri } from "expo-auth-session";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -40,7 +41,10 @@ export const googleConfig = {
   // scopes: ["file"],
   scopes: ["https://www.googleapis.com/auth/drive.file"],
   // redirectUri: "https://auth.expo.io/@ndlz/poche",
-  redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+  // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+  redirectUrl : makeRedirectUri({
+    path: '/auth/callback',
+  })
 
   // usePKCE: true,
 };
