@@ -15,7 +15,6 @@ import useUserStore from "../state/user";
 import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
-import useVaultsStore from "../state/vaults";
 import { skipBiometrics } from "../config/configs";
 global.Buffer = global.Buffer || Buffer;
 
@@ -25,7 +24,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     login: state.login,
   }));
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
-  const fetchVaults = useVaultsStore((state) => state.fetchVaults);
 
   useEffect(() => {
     checkPreviousUser();
