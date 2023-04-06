@@ -15,16 +15,20 @@ import {
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
-import useHistoricStore  from "../state/historic";
+import useHistoricStore from "../state/historic";
 
 const getTasks = async (scwAddress: string) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/v1/tasks`, scwAddress, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-    })) as { data: Task[] };
+    const { data } = (await axios.post(
+      `${getURLInApp()}/api/v1/tasks`,
+      scwAddress,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }
+    )) as { data: Task[] };
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -34,7 +38,6 @@ const getTasks = async (scwAddress: string) => {
     }
   }
 };
-
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -49,8 +52,6 @@ export const relay = async (
   successMessage: string,
   errorMessage: string
 ) => {
-  const fetchHistoric = useHistoricStore((state) => state.fetchHistoric);
-
   Toast.show({
     type: "info",
     text1: "Transaction sent",
@@ -164,16 +165,10 @@ export const relay = async (
         });
         console.log("success");
         clearTimeout(ping);
-        fetchHistoric(scwAddress);
         return;
       }
     });
   }, 2500);
-
-
-
-
-  
 
   // Toast.show({
   //   type: "success",
