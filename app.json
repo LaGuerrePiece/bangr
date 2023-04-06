@@ -2,7 +2,7 @@
   "expo": {
     "name": "bangr",
     "slug": "poche-app",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "scheme": "bangr",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
