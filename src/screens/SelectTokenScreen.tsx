@@ -38,7 +38,6 @@ export default function SelectToken({
 
   const routes = navigation.getState()?.routes;
   const previousScreen = routes[routes.length - 2];
-  console.log("previousScreen name:", previousScreen.name);
 
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
