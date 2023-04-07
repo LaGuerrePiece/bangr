@@ -22,7 +22,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               swiper.current.scrollBy(-1, true);
             }}
           >

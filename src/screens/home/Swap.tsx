@@ -9,6 +9,7 @@ import {
   useColorScheme,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import SelectTokenButton from "../../components/SelectTokenButton";
@@ -33,7 +34,6 @@ import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
 import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
 
@@ -339,7 +339,7 @@ const Swap = ({
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("history");
               swiper.current.scrollBy(-1, true);
             }}
@@ -355,7 +355,7 @@ const Swap = ({
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("Invest");
               swiper.current.scrollBy(1, true);
             }}

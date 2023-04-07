@@ -69,7 +69,7 @@ const MainScreen = ({ navigation, route }: { navigation: any; route: any }) => {
       dot={dot}
       activeDot={activeDot}
       onMomentumScrollEnd={() => {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       }}
     >
       <HistoryScreen swiper={swiper} />

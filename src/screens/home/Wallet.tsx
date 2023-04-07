@@ -65,7 +65,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
             <View className="w-full flex-row justify-between">
               <TouchableOpacity
                 onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("swap");
                   swiper.current.scrollBy(-1, true);
                 }}
@@ -81,7 +81,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("Invest");
                   swiper.current.scrollBy(1, true);
                 }}
