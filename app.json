@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "currentFullName": "poche-app",
+    "currentFullName": "@ndlz/poche-app",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
