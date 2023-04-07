@@ -82,8 +82,8 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
   }, []);
 
   return (
-    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-20 w-11/12">
+    <SafeAreaView className="mx-auto h-full w-11/12 justify-between bg-primary-light dark:bg-primary-dark">
+      <View className="mt-10">
         <View className="flex-row">
           <Image
             className="h-6 w-6"
@@ -100,14 +100,13 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
         <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
           {heroSentence}
         </Text>
-
-        <Image
-          className="mx-auto mt-20 h-64 w-64"
-          source={require("../../../assets/figma/processor.png")}
-        />
       </View>
+      <Image
+        className="mx-auto h-64 w-64"
+        source={require("../../../assets/figma/processor.png")}
+      />
 
-      <View className="mx-auto mb-8 w-11/12">
+      <View className="mb-8">
         <Animated.View style={{ opacity: fadeAnim }}>
           <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
             Your account is now ready

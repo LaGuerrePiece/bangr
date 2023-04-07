@@ -51,7 +51,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     const privKey = await SecureStore.getItemAsync("privKey");
     // const privKey = null;
     if (!privKey) {
-      navigation.navigate("Welcome");
+      navigation.navigate("FirstScreen");
       return;
     }
     if (await loginThroughBiometrics()) {

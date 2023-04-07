@@ -85,7 +85,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
 
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-20 w-11/12">
+      <View className="mx-auto mt-10 w-11/12">
         <View className="flex-row">
           <Image
             className="h-6 w-6"
@@ -121,7 +121,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
                 className="text-xl font-semibold text-typo-light dark:text-typo-dark"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
-                placeholder="password"
+                placeholder="*******"
                 secureTextEntry={true}
                 style={{
                   color:

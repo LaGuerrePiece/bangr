@@ -28,11 +28,16 @@ import IbanScreen from "./src/screens/onramp/Monerium/Iban";
 import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
 import ExchangeScreen from "./src/screens/onramp/Exchange";
 import MainScreen from "./src/screens/MainScreen";
-import WelcomeScreen from "./src/screens/onboard/Welcome";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
 import { Platform } from "react-native";
+import {
+  FirstScreen,
+  FourthScreen,
+  SecondScreen,
+  ThirdScreen,
+} from "./src/screens/onboard/OnboardScreens";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -113,7 +118,10 @@ const App = () => {
           screenOptions={{ headerShown: false }}
           initialRouteName={initialRouteName}
         >
-          <Stack.Screen name="Welcome" component={WelcomeScreen} />
+          <Stack.Screen name="FirstScreen" component={FirstScreen} />
+          <Stack.Screen name="SecondScreen" component={SecondScreen} />
+          <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
+          <Stack.Screen name="FourthScreen" component={FourthScreen} />
           <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
           <Stack.Screen
             name="RestoreAccount"
