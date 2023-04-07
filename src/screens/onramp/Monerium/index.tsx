@@ -1,4 +1,4 @@
-import { View, Text, useColorScheme, Image, SafeAreaView } from "react-native";
+import { View, Text, useColorScheme, SafeAreaView } from "react-native";
 import ActionButton from "../../../components/ActionButton";
 import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
@@ -7,10 +7,15 @@ import { ethers } from "ethers";
 import "react-native-get-random-values";
 import useMoneriumStore from "../../../state/monerium";
 import { getChain } from "../../../utils/utils";
-import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { toastConfig } from "../../../components/toasts";
+import queryString from "query-string";
+import { MoneriumUserData } from "./Webview";
+import {
+  MONERIUM_SECRET_KEY,
+  MONERIUM_SECRET_KEY_SANDBOX,
+} from "react-native-dotenv";
 
 export const MONERIUM_ENV: any = "prod";
 
@@ -18,11 +23,14 @@ export const MONERIUM_SETTINGS =
   MONERIUM_ENV === "prod"
     ? {
         clientId: "fe7e8ccb-ad2d-11ed-97a8-f2eccd865638",
+        clientIdForClientAuth: "fe9b47be-ad2d-11ed-97a8-f2eccd865638",
         url: "https://api.monerium.app",
+        secret_key: MONERIUM_SECRET_KEY,
       }
     : {
         clientId: "ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9",
         url: "https://api.monerium.dev",
+        secret_key: MONERIUM_SECRET_KEY_SANDBOX,
       };
 
 const oldImplementationAddress = "0xf2b56c7c214b0b4a74e32034c96903b255d698f9";
@@ -34,8 +42,10 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
     smartWalletAddress: state.smartWalletAddress,
     wallet: state.wallet,
   }));
-  const { iban } = useMoneriumStore((state) => ({
+  const { iban, profile, update } = useMoneriumStore((state) => ({
     iban: state.iban,
+    profile: state.profile,
+    update: state.update,
   }));
 
   const [codeVerifier, setCodeVerifier] = useState<string>();
@@ -68,10 +78,50 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
     if (iban) {
       navigation.navigate("Iban");
       return;
+    } else if (profile) {
+      checkIfKycIsDone();
     } else {
       authenticateAsync();
     }
   }, []);
+
+  const checkIfKycIsDone = async () => {
+    const formData = {
+      client_id: MONERIUM_SETTINGS.clientIdForClientAuth,
+      grant_type: "client_credentials",
+      client_secret: MONERIUM_SETTINGS.secret_key,
+    };
+
+    const response = await fetch(`${MONERIUM_SETTINGS.url}/auth/token`, {
+      method: "POST",
+      body: queryString.stringify(formData),
+      headers: {
+        "content-type": "application/x-www-form-urlencoded",
+      },
+    });
+
+    console.log("response", response);
+
+    const { access_token } = await response.json();
+
+    console.log("access_token", access_token);
+
+    const userDataRaw = await fetch(
+      `${MONERIUM_SETTINGS.url}/profiles/${profile}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      }
+    );
+
+    const userData: MoneriumUserData = await userDataRaw.json();
+    console.log("userData :", userData);
+    update({ userData: userData });
+    navigation.navigate("Iban");
+  };
 
   const authenticateAsync = async () => {
     if (codeVerifier || !smartWalletAddress) return;
@@ -95,11 +145,11 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
       code_challenge_method: "S256",
       // automate the wallet connect step by adding the following optional parameters.
       //If user connects with existing account, it's disgarded, which is a big fucking problem
-      // address: "0x4ad676Ba57dAd66868392C56F382F9ebA3071dEf", to test, with ethereum goerli
+      // address: "0x4ad676Ba57dAd66868392C56F382F9ebA3071dEf", //to test, with ethereum goerli
       address: smartWalletAddress,
       signature: "0x",
-      chain: "polygon",
-      network: "mainnet",
+      chain: "polygon", // ethereum
+      network: "mainnet", // goerli
     };
 
     const res = await fetch(
