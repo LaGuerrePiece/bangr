@@ -42,11 +42,12 @@ export const googleConfig = {
   // scopes: ["file"],
   scopes: ["https://www.googleapis.com/auth/drive.file"],
   // redirectUri: "https://auth.expo.io/@ndlz/poche",
-  redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-  // redirectUrl : makeRedirectUri({
-  //   path: '/auth/callback',
-  //   preferLocalhost: true,
-  // })
+  // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+  redirectUrl : makeRedirectUri({
+    path: '/auth/callback',
+    useProxy : true,
+  }),
+  useProxy: true,
 
   // usePKCE: true,
 };

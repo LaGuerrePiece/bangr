@@ -42,9 +42,7 @@
       }
     },
     "owner": "ndlz",
-    "plugins": [
-      ["@react-native-google-signin/google-signin"],
-    
+    "plugins": [    
       [
         "expo-build-properties",
         {
@@ -53,13 +51,6 @@
             "targetSdkVersion": 33,
             "kotlinVersion": "1.8.0"
           }
-        }
-      ],
-      [
-        "@stripe/stripe-react-native",
-        {
-          "merchantIdentifier": "<merchant identifier here>",
-          "enableGooglePay": true
         }
       ]
     ]
