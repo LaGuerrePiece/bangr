@@ -61,13 +61,11 @@ export const chainData = [
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export const VAULT_TOKENS = ["aUSDC"];
-
 export const forceOnboarding = false; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins
 
-export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
+export const skipBiometrics = true; // skips the need for biometrics. Never push true to prod !
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone

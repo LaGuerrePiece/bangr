@@ -3,32 +3,23 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Dimensions,
   Image,
-  StyleSheet,
   Text,
-  TouchableHighlight,
   TouchableOpacity,
   useColorScheme,
   View,
 } from "react-native";
 import { MultichainToken } from "../types/types";
-//@ts-ignore
-import useTabStore from "../state/tab";
-import * as Haptics from "expo-haptics";
-import Chart, { Point } from "./Chart";
+import { Point } from "./Chart";
 import { getURLInApp } from "../utils/utils";
 import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
 
 const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
-  const navigation = useNavigation();
   const [chart, setChart] = useState<Point[]>();
   useEffect(() => {
     getChart(token);
   }, [token]);
-
-  // const [chartColor, setChartColor] = useState("rgba(0, 0, 0, 0.1)");
 
   const colorScheme = useColorScheme();
 
@@ -64,7 +55,6 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
 
   return (
     <View
-      className=""
       onLayout={(event) => {
         const { width, height } = event.nativeEvent.layout;
         setHeight(height);
@@ -98,23 +88,44 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
         </View>
         <View className="flex-row items-center justify-between py-3">
           <View className="flex-row items-center">
-            <Image
-              className="h-12 w-12 rounded-full"
-              source={
-                token.logoURI
-                  ? { uri: token.logoURI }
-                  : require("../../assets/poche.png")
-              }
-            />
+            {token.vaultToken ? (
+              <View>
+                <Image
+                  className="h-12 w-12 rounded-full"
+                  source={require("../../assets/treasure_chest.png")}
+                />
+                <Image
+                  className="absolute bottom-0 right-0 h-5 w-5 rounded-full"
+                  source={
+                    token.logoURI
+                      ? { uri: token.logoURI }
+                      : require("../../assets/poche.png")
+                  }
+                />
+              </View>
+            ) : (
+              <Image
+                className="h-12 w-12 rounded-full"
+                source={
+                  token.logoURI
+                    ? { uri: token.logoURI }
+                    : require("../../assets/poche.png")
+                }
+              />
+            )}
             <View className="ml-3">
               <Text className="font-bold text-typo-light dark:text-typo-dark">
                 {token.name}
               </Text>
               <Text className="text-typo2-light dark:text-typo2-dark">
-                {Number(
-                  ethers.utils.formatUnits(token.balance || 0, token.decimals)
-                ).toFixed(2)}{" "}
-                {token.symbol}
+                {token.vaultToken
+                  ? "Vault"
+                  : `${Number(
+                      ethers.utils.formatUnits(
+                        token.balance || 0,
+                        token.decimals
+                      )
+                    ).toFixed(2)} ${token.symbol}`}
               </Text>
             </View>
           </View>

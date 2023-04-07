@@ -27,6 +27,8 @@ export interface Token {
 
 // Most common type
 export type MultichainToken = Omit<Token, "chainId" | "address"> & {
+  color?: string;
+  vaultToken?: boolean;
   chains: {
     chainId: ChainId;
     address: string;
@@ -35,7 +37,6 @@ export type MultichainToken = Omit<Token, "chainId" | "address"> & {
     quote?: number;
     priceUSD?: number;
   }[];
-  color?: string;
 };
 
 export type Balance = {
