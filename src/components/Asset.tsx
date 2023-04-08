@@ -91,11 +91,11 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
             {token.vaultToken ? (
               <View>
                 <Image
-                  className="h-12 w-12 rounded-full"
-                  source={require("../../assets/treasure_chest.png")}
+                  className="h-12 w-12"
+                  source={require("../../assets/vaultbtn-selected.png")} // other: vault_1.png
                 />
                 <Image
-                  className="absolute bottom-0 right-0 h-5 w-5 rounded-full"
+                  className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
                   source={
                     token.logoURI
                       ? { uri: token.logoURI }
