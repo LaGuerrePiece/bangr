@@ -8,6 +8,7 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "currentFullName": "@ndlz/poche-app",
+    "originalFullName": "@ndlz/poche-app",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
