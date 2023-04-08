@@ -31,64 +31,64 @@ const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
 
-// export const googleConfig = {
-//   // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
-//   androidClientId:
-//     "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
-//   // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
-//   // clientId:
-//   // "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
-//   expoClientId:
-//     "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
-//   // scopes: ["drive.file"],
-//   // scopes: ["file"],
-//   scopes: ["https://www.googleapis.com/auth/drive.file"],
-//   // redirectUri: "https://auth.expo.io/@ndlz/poche",
-//   // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-//   redirectUrl : makeRedirectUri({
-//     path: '/auth/callback',
-//     useProxy : true,
-//   }),
-//   useProxy: true,
-
-//   // usePKCE: true,
-// };
-
-export const googleSignIn = async () => {
-  // This will create a redirectUri
-  // This should be the URL you added to "Redirect URLs" in Supabase URL Configuration
-  // If they are different add the value of redirectUrl to your Supabase Redirect URLs
-  const redirectUrl = makeRedirectUri({
+export const googleConfig = {
+  // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  androidClientId:
+    "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
+  // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
+  // clientId:
+  // "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
+  expoClientId:
+    "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
+  // scopes: ["drive.file"],
+  // scopes: ["file"],
+  scopes: ["https://www.googleapis.com/auth/drive.file"],
+  // redirectUri: "https://auth.expo.io/@ndlz/poche",
+  // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
+  redirectUrl : makeRedirectUri({
     path: '/auth/callback',
-  });
-  // const redirectUrl = "https://gfdakuvgcmtzsngfshnb.supabase.co/auth/v1/callback";
+    useProxy : false,
+  }),
+  useProxy: false,
 
-  console.log("redirectUrl", redirectUrl);
-
-  // const redirectUrl = "com.poche.fi://auth";
-
-  // authUrl: https://{YOUR_PROJECT_REFERENCE_ID}.supabase.co
-  // returnURL: the redirectUrl you created above.
-  const authResponse = await startAsync({
-    authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&https://www.googleapis.com/auth/drive.file&redirect_to=${redirectUrl}`,
-    returnUrl: redirectUrl,
-  });
-
-  // If the user successfully signs in
-  // we will have access to an accessToken and an refreshToken
-  // and then we'll use setSession (https://supabase.com/docs/reference/javascript/auth-setsession)
-  // to create a Supabase-session using these token
-  if (authResponse.type === 'success') {
-    return authResponse.params.access_token;
-    // supabase.auth.setSession({
-    //   access_token: authResponse.params.access_token,
-    //   refresh_token: authResponse.params.refresh_token,
-    // });
-  }
-  else {
-    console.log('error', authResponse);
-  }
+  // usePKCE: true,
 };
+
+// export const googleSignIn = async () => {
+//   // This will create a redirectUri
+//   // This should be the URL you added to "Redirect URLs" in Supabase URL Configuration
+//   // If they are different add the value of redirectUrl to your Supabase Redirect URLs
+//   const redirectUrl = makeRedirectUri({
+//     path: '/auth/callback',
+//   });
+//   // const redirectUrl = "https://gfdakuvgcmtzsngfshnb.supabase.co/auth/v1/callback";
+
+//   console.log("redirectUrl", redirectUrl);
+
+//   // const redirectUrl = "com.poche.fi://auth";
+
+//   // authUrl: https://{YOUR_PROJECT_REFERENCE_ID}.supabase.co
+//   // returnURL: the redirectUrl you created above.
+//   const authResponse = await startAsync({
+//     authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&https://www.googleapis.com/auth/drive.file&redirect_to=${redirectUrl}`,
+//     returnUrl: redirectUrl,
+//   });
+
+//   // If the user successfully signs in
+//   // we will have access to an accessToken and an refreshToken
+//   // and then we'll use setSession (https://supabase.com/docs/reference/javascript/auth-setsession)
+//   // to create a Supabase-session using these token
+//   if (authResponse.type === 'success') {
+//     return authResponse.params.access_token;
+//     // supabase.auth.setSession({
+//     //   access_token: authResponse.params.access_token,
+//     //   refresh_token: authResponse.params.refresh_token,
+//     // });
+//   }
+//   else {
+//     console.log('error', authResponse);
+//   }
+// };
 
 export default function RestoreAccount({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -100,25 +100,25 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
+  const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
   const connectDrive = async () => {
   
-    // await promptAsync();
-    const token = await googleSignIn();
-    console.log("token", token);
+    await promptAsync();
+    // const token = await googleSignIn();
+    // console.log("token", token);
     setStep(1);
     setLoading(true);
-    // if (response?.type !== "success") {
-    //   Toast.show({
-    //     type: "error",
-    //     text1: "Authorization failed",
-    //     text2: "Please try again !",
-    //   });
-    //   setLoading(false);
-    //   return;
-    // }
-    // const token = response.authentication!.accessToken;
+    if (response?.type !== "success") {
+      Toast.show({
+        type: "error",
+        text1: "Authorization failed",
+        text2: "Please try again !",
+      });
+      setLoading(false);
+      return;
+    }
+    const token = response.authentication!.accessToken;
     await GDrive.setAccessToken(token);
     await GDrive.init();
     const initialized = await GDrive.isInitialized();
