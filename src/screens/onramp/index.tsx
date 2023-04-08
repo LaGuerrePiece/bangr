@@ -132,7 +132,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
+        <View className="w-11/12 flex-row justify-end">
           <XMarkIcon
             size={36}
             color={

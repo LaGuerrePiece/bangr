@@ -333,7 +333,7 @@ const VaultDepositScreen = ({
                   {selectedTokenSymbol}
                 </Text>
               </View>
-              <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light dark:bg-secondary-dark">
+              <View className="mt-4 h-16 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
                 <TextInput
                   placeholderTextColor={colors.typo2.light}
                   className="w-4/5 text-4xl font-semibold text-typo-light dark:text-typo-dark"

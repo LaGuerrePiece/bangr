@@ -55,7 +55,7 @@ const VaultInfoScreen = () => {
   return (
     <View className="h-full bg-secondary-light py-6 dark:bg-secondary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
+        <View className="w-11/12 flex-row justify-end">
           <XMarkIcon
             size={36}
             color={
@@ -64,7 +64,7 @@ const VaultInfoScreen = () => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <ScrollView className="mx-auto mt-5 w-11/12 rounded-lg p-3">
+      <ScrollView className="mx-auto mt-2 w-11/12 rounded-lg p-3">
         <View className="mb-6 flex-row justify-between">
           <View className="w-4/5">
             <Text className="mb-1 font-InterSemiBold text-3xl text-typo-light dark:text-secondary-light">

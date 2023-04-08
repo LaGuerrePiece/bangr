@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   useColorScheme,
 } from "react-native";
-import { XMarkIcon } from "react-native-heroicons/outline";
 import Chart, { Point } from "../components/Chart";
 import { MultichainToken } from "../types/types";
 import { formatUnits, cutDecimals } from "../utils/format";

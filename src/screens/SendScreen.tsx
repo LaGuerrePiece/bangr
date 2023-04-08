@@ -7,6 +7,7 @@ import {
   TouchableHighlight,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import useUserStore from "../state/user";
 import Toast from "react-native-toast-message";
@@ -237,7 +238,7 @@ const SendScreen = ({
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View className="h-full bg-primary-light py-6 dark:bg-primary-dark">
         <TouchableWithoutFeedback onPress={navigation.goBack}>
-          <View className="mx-auto w-11/12">
+          <View className="w-11/12 flex-row justify-end">
             <XMarkIcon
               size={36}
               color={
@@ -246,11 +247,11 @@ const SendScreen = ({
             />
           </View>
         </TouchableWithoutFeedback>
-        <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+        <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
           Send
         </Text>
 
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
+        <View className="mx-auto w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
           <View className="flex-row items-center">
             {token && tokens && (
               <View className="mx-4">
@@ -268,64 +269,43 @@ const SendScreen = ({
               </View>
             )}
           </View>
-          <Text className="mt-8 text-typo-light dark:text-typo-dark">
+          <Text className="mt-6 w-11/12 text-lg font-bold text-typo-light dark:text-typo-dark">
             Amount
           </Text>
-          <View className="mx-auto mt-2 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <View className="mt-2 h-16 w-11/12 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
             <TextInput
-              style={{
-                color:
-                  colorScheme === "light"
-                    ? colors.typo.light
-                    : colors.typo.dark,
-              }}
               placeholderTextColor={colors.typo2.light}
-              className="text-4xl font-semibold text-typo-light dark:text-typo-dark"
+              className="w-4/5 text-4xl font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={handleInputChange}
               value={amountIn?.slice(0, 10) ?? ""}
               keyboardType="numeric"
               placeholder="0"
-              textAlign="right"
             />
+            <TouchableOpacity onPress={max}>
+              <View className="rounded-full bg-btn-light px-3 py-1 dark:bg-btn-dark">
+                <Text className="text-secondary-light dark:text-secondary-dark">
+                  MAX
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
           {token && (
-            <View className="flex-row p-2">
-              <Text className="pr-6 text-xs text-typo-light dark:text-typo-dark">
+            <View className="my-2 w-full flex-row justify-end pr-6">
+              <Text className="text-sm text-typo-light dark:text-typo-dark">
                 Balance : {formatUnits(token.balance, token.decimals, 4)}{" "}
                 {token.symbol}
               </Text>
-              <TouchableHighlight onPress={max}>
-                <View className="flex-row items-center">
-                  <Image
-                    className="mb-1 mr-0.5 h-3 w-3"
-                    source={
-                      colorScheme === "light"
-                        ? require("../../assets/arrow_up.png")
-                        : require("../../assets/arrow_up_white.png")
-                    }
-                  />
-                  <Text className="font-bold text-typo-light dark:text-typo-dark">
-                    Max
-                  </Text>
-                </View>
-              </TouchableHighlight>
             </View>
           )}
 
-          <Text className="mt-4 text-typo-light dark:text-typo-dark">
-            Address
+          <Text className="w-11/12 text-lg font-bold text-typo-light dark:text-typo-dark">
+            Destination
           </Text>
 
-          <View className="mx-auto mt-2 mb-4 w-2/3 rounded-xl border bg-primary-light p-2  dark:bg-primary-dark">
+          <View className="mt-2 h-14 w-11/12 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
             <TextInput
-              style={{
-                color:
-                  colorScheme === "light"
-                    ? colors.typo.light
-                    : colors.typo.dark,
-              }}
               placeholderTextColor={colors.typo2.light}
-              className="text-xs font-semibold text-typo-light dark:text-typo-dark"
+              className="w-full text-2xl font-semibold text-typo-light dark:text-typo-dark"
               onChangeText={(value) => update({ toAddress: value })}
               value={toAddress ?? ""}
               placeholder="0x..."
@@ -348,7 +328,7 @@ const SendScreen = ({
             </View>
           )}
 
-          <View className="flex-row justify-evenly">
+          <View className="mt-6 flex-row justify-evenly">
             {!debouncedAmountIn ||
             !toAddress ||
             !token ||
@@ -378,10 +358,19 @@ const SendScreen = ({
                     : "No route found."
                 }
                 disabled={true}
+                rounded
+                bold
                 action={() => {}}
               />
             ) : (
-              <ActionButton text="Send" disabled={false} action={send} />
+              <ActionButton
+                text="Send"
+                additionalCss={"min-w-[200px]"}
+                rounded
+                bold
+                disabled={false}
+                action={send}
+              />
             )}
           </View>
         </View>

@@ -75,8 +75,6 @@ const Swap = ({
 
   useEffect(() => {
     if (updatedToken && tokenToUpdate) {
-      console.log("tokenToUpdate", tokenToUpdate);
-      console.log("updatedToken", updatedToken.symbol);
       if (
         tokenToUpdate === "srcToken" &&
         updatedToken.symbol === dstToken?.symbol
@@ -172,8 +170,9 @@ const Swap = ({
       if (dai) srcTokenSave = dai;
     }
     update({
-      amountIn: "",
-      debouncedAmountIn: "",
+      amountIn: quote?.sumOfToAmount
+        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+        : amountIn,
       quote: null,
       calls: null,
       srcToken: dstToken,
@@ -235,7 +234,7 @@ const Swap = ({
     fetchBalances();
   };
 
-  // test
+  // test swap and then invest
   const swapAndInvest = async () => {
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
@@ -372,7 +371,7 @@ const Swap = ({
         </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
               Swap
             </Text>
             <View className="mx-auto my-3 w-full items-center rounded-xl bg-secondary-light dark:bg-secondary-dark">

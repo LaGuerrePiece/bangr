@@ -42,16 +42,16 @@ export default function SelectToken({
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
       <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
-        <View className="my-6">
-          <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <TouchableWithoutFeedback onPress={navigation.goBack}>
+          <View className="my-2 flex-row justify-end">
             <XMarkIcon
               size={36}
               color={
                 colorScheme === "light" ? colors.typo.light : colors.typo.dark
               }
             />
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
         <ScrollView>
           {tokenList.map((token, i) => {
             return (
@@ -60,14 +60,10 @@ export default function SelectToken({
                 className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  console.log(
-                    "previousScreen name in press:",
-                    previousScreen.name
-                  );
                   navigation.navigate(previousScreen.name, {
                     updatedToken: token,
-                    ...paramsToPassBack,
                     tokenToUpdate: route.params.tokenToUpdate,
+                    ...paramsToPassBack,
                   });
                 }}
               >

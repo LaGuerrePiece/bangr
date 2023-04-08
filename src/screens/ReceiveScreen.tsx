@@ -54,7 +54,7 @@ const ReceiveScreen = () => {
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
+        <View className="w-11/12 flex-row justify-end">
           <XMarkIcon
             size={36}
             color={
@@ -63,12 +63,12 @@ const ReceiveScreen = () => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
+      <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
         Receive
       </Text>
 
       {smartWalletAddress && (
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
+        <View className="mx-auto w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
           <QRCode
             value={smartWalletAddress}
             // logo={{ uri: base64Icon }}
@@ -146,6 +146,8 @@ const ReceiveScreen = () => {
             <ActionButton
               text="Buy crypto"
               rounded
+              bold
+              additionalCss={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp" as never);
               }}
