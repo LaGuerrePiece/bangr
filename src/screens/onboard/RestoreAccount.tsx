@@ -8,6 +8,7 @@ import {
   TextInput,
   useColorScheme,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
@@ -23,8 +24,7 @@ import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import { makeRedirectUri } from "expo-auth-session";
-
-WebBrowser.maybeCompleteAuthSession();
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -44,14 +44,18 @@ export const googleConfig = {
   scopes: ["https://www.googleapis.com/auth/drive.file"],
   // redirectUri: "https://auth.expo.io/@ndlz/poche",
   // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-  redirectUrl : makeRedirectUri({
-    path: '/auth/callback',
-    useProxy : true,
+  redirectUrl: makeRedirectUri({
+    path: "/auth/callback",
+    useProxy: true,
   }),
   useProxy: true,
 
   // usePKCE: true,
 };
+
+const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
+
+if (driveName === "Google Drive") WebBrowser.maybeCompleteAuthSession();
 
 export default function RestoreAccount({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -121,12 +125,30 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     setLoading(false);
   };
 
+  // Get @bangr-backup from AsyncStorage and put it in encryptedKey
+  const getICloudBackup = async () => {
+    const backup = await AsyncStorage.getItem("@bangr-backup");
+    setStep(1);
+    setLoading(true);
+    if (backup) setEncryptedKey(backup);
+    setLoading(false);
+  };
+
+  const getBackup = async () => {
+    if (driveName === "iCloud") {
+      await getICloudBackup();
+    } else {
+      await connectDrive();
+    }
+  };
+
   const restoreAccount = async () => {
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
       login(new ethers.Wallet(decrypted));
-      await FileSystem.deleteAsync(fileContentUri);
+      if (driveName === "Google Drive")
+        await FileSystem.deleteAsync(fileContentUri);
       navigation.navigate("Wallet");
     } catch (e) {
       console.log(e);
@@ -217,13 +239,13 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       <View className="mx-auto mb-8 w-11/12">
         <ActionButton
           text={
-            encryptedKey === "" ? "Connect to my Drive" : "Restore my account"
+            encryptedKey === ""
+              ? `Connect to ${driveName}`
+              : "Restore my account"
           }
           bold
           rounded
-          action={() =>
-            encryptedKey === "" ? connectDrive() : restoreAccount()
-          }
+          action={() => (encryptedKey === "" ? getBackup() : restoreAccount())}
         />
       </View>
     </SafeAreaView>

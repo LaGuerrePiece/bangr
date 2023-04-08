@@ -17,6 +17,7 @@ import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import useCurrencyStore from "../../state/currency";
+import * as SecureStore from "expo-secure-store";
 
 const Settings = ({ swiper }: { swiper: any }) => {
   const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
@@ -25,6 +26,12 @@ const Settings = ({ swiper }: { swiper: any }) => {
     state.currency,
     state.setCurrency,
   ]);
+
+  // Only for testing, not for prod
+  const disconnect = async () => {
+    await SecureStore.deleteItemAsync("privKey");
+  };
+
   return (
     <SafeAreaView className="mt-4 w-11/12 items-center">
       <View className="w-full flex-row ">
@@ -56,6 +63,10 @@ const Settings = ({ swiper }: { swiper: any }) => {
         ]}
         value={currency}
       /> */}
+
+      <TouchableOpacity onPress={disconnect}>
+        <Text className="mt-4">Log out</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

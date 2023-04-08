@@ -20,10 +20,11 @@ import { encrypt } from "./encrypt";
 import { colors } from "../../config/configs";
 import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-
-WebBrowser.maybeCompleteAuthSession();
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
+
+if (driveName === "Google Drive") WebBrowser.maybeCompleteAuthSession();
 
 export default function ChoosePassword({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -34,7 +35,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
 
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
-  const secureAccount = async () => {
+  const secureAccountGDrive = async () => {
     await promptAsync();
     setLoading(true);
     if (response?.type !== "success") {
@@ -81,6 +82,36 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
     });
     setLoading(false);
     setStep(1);
+  };
+
+  const secureAccountICloud = async () => {
+    setLoading(true);
+
+    const key = (await SecureStore.getItemAsync("privKey")) as string;
+    const encryptedKey = await encrypt(key, password);
+
+    // Store in AsyncStorage (which should be backed up by iCloud if configured correctly)
+    try {
+      await AsyncStorage.setItem("@bangr-backup", encryptedKey);
+    } catch (e) {
+      console.log("error storing in AsyncStorage: ", e);
+    }
+
+    Toast.show({
+      type: "success",
+      text1: "Account secured",
+      text2: "Your account is now secured on " + driveName,
+    });
+    setLoading(false);
+    setStep(1);
+  };
+
+  const secureAccount = async () => {
+    if (driveName === "iCloud") {
+      await secureAccountICloud();
+    } else {
+      await secureAccountGDrive();
+    }
   };
 
   return (
