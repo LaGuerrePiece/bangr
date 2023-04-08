@@ -31,6 +31,8 @@ import MainScreen from "./src/screens/MainScreen";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
+import { useStripe } from "@stripe/stripe-react-native";
+
 import { Platform } from "react-native";
 import {
   FirstScreen,
@@ -45,7 +47,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const colorScheme = useColorScheme();
-
+  const { handleURLCallback } = useStripe();
   const [initialRouteName, setInitialRouteName] = useState("Login");
   const [fontsLoaded] = useFonts({
     Inter: require("./assets/fonts/Inter/Inter-Regular.otf"),
