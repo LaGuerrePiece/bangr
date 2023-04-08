@@ -4,7 +4,6 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import useTokensStore from "../state/tokens";
 import { Appearance, useColorScheme } from "react-native";
 import * as Haptics from "expo-haptics";
-import { VAULT_TOKENS } from "../config/configs";
 
 type Props = {
   tokens: MultichainToken[];
@@ -22,9 +21,7 @@ export default function SelectTokenButton({
   const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
 
-  const tokenList = tokens.filter(
-    (token) => !VAULT_TOKENS.includes(token.symbol)
-  );
+  const tokenList = tokens.filter((token) => !token.vaultToken);
 
   return (
     <TouchableOpacity
