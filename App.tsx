@@ -31,7 +31,6 @@ import MainScreen from "./src/screens/MainScreen";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
-import { Platform } from "react-native";
 import {
   FirstScreen,
   FourthScreen,
@@ -72,37 +71,6 @@ const App = () => {
   useEffect(() => {
     checkifOnboardingNeeded();
   }, []);
-
-  // Handle getting out for 2FA and returning on ios
-  const handleDeepLink = useCallback(
-    async (url: string | null) => {
-      if (url && Platform.OS === "ios") {
-        const stripeHandled = await handleURLCallback(url);
-        if (stripeHandled) {
-          console.log("Stripe handled the URL back to the right screen");
-        }
-      }
-    },
-    [handleURLCallback]
-  );
-
-  useEffect(() => {
-    const getUrlAsync = async () => {
-      const initialUrl = await Linking.getInitialURL();
-      handleDeepLink(initialUrl);
-    };
-
-    getUrlAsync();
-
-    const deepLinkListener = Linking.addEventListener(
-      "url",
-      (event: { url: string }) => {
-        handleDeepLink(event.url);
-      }
-    );
-
-    return () => deepLinkListener.remove();
-  }, [handleDeepLink]);
 
   if (!fontsLoaded) {
     return null;
