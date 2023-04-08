@@ -302,7 +302,7 @@ const SendScreen = ({
             Destination
           </Text>
 
-          <View className="mt-2 h-14 w-11/12 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
+          <View className="my-2 h-14 w-11/12 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
             <TextInput
               placeholderTextColor={colors.typo2.light}
               className="w-full text-2xl font-semibold text-typo-light dark:text-typo-dark"
@@ -313,14 +313,16 @@ const SendScreen = ({
           </View>
 
           {token && quote && quote.sumOfToAmount && (
-            <View>
-              <Text className="mx-auto my-5 font-semibold text-typo-light dark:text-typo-dark">
+            <View className="my-5">
+              <Text className="mx-auto font-semibold text-typo-light dark:text-typo-dark">
                 Amount received: {cutDecimals(quote.sumOfToAmount, 5)}{" "}
                 {token.symbol}
               </Text>
               {Number(quote.sumOfToAmount) * 1.2 < Number(debouncedAmountIn) &&
                 quote.singleQuotes[0]?.type === "lifi" && (
-                  <Text className="mx-auto my-5 font-semibold text-typo-light dark:text-typo-dark">
+                  <Text className="mx-auto mt-2 text-center font-semibold text-typo-light dark:text-typo-dark">
+                    Your funds will be bridged, which may take a few minutes{" "}
+                    {"\n"}
                     For lower fees, try sending on{" "}
                     {getChainWithMaxBalance(token.chains).name}
                   </Text>
@@ -328,7 +330,7 @@ const SendScreen = ({
             </View>
           )}
 
-          <View className="mt-6 flex-row justify-evenly">
+          <View className="mt-4 flex-row justify-evenly">
             {!debouncedAmountIn ||
             !toAddress ||
             !token ||

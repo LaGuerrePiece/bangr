@@ -28,6 +28,38 @@ export const averageApy = (apys: number[]) => {
   return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
 };
 
+const FooterElement = ({
+  title,
+  image,
+  text,
+  textSize,
+  marginLeft,
+}: {
+  title: string;
+  image?: any;
+  text: string | undefined;
+  textSize?: number;
+  marginLeft?: number;
+}) => {
+  return (
+    <View className={`ml-${marginLeft ? marginLeft : 2}`}>
+      <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
+        {title}
+      </Text>
+      <View className="flex-row items-center">
+        {image}
+        <Text
+          className={`font-InterSemiBold text-[${
+            textSize ? textSize : 16
+          }px] text-icon-special dark:text-secondary-light`}
+        >
+          {text}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 const Vault = ({ vault }: { vault: VaultData }) => {
   const {
     name,
@@ -86,11 +118,10 @@ const Vault = ({ vault }: { vault: VaultData }) => {
         <View className="rounded-b-3xl border-t border-[#4F4F4F] bg-[#DBDBDB] dark:bg-quaternary-dark">
           <View className="flex-row justify-between p-3">
             <View className="flex-row">
-              <View className="ml-2">
-                <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
-                  Currency
-                </Text>
-                <View className="flex-row items-center">
+              <FooterElement
+                title="Currency"
+                text={currency}
+                image={
                   <Image
                     className={`mr-0.5 h-6 ${
                       currency === "Ether" ? "w-[16px]" : "w-6"
@@ -103,16 +134,13 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                           : currencyIcon[colorScheme as "light" | "dark"],
                     }}
                   />
-                  <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">
-                    {currency}
-                  </Text>
-                </View>
-              </View>
-              <View className="ml-5">
-                <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
-                  Volatility
-                </Text>
-                <View className="flex-row items-center">
+                }
+              />
+              <FooterElement
+                title="Volatility"
+                text={volatility}
+                marginLeft={4}
+                image={
                   <Image
                     className="mr-0.5 h-7 w-7 rounded-full"
                     source={
@@ -123,21 +151,15 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                         : cheetah
                     }
                   />
-                  <Text className="font-InterSemiBold text-[16px] text-icon-special dark:text-secondary-light">
-                    {volatility}
-                  </Text>
-                </View>
-              </View>
-              <View className="ml-5">
-                <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
-                  Annual yield
-                </Text>
-                <View className="flex-row items-center">
-                  <Text className="mt-1 font-InterSemiBold text-[18px] text-icon-special dark:text-secondary-light">
-                    {apy}%
-                  </Text>
-                </View>
-              </View>
+                }
+                textSize={volatility === Volatility.MEDIUM ? 14 : 16}
+              />
+              <FooterElement
+                title="Annual yield"
+                text={`${apy}%`}
+                marginLeft={4}
+                textSize={18}
+              />
             </View>
             <Image
               className="my-auto h-7 w-7"
