@@ -18,7 +18,7 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { encrypt } from "./encrypt";
 import { colors } from "../../config/configs";
-import { googleConfig, googleSignIn } from "./RestoreAccount";
+import { googleConfig} from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -32,24 +32,24 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
+  const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
   const secureAccount = async () => {
 
-    const token = await googleSignIn();
-    console.log("token", token);
-    // await promptAsync();
+    // const token = await googleSignIn();
+    // console.log("token", token);
+    await promptAsync();
     setLoading(true);
-    // // if (response?.type !== "success") {
-    //   Toast.show({
-    //     type: "error",
-    //     text1: "Authorization failed",
-    //     text2: "Please try again !",
-    //   });
-    //   setLoading(false);
-    //   return;
-    // }
-    // const token = response.authentication!.accessToken;
+    if (response?.type !== "success") {
+      Toast.show({
+        type: "error",
+        text1: "Authorization failed",
+        text2: "Please try again !",
+      });
+      setLoading(false);
+      return;
+    }
+    const token = response.authentication!.accessToken;
     await GDrive.setAccessToken(token);
     await GDrive.init();
     const initialized = await GDrive.isInitialized();

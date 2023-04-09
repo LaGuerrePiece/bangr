@@ -101,6 +101,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [loading, setLoading] = useState(false);
 
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
+  
 
   const connectDrive = async () => {
   
