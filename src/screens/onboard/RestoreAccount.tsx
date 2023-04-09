@@ -104,12 +104,11 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
   const connectDrive = async () => {
-    await promptAsync();
     // const token = await googleSignIn();
     // console.log("token", token);
-    setStep(1);
     setLoading(true);
-    if (response?.type !== "success") {
+    const res = await promptAsync();
+    if (res?.type !== "success") {
       Toast.show({
         type: "error",
         text1: "Authorization failed",
@@ -118,7 +117,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       setLoading(false);
       return;
     }
-    const token = response.authentication!.accessToken;
+    const token = res.authentication!.accessToken;
     await GDrive.setAccessToken(token);
     await GDrive.init();
     const initialized = await GDrive.isInitialized();
@@ -154,6 +153,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     }
     setEncryptedKey(content);
     setLoading(false);
+    setStep(1);
   };
 
   const restoreAccount = async () => {
@@ -197,13 +197,13 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
           Restore a previous account from your Drive
         </Text>
 
-        {step === 0 ? (
+        {loading ? (
+          <ActivityIndicator size="large" className="mt-32" />
+        ) : step === 0 ? (
           <Image
             className="mx-auto mt-16 h-80 w-80"
             source={require("../../../assets/figma/security.png")}
           />
-        ) : loading ? (
-          <ActivityIndicator size="large" className="mt-32" />
         ) : encryptedKey === "" ? (
           <View>
             <View className="my-5 mx-auto flex-row items-center">

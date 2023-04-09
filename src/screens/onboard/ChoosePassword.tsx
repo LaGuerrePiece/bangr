@@ -37,9 +37,11 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
   const secureAccount = async () => {
     // const token = await googleSignIn();
     // console.log("token", token);
-    await promptAsync();
     setLoading(true);
-    if (response?.type !== "success") {
+    const res = await promptAsync();
+    console.log("res", res);
+    console.log("responseFromHook", response);
+    if (res.type !== "success") {
       Toast.show({
         type: "error",
         text1: "Authorization failed",
@@ -48,21 +50,21 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
       setLoading(false);
       return;
     }
-    const token = response.authentication!.accessToken;
-    await GDrive.setAccessToken(token);
-    await GDrive.init();
+    const token = res.authentication!.accessToken;
+    GDrive.setAccessToken(token);
+    GDrive.init();
     const initialized = await GDrive.isInitialized();
+    console.log("initialized");
     if (!initialized) {
       console.log("not initialized");
       setLoading(false);
       return;
     }
-    console.log("initialized");
     const key = (await SecureStore.getItemAsync("privKey")) as string;
     const encryptedKey = await encrypt(key, password);
-    // console.log("encryptedKey", encryptedKey);
+    console.log("encryptedKey", encryptedKey);
     const decryptedKey = await encrypt(encryptedKey, password);
-    // console.log("decryptedKey", decryptedKey);
+    console.log("decryptedKey", decryptedKey);
     const directoryId = await GDrive.files.safeCreateFolder({
       name: "bangr backups",
       parents: ["root"],
@@ -77,7 +79,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
       },
       false
     );
-    console.log("file", file);
+    console.log("file", JSON.stringify(file));
     Toast.show({
       type: "success",
       text1: "Account secured",
@@ -108,7 +110,9 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
             Secure on {driveName}
           </Text>
 
-          {step === 0 ? (
+          {loading ? (
+            <ActivityIndicator size="large" className="mt-32" />
+          ) : step === 0 ? (
             <View className="mt-6 mb-24">
               <Text className="my-3 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
                 Bangr will store an encrypted copy of your key on {driveName}.{" "}
@@ -137,12 +141,16 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
                 />
               </View>
             </View>
-          ) : loading ? (
-            <ActivityIndicator size="large" className="mt-32" />
           ) : (
-            <Text className="mt-12 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-              Backup successful !
-            </Text>
+            <View className="mx-auto mt-12 flex-row items-center">
+              <Image
+                className="h-6 w-6"
+                source={require("../../../assets/green_check.png")}
+              />
+              <Text className="ml-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
+                Backup successful !
+              </Text>
+            </View>
           )}
         </View>
 
