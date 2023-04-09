@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   useColorScheme,
   TouchableWithoutFeedback,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import SelectTokenButton from "../../components/SelectTokenButton";
@@ -33,15 +34,23 @@ import { Placeholder, PlaceholderLine, Shine } from "rn-placeholder";
 import useSwapStore from "../../state/swap";
 import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Haptics from "expo-haptics";
+import { MultichainToken } from "../../types/types";
 
 type ButtonStatus = {
   disabled: boolean;
   text: string;
 };
 
-const Swap = ({ swiper }: { swiper: any }) => {
+const Swap = ({
+  swiper,
+  updatedToken,
+  tokenToUpdate,
+}: {
+  swiper: any;
+  updatedToken: MultichainToken | undefined;
+  tokenToUpdate: string | undefined;
+}) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -63,6 +72,26 @@ const Swap = ({ swiper }: { swiper: any }) => {
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    if (updatedToken && tokenToUpdate) {
+      if (
+        tokenToUpdate === "srcToken" &&
+        updatedToken.symbol === dstToken?.symbol
+      ) {
+        flip();
+        return;
+      }
+      if (
+        tokenToUpdate === "dstToken" &&
+        updatedToken.symbol === srcToken?.symbol
+      ) {
+        flip();
+        return;
+      }
+      update({ [tokenToUpdate]: updatedToken });
+    }
+  }, [updatedToken, tokenToUpdate]);
 
   useEffect(() => {
     if (!srcToken) {
@@ -141,8 +170,9 @@ const Swap = ({ swiper }: { swiper: any }) => {
       if (dai) srcTokenSave = dai;
     }
     update({
-      amountIn: "",
-      debouncedAmountIn: "",
+      amountIn: quote?.sumOfToAmount
+        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+        : amountIn,
       quote: null,
       calls: null,
       srcToken: dstToken,
@@ -204,7 +234,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
     fetchBalances();
   };
 
-  // test
+  // test swap and then invest
   const swapAndInvest = async () => {
     if (!calls || !wallet || !quote || !smartWalletAddress) return;
     const value = getRelayerValueToSend(quote);
@@ -308,7 +338,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("history");
               swiper.current.scrollBy(-1, true);
             }}
@@ -324,7 +354,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("Invest");
               swiper.current.scrollBy(1, true);
             }}
@@ -341,7 +371,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
         </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
               Swap
             </Text>
             <View className="mx-auto my-3 w-full items-center rounded-xl bg-secondary-light dark:bg-secondary-dark">
@@ -351,7 +381,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
                     <SelectTokenButton
                       tokens={tokens}
                       selectedToken={srcToken}
-                      tokenToUpdate={"Swap:srcToken"}
+                      tokenToUpdate={"srcToken"}
                     />
                   )}
                   <Text className="mt-2 mb-1 text-typo-light dark:text-typo-dark">
@@ -411,7 +441,7 @@ const Swap = ({ swiper }: { swiper: any }) => {
                         (t) => !["ETH", "MATIC"].includes(t.symbol)
                       )} // quite dirty
                       selectedToken={dstToken}
-                      tokenToUpdate={"Swap:dstToken"}
+                      tokenToUpdate={"dstToken"}
                     />
                   )}
                   <View className="my-2">
@@ -485,13 +515,13 @@ const Swap = ({ swiper }: { swiper: any }) => {
               </TouchableHighlight>
             </View>
 
-            <View className="flex-row justify-evenly">
-              <ActionButton
-                text={buttonStatus().text}
-                disabled={buttonStatus().disabled}
-                action={swap}
-              />
-            </View>
+            <ActionButton
+              text={buttonStatus().text}
+              rounded
+              bold
+              disabled={buttonStatus().disabled}
+              action={swap}
+            />
           </>
         </TouchableWithoutFeedback>
       </View>

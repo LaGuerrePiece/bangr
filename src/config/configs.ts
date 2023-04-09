@@ -65,7 +65,7 @@ export const forceOnboarding = false; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins
 
-export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
+export const skipBiometrics = true; // skips the need for biometrics. Never push true to prod !
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone
@@ -88,6 +88,6 @@ export const EXAMPLE_WALLET_ADDRESS =
 
 export const PAYMASTER_ADDRESS = "0xA5798D2F2618a24e017fc3631867a20a3fE8827b";
 
-export const REFERENCE_CHAIN = 42161; // Arbitrum: reference chain used when a chain is needed
+export const REFERENCE_CHAIN = 137; // Polygon: reference chain used when a chain is needed
 
 export const FEE_PER_CALL = 0.025; // Fee taken per call in dollars to pay gas

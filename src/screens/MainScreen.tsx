@@ -1,38 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import {
-  View,
-  Image,
-  TouchableHighlight,
-  TouchableOpacity,
-  StatusBar,
-  SafeAreaView,
-  Text,
-  Appearance,
-  Button,
-} from "react-native";
+import { useEffect, useRef } from "react";
+import { View, Appearance } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Invest from "./home/Invest";
 import Swap from "./home/Swap";
 import Wallet from "./home/Wallet";
-import * as SecureStore from "expo-secure-store";
 import * as Haptics from "expo-haptics";
 import ButtonSwiper from "../components/button-swiper";
 import { colors } from "../config/configs";
 import HistoryScreen from "./HistoryScreen";
 import Settings from "./home/Settings";
 
-const MainScreen = ({ navigation }: { navigation: any }) => {
+const MainScreen = ({ navigation, route }: { navigation: any; route: any }) => {
   const insets = useSafeAreaInsets();
   const swiper = useRef(null);
-  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-      gestureEnabled: false,
-    });
-  });
+  const colorScheme = Appearance.getColorScheme();
 
   const dot = (
     <View
@@ -88,11 +69,15 @@ const MainScreen = ({ navigation }: { navigation: any }) => {
       dot={dot}
       activeDot={activeDot}
       onMomentumScrollEnd={() => {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       }}
     >
       <HistoryScreen swiper={swiper} />
-      <Swap swiper={swiper} />
+      <Swap
+        swiper={swiper}
+        updatedToken={route.params?.updatedToken}
+        tokenToUpdate={route.params?.tokenToUpdate}
+      />
       <Wallet swiper={swiper} />
       <Invest swiper={swiper} />
       <Settings swiper={swiper} />

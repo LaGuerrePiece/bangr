@@ -8,7 +8,6 @@ import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
-import * as Linking from "expo-linking";
 import "react-native-url-polyfill/auto";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
@@ -47,7 +46,6 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const colorScheme = useColorScheme();
-  const { handleURLCallback } = useStripe();
   const [initialRouteName, setInitialRouteName] = useState("Login");
   const [fontsLoaded] = useFonts({
     Inter: require("./assets/fonts/Inter/Inter-Regular.otf"),
@@ -74,37 +72,6 @@ const App = () => {
   useEffect(() => {
     checkifOnboardingNeeded();
   }, []);
-
-  // Handle getting out for 2FA and returning on ios
-  const handleDeepLink = useCallback(
-    async (url: string | null) => {
-      if (url && Platform.OS === "ios") {
-        const stripeHandled = await handleURLCallback(url);
-        if (stripeHandled) {
-          console.log("Stripe handled the URL back to the right screen");
-        }
-      }
-    },
-    [handleURLCallback]
-  );
-
-  useEffect(() => {
-    const getUrlAsync = async () => {
-      const initialUrl = await Linking.getInitialURL();
-      handleDeepLink(initialUrl);
-    };
-
-    getUrlAsync();
-
-    const deepLinkListener = Linking.addEventListener(
-      "url",
-      (event: { url: string }) => {
-        handleDeepLink(event.url);
-      }
-    );
-
-    return () => deepLinkListener.remove();
-  }, [handleDeepLink]);
 
   if (!fontsLoaded) {
     return null;
@@ -134,7 +101,11 @@ const App = () => {
             component={ChoosePasswordScreen}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="Wallet"
+            component={MainScreen}
+            options={{ gestureEnabled: false }}
+          />
           <Stack.Screen
             name="VaultInfoScreen"
             component={VaultInfoScreen}

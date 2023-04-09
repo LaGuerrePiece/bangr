@@ -20,7 +20,6 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
-  const colorScheme = useColorScheme();
   const { login } = useUserStore((state) => ({
     login: state.login,
   }));
@@ -82,8 +81,8 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
   }, []);
 
   return (
-    <SafeAreaView className="mx-auto h-full w-11/12 justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mt-10">
+    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto mt-10 w-11/12">
         <View className="flex-row">
           <Image
             className="h-6 w-6"

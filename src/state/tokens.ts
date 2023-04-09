@@ -10,12 +10,19 @@ interface BalanceState {
   addBalances: (balances: Balance[]) => void;
   addPrices: (prices: Price[]) => void;
   fetchTokensStatic: () => void;
+  getToken: (symbol: string) => MultichainToken | undefined;
   clear: () => void;
 }
 
 const useTokensStore = create<BalanceState>()(
   devtools((set, get) => ({
     tokens: undefined,
+
+    getToken: (symbol: string) => {
+      const { tokens } = get();
+      if (!tokens) return undefined;
+      return tokens.find((token) => token.symbol === symbol);
+    },
 
     fetchTokensStatic: async () => {
       try {

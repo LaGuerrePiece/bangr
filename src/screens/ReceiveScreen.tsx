@@ -13,17 +13,13 @@ import useUserStore from "../state/user";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { toastConfig } from "../components/toasts";
+import { getChain } from "../utils/utils";
 
 const ReceiveScreen = () => {
   const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const showToast = (text1: string, text2: string) => {
     Toast.show({
@@ -58,7 +54,7 @@ const ReceiveScreen = () => {
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
+        <View className="w-11/12 flex-row justify-end">
           <XMarkIcon
             size={36}
             color={
@@ -67,12 +63,12 @@ const ReceiveScreen = () => {
           />
         </View>
       </TouchableWithoutFeedback>
-      <Text className="text-5xl font-bold text-typo-light dark:text-typo-dark">
+      <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
         Receive
       </Text>
 
       {smartWalletAddress && (
-        <View className="mx-auto mt-4 mb-2 w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
+        <View className="mx-auto w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
           <QRCode
             value={smartWalletAddress}
             // logo={{ uri: base64Icon }}
@@ -127,14 +123,31 @@ const ReceiveScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          {/* <ActionButton text="Share" disabled={false} action={onShare} /> */}
-          <Text className="text-s mt-4 text-center font-bold text-typo2-light dark:text-typo2-dark">
-            Arbitrum, Optimism and Polygon
+          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+            Send funds on any of the following networks:
+          </Text>
+          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+            <View className="flex-row">
+              <Image className="h-7 w-7" source={getChain(10).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Optimism,{" "}
+              </Text>
+              <Image className="h-7 w-7" source={getChain(42161).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Arbitrum,{" "}
+              </Text>
+              <Image className="h-7 w-7" source={getChain(137).logo} />
+              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+                Polygon
+              </Text>
+            </View>
           </Text>
           <View className="mt-8 flex-row justify-between">
             <ActionButton
-              text="Add funds"
+              text="Buy crypto"
               rounded
+              bold
+              additionalCss={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp" as never);
               }}

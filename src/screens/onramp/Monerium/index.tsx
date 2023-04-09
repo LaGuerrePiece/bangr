@@ -224,7 +224,11 @@ const MoneriumScreen = ({ navigation }: { navigation: any }) => {
           text="Next"
           bold
           rounded
-          disabled={!webWiewUri}
+          disabled={
+            implementationAddress === ethers.constants.AddressZero ||
+            implementationAddress === oldImplementationAddress ||
+            !webWiewUri
+          }
           action={() =>
             navigation.navigate("MoneriumWebview", {
               webWiewUri,
