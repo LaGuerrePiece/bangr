@@ -16,12 +16,12 @@ import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import useCurrencyStore from "../../state/currency";
+import useSettingsStore from "../../state/settings";
+import RNPickerSelect from "react-native-picker-select";
 
 const Settings = ({ swiper }: { swiper: any }) => {
-  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
-  const navigation = useNavigation();
-  const [currency, setCurrency] = useCurrencyStore((state) => [
+  const colorScheme = Appearance.getColorScheme();
+  const [currency, setCurrency] = useSettingsStore((state) => [
     state.currency,
     state.setCurrency,
   ]);
@@ -51,14 +51,17 @@ const Settings = ({ swiper }: { swiper: any }) => {
         <Text className="mt-2 text-typo-light dark:text-typo-dark">
           Reference currency
         </Text>
-        {/* <RNPickerSelect
-        onValueChange={(value) => console.log(value)}
-        items={[
-          { label: "Euro", value: "Euro" },
-          { label: "Dollar", value: "Dollar" },
-        ]}
-        value={currency}
-      /> */}
+        <RNPickerSelect
+          onValueChange={(value: any) => {
+            console.log(value);
+            setCurrency(value);
+          }}
+          items={[
+            { label: "Euro", value: "Euro" },
+            { label: "Dollar", value: "Dollar" },
+          ]}
+          value={currency}
+        />
       </View>
     </SafeAreaView>
   );

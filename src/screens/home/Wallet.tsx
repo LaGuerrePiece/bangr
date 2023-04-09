@@ -21,7 +21,7 @@ import * as Haptics from "expo-haptics";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
-import useCurrencyStore from "../../state/currency";
+import useSettingsStore from "../../state/settings";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
@@ -30,7 +30,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
-  const currency = useCurrencyStore((state) => state.currency);
+  const currency = useSettingsStore((state) => state.currency);
   const [refreshing, setRefreshing] = useState(false);
 
   const onRefresh = useCallback(async () => {
