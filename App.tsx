@@ -30,7 +30,6 @@ import MainScreen from "./src/screens/MainScreen";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
-import { useStripe } from "@stripe/stripe-react-native";
 
 import { Platform } from "react-native";
 import {

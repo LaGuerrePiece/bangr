@@ -20,6 +20,7 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
+  const colorScheme = useColorScheme();
   const { login } = useUserStore((state) => ({
     login: state.login,
   }));
@@ -81,59 +82,61 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
   }, []);
 
   return (
-    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-10 w-11/12">
-        <View className="flex-row">
-          <Image
-            className="h-6 w-6"
-            source={
-              colorScheme === "dark"
-                ? require("../../../assets/newlogo.png")
-                : require("../../../assets/newlogo_black.png")
-            }
-          />
-          <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
+    <SafeAreaView className="h-full justify-between bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto w-11/12">
+        <View className="mt-10">
+          <View className="flex-row">
+            <Image
+              className="h-6 w-6"
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/newlogo.png")
+                  : require("../../../assets/newlogo_black.png")
+              }
+            />
+            <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+              Welcome to Bangr
+            </Text>
+          </View>
+          <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+            {heroSentence}
           </Text>
         </View>
-        <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-          {heroSentence}
-        </Text>
-      </View>
-      <Image
-        className="mx-auto h-64 w-64"
-        source={require("../../../assets/figma/processor.png")}
-      />
-
-      <View className="mb-8">
-        <Animated.View style={{ opacity: fadeAnim }}>
-          <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
-            Your account is now ready
-          </Text>
-          <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-            Before we take you to it, let's secure it on{" "}
-            {Platform.OS === "ios" ? "iCloud" : "Google Drive"} !
-          </Text>
-        </Animated.View>
-        <ActionButton
-          text={"Secure my account"}
-          spinner={intro}
-          bold
-          rounded
-          action={() => {
-            navigation.navigate("ChoosePassword");
-          }}
+        <Image
+          className="mx-auto h-64 w-64"
+          source={require("../../../assets/figma/processor.png")}
         />
-        <TouchableOpacity
-          className={intro ? "opacity-0" : ""}
-          onPress={() => {
-            navigation.navigate("Wallet");
-          }}
-        >
-          <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
-            I don't want to secure my account now
-          </Text>
-        </TouchableOpacity>
+
+        <View className="mb-8">
+          <Animated.View style={{ opacity: fadeAnim }}>
+            <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
+              Your account is now ready
+            </Text>
+            <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
+              Before we take you to it, let's secure it on{" "}
+              {Platform.OS === "ios" ? "iCloud" : "Google Drive"} !
+            </Text>
+          </Animated.View>
+          <ActionButton
+            text={"Secure my account"}
+            spinner={intro}
+            bold
+            rounded
+            action={() => {
+              navigation.navigate("ChoosePassword");
+            }}
+          />
+          <TouchableOpacity
+            className={intro ? "opacity-0" : ""}
+            onPress={() => {
+              navigation.navigate("Wallet");
+            }}
+          >
+            <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
+              I don't want to secure my account now
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );
