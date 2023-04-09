@@ -61,7 +61,7 @@ export const chainData = [
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export const forceOnboarding = true; // to see onboarding
+export const forceOnboarding = false; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins
 
