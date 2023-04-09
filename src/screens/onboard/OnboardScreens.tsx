@@ -32,8 +32,8 @@ function OnboardScreenTemplate({
 }) {
   const colorScheme = useColorScheme();
   return (
-    <SafeAreaView className="h-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto w-11/12">
+    <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto h-full w-11/12 justify-between">
         <View className="mt-10">
           <View className="flex-row">
             <Image

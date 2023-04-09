@@ -15,7 +15,7 @@ import * as SecureStore from "expo-secure-store";
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { decrypt, encrypt } from "./encrypt";
+import { decrypt } from "../../utils/encrypt";
 import * as FileSystem from "expo-file-system";
 import CryptoES from "crypto-es";
 import { ethers } from "ethers";
@@ -32,7 +32,8 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export const googleConfig = {
-  androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  androidClientId:
+    "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
   // androidClientId:
   //   "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
   // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
@@ -45,9 +46,9 @@ export const googleConfig = {
   scopes: ["https://www.googleapis.com/auth/drive.file"],
   // redirectUri: "https://auth.expo.io/@ndlz/poche",
   // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
-  redirectUrl : makeRedirectUri({
-    path: '/auth/callback',
-    useProxy : false,
+  redirectUrl: makeRedirectUri({
+    path: "/auth/callback",
+    useProxy: false,
   }),
   useProxy: false,
 
@@ -101,10 +102,8 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [loading, setLoading] = useState(false);
 
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
-  
 
   const connectDrive = async () => {
-  
     await promptAsync();
     // const token = await googleSignIn();
     // console.log("token", token);
@@ -163,6 +162,10 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       secureSave("privKey", decrypted);
       login(new ethers.Wallet(decrypted));
       await FileSystem.deleteAsync(fileContentUri);
+      Toast.show({
+        type: "success",
+        text1: "Account recovered !",
+      });
       navigation.navigate("Wallet");
     } catch (e) {
       console.log(e);
@@ -217,7 +220,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
             </Text>
           </View>
         ) : (
-          <View>
+          <View className="mb-24">
             <View className="my-5 mx-auto flex-row items-center">
               <Image
                 className="h-6 w-6"

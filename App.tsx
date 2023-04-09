@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
@@ -31,7 +31,6 @@ import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
 
-import { Platform } from "react-native";
 import {
   FirstScreen,
   FourthScreen,
@@ -64,7 +63,7 @@ const App = () => {
   const checkifOnboardingNeeded = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
     if (!privKey || forceOnboarding) {
-      setInitialRouteName("Welcome");
+      setInitialRouteName("FirstScreen");
     }
   };
 
