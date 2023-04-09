@@ -26,9 +26,9 @@ const Settings = ({ swiper }: { swiper: any }) => {
     state.setCurrency,
   ]);
   return (
-    <SafeAreaView className="mt-4 w-11/12 items-center">
-      <View className="w-full flex-row ">
-        <View className="mb-2 ml-2 w-full">
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
+      <View className="mx-auto mt-4 w-11/12 items-center">
+        <View className="w-full">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -45,10 +45,13 @@ const Settings = ({ swiper }: { swiper: any }) => {
             />
           </TouchableOpacity>
         </View>
-      </View>
-      <Text className="text-2xl font-bold">Settings</Text>
-      <Text className="mt-2">Reference currency</Text>
-      {/* <RNPickerSelect
+        <Text className="text-2xl font-bold text-typo-light dark:text-typo-dark">
+          Settings
+        </Text>
+        <Text className="mt-2 text-typo-light dark:text-typo-dark">
+          Reference currency
+        </Text>
+        {/* <RNPickerSelect
         onValueChange={(value) => console.log(value)}
         items={[
           { label: "Euro", value: "Euro" },
@@ -56,6 +59,7 @@ const Settings = ({ swiper }: { swiper: any }) => {
         ]}
         value={currency}
       /> */}
+      </View>
     </SafeAreaView>
   );
 };
