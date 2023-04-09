@@ -638,7 +638,7 @@ export default class extends Component {
    * @return {object} react-dom
    */
   renderPagination = () => {
-    console.log("renderPagination");
+    // console.log("renderPagination");
     // By default, dots only show when `total` >= 2
     if (this.state.total <= 1) return null;
 

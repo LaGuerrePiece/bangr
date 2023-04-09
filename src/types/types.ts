@@ -27,6 +27,8 @@ export interface Token {
 
 // Most common type
 export type MultichainToken = Omit<Token, "chainId" | "address"> & {
+  color?: string;
+  vaultToken?: boolean;
   chains: {
     chainId: ChainId;
     address: string;
@@ -35,7 +37,6 @@ export type MultichainToken = Omit<Token, "chainId" | "address"> & {
     quote?: number;
     priceUSD?: number;
   }[];
-  color?: string;
 };
 
 export type Balance = {
@@ -108,17 +109,34 @@ export enum VaultProtocol {
   ROCKET_POOL = "Rocket Pool",
   GMX = "GMX",
   VELODROME = "Velodrome",
+  HARBOR = "Harbor",
+  JONESDAO = "JonesDAO",
+  ONDO = "FluxFinance",
+  REALT = "RealT",
+}
+
+export enum Volatility {
+  LOW = "Low",
+  MEDIUM = "Medium",
+  HIGH = "High",
+  DEGEN = "Degen",
 }
 
 export interface VaultStatic {
   name: string;
+  uiName: string;
   image: string;
   description: string;
+  longDescription?: string;
   vaultToken?: string;
-  tokens: string[];
+  tokensIn: string[];
+  currency?: string;
+  currencyIcon?: string | { light: string; dark: string };
   protocol: VaultProtocol;
+  volatility?: Volatility;
   status: "active" | "inative" | "preview";
   color?: string;
+  infos?: any;
 }
 
 export interface VaultData extends VaultStatic {

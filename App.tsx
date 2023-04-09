@@ -8,7 +8,6 @@ import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
-import * as Linking from "expo-linking";
 import "react-native-url-polyfill/auto";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
@@ -101,7 +100,11 @@ const App = () => {
             component={ChoosePasswordScreen}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="Wallet"
+            component={MainScreen}
+            options={{ gestureEnabled: false }}
+          />
           <Stack.Screen
             name="VaultInfoScreen"
             component={VaultInfoScreen}

@@ -1,5 +1,5 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -10,7 +10,6 @@ import {
   ActivityIndicator,
   useColorScheme,
 } from "react-native";
-import { XMarkIcon } from "react-native-heroicons/outline";
 import Chart, { Point } from "../components/Chart";
 import { MultichainToken } from "../types/types";
 import { formatUnits, cutDecimals } from "../utils/format";
@@ -69,10 +68,6 @@ const TokenModal = () => {
       console.log("error fetching chart:", error);
     }
   }
-
-  useLayoutEffect(() => {
-    navigation.setOptions({ headerShown: false });
-  });
 
   const swap = () => {
     navigation.navigate("Wallet" as never);

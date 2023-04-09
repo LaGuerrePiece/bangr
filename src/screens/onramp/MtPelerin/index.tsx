@@ -113,8 +113,9 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
         </Text>
         <Text className="mt-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
           The first 500 euros by bank transfer have a 0% fee {"\n\n"}
-          You will have to verify your identity, otherwise your funds will only
-          be delivered after a 7-days withholding period.{"\n\n"}
+          You will have to verify your identity with a selfie, an ID and a proof
+          of address. Otherwise your funds will only be delivered after a 7-days
+          withholding period.{"\n"}
         </Text>
 
         {!walletDeployed ? (
@@ -162,7 +163,7 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
           text="Next"
           bold
           rounded
-          disabled={!supportsMtPelerin}
+          disabled={!walletDeployed || !supportsMtPelerin}
           action={() => navigation.navigate("MtPelerinWebview")}
         />
       </View>
