@@ -21,6 +21,8 @@ import { colors } from "../../config/configs";
 import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
@@ -84,11 +86,40 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
     setStep(1);
   };
 
+  const saveAndShareFile = async (content: string) => {
+    try {
+      // Create a file with sample content
+      const fileName = "bangr.wallet";
+      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
+      await FileSystem.writeAsStringAsync(fileUri, content, {
+        encoding: FileSystem.EncodingType.UTF8,
+      });
+
+      // Check if sharing is available on the device
+      const isAvailable = await Sharing.isAvailableAsync();
+      if (!isAvailable) {
+        alert("Sharing is not available on this device.");
+        return;
+      }
+
+      // Share the file, allowing the user to save it to iCloud Drive
+      await Sharing.shareAsync(fileUri, {
+        mimeType: "text/plain",
+        dialogTitle: "Save the file to iCloud Drive",
+      });
+    } catch (error) {
+      console.error("Error saving and sharing file:", error);
+    }
+  };
+
   const secureAccountICloud = async () => {
     setLoading(true);
 
     const key = (await SecureStore.getItemAsync("privKey")) as string;
     const encryptedKey = await encrypt(key, password);
+
+    // Store in iCloud Drive (user interaction required)
+    await saveAndShareFile(encryptedKey);
 
     // Store in AsyncStorage (which should be backed up by iCloud if configured correctly)
     try {

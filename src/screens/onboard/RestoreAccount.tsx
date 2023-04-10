@@ -25,6 +25,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import { makeRedirectUri } from "expo-auth-session";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as DocumentPicker from "expo-document-picker";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -125,12 +126,37 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     setLoading(false);
   };
 
-  // Get @bangr-backup from AsyncStorage and put it in encryptedKey
+  const readSelectedFile = async () => {
+    try {
+      // Open the document picker and let the user select a file
+      const result = await DocumentPicker.getDocumentAsync();
+      if (result.type === "success") {
+        // Read the contents of the selected file
+        const contents = await FileSystem.readAsStringAsync(result.uri, {
+          encoding: FileSystem.EncodingType.UTF8,
+        });
+        console.log("File contents:", contents);
+        return contents;
+      } else {
+        console.log("No file selected.");
+        return "";
+      }
+    } catch (error) {
+      console.error("Error reading file:", error);
+      return "";
+    }
+  };
+
+  // Get @bangr-backup from AsyncStorage (or file backup) and put it in encryptedKey
   const getICloudBackup = async () => {
-    const backup = await AsyncStorage.getItem("@bangr-backup");
-    setStep(1);
+    // TODO: get backup from iCloud (AsyncStrorage not Drive)
+    // const backup = await AsyncStorage.getItem("@bangr-backup");
     setLoading(true);
-    if (backup) setEncryptedKey(backup);
+    // if (backup) setEncryptedKey(backup);
+    // else {
+    setEncryptedKey(await readSelectedFile());
+    // }
+    setStep(1);
     setLoading(false);
   };
 
