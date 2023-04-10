@@ -777,7 +777,7 @@ export default class extends Component {
             }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/invest.png")}
+                source={require("../../../../assets/invest-menu.png")} 
               ></Image>
               <Text className="text-xs">Invest</Text>
             </TouchableOpacity>
