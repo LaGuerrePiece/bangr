@@ -38,7 +38,7 @@ const FooterElement = ({
   title: string;
   image?: any;
   text: string | undefined;
-  textSize?: number;
+  textSize?: string;
   marginLeft?: number;
 }) => {
   return (
@@ -49,9 +49,7 @@ const FooterElement = ({
       <View className="flex-row items-center">
         {image}
         <Text
-          className={`font-InterSemiBold text-[${
-            textSize ? textSize : 16
-          }px] text-icon-special dark:text-secondary-light`}
+          className={`font-InterSemiBold ${textSize} text-icon-special dark:text-secondary-light`}
         >
           {text}
         </Text>
@@ -135,6 +133,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     }}
                   />
                 }
+                textSize={"text-base"}
               />
               <FooterElement
                 title="Volatility"
@@ -152,13 +151,15 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     }
                   />
                 }
-                textSize={volatility === Volatility.MEDIUM ? 14 : 16}
+                textSize={
+                  volatility === Volatility.MEDIUM ? "text-sm" : "text-base"
+                }
               />
               <FooterElement
                 title="Annual yield"
                 text={`${apy}%`}
                 marginLeft={4}
-                textSize={18}
+                textSize={"text-xl"}
               />
             </View>
             <Image
