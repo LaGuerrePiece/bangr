@@ -38,7 +38,7 @@ const FooterElement = ({
   title: string;
   image?: any;
   text: string | undefined;
-  textSize?: number;
+  textSize?: string;
   marginLeft?: number;
 }) => {
   return (
@@ -49,9 +49,7 @@ const FooterElement = ({
       <View className="flex-row items-center">
         {image}
         <Text
-          className={`font-InterSemiBold text-[${
-            textSize ? textSize : 16
-          }px] text-icon-special dark:text-secondary-light`}
+          className={`font-InterSemiBold ${textSize} text-icon-special dark:text-secondary-light`}
         >
           {text}
         </Text>
@@ -135,6 +133,7 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     }}
                   />
                 }
+                textSize={"text-base"}
               />
               <FooterElement
                 title="Volatility"
@@ -152,13 +151,15 @@ const Vault = ({ vault }: { vault: VaultData }) => {
                     }
                   />
                 }
-                textSize={volatility === Volatility.MEDIUM ? 14 : 16}
+                textSize={
+                  volatility === Volatility.MEDIUM ? "text-sm" : "text-base"
+                }
               />
               <FooterElement
                 title="Annual yield"
                 text={`${apy}%`}
                 marginLeft={4}
-                textSize={18}
+                textSize={"text-xl"}
               />
             </View>
             <Image
@@ -171,33 +172,6 @@ const Vault = ({ vault }: { vault: VaultData }) => {
             />
           </View>
         </View>
-        {/* <View className="mt-2">
-          <Text className="text-typo-light dark:text-typo-dark">
-            Earn up to
-          </Text>
-          <View className="flex-row items-end justify-between">
-            <Text
-              className="mt-2 text-4xl font-bold opacity-100"
-              style={{ color }}
-            >
-              {apy}% <Text className="text-3xl opacity-100">APY</Text>
-            </Text>
-            {vault.status === "preview" ? (
-              <Text className="font-bold text-typo-light dark:text-typo-dark">
-                Coming soon™
-              </Text>
-            ) : (
-              <Image
-                className="h-[16px] w-[24px]"
-                source={
-                  colorScheme === "light"
-                    ? require("../../assets/arrowright.png")
-                    : require("../../assets/arrowrightwhite.png")
-                }
-              />
-            )}
-          </View>
-        </View> */}
       </View>
     </TouchableOpacity>
   );
