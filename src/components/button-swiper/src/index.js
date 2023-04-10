@@ -723,10 +723,14 @@ export default class extends Component {
 
     startImageRotateFunction();
 
+    const colorScheme = Appearance.getColorScheme();
+
+    console.log('colorScheme', colorScheme)
+
     return (
       <View>
         <View className="position-absolute flex-row items-center">
-        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -740,7 +744,7 @@ export default class extends Component {
               <Text className="text-xs">History</Text>
             </TouchableOpacity>
           </View>
-            <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+            <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
@@ -754,7 +758,7 @@ export default class extends Component {
               <Text className="text-xs">Swap</Text>
             </TouchableOpacity>
           </View>
-          <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
             onPress={
               () => {
