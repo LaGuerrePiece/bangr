@@ -172,33 +172,6 @@ const Vault = ({ vault }: { vault: VaultData }) => {
             />
           </View>
         </View>
-        {/* <View className="mt-2">
-          <Text className="text-typo-light dark:text-typo-dark">
-            Earn up to
-          </Text>
-          <View className="flex-row items-end justify-between">
-            <Text
-              className="mt-2 text-4xl font-bold opacity-100"
-              style={{ color }}
-            >
-              {apy}% <Text className="text-3xl opacity-100">APY</Text>
-            </Text>
-            {vault.status === "preview" ? (
-              <Text className="font-bold text-typo-light dark:text-typo-dark">
-                Coming soon™
-              </Text>
-            ) : (
-              <Image
-                className="h-[16px] w-[24px]"
-                source={
-                  colorScheme === "light"
-                    ? require("../../assets/arrowright.png")
-                    : require("../../assets/arrowrightwhite.png")
-                }
-              />
-            )}
-          </View>
-        </View> */}
       </View>
     </TouchableOpacity>
   );
