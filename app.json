@@ -20,7 +20,7 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you.",
-        "RCTAsyncStorageExcludeFromBackup": "NO"
+        "RCTAsyncStorageExcludeFromBackup": false
       },
       "bundleIdentifier": "com.poche.fi"
     },
