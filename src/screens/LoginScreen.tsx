@@ -44,7 +44,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       ).success;
     }
     // handle no biometrics available. For now, just goes to wallet
-    navigation.navigate("Wallet");
+    return true;
   };
 
   const checkPreviousUser = async () => {
