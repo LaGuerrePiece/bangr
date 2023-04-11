@@ -374,7 +374,7 @@ const Swap = ({
             <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
               Swap
             </Text>
-            <View className="mx-auto my-3 w-full items-center rounded-xl bg-secondary-light dark:bg-secondary-dark">
+            <View className="mx-auto my-3 w-full items-center rounded-xl border border-[#4F4F4F] bg-secondary-light dark:bg-secondary-dark">
               <View className="w-full flex-row justify-between p-2">
                 <View className="ml-1 justify-end">
                   {srcToken && tokens && (
@@ -428,10 +428,8 @@ const Swap = ({
               </View>
 
               <View
-                className="h-20 w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t
-            border-typo-dark
+                className="h-20 w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t border-[#4F4F4F]
             bg-secondary-light pt-1
-            dark:border-typo-dark 
             dark:bg-secondary-dark"
               >
                 <View className="ml-1 p-2">
