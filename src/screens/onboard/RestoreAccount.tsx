@@ -232,7 +232,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
             <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
               Enter your password here :
             </Text>
-            <View className="mx-auto w-2/3 rounded-md border bg-primary-light p-1 dark:bg-primary-dark">
+            <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
               <TextInput
                 placeholderTextColor={colors.typo2.light}
                 className="text-xl font-semibold text-typo-light dark:text-typo-dark"
