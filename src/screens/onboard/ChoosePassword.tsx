@@ -21,9 +21,9 @@ import { colors } from "../../config/configs";
 import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
-WebBrowser.maybeCompleteAuthSession();
-
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
+
+WebBrowser.maybeCompleteAuthSession();
 
 export default function ChoosePassword({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();

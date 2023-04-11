@@ -41,6 +41,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         })
       ).success;
     }
+
     // handle no biometrics available. For now, just returns true
     return true;
   };

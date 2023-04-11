@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   Image,
   TextInput,
   useColorScheme,
   ActivityIndicator,
+  Platform,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
@@ -17,15 +17,12 @@ import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
 import { decrypt } from "../../utils/encrypt";
 import * as FileSystem from "expo-file-system";
-import CryptoES from "crypto-es";
 import { ethers } from "ethers";
 import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import { makeRedirectUri, startAsync } from "expo-auth-session";
 import { supabase, supabaseUrl } from "./supabase";
-
-WebBrowser.maybeCompleteAuthSession();
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -54,6 +51,8 @@ export const googleConfig = {
 
   // usePKCE: true,
 };
+
+const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
 // export const googleSignIn = async () => {
 //   // This will create a redirectUri
@@ -256,7 +255,9 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       <View className="mx-auto mb-8 w-11/12">
         <ActionButton
           text={
-            encryptedKey === "" ? "Connect to my Drive" : "Restore my account"
+            encryptedKey === ""
+              ? `Connect to ${driveName}`
+              : "Restore my account"
           }
           bold
           rounded

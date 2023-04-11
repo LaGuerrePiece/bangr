@@ -3,7 +3,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
 import { useCallback, useEffect, useState } from "react";
-import { Appearance, StatusBar, View, useColorScheme } from "react-native";
+import {
+  Appearance,
+  StatusBar,
+  View,
+  useColorScheme,
+  Platform,
+} from "react-native";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -30,7 +36,8 @@ import MainScreen from "./src/screens/MainScreen";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
-
+import ChoosePasswordICloud from "./src/screens/onboard/ChoosePasswordICloud";
+import RestoreAccountICloud from "./src/screens/onboard/RestoreAccountICloud";
 import {
   FirstScreen,
   FourthScreen,
@@ -92,11 +99,19 @@ const App = () => {
           <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
           <Stack.Screen
             name="RestoreAccount"
-            component={RestoreAccountScreen}
+            component={
+              Platform.OS === "android"
+                ? RestoreAccountScreen
+                : RestoreAccountICloud
+            }
           />
           <Stack.Screen
             name="ChoosePassword"
-            component={ChoosePasswordScreen}
+            component={
+              Platform.OS === "android"
+                ? ChoosePasswordScreen
+                : ChoosePasswordICloud
+            }
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
