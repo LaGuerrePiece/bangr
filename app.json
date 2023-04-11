@@ -6,7 +6,7 @@
     "scheme": "bangr",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,14 +22,14 @@
         "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you.",
         "RCTAsyncStorageExcludeFromBackup": false
       },
-      "bundleIdentifier": "com.poche.fi"
+      "bundleIdentifier": "com.bangr.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.poche.fi",
+      "package": "com.bangr.app",
       "versionCode": 2
     },
     "web": {

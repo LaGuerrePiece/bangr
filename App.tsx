@@ -1,4 +1,4 @@
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./src/components/toasts";
@@ -14,7 +14,6 @@ import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import * as SecureStore from "expo-secure-store";
-import * as Linking from "expo-linking";
 import "react-native-url-polyfill/auto";
 import VaultInfoScreen from "./src/screens/VaultInfoScreen";
 import VaultDepositScreen from "./src/screens/VaultDepositScreen";
@@ -52,7 +51,6 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const colorScheme = useColorScheme();
-
   const [initialRouteName, setInitialRouteName] = useState("Login");
   const [fontsLoaded] = useFonts({
     Inter: require("./assets/fonts/Inter/Inter-Regular.otf"),
@@ -72,7 +70,7 @@ const App = () => {
   const checkifOnboardingNeeded = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
     if (!privKey || forceOnboarding) {
-      setInitialRouteName("Welcome");
+      setInitialRouteName("FirstScreen");
     }
   };
 
@@ -116,7 +114,11 @@ const App = () => {
             }
           />
           <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="Wallet" component={MainScreen} />
+          <Stack.Screen
+            name="Wallet"
+            component={MainScreen}
+            options={{ gestureEnabled: false }}
+          />
           <Stack.Screen
             name="VaultInfoScreen"
             component={VaultInfoScreen}

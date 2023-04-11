@@ -17,12 +17,12 @@ const Invest = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
 
   return (
-    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               swiper.current.scrollBy(-1, true);
             }}
           >
@@ -38,8 +38,8 @@ const Invest = ({ swiper }: { swiper: any }) => {
         </View>
       </View>
       <ScrollView>
-        <View className="mx-auto w-11/12">
-          <Text className="text-center text-5xl font-bold text-typo-light dark:text-typo-dark">
+        <View className="mx-auto w-[91%]">
+          <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
             Invest
           </Text>
 
@@ -50,7 +50,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
                   vault.status === "active" || vault.status === "preview"
               )
               .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="mb-8 w-full rounded-lg bg-secondary-light p-2 pr-3 dark:bg-secondary-dark">
+          <View className="mb-8 w-full rounded-lg border border-[#4F4F4F] bg-[#EFEEEC] p-2 pr-3 dark:bg-secondary-dark">
             <TouchableOpacity
               onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
             >

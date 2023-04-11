@@ -132,7 +132,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
   return (
     <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
       <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="mx-auto w-11/12">
+        <View className="w-11/12 flex-row justify-end">
           <XMarkIcon
             size={36}
             color={
@@ -149,12 +149,22 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         className="w-full"
       >
         <RampOption
-          logo={require("../../../assets/onramps/transak_logo.png")}
-          description={"Cards, banks and international options."}
-          name={"Transak"}
-          screen={"Transak"}
+          logo={require("../../../assets/onramps/coinbase_logo.png")}
+          description={"Already have an account in a exchange ?"}
+          name={"Exchange"}
+          screen={"Exchange"}
           instant={true}
-          fees={"1-3.5%"}
+          fees={"0-3%"}
+          methods={["card", "bank"]}
+          comingSoon={false}
+        />
+        <RampOption
+          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
+          description={"0% fee on first bank transfer up to 500€."}
+          name={"Mt Pelerin"}
+          screen={"MtPelerin"}
+          instant={true}
+          fees={"0-2.5%"}
           methods={["card", "bank"]}
           comingSoon={false}
         />
@@ -169,22 +179,12 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           comingSoon={false}
         />
         <RampOption
-          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
-          description={"0% fee on first bank transfer up to 500€."}
-          name={"Mt Pelerin"}
-          screen={"MtPelerin"}
+          logo={require("../../../assets/onramps/transak_logo.png")}
+          description={"Cards, banks and international options."}
+          name={"Transak"}
+          screen={"Transak"}
           instant={true}
-          fees={"0-2.5%"}
-          methods={["card", "bank"]}
-          comingSoon={false}
-        />
-        <RampOption
-          logo={require("../../../assets/onramps/coinbase_logo.png")}
-          description={"Already have an account in a exchange ?"}
-          name={"Exchange"}
-          screen={"Exchange"}
-          instant={true}
-          fees={"0-3%"}
+          fees={"1-3.5%"}
           methods={["card", "bank"]}
           comingSoon={false}
         />

@@ -32,55 +32,57 @@ function OnboardScreenTemplate({
 }) {
   const colorScheme = useColorScheme();
   return (
-    <SafeAreaView className="mx-auto h-full w-11/12 justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mt-10">
-        <View className="flex-row">
-          <Image
-            className="h-6 w-6"
-            source={
-              colorScheme === "dark"
-                ? require("../../../assets/newlogo.png")
-                : require("../../../assets/newlogo_black.png")
-            }
-          />
-          <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
-          </Text>
-        </View>
-        <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-          {title}
-        </Text>
-      </View>
-
-      <Image className="mx-auto h-64 w-64" source={image} />
-
-      <View className="mb-8">
-        <View>
-          <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
-            {text1}
-          </Text>
-          <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-            {text2}
-          </Text>
-        </View>
-        <ActionButton
-          text={ButtonText}
-          bold
-          rounded
-          action={() => navigation.navigate(nextPage)}
-        />
-        {restoreAccountOption ? (
-          <TouchableOpacity
-            onPress={() => {
-              console.log("aze");
-              navigation.navigate("RestoreAccount");
-            }}
-          >
-            <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
-              Restore a previous account
+    <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto h-full w-11/12 justify-between">
+        <View className="mt-10">
+          <View className="flex-row">
+            <Image
+              className="h-6 w-6"
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/newlogo.png")
+                  : require("../../../assets/newlogo_black.png")
+              }
+            />
+            <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+              Welcome to Bangr
             </Text>
-          </TouchableOpacity>
-        ) : null}
+          </View>
+          <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+            {title}
+          </Text>
+        </View>
+
+        <Image className="mx-auto h-64 w-64" source={image} />
+
+        <View className="mb-8">
+          <View>
+            <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
+              {text1}
+            </Text>
+            <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
+              {text2}
+            </Text>
+          </View>
+          <ActionButton
+            text={ButtonText}
+            bold
+            rounded
+            action={() => navigation.navigate(nextPage)}
+          />
+          {restoreAccountOption ? (
+            <TouchableOpacity
+              onPress={() => {
+                console.log("aze");
+                navigation.navigate("RestoreAccount");
+              }}
+            >
+              <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
+                Restore a previous account
+              </Text>
+            </TouchableOpacity>
+          ) : null}
+        </View>
       </View>
     </SafeAreaView>
   );

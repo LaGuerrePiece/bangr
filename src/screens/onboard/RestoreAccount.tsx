@@ -15,22 +15,24 @@ import * as SecureStore from "expo-secure-store";
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { decrypt } from "./encrypt";
+import { decrypt } from "../../utils/encrypt";
 import * as FileSystem from "expo-file-system";
 import { ethers } from "ethers";
 import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
-import { makeRedirectUri } from "expo-auth-session";
+import { makeRedirectUri, startAsync } from "expo-auth-session";
+import { supabase, supabaseUrl } from "./supabase";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
 
 export const googleConfig = {
-  // androidClientId: "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
   androidClientId:
-    "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
+    "12611559241-mq3b4m9io2kv41v8drjuebtij9ijip4i.apps.googleusercontent.com",
+  // androidClientId:
+  //   "12611559241-4112eljndg8c4suunqabmr0catb6m4ed.apps.googleusercontent.com",
   // iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
   // clientId:
   // "12611559241-beblq19nsim1rbt9rq9tvuh6joq35nj4.apps.googleusercontent.com",
@@ -43,16 +45,50 @@ export const googleConfig = {
   // redirectUri: "https://auth.expo.io/@ndlz/poche-app",
   redirectUrl: makeRedirectUri({
     path: "/auth/callback",
-    useProxy: true,
+    useProxy: false,
   }),
-  useProxy: true,
+  useProxy: false,
 
   // usePKCE: true,
 };
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
-WebBrowser.maybeCompleteAuthSession();
+// export const googleSignIn = async () => {
+//   // This will create a redirectUri
+//   // This should be the URL you added to "Redirect URLs" in Supabase URL Configuration
+//   // If they are different add the value of redirectUrl to your Supabase Redirect URLs
+//   const redirectUrl = makeRedirectUri({
+//     path: '/auth/callback',
+//   });
+//   // const redirectUrl = "https://gfdakuvgcmtzsngfshnb.supabase.co/auth/v1/callback";
+
+//   console.log("redirectUrl", redirectUrl);
+
+//   // const redirectUrl = "com.poche.fi://auth";
+
+//   // authUrl: https://{YOUR_PROJECT_REFERENCE_ID}.supabase.co
+//   // returnURL: the redirectUrl you created above.
+//   const authResponse = await startAsync({
+//     authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&https://www.googleapis.com/auth/drive.file&redirect_to=${redirectUrl}`,
+//     returnUrl: redirectUrl,
+//   });
+
+//   // If the user successfully signs in
+//   // we will have access to an accessToken and an refreshToken
+//   // and then we'll use setSession (https://supabase.com/docs/reference/javascript/auth-setsession)
+//   // to create a Supabase-session using these token
+//   if (authResponse.type === 'success') {
+//     return authResponse.params.access_token;
+//     // supabase.auth.setSession({
+//     //   access_token: authResponse.params.access_token,
+//     //   refresh_token: authResponse.params.refresh_token,
+//     // });
+//   }
+//   else {
+//     console.log('error', authResponse);
+//   }
+// };
 
 export default function RestoreAccount({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -64,19 +100,14 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
+  const [, , promptAsync] = Google.useAuthRequest(googleConfig);
 
   const connectDrive = async () => {
-    console.log(
-      makeRedirectUri({
-        path: "/auth/callback",
-        preferLocalhost: true,
-      })
-    );
-    await promptAsync();
-    setStep(1);
+    // const token = await googleSignIn();
+    // console.log("token", token);
     setLoading(true);
-    if (response?.type !== "success") {
+    const res = await promptAsync();
+    if (res?.type !== "success") {
       Toast.show({
         type: "error",
         text1: "Authorization failed",
@@ -85,7 +116,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       setLoading(false);
       return;
     }
-    const token = response.authentication!.accessToken;
+    const token = res.authentication!.accessToken;
     await GDrive.setAccessToken(token);
     await GDrive.init();
     const initialized = await GDrive.isInitialized();
@@ -94,6 +125,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       setLoading(false);
       return;
     }
+
     const directoryId = await GDrive.files.safeCreateFolder({
       name: "bangr backups",
       parents: ["root"],
@@ -120,6 +152,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     }
     setEncryptedKey(content);
     setLoading(false);
+    setStep(1);
   };
 
   const restoreAccount = async () => {
@@ -127,8 +160,11 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
       login(new ethers.Wallet(decrypted));
-      if (driveName === "Google Drive")
-        await FileSystem.deleteAsync(fileContentUri);
+      await FileSystem.deleteAsync(fileContentUri);
+      Toast.show({
+        type: "success",
+        text1: "Account recovered !",
+      });
       navigation.navigate("Wallet");
     } catch (e) {
       console.log(e);
@@ -160,13 +196,13 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
           Restore a previous account from your Drive
         </Text>
 
-        {step === 0 ? (
+        {loading ? (
+          <ActivityIndicator size="large" className="mt-32" />
+        ) : step === 0 ? (
           <Image
             className="mx-auto mt-16 h-80 w-80"
             source={require("../../../assets/figma/security.png")}
           />
-        ) : loading ? (
-          <ActivityIndicator size="large" className="mt-32" />
         ) : encryptedKey === "" ? (
           <View>
             <View className="my-5 mx-auto flex-row items-center">
@@ -183,7 +219,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
             </Text>
           </View>
         ) : (
-          <View>
+          <View className="mb-24">
             <View className="my-5 mx-auto flex-row items-center">
               <Image
                 className="h-6 w-6"
