@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  TextInput,
   useColorScheme,
 } from "react-native";
 import { Buffer } from "buffer";
@@ -42,17 +41,18 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
         })
       ).success;
     }
+
     // handle no biometrics available. For now, just returns true
     return true;
   };
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
+    // const privKey = null;
     if (!privKey) {
-      navigation.navigate("Welcome");
+      navigation.navigate("FirstScreen");
       return;
     }
-
     if (await loginThroughBiometrics()) {
       console.log("azeaze");
       login(new Wallet(privKey));

@@ -5,15 +5,14 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  TextInput,
   useColorScheme,
   Animated,
+  Platform,
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
 import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
-import useTokensStore from "../../state/tokens";
 import "react-native-get-random-values";
 
 const secureSave = async (key: string, value: string) => {
@@ -21,18 +20,15 @@ const secureSave = async (key: string, value: string) => {
 };
 
 export default function CreateAccount({ navigation }: { navigation: any }) {
+  const colorScheme = useColorScheme();
   const { login } = useUserStore((state) => ({
     login: state.login,
   }));
-  const colorScheme = useColorScheme();
-
-  const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
 
   const [heroSentence, setHeroSentence] = useState(
     "Generating your account..."
   );
   const [intro, setIntro] = useState(true);
-
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   const createAccount = async () => {
@@ -53,7 +49,6 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     createAccount();
-    fetchTokensStatic();
   }, []);
 
   useEffect(() => {
@@ -86,63 +81,62 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
     }, 3000);
   }, []);
 
-  const secureAccount = () => {
-    // Secure Account
-    navigation.navigate("Wallet");
-  };
-
   return (
-    <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-10 w-11/12">
-        <View className="flex-row">
-          <Image
-            className="h-6 w-6"
-            source={
-              colorScheme === "dark"
-                ? require("../../../assets/newlogo.png")
-                : require("../../../assets/newlogo_black.png")
-            }
-          />
-          <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
+    <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto h-full w-11/12 justify-between">
+        <View className="mt-10">
+          <View className="flex-row">
+            <Image
+              className="h-6 w-6"
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/newlogo.png")
+                  : require("../../../assets/newlogo_black.png")
+              }
+            />
+            <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
+              Welcome to Bangr
+            </Text>
+          </View>
+          <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+            {heroSentence}
           </Text>
         </View>
-        <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-          {heroSentence}
-        </Text>
-
         <Image
-          className="mx-auto mt-20 h-64 w-64"
+          className="mx-auto h-64 w-64"
           source={require("../../../assets/figma/processor.png")}
         />
-      </View>
 
-      <View className="mx-auto mb-8 w-11/12">
-        <Animated.View style={{ opacity: fadeAnim }}>
-          <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
-            Your account is now ready
-          </Text>
-          <Text className="mx-auto mb-5 w-52 text-center font-Inter text-base text-typo-light dark:text-typo-dark">
-            Before we take you to it, let's secure it !
-          </Text>
-        </Animated.View>
-        <ActionButton
-          text="Secure my account"
-          spinner={intro}
-          bold
-          rounded
-          action={secureAccount}
-        />
-        <TouchableOpacity
-          className={intro ? "opacity-0" : ""}
-          onPress={() => {
-            navigation.navigate("Wallet");
-          }}
-        >
-          <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
-            I don't want to secure my account now
-          </Text>
-        </TouchableOpacity>
+        <View className="mb-8">
+          <Animated.View style={{ opacity: fadeAnim }}>
+            <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
+              Your account is now ready
+            </Text>
+            <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
+              Before we take you to it, let's secure it on{" "}
+              {Platform.OS === "ios" ? "iCloud" : "Google Drive"} !
+            </Text>
+          </Animated.View>
+          <ActionButton
+            text={"Secure my account"}
+            spinner={intro}
+            bold
+            rounded
+            action={() => {
+              navigation.navigate("ChoosePassword");
+            }}
+          />
+          <TouchableOpacity
+            className={intro ? "opacity-0" : ""}
+            onPress={() => {
+              navigation.navigate("Wallet");
+            }}
+          >
+            <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
+              I don't want to secure my account now
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </SafeAreaView>
   );

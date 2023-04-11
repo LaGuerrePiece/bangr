@@ -147,3 +147,21 @@ export interface VaultData extends VaultStatic {
     tvl: number;
   }[];
 }
+
+export type Task = {
+  id: string;
+  chainId: number;
+  scw: string;
+  txHash: string;
+  calls: string;
+  signature: string;
+  senderEOA: string;
+  state: number;
+  protocol: string;
+  type: string;
+  asset1: string;
+  asset2: string;
+  amount: string;
+};
+
+

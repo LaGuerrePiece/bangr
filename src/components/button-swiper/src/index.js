@@ -723,77 +723,81 @@ export default class extends Component {
 
     startImageRotateFunction();
 
+    const colorScheme = Appearance.getColorScheme();
+
+    console.log('colorScheme', colorScheme)
+
     return (
       <View>
-        <View className="position-absolute flex-row items-center">
-        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+        <View className="position-absolute flex-row items-center bg-primary-light dark:bg-secondary-dark">
+        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(0)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(0)
+                }
+              }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/history.png")}
+                source={colorScheme === "light" ? require("../../../../assets/history.png"): require("../../../../assets/history-drk.png")}
               ></Image>
-              <Text className="text-xs">History</Text>
+              <Text className="text-xs dark:text-btn-dark">History</Text>
             </TouchableOpacity>
           </View>
-            <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(1)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(1)
+                }
+              }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/swap.png")}
+                source={colorScheme === "light" ? require("../../../../assets/swap.png"): require("../../../../assets/swap-drk.png")}
               ></Image>
-              <Text className="text-xs">Swap</Text>
+              <Text className="text-xs dark:text-btn-dark">Swap</Text>
             </TouchableOpacity>
           </View>
-          <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(2)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(2)
+                }
+              }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/pochicon.png")}
+                source={colorScheme === "light" ? require("../../../../assets/pochicon.png"): require("../../../../assets/pochicon-drk.png")}
               ></Image>
-              <Text className="text-xs">Wallet</Text>
+              <Text className="text-xs dark:text-btn-dark">Wallet</Text>
             </TouchableOpacity>
           </View>
-          <View className={this.state.index == 3 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 3 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(3)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(3)
+                }
+              }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/invest.png")}
+                source={colorScheme === "light" ? require("../../../../assets/invest-menu.png"): require("../../../../assets/invest-menu-drk.png")}
               ></Image>
-              <Text className="text-xs">Invest</Text>
+              <Text className="text-xs dark:text-btn-dark">Invest</Text>
             </TouchableOpacity>
           </View>
-          <View className={this.state.index == 4 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 4 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(4)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(4)
+                }
+              }>
               <Image
                 className="h-8 w-8"
-                source={require("../../../../assets/settings.png")}
+                source={colorScheme === "light" ? require("../../../../assets/settings.png"): require("../../../../assets/settings-drk.png")}
               ></Image>
-              <Text className="text-xs">Setting</Text>
+              <Text className="text-xs dark:text-btn-dark">Setting</Text>
             </TouchableOpacity>
           </View>
         </View>

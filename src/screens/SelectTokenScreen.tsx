@@ -57,7 +57,7 @@ export default function SelectToken({
             return (
               <TouchableOpacity
                 key={i}
-                className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
+                className="mx-2 my-1 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
                   navigation.navigate(previousScreen.name, {
@@ -68,7 +68,10 @@ export default function SelectToken({
                 }}
               >
                 <View className="flex flex-row items-center">
-                  <Image className="h-7 w-7" source={{ uri: token.logoURI }} />
+                  <Image
+                    className="h-7 w-7 rounded-full"
+                    source={{ uri: token.logoURI }}
+                  />
                   <View className="mx-3 flex flex-col">
                     <Text className="text-typo-light dark:text-typo-dark">
                       {token.name}
@@ -85,7 +88,7 @@ export default function SelectToken({
             );
           })}
         </ScrollView>
-      </SafeAreaView>
-    </View>
+        </SafeAreaView>
+      </View>
   );
 }

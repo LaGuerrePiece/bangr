@@ -2,11 +2,11 @@
   "expo": {
     "name": "bangr",
     "slug": "poche-app",
-    "version": "0.0.5",
-    "scheme": "poche",
+    "version": "0.0.6",
+    "scheme": "bangr",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -15,22 +15,21 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you."
+        "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you.",
+        "RCTAsyncStorageExcludeFromBackup": false
       },
-      "bundleIdentifier": "com.poche.fi"
+      "bundleIdentifier": "com.bangr.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.poche.fi",
+      "package": "com.bangr.app",
       "versionCode": 2
     },
     "web": {
