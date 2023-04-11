@@ -12,7 +12,7 @@ import {
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
 import "react-native-get-random-values";
-import { encrypt } from "./encrypt";
+import { encrypt } from "../../utils/encrypt";
 import { colors } from "../../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as FileSystem from "expo-file-system";

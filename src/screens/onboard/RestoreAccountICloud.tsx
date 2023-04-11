@@ -11,8 +11,7 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
-// @ts-ignore
-import { decrypt } from "./encrypt";
+import { decrypt } from "../../utils/encrypt";
 import * as FileSystem from "expo-file-system";
 import { ethers } from "ethers";
 import useUserStore from "../../state/user";
