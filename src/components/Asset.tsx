@@ -92,7 +92,7 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
               <View>
                 <Image
                   className="h-12 w-12"
-                  source={require("../../assets/vaultbtn-selected.png")} // other: vault_1.png
+                  source={colorScheme=== "dark" ? require("../../assets/vault-drk.png") : require("../../assets/vault.png")} // other: vault_1.png
                 />
                 <Image
                   className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
