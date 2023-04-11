@@ -730,73 +730,73 @@ export default class extends Component {
     return (
       <View>
         <View className="position-absolute flex-row items-center">
-        <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 0 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(0)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(0)
+                }
+              }>
               <Image
                 className="h-8 w-8"
                 source={require("../../../../assets/history.png")}
-              ></Image>
+              />
               <Text className="text-xs">History</Text>
             </TouchableOpacity>
           </View>
-            <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
+          <View className={this.state.index == 1 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(1)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(1)
+                }
+              }>
               <Image
                 className="h-8 w-8"
                 source={require("../../../../assets/swap.png")}
-              ></Image>
+              />
               <Text className="text-xs">Swap</Text>
             </TouchableOpacity>
           </View>
           <View className={this.state.index == 2 ? "w-1/5 p-4 items-center border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(2)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(2)
+                }
+              }>
               <Image
                 className="h-8 w-8"
                 source={require("../../../../assets/pochicon.png")}
-              ></Image>
+              />
               <Text className="text-xs">Wallet</Text>
             </TouchableOpacity>
           </View>
           <View className={this.state.index == 3 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(3)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(3)
+                }
+              }>
               <Image
                 className="h-8 w-8"
                 source={require("../../../../assets/invest.png")}
-              ></Image>
+              />
               <Text className="text-xs">Invest</Text>
             </TouchableOpacity>
           </View>
           <View className={this.state.index == 4 ? "w-1/5 p-4 items-center border-b-2 border-b-2" : "w-1/5 p-4 items-center"}>
             <TouchableOpacity className="flex"
-            onPress={
-              () => {
-                this.scrollTo(4)
-              }
-            }>
+              onPress={
+                () => {
+                  this.scrollTo(4)
+                }
+              }>
               <Image
                 className="h-8 w-8"
                 source={require("../../../../assets/settings.png")}
-              ></Image>
+              />
               <Text className="text-xs">Setting</Text>
             </TouchableOpacity>
           </View>
