@@ -61,10 +61,25 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
   };
 
   return (
-    <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
-      <Text className="mt-16 text-center text-4xl text-typo-light dark:text-typo-dark">
-        Welcome to Bangr. Please login to continue.
-      </Text>
+    <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
+      <View className="mx-auto h-full w-11/12 justify-between">
+        <View className="mt-10">
+          <Image
+            className="mx-auto h-12 w-12"
+            source={
+              colorScheme === "dark"
+                ? require("../../assets/newlogo.png")
+                : require("../../assets/newlogo_black.png")
+            }
+          />
+          <Text className="mx-auto mt-4 font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+            Welcome to Bangr
+          </Text>
+          <Text className="mx-auto mt-24 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+            Please login to continue.
+          </Text>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };
