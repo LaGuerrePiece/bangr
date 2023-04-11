@@ -92,11 +92,31 @@ const App = () => {
           screenOptions={{ headerShown: false }}
           initialRouteName={initialRouteName}
         >
-          <Stack.Screen name="FirstScreen" component={FirstScreen} />
-          <Stack.Screen name="SecondScreen" component={SecondScreen} />
-          <Stack.Screen name="ThirdScreen" component={ThirdScreen} />
-          <Stack.Screen name="FourthScreen" component={FourthScreen} />
-          <Stack.Screen name="CreateAccount" component={CreateAccountScreen} />
+          <Stack.Screen
+            name="FirstScreen"
+            component={FirstScreen}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="SecondScreen"
+            component={SecondScreen}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="ThirdScreen"
+            component={ThirdScreen}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="FourthScreen"
+            component={FourthScreen}
+            options={{ animation: "slide_from_right" }}
+          />
+          <Stack.Screen
+            name="CreateAccount"
+            component={CreateAccountScreen}
+            options={{ animation: "slide_from_right" }}
+          />
           <Stack.Screen
             name="RestoreAccount"
             component={
@@ -104,6 +124,7 @@ const App = () => {
                 ? RestoreAccountScreen
                 : RestoreAccountICloud
             }
+            options={{ animation: "slide_from_right" }}
           />
           <Stack.Screen
             name="ChoosePassword"
@@ -112,6 +133,7 @@ const App = () => {
                 ? ChoosePasswordScreen
                 : ChoosePasswordICloud
             }
+            options={{ animation: "slide_from_right" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
