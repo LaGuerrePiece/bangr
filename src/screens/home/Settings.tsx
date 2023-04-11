@@ -26,11 +26,6 @@ const Settings = ({ swiper }: { swiper: any }) => {
     state.setCurrency,
   ]);
 
-  // Only for testing, not for prod
-  const disconnect = async () => {
-    await SecureStore.deleteItemAsync("privKey");
-  };
-
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
