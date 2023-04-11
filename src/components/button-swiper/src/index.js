@@ -689,7 +689,8 @@ export default class extends Component {
       }
     }
 
-    console.log("current page: " + this.state.index);
+    // console.log("current page: " + this.state.index);
+
     // let rotateValueHolder = new Animated.Value(20);
     // const rotateData = rotateValueHolder.interpolate({
     //   inputRange: [0, 1],
@@ -724,8 +725,6 @@ export default class extends Component {
     startImageRotateFunction();
 
     const colorScheme = Appearance.getColorScheme();
-
-    console.log('colorScheme', colorScheme)
 
     return (
       <View>
