@@ -8,15 +8,11 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import { ChainId, MultichainToken } from "../types/types";
-import { formatUnits } from "../utils/format";
+import { ChainId } from "../types/types";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
-import { chainData } from "../config/configs";
+import { chainData, colors } from "../config/configs";
 import useSendStore from "../state/send";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../tailwind.config";
 
 type SelectChainParams = {
   SelectChainScreen: {
@@ -32,22 +28,20 @@ export default function SelectChain() {
 
   const { update } = useSendStore();
   const colorScheme = useColorScheme();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
       <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
-        <View className="my-6">
-          <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <TouchableWithoutFeedback onPress={navigation.goBack}>
+          <View className="flex-row justify-end">
             <XMarkIcon
               size={36}
               color={
                 colorScheme === "light" ? colors.typo.light : colors.typo.dark
               }
             />
-          </TouchableWithoutFeedback>
-        </View>
-        <ScrollView>
+          </View>
+        </TouchableWithoutFeedback>
+        <ScrollView className="my-2">
           {chainData
             .filter((chain) => chain.chainId !== chainId)
             .map((chain, i) => {

@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "poche-app",
+    "name": "bangr",
     "slug": "poche-app",
-    "version": "0.0.1",
-    "scheme": "poche",
+    "version": "0.0.6",
+    "scheme": "bangr",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -19,15 +19,18 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSFaceIDUsageDescription": "Poche uses FaceId to authenticate you."
-      }
+        "NSFaceIDUsageDescription": "Bangr uses FaceId to authenticate you.",
+        "RCTAsyncStorageExcludeFromBackup": false
+      },
+      "bundleIdentifier": "com.bangr.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.poche.app"
+      "package": "com.bangr.app",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +39,19 @@
       "eas": {
         "projectId": "d6d44490-5584-4b9c-85b4-d5e2ff08b185"
       }
-    }
+    },
+    "owner": "ndlz",
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 33,
+            "targetSdkVersion": 33,
+            "kotlinVersion": "1.8.0"
+          }
+        }
+      ]
+    ]
   }
 }

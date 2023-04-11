@@ -11,63 +11,67 @@ import {
 import { MultichainToken } from "../types/types";
 import { formatUnits } from "../utils/format";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useLayoutEffect } from "react";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import useSwapStore from "../state/swap";
-import resolveConfig from "tailwindcss/resolveConfig";
-import tailwindConfig from "../../tailwind.config";
 import useSendStore from "../state/send";
+import { colors } from "../config/configs";
+import * as Haptics from "expo-haptics";
 
 type SelectTokenParams = {
   SelectTokenScreen: {
     tokenList: MultichainToken[];
-    tokenToUpdate: "Swap:srcToken" | "Swap:dstToken" | "Send" | "";
+    paramsToPassBack?: any;
+    tokenToUpdate?: string;
   };
 };
 
-export default function SelectToken() {
-  const navigation = useNavigation();
-  const { params } =
-    useRoute<RouteProp<SelectTokenParams, "SelectTokenScreen">>();
-  const { tokenList, tokenToUpdate } = params;
-  const { updateSrcToken, updateDstToken } = useSwapStore();
-  const { updateSendToken } = useSendStore();
+export default function SelectToken({
+  route,
+  navigation,
+}: {
+  route: RouteProp<SelectTokenParams, "SelectTokenScreen">;
+  navigation: any;
+}) {
+  useRoute<RouteProp<SelectTokenParams, "SelectTokenScreen">>();
+  const { tokenList, paramsToPassBack } = route.params;
   const colorScheme = useColorScheme();
-  const fullConfig = resolveConfig(tailwindConfig);
-  const colors = fullConfig?.theme?.colors as { typo: any; typo2: any };
+
+  const routes = navigation.getState()?.routes;
+  const previousScreen = routes[routes.length - 2];
 
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
       <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
-        <View className="my-6">
-          <TouchableWithoutFeedback onPress={navigation.goBack}>
+        <TouchableWithoutFeedback onPress={navigation.goBack}>
+          <View className="my-2 flex-row justify-end">
             <XMarkIcon
               size={36}
               color={
                 colorScheme === "light" ? colors.typo.light : colors.typo.dark
               }
             />
-          </TouchableWithoutFeedback>
-        </View>
+          </View>
+        </TouchableWithoutFeedback>
         <ScrollView>
           {tokenList.map((token, i) => {
             return (
               <TouchableOpacity
                 key={i}
-                className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
+                className="mx-2 my-1 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
-                  tokenToUpdate === "Swap:srcToken"
-                    ? updateSrcToken(token)
-                    : tokenToUpdate === "Swap:dstToken"
-                    ? updateDstToken(token)
-                    : tokenToUpdate === "Send"
-                    ? updateSendToken(token)
-                    : null;
-                  navigation.goBack();
+                  Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+                  navigation.navigate(previousScreen.name, {
+                    updatedToken: token,
+                    tokenToUpdate: route.params.tokenToUpdate,
+                    ...paramsToPassBack,
+                  });
                 }}
               >
                 <View className="flex flex-row items-center">
-                  <Image className="h-7 w-7" source={{ uri: token.logoURI }} />
+                  <Image
+                    className="h-7 w-7 rounded-full"
+                    source={{ uri: token.logoURI }}
+                  />
                   <View className="mx-3 flex flex-col">
                     <Text className="text-typo-light dark:text-typo-dark">
                       {token.name}
@@ -84,7 +88,7 @@ export default function SelectToken() {
             );
           })}
         </ScrollView>
-      </SafeAreaView>
-    </View>
+        </SafeAreaView>
+      </View>
   );
 }

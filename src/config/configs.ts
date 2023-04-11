@@ -1,10 +1,10 @@
 import "@ethersproject/shims";
 import { ethers } from "ethers";
+import tailwindConfig from "../../tailwind.config";
+import resolveConfig from "tailwindcss/resolveConfig";
 
-export const getURL = () =>
-  process.env.NODE_ENV == "development"
-    ? "http://localhost:3000"
-    : "https://beta.poche.fi";
+const fullConfig = resolveConfig(tailwindConfig);
+export const colors = fullConfig?.theme?.colors as any;
 
 export const chainData = [
   {
@@ -55,55 +55,17 @@ export const chainData = [
     //https://polygon-rpc.com
     relayerFundRate: "0.2",
   },
-  // {
-  //   name: "Binance Smart Chain",
-  //   chainId: 56,
-  //   image: "/bsc.png",
-  //   nativeTokenSymbol : "BNB",
-  //   coingeckoIdentifier: "binance-smart-chain",
-  //   provider: process.env.DEV_MODE === "TRUE"
-  //   ? new ethers.providers.JsonRpcProvider("http://127.0.0.1:10001/")
-  //   : new ethers.providers.JsonRpcProvider("https://bsc-mainnet.public.blastapi.io")
-  // },
 ] as const;
 
 // alchemyProvider({ apiKey: 'VkrAJOLRBt1bb5p3ypYrQj84QElpex8g' }),
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export interface TokenGroups {
-  groupName: string;
-  tokenSymbols: string[];
-}
+export const forceOnboarding = false; // to see onboarding
 
-export const tokenGroups: TokenGroups[] = [
-  {
-    groupName: "USD",
-    tokenSymbols: ["USDC", "DAI"],
-  },
-];
+export const forceWalletEmpty = false; // to see button to buy first coins
 
-export const TOKEN_WHITELIST = [
-  "ETH",
-  "MATIC",
-  "WETH",
-  "USDC",
-  "USDT",
-  "DAI",
-  "WBTC",
-  "RAI",
-  "LINK",
-  "aUSDC",
-  // "QI",
-  // "DHT",
-  // "MKR",
-  // "FRAX",
-  // "CRV",
-  // "HOP",
-  // "STG",
-  // "BIFI",
-  // "BAL",
-];
+export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone
@@ -126,6 +88,6 @@ export const EXAMPLE_WALLET_ADDRESS =
 
 export const PAYMASTER_ADDRESS = "0xA5798D2F2618a24e017fc3631867a20a3fE8827b";
 
-export const REFERENCE_CHAIN = 42161; // Arbitrum: reference chain used when a chain is needed
+export const REFERENCE_CHAIN = 137; // Polygon: reference chain used when a chain is needed
 
 export const FEE_PER_CALL = 0.025; // Fee taken per call in dollars to pay gas

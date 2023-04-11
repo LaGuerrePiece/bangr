@@ -1,17 +1,16 @@
 import { create } from "zustand";
-import { Balances, MultichainToken, Token } from "../types/types";
-import { getURL } from "../config/configs";
+import { Balance, MultichainToken, Price } from "../types/types";
 import axios from "axios";
 import { devtools } from "zustand/middleware";
 import { getURLInApp } from "../utils/utils";
-import { addBalancesToTokens } from "../utils/utils";
-// import useSwapStore from "./swap";
+import { addBalancesToTokens, addPricesToTokens } from "../utils/utils";
 
 interface BalanceState {
   tokens: MultichainToken[] | undefined;
-  addBalances: (balances: Balances[]) => void;
+  addBalances: (balances: Balance[]) => void;
+  addPrices: (prices: Price[]) => void;
   fetchTokensStatic: () => void;
-  // getToken: (tokenSymbol: string) => MultichainToken | undefined;
+  getToken: (symbol: string) => MultichainToken | undefined;
   clear: () => void;
 }
 
@@ -19,9 +18,17 @@ const useTokensStore = create<BalanceState>()(
   devtools((set, get) => ({
     tokens: undefined,
 
+    getToken: (symbol: string) => {
+      const { tokens } = get();
+      if (!tokens) return undefined;
+      return tokens.find((token) => token.symbol === symbol);
+    },
+
     fetchTokensStatic: async () => {
       try {
-        const { data } = (await axios.get(`${getURLInApp()}/api/tokens`)) as {
+        const { data } = (await axios.get(
+          `${getURLInApp()}/api/v1/tokens`
+        )) as {
           data: MultichainToken[];
         };
         console.log(`fetched ${data.length} tokens`);
@@ -31,21 +38,43 @@ const useTokensStore = create<BalanceState>()(
       }
     },
 
-    addBalances: async (balances: Balances[]) => {
-      const { tokens } = get();
-
-      if (!tokens) {
-        console.log("error: cannot add balances to no tokens");
-        return;
+    addBalances: async (balances: Balance[]) => {
+      for (let i = 0; i < 10; i++) {
+        const { tokens } = get();
+        if (tokens) {
+          const newTokens = addBalancesToTokens(tokens, balances);
+          set({
+            tokens: newTokens,
+          });
+          if (i > 0) console.log("finally added balances after", i, "seconds");
+          return;
+        }
+        console.log(
+          "Cannot add balances to no tokens. Waiting for tokens...",
+          i
+        );
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
+      console.log("Error: tokens did not arrive after 10 seconds.");
+      return;
+    },
 
-      const newTokens = addBalancesToTokens(tokens, balances);
-
-      // console.log("newTokens after adding balances:", newTokens);
-
-      set({
-        tokens: newTokens,
-      });
+    addPrices: async (prices: Price[]) => {
+      for (let i = 0; i < 10; i++) {
+        const { tokens } = get();
+        if (tokens) {
+          const newTokens = addPricesToTokens(tokens, prices);
+          set({
+            tokens: newTokens,
+          });
+          if (i > 0) console.log("finally added prices after", i, "seconds");
+          return;
+        }
+        console.log("Cannot add prices to no tokens. Waiting for tokens...", i);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+      console.log("Error: tokens did not arrive after 10 seconds.");
+      return;
     },
 
     clear: () => {

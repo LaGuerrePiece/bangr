@@ -7,7 +7,7 @@ const Card = () => {
         Card
       </Text>
 
-      <View className="mx-auto mt-4 mb-8 w-11/12 rounded-xl bg-secondary-light p-8 shadow-xl dark:bg-secondary-dark">
+      <View className="mx-auto mt-4 mb-8 w-11/12 rounded-xl bg-secondary-light p-8 dark:bg-secondary-dark">
         <View className="m-auto mt-4 flex w-11/12 items-center">
           <Image
             className="h-40"

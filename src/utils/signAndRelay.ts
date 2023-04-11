@@ -14,12 +14,41 @@ import {
   signTypedDataDomain,
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
+import { Task } from "../types/types";
+import useHistoricStore from "../state/historic";
+
+const getTasks = async (scwAddress: string) => {
+  try {
+    const { data } = (await axios.post(
+      `${getURLInApp()}/api/v1/tasks`,
+      scwAddress,
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+      }
+    )) as { data: Task[] };
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error relaying transaction: ", error.message);
+    } else {
+      console.log("unexpected error relaying transaction: ", error);
+    }
+  }
+};
 
 export const relay = async (
   calls: CallWithNonce[],
   wallet: ethers.Wallet,
   scwAddress: string,
   value: string,
+  type: string,
+  protocol: string,
+  asset1: string,
+  asset2: string,
+  amount: string,
   successMessage: string,
   errorMessage: string
 ) => {
@@ -40,7 +69,7 @@ export const relay = async (
   );
 
   const deployRes = await deployWalletsIfNotDeployed(
-    calls,
+    [...new Set(calls.map((c) => c.cid))],
     wallet.address,
     scwAddress
   );
@@ -53,11 +82,18 @@ export const relay = async (
     return;
   }
 
-  const relayResponse = await sendToRelayer({
+  console.log("sendTx", calls);
+  const relayResponse = await sendTx({
     signature,
     data: callsObject,
-    senderEOA: wallet.address,
     value,
+    senderEOA: wallet.address,
+    scwAddress: scwAddress,
+    type,
+    asset1,
+    asset2,
+    amount,
+    protocol,
   });
 
   if (!relayResponse) {
@@ -70,8 +106,19 @@ export const relay = async (
 
   console.log("Success. relayResponse :", relayResponse);
 
+  //until the cron
+  // const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
+  // console.log("cron called", ping);
+
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
+  if (relayResponse.error) {
+    Toast.show({
+      type: "error",
+      text1: "error relaying transaction",
+    });
+    return;
+  }
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
       const chainId = Number(cid) as ChainId;
@@ -103,10 +150,59 @@ export const relay = async (
   );
 
   if (txSuccesses.includes(false)) return;
-  Toast.show({
-    type: "success",
-    text1: successMessage,
-  });
+
+  // get user tasks by making a request to the tasks api every 5 seconds and check if this tx has state 2
+  // if yes, show success toast
+
+  const ping = setInterval(() => {
+    getTasks(scwAddress).then((tasks) => {
+      const task = tasks!.find((t) => t.signature == signature);
+      console.log("task", task?.state);
+      if (task && task.state === 2) {
+        Toast.show({
+          type: "success",
+          text1: successMessage,
+        });
+        console.log("success");
+        clearTimeout(ping);
+        return;
+      }
+    });
+  }, 2500);
+
+  // Toast.show({
+  //   type: "success",
+  //   text1: successMessage,
+  // });
+};
+
+const sendTx = async (body: {
+  signature?: string;
+  data?: { Calls: CallWithNonce[] };
+  value?: string;
+  senderEOA: string;
+  scwAddress?: string;
+  type?: string;
+  asset1?: string;
+  asset2?: string;
+  amount?: string;
+  protocol?: string;
+}) => {
+  try {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/sendTx`, body, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+    })) as { data: RelayerResponse };
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.log("error sending tx: ", error.message);
+    } else {
+      console.log("unexpected error sending tx: ", error);
+    }
+  }
 };
 
 const sendToRelayer = async (body: {
@@ -116,9 +212,14 @@ const sendToRelayer = async (body: {
   senderEOA: string;
   deploy?: ChainId[];
   scwAddress?: string;
+  type?: string;
+  asset1?: string;
+  asset2?: string;
+  amount?: string;
+  protocol?: string;
 }) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/relay`, body, {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/relay`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",
@@ -134,26 +235,25 @@ const sendToRelayer = async (body: {
   }
 };
 
-const deployWalletsIfNotDeployed = async (
-  calls: CallWithNonce[],
+export const deployWalletsIfNotDeployed = async (
+  chainsToCheck: ChainId[],
   senderEOA: string,
   scwAddress: string
 ) => {
-  const chainsToCheck = [...new Set(calls.map((c) => c.cid))];
-  const chainsOnWhichTODeploy: ChainId[] = [];
+  const chainsOnWhichToDeploy: ChainId[] = [];
 
   await Promise.all(
     chainsToCheck.map(async (chainId) => {
       const provider = getChain(chainId).provider;
       if ((await provider.getCode(scwAddress)) === "0x") {
-        chainsOnWhichTODeploy.push(chainId);
+        chainsOnWhichToDeploy.push(chainId);
       }
     })
   );
-  if (chainsOnWhichTODeploy.length === 0) return;
+  if (chainsOnWhichToDeploy.length === 0) return;
 
   const res = await sendToRelayer({
-    deploy: chainsOnWhichTODeploy,
+    deploy: chainsOnWhichToDeploy,
     senderEOA: senderEOA,
   });
 

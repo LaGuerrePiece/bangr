@@ -14,13 +14,18 @@ const useVaultsStore = create<VaultState>()(
     vaults: undefined,
 
     fetchVaults: async (scw?: string) => {
-      const { data } = (await axios.get(
-        `${getURLInApp()}/api/vaults?address=${scw}`
-      )) as {
-        data: VaultData[];
-      };
-      console.log(`fetched ${data.length} vaults`);
-      set({ vaults: data });
+      try {
+        const { data } = (await axios.get(
+          `${getURLInApp()}/api/v1/vaults?address=${scw}`
+        )) as {
+          data: VaultData[];
+        };
+
+        console.log(`fetched ${data.length} vaults`);
+        set({ vaults: data });
+      } catch (error) {
+        console.log("error fetching vaults", error);
+      }
     },
   }))
 );

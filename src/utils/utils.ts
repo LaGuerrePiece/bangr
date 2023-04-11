@@ -1,12 +1,7 @@
 import Constants from "expo-constants";
 import "@ethersproject/shims";
 import { BigNumber, ethers } from "ethers";
-import {
-  chainData,
-  FEE_PER_CALL,
-  REFERENCE_CHAIN,
-  tokenGroups,
-} from "../config/configs";
+import { chainData, FEE_PER_CALL, REFERENCE_CHAIN } from "../config/configs";
 import {
   CallWithNonce,
   ChainData,
@@ -15,7 +10,8 @@ import {
   Token,
   Quote,
   ContractsConfig,
-  Balances,
+  Balance,
+  Price,
 } from "../types/types";
 import contractsConfig from "../config/contracts-config.json";
 import walletFactoryAbi from "../config/abi/WalletFactory.json";
@@ -32,14 +28,6 @@ export function getChain(chainId: ChainId) {
   return chainData.find((chain) => chain.chainId === chainId) as ChainData;
 }
 
-export function getTokenGroup(token: MultichainToken) {
-  for (const group of tokenGroups) {
-    if (group.tokenSymbols.includes(token.symbol)) {
-      return group;
-    }
-  }
-}
-
 // if the user is not connected, returns example balances
 // that have enough of the needed token for the swap to be quoted
 export function getExampleMultichainToken(
@@ -47,7 +35,10 @@ export function getExampleMultichainToken(
   swapAmountIn: string
 ): MultichainToken {
   const balance = ethers.utils
-    .parseUnits((Number(swapAmountIn) * 2).toString(), srcToken.decimals)
+    .parseUnits(
+      BigNumber.from(swapAmountIn).mul(2).toString(),
+      srcToken.decimals
+    )
     .toString();
 
   return {
@@ -148,7 +139,7 @@ export function getRelayerValueToSend(quote: Quote) {
   for (const singleQuote of quote.singleQuotes) {
     if (singleQuote.type === "lifi") {
       valueToSend = valueToSend.add(
-        BigNumber.from(singleQuote.transactionRequest.value ?? "0")
+        singleQuote.transactionRequest.value ?? "0"
       );
       if (
         singleQuote.fromToken.symbol === "ETH" ||
@@ -201,40 +192,68 @@ export async function getSmartWalletAddress(eoa: string) {
 
 export function addBalancesToTokens(
   tokens: MultichainToken[],
-  balances: Balances[]
+  balances: Balance[]
 ) {
   //keep this weird map to update the components
   const newTokens: MultichainToken[] = tokens.map((token) => token);
 
-  newTokens.forEach((token) => {
-    if (balances.map((balance) => balance.symbol).includes(token.symbol)) {
-      token.balance = "0";
-      token.priceUSD = 0;
-      token.quote = 0;
-    }
-  });
-
   balances.forEach((balance) => {
-    const multichainTokenIndex = newTokens.findIndex(
-      (token) => token.symbol === balance.symbol
-    );
-    if (multichainTokenIndex < 0) return;
-    const multichainToken = newTokens[multichainTokenIndex];
-    const chainIndex = multichainToken.chains.findIndex(
+    if (!balance.balance) return;
+
+    const token = newTokens.find((token) => token.symbol === balance.symbol);
+    const chain = token?.chains.find(
       (chain) => chain.chainId === balance.chainId
     );
-    if (chainIndex < 0) return;
-    const chain = multichainToken.chains[chainIndex];
+    if (!token || !chain) return;
 
     chain.balance = balance.balance;
-    chain.quote = balance.quote;
-    chain.priceUSD = balance.priceUSD;
-    multichainToken.balance = BigNumber.from(multichainToken.balance)
-      .add(balance.balance ?? "0")
-      .toString();
-    multichainToken.quote = (multichainToken.quote ?? 0) + (balance.quote ?? 0);
-    //right now, priceUSD is the same for all chains (the first one)
-    multichainToken.priceUSD = balance.priceUSD ?? multichainToken.priceUSD;
+    chain.quote =
+      Number(ethers.utils.formatUnits(balance.balance, token.decimals)) *
+      (chain.priceUSD ?? 0);
+  });
+
+  newTokens.map((token) => {
+    token.balance = token.chains.reduce(
+      (partialSum, chain) =>
+        BigNumber.from(partialSum)
+          .add(BigNumber.from(chain.balance ?? "0"))
+          .toString(),
+      "0"
+    );
+    token.quote = token.chains.reduce(
+      (partialSum, chain) => partialSum + (chain.quote ?? 0),
+      0
+    );
+  });
+
+  return newTokens.sort((a, b) => Number(b.quote) - Number(a.quote));
+}
+
+export function addPricesToTokens(tokens: MultichainToken[], prices: Price[]) {
+  //keep this weird map to update the components
+  const newTokens: MultichainToken[] = tokens.map((token) => token);
+
+  prices.forEach((price) => {
+    if (!price.priceUSD) return;
+
+    const token = newTokens.find((token) => token.symbol === price.symbol);
+    const chain = token?.chains.find(
+      (chain) => chain.chainId === price.chainId
+    );
+    if (!token || !chain) return;
+
+    chain.priceUSD = price.priceUSD;
+    chain.quote =
+      Number(ethers.utils.formatUnits(chain.balance ?? 0, token.decimals)) *
+      price.priceUSD;
+  });
+
+  newTokens.map((token) => {
+    token.priceUSD = token.chains[0].priceUSD ?? token.priceUSD;
+    token.quote = token.chains.reduce(
+      (partialSum, chain) => partialSum + (chain.quote ?? 0),
+      0
+    );
   });
 
   return newTokens.sort((a, b) => Number(b.quote) - Number(a.quote));
