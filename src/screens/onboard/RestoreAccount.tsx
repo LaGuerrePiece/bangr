@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   SafeAreaView,
-  TouchableOpacity,
   Image,
   TextInput,
   useColorScheme,
@@ -16,16 +15,13 @@ import * as SecureStore from "expo-secure-store";
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
 import * as Google from "expo-auth-session/providers/google";
-import { decrypt, encrypt } from "./encrypt";
+import { decrypt } from "./encrypt";
 import * as FileSystem from "expo-file-system";
-import CryptoES from "crypto-es";
 import { ethers } from "ethers";
 import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import { makeRedirectUri } from "expo-auth-session";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as DocumentPicker from "expo-document-picker";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -56,7 +52,7 @@ export const googleConfig = {
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
-if (driveName === "Google Drive") WebBrowser.maybeCompleteAuthSession();
+WebBrowser.maybeCompleteAuthSession();
 
 export default function RestoreAccount({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -124,48 +120,6 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     }
     setEncryptedKey(content);
     setLoading(false);
-  };
-
-  const readSelectedFile = async () => {
-    try {
-      // Open the document picker and let the user select a file
-      const result = await DocumentPicker.getDocumentAsync();
-      if (result.type === "success") {
-        // Read the contents of the selected file
-        const contents = await FileSystem.readAsStringAsync(result.uri, {
-          encoding: FileSystem.EncodingType.UTF8,
-        });
-        console.log("File contents:", contents);
-        return contents;
-      } else {
-        console.log("No file selected.");
-        return "";
-      }
-    } catch (error) {
-      console.error("Error reading file:", error);
-      return "";
-    }
-  };
-
-  // Get @bangr-backup from AsyncStorage (or file backup) and put it in encryptedKey
-  const getICloudBackup = async () => {
-    // TODO: get backup from iCloud (AsyncStrorage not Drive)
-    // const backup = await AsyncStorage.getItem("@bangr-backup");
-    setLoading(true);
-    // if (backup) setEncryptedKey(backup);
-    // else {
-    setEncryptedKey(await readSelectedFile());
-    // }
-    setStep(1);
-    setLoading(false);
-  };
-
-  const getBackup = async () => {
-    if (driveName === "iCloud") {
-      await getICloudBackup();
-    } else {
-      await connectDrive();
-    }
   };
 
   const restoreAccount = async () => {
@@ -271,7 +225,9 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
           }
           bold
           rounded
-          action={() => (encryptedKey === "" ? getBackup() : restoreAccount())}
+          action={() =>
+            encryptedKey === "" ? connectDrive() : restoreAccount()
+          }
         />
       </View>
     </SafeAreaView>

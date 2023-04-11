@@ -20,13 +20,10 @@ import { encrypt } from "./encrypt";
 import { colors } from "../../config/configs";
 import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as FileSystem from "expo-file-system";
-import * as Sharing from "expo-sharing";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
-if (driveName === "Google Drive") WebBrowser.maybeCompleteAuthSession();
+WebBrowser.maybeCompleteAuthSession();
 
 export default function ChoosePassword({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -84,65 +81,6 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
     });
     setLoading(false);
     setStep(1);
-  };
-
-  const saveAndShareFile = async (content: string) => {
-    try {
-      // Create a file with sample content
-      const fileName = "bangr.wallet";
-      const fileUri = `${FileSystem.documentDirectory}${fileName}`;
-      await FileSystem.writeAsStringAsync(fileUri, content, {
-        encoding: FileSystem.EncodingType.UTF8,
-      });
-
-      // Check if sharing is available on the device
-      const isAvailable = await Sharing.isAvailableAsync();
-      if (!isAvailable) {
-        alert("Sharing is not available on this device.");
-        return;
-      }
-
-      // Share the file, allowing the user to save it to iCloud Drive
-      await Sharing.shareAsync(fileUri, {
-        mimeType: "text/plain",
-        dialogTitle: "Save the file to iCloud Drive",
-      });
-    } catch (error) {
-      console.error("Error saving and sharing file:", error);
-    }
-  };
-
-  const secureAccountICloud = async () => {
-    setLoading(true);
-
-    const key = (await SecureStore.getItemAsync("privKey")) as string;
-    const encryptedKey = await encrypt(key, password);
-
-    // Store in iCloud Drive (user interaction required)
-    await saveAndShareFile(encryptedKey);
-
-    // Store in AsyncStorage (which should be backed up by iCloud if configured correctly)
-    try {
-      await AsyncStorage.setItem("@bangr-backup", encryptedKey);
-    } catch (e) {
-      console.log("error storing in AsyncStorage: ", e);
-    }
-
-    Toast.show({
-      type: "success",
-      text1: "Account secured",
-      text2: "Your account is now secured on " + driveName,
-    });
-    setLoading(false);
-    setStep(1);
-  };
-
-  const secureAccount = async () => {
-    if (driveName === "iCloud") {
-      await secureAccountICloud();
-    } else {
-      await secureAccountGDrive();
-    }
   };
 
   return (
@@ -214,7 +152,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
           bold
           rounded
           action={() => {
-            step === 0 ? secureAccount() : navigation.navigate("Wallet");
+            step === 0 ? secureAccountGDrive() : navigation.navigate("Wallet");
           }}
         />
       </View>
