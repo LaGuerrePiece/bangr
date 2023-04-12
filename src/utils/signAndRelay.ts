@@ -16,6 +16,8 @@ import {
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
 import useHistoricStore from "../state/historic";
+import useUserStore from "../state/user";
+import useVaultsStore from "../state/vaults";
 
 const getTasks = async (scwAddress: string) => {
   try {
@@ -38,6 +40,18 @@ const getTasks = async (scwAddress: string) => {
     }
   }
 };
+
+const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
+  (state) => ({
+    smartWalletAddress: state.smartWalletAddress,
+    wallet: state.wallet,
+    fetchBalances: state.fetchBalances,
+  })
+);
+const { fetchVaults, vaults } = useVaultsStore((state) => ({
+  fetchVaults: state.fetchVaults,
+  vaults: state.vaults,
+}));
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -164,6 +178,8 @@ export const relay = async (
           text1: successMessage,
         });
         console.log("success");
+        fetchBalances(smartWalletAddress);
+        fetchVaults(smartWalletAddress);
         clearTimeout(ping);
         return;
       }
