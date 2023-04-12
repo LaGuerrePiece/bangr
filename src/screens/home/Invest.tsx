@@ -22,7 +22,6 @@ const Invest = ({ swiper }: { swiper: any }) => {
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               swiper.current.scrollBy(-1, true);
             }}
           >
@@ -32,6 +31,20 @@ const Invest = ({ swiper }: { swiper: any }) => {
                 colorScheme === "dark"
                   ? require("../../../assets/pochicon-drk.png")
                   : require("../../../assets/pochicon.png")
+              }
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              swiper.current.scrollBy(1, true);
+            }}
+          >
+            <Image
+              className="h-7 w-7"
+              source={
+                colorScheme === "dark"
+                  ? require("../../../assets/settings-drk.png")
+                  : require("../../../assets/settings.png")
               }
             />
           </TouchableOpacity>

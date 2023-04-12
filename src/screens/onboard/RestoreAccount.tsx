@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -24,6 +24,10 @@ import { colors } from "../../config/configs";
 import { makeRedirectUri, startAsync } from "expo-auth-session";
 import { supabase, supabaseUrl } from "./supabase";
 
+WebBrowser.maybeCompleteAuthSession();
+
+const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
+
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
@@ -48,47 +52,8 @@ export const googleConfig = {
     useProxy: false,
   }),
   useProxy: false,
-
   // usePKCE: true,
 };
-
-const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
-
-// export const googleSignIn = async () => {
-//   // This will create a redirectUri
-//   // This should be the URL you added to "Redirect URLs" in Supabase URL Configuration
-//   // If they are different add the value of redirectUrl to your Supabase Redirect URLs
-//   const redirectUrl = makeRedirectUri({
-//     path: '/auth/callback',
-//   });
-//   // const redirectUrl = "https://gfdakuvgcmtzsngfshnb.supabase.co/auth/v1/callback";
-
-//   console.log("redirectUrl", redirectUrl);
-
-//   // const redirectUrl = "com.poche.fi://auth";
-
-//   // authUrl: https://{YOUR_PROJECT_REFERENCE_ID}.supabase.co
-//   // returnURL: the redirectUrl you created above.
-//   const authResponse = await startAsync({
-//     authUrl: `${supabaseUrl}/auth/v1/authorize?provider=google&https://www.googleapis.com/auth/drive.file&redirect_to=${redirectUrl}`,
-//     returnUrl: redirectUrl,
-//   });
-
-//   // If the user successfully signs in
-//   // we will have access to an accessToken and an refreshToken
-//   // and then we'll use setSession (https://supabase.com/docs/reference/javascript/auth-setsession)
-//   // to create a Supabase-session using these token
-//   if (authResponse.type === 'success') {
-//     return authResponse.params.access_token;
-//     // supabase.auth.setSession({
-//     //   access_token: authResponse.params.access_token,
-//     //   refresh_token: authResponse.params.refresh_token,
-//     // });
-//   }
-//   else {
-//     console.log('error', authResponse);
-//   }
-// };
 
 export default function RestoreAccount({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
@@ -100,28 +65,39 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [, , promptAsync] = Google.useAuthRequest(googleConfig);
+  const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
   const connectDrive = async () => {
-    // const token = await googleSignIn();
-    // console.log("token", token);
     setLoading(true);
-    const res = await promptAsync();
-    if (res?.type !== "success") {
-      Toast.show({
-        type: "error",
-        text1: "Authorization failed",
-        text2: "Please try again !",
-      });
-      setLoading(false);
-      return;
+    promptAsync();
+  };
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      console.log("responseFromHook", response);
+      if (!response.authentication?.accessToken) {
+        console.log("no authentication token");
+        Toast.show({
+          type: "error",
+          text1: "Could not authenticate with Google",
+        });
+        setLoading(false);
+        return;
+      }
+      getUserInfo(response.authentication.accessToken);
     }
-    const token = res.authentication!.accessToken;
-    await GDrive.setAccessToken(token);
-    await GDrive.init();
+  }, [response]);
+
+  const getUserInfo = async (accessToken: string) => {
+    GDrive.setAccessToken(accessToken);
+    GDrive.init();
     const initialized = await GDrive.isInitialized();
     if (!initialized) {
       console.log("not initialized");
+      Toast.show({
+        type: "error",
+        text1: "Could not authenticate with Google",
+      });
       setLoading(false);
       return;
     }
@@ -130,6 +106,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
       name: "bangr backups",
       parents: ["root"],
     });
+
     const fileid = await GDrive.files.getId(
       "bangr.wallet",
       [directoryId],

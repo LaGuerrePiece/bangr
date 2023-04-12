@@ -16,6 +16,8 @@ import {
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
 import useHistoricStore from "../state/historic";
+import useUserStore from "../state/user";
+import useVaultsStore from "../state/vaults";
 
 const getTasks = async (scwAddress: string) => {
   try {
@@ -38,6 +40,18 @@ const getTasks = async (scwAddress: string) => {
     }
   }
 };
+
+// const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
+//   (state) => ({
+//     smartWalletAddress: state.smartWalletAddress,
+//     wallet: state.wallet,
+//     fetchBalances: state.fetchBalances,
+//   })
+// );
+// const { fetchVaults, vaults } = useVaultsStore((state) => ({
+//   fetchVaults: state.fetchVaults,
+//   vaults: state.vaults,
+// }));
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -154,21 +168,42 @@ export const relay = async (
   // get user tasks by making a request to the tasks api every 5 seconds and check if this tx has state 2
   // if yes, show success toast
 
-  const ping = setInterval(() => {
-    getTasks(scwAddress).then((tasks) => {
-      const task = tasks!.find((t) => t.signature == signature);
-      console.log("task", task?.state);
-      if (task && task.state === 2) {
-        Toast.show({
-          type: "success",
-          text1: successMessage,
-        });
-        console.log("success");
-        clearTimeout(ping);
-        return;
-      }
-    });
-  }, 2500);
+  let task;
+  do {
+    const tasks = await getTasks(scwAddress);
+    task = tasks!.find((t) => t.signature == signature);
+    console.log("task", task?.state);
+    if (task && task.state === 2) {
+      Toast.show({
+        type: "success",
+        text1: successMessage,
+      });
+      console.log("success");
+      // fetchBalances(smartWalletAddress);
+      // fetchVaults(smartWalletAddress);
+      return;
+    }
+    // wait 2.5 seconds
+    await new Promise((r) => setTimeout(r, 2500));
+  } while (!task || task.state !== 2);
+
+  // const ping = setInterval(() => {
+  //   getTasks(scwAddress).then((tasks) => {
+  //     const task = tasks!.find((t) => t.signature == signature);
+  //     console.log("task", task?.state);
+  //     if (task && task.state === 2) {
+  //       Toast.show({
+  //         type: "success",
+  //         text1: successMessage,
+  //       });
+  //       console.log("success");
+  //       // fetchBalances(smartWalletAddress);
+  //       // fetchVaults(smartWalletAddress);
+  //       clearTimeout(ping);
+  //       return;
+  //     }
+  //   });
+  // }, 2500);
 
   // Toast.show({
   //   type: "success",

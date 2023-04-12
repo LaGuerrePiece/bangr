@@ -54,7 +54,6 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       return;
     }
     if (await loginThroughBiometrics()) {
-      console.log("azeaze");
       login(new Wallet(privKey));
       navigation.navigate("Wallet");
     }
