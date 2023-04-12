@@ -2515,10 +2515,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-google-signin/google-signin/-/google-signin-9.0.2.tgz#fd9d0cbb58591265c2ea9404b2d2ea7e514b9ea9"
   integrity sha512-oTD0ZT6ZSH7CZjM1i6hR/gFAXv9As7nxhN99XGliNxf6SChZcQRwGeaz1DjoYrWExWDVX00EH1Per3dMjhAWkQ==
 
-"@react-native-masked-view/masked-view@^0.2.8":
-  version "0.2.9"
-  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.9.tgz#723a7a076d56b8f5f3fda076eaa5b6b82988e854"
-  integrity sha512-Hs4vKBKj+15VxHZHFtMaFWSBxXoOE5Ea8saoigWhahp8Mepssm0ezU+2pTl7DK9z8Y9s5uOl/aPb4QmBZ3R3Zw==
+"@react-native-masked-view/masked-view@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@react-native-masked-view/masked-view/-/masked-view-0.2.8.tgz#34405a4361882dae7c81b1b771fe9f5fbd545a97"
+  integrity sha512-+1holBPDF1yi/y0uc1WB6lA5tSNHhM7PpTMapT3ypvSnKQ9+C6sy/zfjxNxRA/llBQ1Ci6f94EaK56UCKs5lTA==
 
 "@react-native-picker/picker@2.4.8":
   version "2.4.8"
@@ -5537,10 +5537,10 @@ expo-linking@~4.0.0, expo-linking@~4.0.1:
     qs "^6.11.0"
     url-parse "^1.5.9"
 
-expo-local-authentication@~13.2.1:
-  version "13.2.1"
-  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.2.1.tgz#7139a67d4a980e55347ac2b079015e52eb7da974"
-  integrity sha512-DugTdymppsXyW0EDuYwUO6l2I9YK+FkDOUmuPQRGXPkYvmETSGEoGI7JQf0i/unihhS1uzyYvqNBAT3mPM4Tpg==
+expo-local-authentication@~13.3.0:
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.3.0.tgz#884f6f5c1d1412b053c2ed7cf3899f405b91adde"
+  integrity sha512-HZ2L9GOQGooV+6kT2wLrR42BlxczT4N18kPY6HF82S31/a/YHslgUUt1lmHNU64NJViSCOBaTeVCjh8t/BeNEA==
   dependencies:
     invariant "^2.2.4"
 
@@ -9325,13 +9325,6 @@ react-native-codegen@^0.71.5:
     flow-parser "^0.185.0"
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
-
-react-native-dotenv@^3.4.8:
-  version "3.4.8"
-  resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-3.4.8.tgz#42284070a9994076cd700805c2dd28051c9e1432"
-  integrity sha512-fg9F8X/cG1kDTwRLgLz3t+AMbsULoFHbUVltdQarmrJ3kNllD1Zq7ZgY85bp8BnPwk0DnYQzKbooiLsUoKd10w==
-  dependencies:
-    dotenv "^16.0.3"
 
 react-native-dropdown-picker@^5.4.4:
   version "5.4.6"

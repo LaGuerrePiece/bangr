@@ -12,10 +12,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { toastConfig } from "../../../components/toasts";
 import queryString from "query-string";
 import { MoneriumUserData } from "./Webview";
-import {
-  MONERIUM_SECRET_KEY,
-  MONERIUM_SECRET_KEY_SANDBOX,
-} from "react-native-dotenv";
+import Constants from "expo-constants";
 
 export const MONERIUM_ENV: any = "prod";
 
@@ -25,12 +22,12 @@ export const MONERIUM_SETTINGS =
         clientId: "fe7e8ccb-ad2d-11ed-97a8-f2eccd865638",
         clientIdForClientAuth: "fe9b47be-ad2d-11ed-97a8-f2eccd865638",
         url: "https://api.monerium.app",
-        secret_key: MONERIUM_SECRET_KEY,
+        secret_key: Constants.expoConfig?.extra?.MONERIUM_SECRET_KEY,
       }
     : {
         clientId: "ca0d8d2a-c2bc-11ed-a453-e6504c27bfa9",
         url: "https://api.monerium.dev",
-        secret_key: MONERIUM_SECRET_KEY_SANDBOX,
+        secret_key: Constants.expoConfig?.extra?.MONERIUM_SECRET_KEY_SANDBOX,
       };
 
 const oldImplementationAddress = "0xf2b56c7c214b0b4a74e32034c96903b255d698f9";
