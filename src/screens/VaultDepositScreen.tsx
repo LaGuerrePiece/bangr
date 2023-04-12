@@ -188,6 +188,7 @@ const VaultDepositScreen = ({
     console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
 
+    console.log("handleWithdraw2"); 
     const calls = await handleAmountChange("withdraw");
 
     console.log("amount", amount);
