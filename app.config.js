@@ -23,14 +23,14 @@ module.exports = {
         NSFaceIDUsageDescription: "Bangr uses FaceId to authenticate you.",
         RCTAsyncStorageExcludeFromBackup: false
       },
-      bundleIdentifier: "com.bangr.app"
+      bundleIdentifier: "app.bangr.app"
     },
     android: {
       adaptiveIcon: {
         foregroundImage: "./assets/adaptive-icon.png",
         backgroundColor: "#FFFFFF"
       },
-      package: "com.bangr.app",
+      package: "app.bangr.app",
       versionCode: 2
     },
     web: {
