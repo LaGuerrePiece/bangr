@@ -73,7 +73,6 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
     const encryptedKey = await encrypt(key, password);
     console.log("encryptedKey", encryptedKey);
     const decryptedKey = await encrypt(encryptedKey, password);
-    console.log("decryptedKey", decryptedKey);
     const directoryId = await GDrive.files.safeCreateFolder({
       name: "bangr backups",
       parents: ["root"],
