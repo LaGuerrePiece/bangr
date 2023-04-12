@@ -95,7 +95,6 @@ const VaultDepositScreen = ({
     useState(defaultTokenSymbol);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
-  const [debouncedAmount, setDebouncedAmount] = useState("");
 
   const selectedToken = tokens?.find(
     (token) => token.symbol === selectedTokenSymbol
@@ -108,17 +107,8 @@ const VaultDepositScreen = ({
     }
   }, [route.params?.updatedToken]);
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedAmount(amount);
-    }, 500);
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [amount]);
-
   const handleAmountChange = async (action: string) => {
-    if (!parseFloat(debouncedAmount)) {
+    if (!parseFloat(amount)) {
       return;
     }
 
@@ -129,7 +119,7 @@ const VaultDepositScreen = ({
       "token",
       token,
       "amount",
-      debouncedAmount,
+      amount,
       "action",
       action,
       "vaultName",
@@ -141,7 +131,7 @@ const VaultDepositScreen = ({
         address: smartWalletAddress,
         vaultName: name,
         action,
-        amount: utils.parseUnits(debouncedAmount, token!.decimals),
+        amount: utils.parseUnits(amount, token!.decimals),
         token,
       });
 
@@ -188,18 +178,7 @@ const VaultDepositScreen = ({
     console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
 
-    console.log("handleWithdraw2"); 
     const calls = await handleAmountChange("withdraw");
-
-    console.log("amount", amount);
-
-    if (wallet && smartWalletAddress) console.log("relay");
-    console.log("calls", calls);
-    console.log("wallet", wallet);
-    console.log("smartWalletAddress", smartWalletAddress);
-    console.log("name", name);
-    console.log("selectedTokenSymbol", selectedTokenSymbol);
-    console.log("amount", amount);
 
     await relay(
       calls,
@@ -221,9 +200,6 @@ const VaultDepositScreen = ({
 
   const validateInput = (action: string) => {
     try {
-      console.log("amount", amount);
-      console.log("selectedToken?.decimals", selectedToken?.decimals);
-      console.log("selectedToken", selectedToken);
       utils.parseUnits(amount, selectedToken?.decimals);
     } catch (error) {
       Toast.show({
@@ -271,10 +247,6 @@ const VaultDepositScreen = ({
 
     return true;
   };
-
-  useEffect(() => {
-    if (amount) handleAmountChange("deposit");
-  }, [amount]);
 
   useEffect(() => {
     setBalance(
