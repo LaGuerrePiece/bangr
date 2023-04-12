@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -34,29 +34,38 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
 
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
 
-  const secureAccount = async () => {
-    // const token = await googleSignIn();
-    // console.log("token", token);
+  const secureAccount = () => {
     setLoading(true);
-    const res = await promptAsync();
-    console.log("res", res);
-    console.log("responseFromHook", response);
-    if (res.type !== "success") {
-      Toast.show({
-        type: "error",
-        text1: "Authorization failed",
-        text2: "Please try again !",
-      });
-      setLoading(false);
-      return;
+    promptAsync();
+  };
+
+  useEffect(() => {
+    if (response?.type === "success") {
+      console.log("responseFromHook", response);
+      if (!response.authentication?.accessToken) {
+        console.log("no authentication token");
+        Toast.show({
+          type: "error",
+          text1: "Could not authenticate with Google",
+        });
+        setLoading(false);
+        return;
+      }
+      getUserInfo(response.authentication.accessToken);
     }
-    const token = res.authentication!.accessToken;
-    GDrive.setAccessToken(token);
+  }, [response]);
+
+  const getUserInfo = async (accessToken: string) => {
+    GDrive.setAccessToken(accessToken);
     GDrive.init();
     const initialized = await GDrive.isInitialized();
     console.log("initialized");
     if (!initialized) {
       console.log("not initialized");
+      Toast.show({
+        type: "error",
+        text1: "Could not authenticate with Google",
+      });
       setLoading(false);
       return;
     }
