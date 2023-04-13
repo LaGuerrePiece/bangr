@@ -125,12 +125,12 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
               <Text className="my-3 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
                 Bangr will store an encrypted copy of your key on {driveName}.{" "}
                 {"\n"}
-                If you ever loose your phone, you will be able to recover your
+                If you ever lose your phone, you will be able to recover your
                 account. {"\n"}
-                Be sure not to loose your password !
+                Be sure not to loose your password!
               </Text>
               <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Create a new password :
+                Create a new password:
               </Text>
               <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
                 <TextInput
@@ -156,7 +156,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
                 source={require("../../../assets/green_check.png")}
               />
               <Text className="ml-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Backup successful !
+                Backup successful!
               </Text>
             </View>
           )}

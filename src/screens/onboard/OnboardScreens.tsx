@@ -114,7 +114,7 @@ export function SecondScreen({ navigation }: { navigation: any }) {
       title="Grow your crypto"
       image={require("../../../assets/figma/server.png")}
       text1="Bangr curates the best protocols and lets you deposit seemlessly"
-      text2="Don't try to time the market. Let time do it's thing"
+      text2="Don't try to time the market, let time do its thing"
       ButtonText="Next"
       nextPage="ThirdScreen"
     />
@@ -127,8 +127,8 @@ export function ThirdScreen({ navigation }: { navigation: any }) {
       navigation={navigation}
       title="Top-notch security"
       image={require("../../../assets/figma/processor.png")}
-      text1="Your keys stay in your phone's Secure Element."
-      text2="No more hack ! Secure encrypted backup on iCloud"
+      text1="Your keys stay in your phone's Secure Element"
+      text2="No more hack! Secure encrypted backup on iCloud"
       ButtonText="Next"
       nextPage="FourthScreen"
     />
@@ -142,7 +142,7 @@ export function FourthScreen({ navigation }: { navigation: any }) {
       title="Your keys, your crypto"
       image={require("../../../assets/figma/security.png")}
       text1="Bangr is non-custodial: we never access your funds"
-      text2="Even if we disappeared, you could still recover them !"
+      text2="Even if we were to disappear, you could still recover your keys!"
       ButtonText="Create my account"
       nextPage="CreateAccount"
       restoreAccountOption={true}
