@@ -14,6 +14,7 @@ import { Point } from "./Chart";
 import { getURLInApp } from "../utils/utils";
 import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
+import useVaultsStore from "../state/vaults";
 
 const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
   const [chart, setChart] = useState<Point[]>();
@@ -22,6 +23,8 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
   }, [token]);
 
   const colorScheme = useColorScheme();
+  const navigation = useNavigation();
+  const vaults = useVaultsStore((state) => state.vaults);
 
   // state with width and height of the chart
   const [width, setWidth] = useState(0);
@@ -64,7 +67,16 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
       <TouchableOpacity
         onPress={() => {
           // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          swiper.current.scrollBy(-1, true);
+          if (token.vaultToken) {
+            const vault = vaults?.find(
+              (vault) => vault.uiName === token.name
+            ) as any;
+            if (vault) {
+              navigation.navigate("VaultDeposit" as never, { vault } as never);
+            }
+          } else {
+            swiper.current.scrollBy(-1, true);
+          }
         }}
       >
         <View className="absolute ml-8">
@@ -92,7 +104,11 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
               <View>
                 <Image
                   className="h-12 w-12"
-                  source={colorScheme=== "dark" ? require("../../assets/vault-drk.png") : require("../../assets/vault.png")} // other: vault_1.png
+                  source={
+                    colorScheme === "dark"
+                      ? require("../../assets/vault-drk.png")
+                      : require("../../assets/vault.png")
+                  } // other: vault_1.png
                 />
                 <Image
                   className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
