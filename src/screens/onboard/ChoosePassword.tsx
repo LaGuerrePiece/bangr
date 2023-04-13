@@ -20,6 +20,8 @@ import { encrypt } from "../../utils/encrypt";
 import { colors } from "../../config/configs";
 import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import useUserStore from "../../state/user";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
@@ -27,6 +29,7 @@ WebBrowser.maybeCompleteAuthSession();
 
 export default function ChoosePassword({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
+  const setBackedUp = useUserStore((state) => state.setBackedUp);
 
   const [step, setStep] = useState(0); // 0: default, 1: success
   const [password, setPassword] = useState("");
@@ -93,6 +96,10 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
       text1: "Account secured",
       text2: "Your account is now secured on " + driveName,
     });
+
+    await AsyncStorage.setItem("backup", "true");
+    setBackedUp(true);
+
     setLoading(false);
     setStep(1);
   };
