@@ -17,6 +17,8 @@ import { colors } from "../../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import useUserStore from "../../state/user";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
@@ -26,6 +28,7 @@ export default function ChoosePasswordICloud({
   navigation: any;
 }) {
   const colorScheme = useColorScheme();
+  const setBackedUp = useUserStore((state) => state.setBackedUp);
 
   const [step, setStep] = useState(0); // 0: default, 1: success
   const [password, setPassword] = useState("");
@@ -71,6 +74,10 @@ export default function ChoosePasswordICloud({
       text1: "Account secured",
       text2: "Your account is now secured on " + driveName,
     });
+
+    await AsyncStorage.setItem("backup", "true");
+    setBackedUp(true);
+
     setLoading(false);
     setStep(1);
   };
@@ -97,14 +104,15 @@ export default function ChoosePasswordICloud({
 
         {step === 0 ? (
           <View>
-            <Text className="mt-3 text-center font-[Inter] text-typo-light dark:text-typo-dark">
-              Bangr will store an encrypted copy of your key in a file called
-              "bangr.wallet" that we will prompt you to store in your iCloud.{" "}
-              {"\n"}
-              If you ever lose your phone, you will be able to recover your
-              account.
+            <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
+              Bangr stores an encrypted copy of your key in a file, which we
+              will prompt you to save in your iCloud.
             </Text>
-            <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
+            <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
+              If you ever lose your phone, you will be able to recover your
+              account through this file.
+            </Text>
+            <Text className="m-auto mt-3 w-11/12 text-center font-bold text-typo-light dark:text-typo-dark">
               Be sure not to lose your password! If you do, bangr will not be
               able to recover your account.
             </Text>
@@ -132,7 +140,7 @@ export default function ChoosePasswordICloud({
           <ActivityIndicator size="large" className="mt-32" />
         ) : (
           <Text className="mt-12 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-            Backup successful !
+            Backup successful!
           </Text>
         )}
 
@@ -143,12 +151,12 @@ export default function ChoosePasswordICloud({
       </View>
 
       {step === 0 && (
-        <View>
-          <Text className="my-3 text-center font-[Inter] text-typo-light dark:text-typo-dark">
+        <View className="m-auto w-11/12">
+          <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
             After clicking this button, you will be prompted to save a file
             called "bangr.wallet" to your files.
           </Text>
-          <Text className="my-3 text-center font-bold text-typo-light dark:text-typo-dark">
+          <Text className="my-2 text-center font-bold text-typo-light dark:text-typo-dark">
             Make sure that you are choosing "Save to Files" then depositing
             anywhere in your iCloud Drive.
           </Text>
