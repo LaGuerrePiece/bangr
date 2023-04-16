@@ -54,6 +54,14 @@ module.exports = {
             kotlinVersion: "1.8.0"
           }
         }
+      ],
+      [
+        "react-native-nfc-manager",
+        {
+          "nfcPermission": "Custom permission message",
+          "selectIdentifiers": ["A0000002471001"],
+          "systemCodes": ["8008"]
+        }
       ]
     ],
   }

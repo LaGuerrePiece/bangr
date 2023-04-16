@@ -44,6 +44,7 @@ import {
   SecondScreen,
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
+import NfcTest from "./src/screens/NfcTest";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -136,6 +137,7 @@ const App = () => {
             options={{ animation: "slide_from_right" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="NFC" component={NfcTest} />
           <Stack.Screen
             name="Wallet"
             component={MainScreen}

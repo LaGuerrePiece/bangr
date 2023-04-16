@@ -14,7 +14,7 @@ import useUserStore from "../state/user";
 import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
-import { skipBiometrics } from "../config/configs";
+import { skipBiometrics, useNfc } from "../config/configs";
 global.Buffer = global.Buffer || Buffer;
 
 const LoginScreen = ({ navigation }: { navigation: any }) => {
@@ -54,8 +54,13 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
       return;
     }
     if (await loginThroughBiometrics()) {
-      login(new Wallet(privKey));
-      navigation.navigate("Wallet");
+      if (useNfc) {
+        console.log("nfc");
+        navigation.navigate("NFC");
+      } else {
+        login(new Wallet(privKey));
+        navigation.navigate("Wallet");
+      }
     }
   };
 
