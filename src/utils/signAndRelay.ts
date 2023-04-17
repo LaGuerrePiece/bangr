@@ -98,7 +98,7 @@ export const relay = async (
     protocol,
   });
 
-  if (!relayResponse) {
+  if (!relayResponse || relayResponse.error) {
     Toast.show({
       type: "error",
       text1: "error relaying transaction",
@@ -114,13 +114,6 @@ export const relay = async (
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
-  if (relayResponse.error) {
-    Toast.show({
-      type: "error",
-      text1: "error relaying transaction",
-    });
-    return;
-  }
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
       const chainId = Number(cid) as ChainId;
@@ -167,8 +160,6 @@ export const relay = async (
         text1: successMessage,
       });
       console.log("success");
-      // fetchBalances(smartWalletAddress);
-      // fetchVaults(smartWalletAddress);
       return;
     }
     // wait 2.5 seconds
