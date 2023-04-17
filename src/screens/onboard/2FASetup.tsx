@@ -14,50 +14,58 @@ import { encrypt, decrypt } from "../../utils/encrypt";
 import { colors } from "../../config/configs";
 import NfcManager, { NfcTech, Ndef } from "react-native-nfc-manager";
 import * as SecureStore from "expo-secure-store";
-
+import useUserStore from "../../state/user";
+import { ethers } from "ethers";
 
 NfcManager.start();
 
 export default function TwoFASetup({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
+  const { login } = useUserStore((state) => ({
+    login: state.login,
+  }));
 
   const secureSave = async (key: string, value: string) => {
     await SecureStore.setItemAsync(key, value);
   };
 
+
+
   async function writeNdef() {
+
     try {
-      // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.Ndef);
+        
+      //generate a random password of 72 characters
+      const randomPassword = await generateRandomPassword();
+       // separate the password into 6 parts
+      // write a new NDEF message composed of the 6 parts
+      console.log(randomPassword);
+      const bytes = Ndef.encodeMessage([
+        Ndef.textRecord(randomPassword.slice(0, 12)),
+        Ndef.textRecord(randomPassword.slice(12, 24)),
+        Ndef.textRecord(randomPassword.slice(24, 36)),
+        Ndef.textRecord(randomPassword.slice(36, 48)),
+        Ndef.textRecord(randomPassword.slice(48, 60)),
+        Ndef.textRecord(randomPassword.slice(60, 72)),
+      ]);
 
-      // read the NDEF message
-      const tag = await NfcManager.getTag();
-      console.warn("Tag found", tag); 
-      console.log(tag!.ndefMessage);
-      // parse the NDEF message
-      const ndefMessage = Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[0].payload));
-      // if the NDEF message is not empty, and is 32 characters long, then it is a valid 2FA card
-      if (ndefMessage !== "" && ndefMessage.length === 32) {
-        // get privKey from secure store
-        const privKey = await SecureStore.getItemAsync("privKey");
-        // encrypt the privKey with the password
-        const encryptedPrivKey = await encrypt(privKey!, ndefMessage);
-        // save the encrypted privKey to secure store
-        await secureSave("encryptedPrivKey", encryptedPrivKey);
-        // save the indicator that the user has a 2FA card
-        await secureSave("2faPass", "true");
-        // navigate to the home screen
-        navigation.navigate("Wallet");
-
-        return;
-      }
-
-      // write a new NDEF message
-      const bytes = Ndef.encodeMessage([Ndef.textRecord(await generateRandomPassword())]);
       if (bytes) {
         await NfcManager.ndefHandler // STEP 2
           .writeNdefMessage(bytes); // STEP 3
       }
+
+      console.log("NDEF message written");
+      console.log(randomPassword);
+
+      const privKey = await SecureStore.getItemAsync("privKey");
+      const decryptedPrivKey =  await decrypt(privKey!, randomPassword);
+      // console.log(decryptedPrivKey);
+      //login
+      await login(new ethers.Wallet(decryptedPrivKey!));
+      navigation.navigate("Wallet");
+
+
     } catch (ex) {
       console.warn(ex);
     } finally {
@@ -67,20 +75,24 @@ export default function TwoFASetup({ navigation }: { navigation: any }) {
   }
 
   async function generateRandomPassword() {
-    // generate a random password of 64 characters
-    const randomPassword = Math.random().toString(36).slice(-64);
+    // generate a random password of 72 characters
+    const s = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const randomPassword = Array(72)
+      .fill(s)
+      .map((x) => x[Math.floor(Math.random() * x.length)])
+      .join("");
 
     // get privKey from secure store
     const privKey = await SecureStore.getItemAsync("privKey");
     // encrypt the privKey with the random password
     const encryptedPrivKey = await encrypt(privKey!, randomPassword);
     // save the encrypted privKey to secure store
-    await secureSave("encryptedPrivKey", encryptedPrivKey);
+    await secureSave("privKey", encryptedPrivKey);
     // save the indicator that the user has a 2FA card
     await secureSave("2faPass", "true");
     return randomPassword;
   }
-
+ 
   writeNdef();
 
   return (

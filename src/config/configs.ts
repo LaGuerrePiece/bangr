@@ -67,7 +67,6 @@ export const forceWalletEmpty = false; // to see button to buy first coins
 
 export const skipBiometrics = false; // skips the need for biometrics. Never push true to prod !
 
-export  const useNfc = true; // to use nfc
 
 // Threshold after which we consider it useless to try to complete
 // a tuple in which the first term can to it alone

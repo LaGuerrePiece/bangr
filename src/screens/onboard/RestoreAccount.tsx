@@ -136,13 +136,14 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
-      login(new ethers.Wallet(decrypted));
+      // login(new ethers.Wallet(decrypted));r
+      // wait for the file to be deleted
       await FileSystem.deleteAsync(fileContentUri);
       Toast.show({
         type: "success",
         text1: "Account recovered !",
       });
-      navigation.navigate("Wallet");
+      navigation.navigate("TwoFASetup");
     } catch (e) {
       console.log(e);
       Toast.show({

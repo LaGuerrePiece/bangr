@@ -29,34 +29,37 @@ export default function TwoFAVerify({ navigation }: { navigation: any }) {
     await SecureStore.setItemAsync(key, value);
   };
 
-  async function readNdef() {
+    async function readNdef() {
     try {
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.Ndef);
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
       console.warn('Tag found', tag);
-      console.log(tag!.ndefMessage);
-      // parse the NDEF message
-      const ndefMessage = Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[0].payload));
-      console.warn('NDEF message', ndefMessage);
-
-      // get privKey from secure store
-      const privKey = await SecureStore.getItemAsync("privKey");
-      // decrypt the privKey with the random password
-      const decryptedPrivKey = await decrypt(ndefMessage, privKey!);
-      // verify the decrypted privKey is in the correct format
-      if (!ethers.utils.isHexString(decryptedPrivKey)) {
-        throw new Error("Invalid private key");
+      // parse the NDEF message composed of 6 records
+      let ndefMessage = '';
+      for (let i = 0; i < 6; i++) {
+        ndefMessage += Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[i].payload));
       }
+      console.warn('NDEF message', ndefMessage);
+      console.log(ndefMessage.length)
+      // if the NDEF message is not empty, and is 72 characters long, then it is a valid 2FA card
+      if (ndefMessage.length === 72) {
+        // get the privKey from the secure store
+        const privKey = await SecureStore.getItemAsync("privKey");
+        console.log("privKey", privKey);
+        // decrypt the privKey
+        const decryptedPrivKey = await decrypt(privKey!, ndefMessage);
+        console.log("decrypted", decryptedPrivKey);
+        // if the decrypted privKey is a valid private key, then login with it
+        if (ethers.utils.isHexString(decryptedPrivKey)) {
+          login(new ethers.Wallet(decryptedPrivKey));
+          navigation.navigate("Wallet");
+        }
+        
 
 
-
-      // login with the decrypted privKey
-      login(new ethers.Wallet(decryptedPrivKey!));
-      // navigate to the home screen
-      navigation.navigate("Wallet");
-
+      }
      
     } catch (ex) {
       console.warn(ex);
@@ -64,21 +67,6 @@ export default function TwoFAVerify({ navigation }: { navigation: any }) {
       // STEP 4
       NfcManager.cancelTechnologyRequest();
     }
-  }
-
-  async function generateRandomPassword() {
-    // generate a random password of 64 characters
-    const randomPassword = Math.random().toString(36).slice(-64);
-
-    // get privKey from secure store
-    const privKey = await SecureStore.getItemAsync("privKey");
-    // encrypt the privKey with the random password
-    const encryptedPrivKey = await encrypt(privKey!, randomPassword);
-    // save the encrypted privKey to secure store
-    await secureSave("encryptedPrivKey", encryptedPrivKey);
-    // save the indicator that the user has a 2FA card
-    await secureSave("2faPass", "true");
-    return randomPassword;
   }
 
   readNdef();
