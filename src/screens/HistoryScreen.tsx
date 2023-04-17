@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   Image,
@@ -11,7 +10,6 @@ import {
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
-import * as Haptics from "expo-haptics";
 import { cutDecimals } from "../utils/format";
 
 const HistoryScreen = ({ swiper }: { swiper: any }) => {

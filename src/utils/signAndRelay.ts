@@ -41,18 +41,6 @@ const getTasks = async (scwAddress: string) => {
   }
 };
 
-// const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
-//   (state) => ({
-//     smartWalletAddress: state.smartWalletAddress,
-//     wallet: state.wallet,
-//     fetchBalances: state.fetchBalances,
-//   })
-// );
-// const { fetchVaults, vaults } = useVaultsStore((state) => ({
-//   fetchVaults: state.fetchVaults,
-//   vaults: state.vaults,
-// }));
-
 export const relay = async (
   calls: CallWithNonce[],
   wallet: ethers.Wallet,

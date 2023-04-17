@@ -31,6 +31,7 @@ import { correctInput, getURLInApp } from "../utils/utils";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import SelectTokenButton from "../components/SelectTokenButton";
 import { colors } from "../config/configs";
+import useTasksStore from "../state/tasks";
 
 const calculateGains = (
   amount: number,
@@ -55,6 +56,7 @@ const VaultDepositScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -172,6 +174,7 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    fetchTasks();
   };
 
   const handleWithdraw = async () => {
@@ -190,12 +193,13 @@ const VaultDepositScreen = ({
       selectedTokenSymbol,
       "",
       amount,
-      "Deposit successful",
-      "Deposit failed"
+      "Withdraw successful",
+      "Withdraw failed"
     );
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    fetchTasks();
   };
 
   const validateInput = (action: string) => {

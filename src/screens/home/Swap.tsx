@@ -36,6 +36,7 @@ import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
+import useTasksStore from "../../state/tasks";
 
 type ButtonStatus = {
   disabled: boolean;
@@ -71,6 +72,8 @@ const Swap = ({
     clearAfterSwap,
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
+
   const colorScheme = useColorScheme();
 
   useEffect(() => {
@@ -232,6 +235,7 @@ const Swap = ({
     }
     clearAfterSwap();
     fetchBalances();
+    fetchTasks();
   };
 
   // test swap and then invest
