@@ -172,10 +172,16 @@ const Swap = ({
       const dai = tokens?.find((token) => token.symbol === "DAI");
       if (dai) srcTokenSave = dai;
     }
+
+    // console.log("amountIn", amountIn);
+
     update({
-      amountIn: quote?.sumOfToAmount
-        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
-        : amountIn,
+      // causes bugs for now with USDC
+      // amountIn: quote?.sumOfToAmount
+      //   ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+      //   : "0",
+      amountIn: "0",
+      debouncedAmountIn: "0",
       quote: null,
       calls: null,
       srcToken: dstToken,
