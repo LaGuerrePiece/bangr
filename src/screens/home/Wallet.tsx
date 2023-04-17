@@ -22,6 +22,7 @@ import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 import useSettingsStore from "../../state/settings";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Wallet = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
@@ -30,6 +31,10 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
   const loaded = useUserStore((state) => state.loaded);
+  const [backedUp, setBackedUp] = useUserStore((state) => [
+    state.backedUp,
+    state.setBackedUp,
+  ]);
   const currency = useSettingsStore((state) => state.currency);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -46,6 +51,14 @@ const Wallet = ({ swiper }: { swiper: any }) => {
         .reduce((a, b) => a + (b.quote ?? 0), 0)
     );
   }, [tokens]);
+
+  const checkBackup = async () => {
+    setBackedUp((await AsyncStorage.getItem("backup")) === "true");
+  };
+
+  useEffect(() => {
+    checkBackup();
+  }, []);
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
@@ -107,6 +120,18 @@ const Wallet = ({ swiper }: { swiper: any }) => {
               {/* <View className=""><Chart chart={chart} /></View> */}
               <HomeButton />
             </View>
+
+            {!backedUp && (
+              <TouchableOpacity
+                onPress={() => navigation.navigate("ChoosePassword" as never)}
+              >
+                <View className="w-11/12 rounded-md border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
+                  <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
+                    Your account is not backed up yet!
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
 
             <View className="w-11/12">
               {tokens

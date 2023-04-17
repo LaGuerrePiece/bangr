@@ -21,6 +21,8 @@ interface UserState {
   fetchPrices: () => Promise<void>;
   setLoaded: (loaded: number | undefined) => void;
   update: (patch: any) => void;
+  backedUp: boolean;
+  setBackedUp: (backedUp: boolean) => void;
 }
 
 const useUserStore = create<UserState>()((set, get) => ({
@@ -79,6 +81,12 @@ const useUserStore = create<UserState>()((set, get) => ({
     } catch (error) {
       console.log("error fetching prices:", error);
     }
+  },
+
+  backedUp: true,
+
+  setBackedUp: (backedUp: boolean) => {
+    set({ backedUp });
   },
 }));
 

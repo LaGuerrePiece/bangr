@@ -114,7 +114,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
             </Text>
             <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
               Before we take you to it, let's secure it on{" "}
-              {Platform.OS === "ios" ? "iCloud" : "Google Drive"} !
+              {Platform.OS === "ios" ? "iCloud" : "Google Drive"}!
             </Text>
           </Animated.View>
           <ActionButton
