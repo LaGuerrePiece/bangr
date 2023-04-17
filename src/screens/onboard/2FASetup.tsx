@@ -29,16 +29,13 @@ export default function TwoFASetup({ navigation }: { navigation: any }) {
     await SecureStore.setItemAsync(key, value);
   };
 
-
-
   async function writeNdef() {
-
     try {
       await NfcManager.requestTechnology(NfcTech.Ndef);
-        
+
       //generate a random password of 72 characters
       const randomPassword = await generateRandomPassword();
-       // separate the password into 6 parts
+      // separate the password into 6 parts
       // write a new NDEF message composed of the 6 parts
       console.log(randomPassword);
       const bytes = Ndef.encodeMessage([
@@ -59,13 +56,11 @@ export default function TwoFASetup({ navigation }: { navigation: any }) {
       console.log(randomPassword);
 
       const privKey = await SecureStore.getItemAsync("privKey");
-      const decryptedPrivKey =  await decrypt(privKey!, randomPassword);
+      const decryptedPrivKey = await decrypt(privKey!, randomPassword);
       // console.log(decryptedPrivKey);
       //login
       await login(new ethers.Wallet(decryptedPrivKey!));
       navigation.navigate("Wallet");
-
-
     } catch (ex) {
       console.warn(ex);
     } finally {
@@ -92,7 +87,7 @@ export default function TwoFASetup({ navigation }: { navigation: any }) {
     await secureSave("2faPass", "true");
     return randomPassword;
   }
- 
+
   writeNdef();
 
   return (
@@ -120,6 +115,12 @@ export default function TwoFASetup({ navigation }: { navigation: any }) {
           className="mx-auto mt-8 h-52 w-52"
           source={require("../../../assets/figma/security.png")}
         /> */}
+        <View className="flex-row items-center justify-center">
+          <Image
+            className="mx-auto mt-8 h-[200px] w-[300px]"
+            source={require("../../../assets/2facard.png")}
+          />
+        </View>
 
         <View className="mx-auto mb-8 w-11/12">
           <ActionButton

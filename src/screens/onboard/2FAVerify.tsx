@@ -17,32 +17,32 @@ import * as SecureStore from "expo-secure-store";
 import useUserStore from "../../state/user";
 import { ethers } from "ethers";
 
-
 NfcManager.start();
 
 export default function TwoFAVerify({ navigation }: { navigation: any }) {
   const colorScheme = useColorScheme();
   const login = useUserStore((state) => state.login);
 
-
   const secureSave = async (key: string, value: string) => {
     await SecureStore.setItemAsync(key, value);
   };
 
-    async function readNdef() {
+  async function readNdef() {
     try {
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.Ndef);
       // the resolved tag object will contain `ndefMessage` property
       const tag = await NfcManager.getTag();
-      console.warn('Tag found', tag);
+      console.warn("Tag found", tag);
       // parse the NDEF message composed of 6 records
-      let ndefMessage = '';
+      let ndefMessage = "";
       for (let i = 0; i < 6; i++) {
-        ndefMessage += Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[i].payload));
+        ndefMessage += Ndef.text.decodePayload(
+          new Uint8Array(tag!.ndefMessage[i].payload)
+        );
       }
-      console.warn('NDEF message', ndefMessage);
-      console.log(ndefMessage.length)
+      console.warn("NDEF message", ndefMessage);
+      console.log(ndefMessage.length);
       // if the NDEF message is not empty, and is 72 characters long, then it is a valid 2FA card
       if (ndefMessage.length === 72) {
         // get the privKey from the secure store
@@ -56,11 +56,7 @@ export default function TwoFAVerify({ navigation }: { navigation: any }) {
           login(new ethers.Wallet(decryptedPrivKey));
           navigation.navigate("Wallet");
         }
-        
-
-
       }
-     
     } catch (ex) {
       console.warn(ex);
     } finally {
@@ -91,6 +87,12 @@ export default function TwoFAVerify({ navigation }: { navigation: any }) {
           <Text className="mt-2 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
             Tap your 2FA card to your phone
           </Text>
+          <View className="flex-row justify-center items-center">
+            <Image
+              className="mx-auto mt-8 w-[300px] h-[200px]"
+              source={require("../../../assets/2facard.png")}
+            />
+          </View>
         </View>
         {/* <Image
           className="mx-auto mt-8 h-52 w-52"
