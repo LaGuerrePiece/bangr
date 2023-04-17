@@ -27,21 +27,27 @@ const NfcTest = () => {
       // register for the NFC tag with NDEF in it
       await NfcManager.requestTechnology(NfcTech.Ndef);
       // the resolved tag object will contain `ndefMessage` property
-      const tag = await NfcManager.getTag();
-      console.warn('Tag found', tag);
-      console.log(tag!.ndefMessage);
-      // parse the NDEF message
-      const ndefMessage = Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[0].payload));
-      console.warn('NDEF message', ndefMessage);
-     
+      // const tag = await NfcManager.getTag();
+      // console.warn('Tag found', tag);
+      // console.log(tag!.ndefMessage);
+      // // parse the NDEF message
+      // const ndefMessage = Ndef.text.decodePayload(new Uint8Array(tag!.ndefMessage[0].payload));
+      // console.warn('NDEF message', ndefMessage);
 
-      
+      // write a new NDEF message
+      const bytes = Ndef.encodeMessage([Ndef.textRecord('Hello NFC')]);
+      if (bytes) {
+        await NfcManager.ndefHandler // STEP 2
+          .writeNdefMessage(bytes); // STEP 3
+      }
     } catch (ex) {
-      console.warn('Oops!', ex);
+      console.warn(ex);
     } finally {
-      // stop the nfc scanning
+      // STEP 4
       NfcManager.cancelTechnologyRequest();
     }
+
+  
   }
 
   return (

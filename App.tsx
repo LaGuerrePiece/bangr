@@ -45,6 +45,9 @@ import {
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
 import NfcTest from "./src/screens/NfcTest";
+import TwoFASetup from "./src/screens/onboard/2FASetup";
+import TwoFASerify from "./src/screens/onboard/2FAVerify";
+import TwoFAVerify from "./src/screens/onboard/2FAVerify";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -138,6 +141,9 @@ const App = () => {
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="NFC" component={NfcTest} />
+          <Stack.Screen name="TwoFASetup" component={TwoFASetup} />
+          <Stack.Screen name="TwoFAVerify" component={TwoFAVerify} />
+
           <Stack.Screen
             name="Wallet"
             component={MainScreen}

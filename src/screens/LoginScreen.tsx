@@ -48,15 +48,15 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
 
   const checkPreviousUser = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
+    const tfaPass = await SecureStore.getItemAsync("2faPass");
     // const privKey = null;
     if (!privKey) {
       navigation.navigate("FirstScreen");
       return;
     }
     if (await loginThroughBiometrics()) {
-      if (useNfc) {
-        console.log("nfc");
-        navigation.navigate("NFC");
+      if (tfaPass && tfaPass == "true") {
+        navigation.navigate("TwoFAVerify");
       } else {
         login(new Wallet(privKey));
         navigation.navigate("Wallet");

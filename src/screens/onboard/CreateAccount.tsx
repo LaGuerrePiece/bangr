@@ -129,7 +129,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
           <TouchableOpacity
             className={intro ? "opacity-0" : ""}
             onPress={() => {
-              navigation.navigate("Wallet");
+              navigation.navigate("TwoFASetup");
             }}
           >
             <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
