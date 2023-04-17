@@ -13,6 +13,7 @@ import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
 import * as Haptics from "expo-haptics";
 import { cutDecimals } from "../utils/format";
+import useTokensStore from "../state/tokens";
 
 const HistoryScreen = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
@@ -21,6 +22,10 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
     fetchTasks: state.fetchTasks,
   }));
   const scw = useUserStore((state) => state.smartWalletAddress);
+
+  const {  getToken } = useTokensStore((state) => ({
+    getToken: state.getToken,
+  }));
 
   const [refreshing, setRefreshing] = useState(false);
 
@@ -90,15 +95,27 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                   />
                 </View>
                 <View className="flex-row">
+
+                <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
+                    {cutDecimals(task.amount, 2)}  { }
+                  </Text>
+                <Image
+                    className="h-5 w-5"
+                    source={ getToken(task.asset1)?.logoURI ? {uri: getToken(task.asset1)?.logoURI} : require("../../assets/task-error.png") }
+                  />
+
+                  
                   {/* <Image
                   className="h-5 w-5"
                   source={require("../../assets/" + task.asset1 + ".png")}
                   /> */}
 
-                  <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark">
+                  {/* logo of asset1 which id getToken(asset1) */}
+
+                  {/* <Text className="ml-4 font-bold text-typo2-light dark:text-typo2-dark"> */}
                     {/* {task.type}
                     {"ed "} */}
-                    {cutDecimals(task.amount, 2)} {task.asset1} {""}
+                    {/* {cutDecimals(task.amount, 2)}  { } {""}
                     {task.type === "Invest"
                       ? "into"
                       : task.type === "Withdraw"
@@ -110,9 +127,9 @@ const HistoryScreen = ({ swiper }: { swiper: any }) => {
                       ? task.protocol
                       : task.type === "Withdraw"
                       ? task.protocol
-                      : task.asset2}
+                      : task.asset2} */}
                     {/* {task.protocol} */}
-                  </Text>
+                  {/* </Text> */}
                 </View>
                 <View>
                   <Image
