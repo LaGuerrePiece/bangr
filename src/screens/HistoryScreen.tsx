@@ -87,59 +87,63 @@ const HistoryScreen = ({
     }
   };
 
-  const pTasks = tasks.filter((task) => task.state !== 2 && task.state > -2);
-  console.log(route.params?.waitingForTask);
-
-  const waitForTask = async () => {
-    Toast.show({
-      type: "info",
-      text1: "Transaction sent",
-      text2: "Waiting for confirmation...",
-    });
+  const waitForTask = async (pTasks: Task[]) => {
     console.log("waiting for task");
 
-    const tasks = await getTasks(smartWalletAddress!);
-    fetchTasks();
+    await fetchTasks();
+    // fetchTasks();
     // foreach task in pending tasks
+    console.log("ptasks", pTasks);
     pTasks.forEach(async (task) => {
+      // if task state is 2 or -20, return
+      if (task.state === 2 || task.state === -20) return;
+      if (task.state === -1) {
+        Toast.show({
+          type: "error",
+          text1: "Transaction failed",
+          text2: "Your balances have not been updated",
+        });
+        return;
+      }
+      // while task state is not 2 or -20
       do {
         console.log("task", task?.state);
         // if task is in pending tasks
-        if (tasks!.find((t) => t.txHash === task.txHash && t.state > -2)) {
-          console.log("task found");
-          // if task is confirmed
-          if (task.state === 2) {
-            console.log("task confirmed");
-            Toast.show({
-              type: "success",
-              text1: "Transaction confirmed",
-              text2: "Your balances have been updated",
-            });
-            // fetch balances
-            fetchBalances();
-            fetchVaults();
-            fetchTasks();
-            Toast.show({
-              type: "success",
-              text1: "Transaction confirmed",
-              text2: "Your balances have been updated",
-            });
-            return;
-          }
+        console.log("task found");
+        // if task is confirmed
+        if (task.state === 2) {
+          console.log("task confirmed");
+          Toast.show({
+            type: "success",
+            text1: "Transaction confirmed",
+            text2: "Your balances have been updated",
+          });
+          // fetch balances
+          fetchBalances();
+          fetchVaults();
+          fetchTasks();
+          return;
         }
-
         // wait 2 seconds
         await new Promise((resolve) => setTimeout(resolve, 2000));
-      } while (task.state !== 2);
+      } while (task.state !== 2 && task.state !== -20);
     });
   };
 
   // console log pending tasks
-
-  if (pTasks && pTasks.length > 0 && route.params?.waitingForTask) {
-    console.log("pending tasks");
-    waitForTask();
-  }
+  const interval = setInterval(() => {
+    if (route.params?.waitingForTask) {
+      fetchTasks();
+      const pTasks = tasks.filter(
+        (task) => task.state !== 2 && task.state > -2
+      );
+      if (pTasks.length > 0 && route.params?.waitingForTask) {
+        console.log("pending tasks");
+        waitForTask(pTasks);
+        clearInterval(interval);
+      }
+    }
+  }, 2500);
 
   if (!vaults) return null;
 

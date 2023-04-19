@@ -45,11 +45,12 @@ export function TabBar({ state, descriptors, navigation } : any) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ flex: 1 }}
+            
           >
 
             <View className="w-full flex-col justify-between">
             <Image
-                className="h-8 w-8 mx-auto"
+                className={isFocused ? "h-7 w-7 m-auto" : "h-7 w-7 m-auto opacity-50"}
                 source={ label === "Invest"
                     && colorScheme === "dark"
                     ? require("../../assets/invest-drk.png")
