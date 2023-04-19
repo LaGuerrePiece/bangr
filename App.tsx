@@ -44,6 +44,7 @@ import {
   SecondScreen,
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
+import HistoryScreen from "./src/screens/HistoryScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -133,7 +134,8 @@ const App = () => {
                 ? ChoosePasswordScreen
                 : ChoosePasswordICloud
             }
-            options={{ animation: "slide_from_right" }}
+            options={{ animation: "slide_from_left" 
+               , presentation: "modal" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
@@ -146,6 +148,11 @@ const App = () => {
             component={VaultInfoScreen}
             options={{ presentation: "modal" }}
           />
+          {/* <Stack.Screen
+            name="HistoryScreen"
+            component={HistoryScreen}
+            options={{ animation: "slide_from_right" }}
+          /> */}
           <Stack.Screen
             name="Token"
             component={TokenScreen}
