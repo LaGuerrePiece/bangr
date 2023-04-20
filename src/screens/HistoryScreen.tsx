@@ -57,6 +57,11 @@ const HistoryScreen = ({
   useEffect(() => {
     if (!smartWalletAddress) return;
     fetchTasks();
+    if (route.params?.waitingForTask) {
+      const interval = setInterval(async () => {
+        fetchTasks();
+      }, 2000);
+    }
   }, [smartWalletAddress]);
 
   const onRefresh = useCallback(async () => {
@@ -65,85 +70,61 @@ const HistoryScreen = ({
     setRefreshing(false);
   }, []);
 
-  const getTasks = async (scwAddress: string) => {
-    try {
-      const { data } = (await axios.post(
-        `${getURLInApp()}/api/v1/tasks`,
-        scwAddress,
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json; charset=UTF-8",
-          },
-        }
-      )) as { data: Task[] };
-      return data;
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log("error relaying transaction: ", error.message);
-      } else {
-        console.log("unexpected error relaying transaction: ", error);
-      }
-    }
-  };
+  // const waitForTask = async () => {
+  //   console.log("waiting for task");
 
-  const waitForTask = async (pTasks: Task[]) => {
-    console.log("waiting for task");
+  //   // fetchTasks();
+  //   // foreach task in pending tasks
+  //   let pTasks: Task[] = [];
+  //   do {
+  //     pTasks = tasks.filter((task) => task.state !== 2 && task.state > -2);
+  //     await fetchTasks();
 
-    await fetchTasks();
-    // fetchTasks();
-    // foreach task in pending tasks
-    console.log("ptasks", pTasks);
-    pTasks.forEach(async (task) => {
-      // if task state is 2 or -20, return
-      if (task.state === 2 || task.state === -20) return;
-      if (task.state === -1) {
-        Toast.show({
-          type: "error",
-          text1: "Transaction failed",
-          text2: "Your balances have not been updated",
-        });
-        return;
-      }
-      // while task state is not 2 or -20
-      do {
-        console.log("task", task?.state);
-        // if task is in pending tasks
-        console.log("task found");
-        // if task is confirmed
-        if (task.state === 2) {
-          console.log("task confirmed");
-          Toast.show({
-            type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your balances have been updated",
-          });
-          // fetch balances
-          fetchBalances();
-          fetchVaults();
-          fetchTasks();
-          return;
-        }
-        // wait 2 seconds
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      } while (task.state !== 2 && task.state !== -20);
-    });
-  };
+  //     console.log("pending tasks", pTasks.length);
+  //     pTasks.forEach((task) => {
+  //       if (task.state === 2 || task.state === -20) {
+  //         // remove task from pending tasks
+  //         console.log("task confirmed");
+  //         console.log("pending tasks", pTasks.length);
+  //         pTasks = pTasks.filter((t) => t.txHash !== task.txHash);
+  //         console.log("pending tasks", pTasks.length);
+  //         return;
+  //       }
+  //       // if task state is -20
+
+  //       if (task.state === -20) {
+  //         Toast.show({
+  //           type: "error",
+  //           text1: "Transaction failed",
+  //           text2: "Your balances have not been updated",
+  //         });
+  //       }
+  //       // while task state is not 2 or -20
+  //       console.log("task", task?.state);
+  //       // if task is confirmed
+  //       if (task.state === 2) {
+  //         console.log("task confirmed");
+  //         Toast.show({
+  //           type: "success",
+  //           text1: "Transaction confirmed",
+  //           text2: "Your balances have been updated",
+  //         });
+  //         // fetch balances
+  //         fetchBalances();
+  //         fetchVaults();
+  //         fetchTasks();
+  //         return;
+  //       }
+  //       // wait 2 seconds
+  //     });
+  //     console.log("waiting 2 seconds");
+  //     console.log("pending tasks", pTasks.length);
+  //     await new Promise((resolve) => setTimeout(resolve, 4000));
+  //   } while (pTasks.length > 0);
+  // };
 
   // console log pending tasks
-  const interval = setInterval(() => {
-    if (route.params?.waitingForTask) {
-      fetchTasks();
-      const pTasks = tasks.filter(
-        (task) => task.state !== 2 && task.state > -2
-      );
-      if (pTasks.length > 0 && route.params?.waitingForTask) {
-        console.log("pending tasks");
-        waitForTask(pTasks);
-        clearInterval(interval);
-      }
-    }
-  }, 2500);
+
 
   if (!vaults) return null;
 
