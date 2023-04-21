@@ -44,7 +44,7 @@ import {
   SecondScreen,
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
-import HistoryScreen from "./src/screens/HistoryScreen";
+import { Toaster } from "react-native-customizable-toast";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -227,6 +227,7 @@ const App = () => {
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />
+        <Toaster/>
         <StatusBar
           barStyle={
             Appearance.getColorScheme() === "light"

@@ -15,10 +15,10 @@ import * as Haptics from "expo-haptics";
 import { cutDecimals } from "../utils/format";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
-import { Toast } from "react-native-toast-message/lib/src/Toast";
 import axios from "axios";
 import { getURLInApp } from "../utils/utils";
 import { Task } from "../state/tasks";
+import { ToasterHelper } from "react-native-customizable-toast";
 
 type HistoryParams = {
   HistoryScreen: {
@@ -34,10 +34,17 @@ const HistoryScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
+
   const { tasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
+    // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
   }));
+
+  const [prevPendings, setPrevPendings] = useState<Task[]>([]);
+  // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
+  const [isTrackingTasks, setIsTrackingTasks] = useState(false);
+
   const { smartWalletAddress, fetchBalances } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
     fetchBalances: state.fetchBalances,
@@ -57,11 +64,8 @@ const HistoryScreen = ({
   useEffect(() => {
     if (!smartWalletAddress) return;
     fetchTasks();
-    if (route.params?.waitingForTask) {
-      const interval = setInterval(async () => {
-        fetchTasks();
-      }, 2000);
-    }
+    console.log("route.params?.waitingForTask", route.params?.waitingForTask);
+    
   }, [smartWalletAddress]);
 
   const onRefresh = useCallback(async () => {
@@ -70,63 +74,43 @@ const HistoryScreen = ({
     setRefreshing(false);
   }, []);
 
-  // const waitForTask = async () => {
-  //   console.log("waiting for task");
-
-  //   // fetchTasks();
-  //   // foreach task in pending tasks
-  //   let pTasks: Task[] = [];
-  //   do {
-  //     pTasks = tasks.filter((task) => task.state !== 2 && task.state > -2);
-  //     await fetchTasks();
-
-  //     console.log("pending tasks", pTasks.length);
-  //     pTasks.forEach((task) => {
-  //       if (task.state === 2 || task.state === -20) {
-  //         // remove task from pending tasks
-  //         console.log("task confirmed");
-  //         console.log("pending tasks", pTasks.length);
-  //         pTasks = pTasks.filter((t) => t.txHash !== task.txHash);
-  //         console.log("pending tasks", pTasks.length);
-  //         return;
-  //       }
-  //       // if task state is -20
-
-  //       if (task.state === -20) {
-  //         Toast.show({
-  //           type: "error",
-  //           text1: "Transaction failed",
-  //           text2: "Your balances have not been updated",
-  //         });
-  //       }
-  //       // while task state is not 2 or -20
-  //       console.log("task", task?.state);
-  //       // if task is confirmed
-  //       if (task.state === 2) {
-  //         console.log("task confirmed");
-  //         Toast.show({
-  //           type: "success",
-  //           text1: "Transaction confirmed",
-  //           text2: "Your balances have been updated",
-  //         });
-  //         // fetch balances
-  //         fetchBalances();
-  //         fetchVaults();
-  //         fetchTasks();
-  //         return;
-  //       }
-  //       // wait 2 seconds
-  //     });
-  //     console.log("waiting 2 seconds");
-  //     console.log("pending tasks", pTasks.length);
-  //     await new Promise((resolve) => setTimeout(resolve, 4000));
-  //   } while (pTasks.length > 0);
-  // };
-
-  // console log pending tasks
-
-
   if (!vaults) return null;
+
+  if (route.params?.waitingForTask && !isTrackingTasks) {
+    setIsTrackingTasks(true);
+    const interval = setInterval(async () => {
+      await fetchTasks();
+
+      const pendingTasks = tasks.filter((t: Task) => t.state !== 2 && t.state !== -20);
+
+      console.log("pendingTasks", pendingTasks);
+
+      for (let i = 0; i < pendingTasks.length; i++) {
+        const task = pendingTasks[i];
+        const prevTask = prevPendings.find(
+          (t: Task) =>
+            t.chainId === task.chainId &&
+            t.type === task.type &&
+            t.protocol === task.protocol &&
+            t.asset1 === task.asset1 &&
+            t.asset2 === task.asset2 &&
+            t.state !== task.state
+        );
+        console.log("prevTask", prevTask);
+        console.log("state", prevTask?.state);
+        if (prevTask && prevTask.state === 1) {
+          ToasterHelper.show({
+            text: "Transaction completed",
+            type: "success",
+            timeout: 5000,
+          });
+          clearInterval(interval);
+        }
+      }
+      setPrevPendings(pendingTasks);
+    }, 2000);
+  }
+    
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
@@ -266,7 +250,7 @@ const HistoryScreen = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state === 2 || task.state == -20)
-            .reverse()
+            // .reverse()
             .map((task, index) => (
               <View
                 className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"

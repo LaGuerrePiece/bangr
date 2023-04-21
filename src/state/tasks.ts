@@ -17,6 +17,7 @@ export type Task = {
 
 interface TasksState {
   tasks: Task[];
+  pendingTasks: Task[];
   addTasks: (...tasks: Task[]) => void;
   // fuction to fetch tasks for a scwAddress
   fetchTasks: () => Promise<void>;
@@ -26,6 +27,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
   smartWalletAddress: undefined,
   wallet: undefined,
   tasks: [],
+  pendingTasks: [],
   addTasks: (...tasks) => {
     set({ tasks: [...get().tasks, ...tasks] });
   },
@@ -43,7 +45,9 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         data: Task[];
       };
       console.log(`fetched ${data.length} tasks`);
-      set({ tasks: data });
+      console.log(data);
+      const pendingTasks = data.filter((task) => task.state !== 2 && task.state !== -20);
+      set({ tasks: data, pendingTasks: pendingTasks });
     } catch (error) {
       console.log("error fetching tasks:", error);
     }

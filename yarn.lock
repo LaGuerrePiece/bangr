@@ -9356,6 +9356,11 @@ react-native-codegen@^0.71.5:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-customizable-toast@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-customizable-toast/-/react-native-customizable-toast-0.1.7.tgz#35ca763eaa4038d9fd36c6408c58c9b50f809174"
+  integrity sha512-oPevOIeVpLTamTU3miJmcLMJMkIhQGd6ToZD0mvMGwAnjmXLlCLwsBXxCPEeuYy3F2rA6TdL+mYkcegriWmr5Q==
+
 react-native-dropdown-picker@^5.4.4:
   version "5.4.6"
   resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.6.tgz#3736fc468de4a295e4df8d1f65ed2eadaf9b445f"
