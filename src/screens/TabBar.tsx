@@ -53,17 +53,17 @@ export function TabBar({ state, descriptors, navigation } : any) {
                 className={isFocused ? "h-7 w-7 m-auto" : "h-7 w-7 m-auto opacity-50"}
                 source={ label === "Invest"
                     && colorScheme === "dark"
-                    ? require("../../assets/invest-drk.png")
+                    ? require("../../assets/seed-drk.png")
                     : label === "Invest" && colorScheme === "light"
-                    ? require("../../assets/invest.png")
+                    ? require("../../assets/seed.png")
                     : label === "Settings" && colorScheme === "dark"
                     ? require("../../assets/settings-drk.png")
                     : label === "Settings" && colorScheme === "light"
                     ? require("../../assets/settings.png")
                     : label === "Wallet" && colorScheme === "dark"
-                    ? require("../../assets/pochicon-drk.png")
+                    ? require("../../assets/wallet-drk.png")
                     : label === "Wallet" && colorScheme === "light"
-                    ? require("../../assets/pochicon.png")
+                    ? require("../../assets/wallet.png")
                     : label === "Swap" && colorScheme === "dark"
                     ? require("../../assets/swap-drk.png")
                     : label === "Swap" && colorScheme === "light"
