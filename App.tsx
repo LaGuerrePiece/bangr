@@ -227,7 +227,7 @@ const App = () => {
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />
-        <Toaster/>
+        {/* <Toaster/> */}
         <StatusBar
           barStyle={
             Appearance.getColorScheme() === "light"
