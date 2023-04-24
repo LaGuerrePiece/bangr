@@ -18,7 +18,7 @@ import useVaultsStore from "../state/vaults";
 import axios from "axios";
 import { getURLInApp } from "../utils/utils";
 import { Task } from "../state/tasks";
-import { ToasterHelper } from "react-native-customizable-toast";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 type HistoryParams = {
   HistoryScreen: {
@@ -65,7 +65,6 @@ const HistoryScreen = ({
     if (!smartWalletAddress) return;
     fetchTasks();
     console.log("route.params?.waitingForTask", route.params?.waitingForTask);
-    
   }, [smartWalletAddress]);
 
   const onRefresh = useCallback(async () => {
@@ -78,39 +77,48 @@ const HistoryScreen = ({
 
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
-    const interval = setInterval(async () => {
+    // wait half a second for the task to be created
+
+    const waitForTasks = async () => {
+      // wait half a second for the task to be created
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       await fetchTasks();
+      const pendingTasks = tasks.filter(
+        (task) => task.state !== 2 && task.state != -20
+      );
+      const interval = setInterval(async () => {
+        console.log("pendingTasks", pendingTasks);
 
-      const pendingTasks = tasks.filter((t: Task) => t.state !== 2 && t.state !== -20);
-
-      console.log("pendingTasks", pendingTasks);
-
-      for (let i = 0; i < pendingTasks.length; i++) {
-        const task = pendingTasks[i];
-        const prevTask = prevPendings.find(
-          (t: Task) =>
-            t.chainId === task.chainId &&
-            t.type === task.type &&
-            t.protocol === task.protocol &&
-            t.asset1 === task.asset1 &&
-            t.asset2 === task.asset2 &&
-            t.state !== task.state
-        );
-        console.log("prevTask", prevTask);
-        console.log("state", prevTask?.state);
-        if (prevTask && prevTask.state === 1) {
-          ToasterHelper.show({
-            text: "Transaction completed",
-            type: "success",
-            timeout: 5000,
-          });
-          clearInterval(interval);
+        for (let i = 0; i < pendingTasks.length; i++) {
+          const task = pendingTasks[i];
+          const prevTask = prevPendings.find(
+            (t: Task) =>
+              t.chainId === task.chainId &&
+              t.type === task.type &&
+              t.protocol === task.protocol &&
+              t.asset1 === task.asset1 &&
+              t.asset2 === task.asset2 &&
+              t.state !== task.state
+          );
+          console.log("prevTask", prevTask);
+          console.log("state", prevTask?.state);
+          if (prevTask && prevTask.state === 1) {
+            Toast.show({
+              type: "success",
+              position: "bottom",
+              text1: "Success",
+              text2: "Your transaction has been completed",
+              visibilityTime: 4000,
+              autoHide: true,
+            });
+            clearInterval(interval);
+          }
         }
-      }
-      setPrevPendings(pendingTasks);
-    }, 2000);
+        setPrevPendings(pendingTasks);
+      }, 2000);
+    };
+    waitForTasks();
   }
-    
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
