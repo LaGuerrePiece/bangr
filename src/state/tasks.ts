@@ -18,6 +18,7 @@ export type Task = {
 interface TasksState {
   tasks: Task[];
   pendingTasks: Task[];
+  previousPendingTasks: Task[];
   addTasks: (...tasks: Task[]) => void;
   // fuction to fetch tasks for a scwAddress
   fetchTasks: () => Promise<void>;
@@ -28,6 +29,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
   wallet: undefined,
   tasks: [],
   pendingTasks: [],
+  previousPendingTasks: [],
   addTasks: (...tasks) => {
     set({ tasks: [...get().tasks, ...tasks] });
   },
@@ -46,8 +48,31 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       };
       console.log(`fetched ${data.length} tasks`);
       console.log(data);
-      const pendingTasks = data.filter((task) => task.state !== 2 && task.state !== -20);
-      set({ tasks: data, pendingTasks: pendingTasks });
+      const pendingTasks = data.filter(
+        (task) => task.state !== 2 && task.state !== -20
+      );
+      console.log(`fetched ${pendingTasks.length} pending tasks`);
+      // if task in pending task and in previous pending task
+      // and has state 2 in pending tasks but not in previous pending tasks
+      // then send Toast
+      const previousPendingTasks = get().previousPendingTasks;
+      // pendingTasks.forEach((task) => {
+      //   if (
+      //     previousPendingTasks.find(
+      //       (previousPendingTask) =>
+      //         previousPendingTask.txHash === task.txHash &&
+      //         previousPendingTask.state === 2
+      //     ) === undefined &&
+      //     task.state === 2
+      //   ) {
+      //     console.log("send Toast");
+      //   }
+      // });
+      if (pendingTasks.length < previousPendingTasks.length) {
+        console.log("send Toast");
+      }
+      set({ tasks: data, pendingTasks: pendingTasks, previousPendingTasks: pendingTasks });
+
     } catch (error) {
       console.log("error fetching tasks:", error);
     }
