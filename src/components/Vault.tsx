@@ -7,42 +7,65 @@ import {
   useColorScheme,
   Appearance,
 } from "react-native";
-import { VaultData, Volatility } from "../types/types";
+import { VaultData } from "../types/types";
 
-const turtle =
+const simple =
   Appearance.getColorScheme() === "dark"
-    ? require("../../assets/turtle_white.png")
-    : require("../../assets/turtle.png");
+    ? require("../../assets/simple_white.png")
+    : require("../../assets/simple.png");
 
-const rabbit =
+const complex =
   Appearance.getColorScheme() === "dark"
-    ? require("../../assets/rabbit_white.png")
-    : require("../../assets/rabbit.png");
+    ? require("../../assets/complex.png")
+    : require("../../assets/complex.png");
 
-const cheetah =
-  Appearance.getColorScheme() === "dark"
-    ? require("../../assets/cheetah_white.png")
-    : require("../../assets/cheetah.png");
+export const getData = (name: string) => {
+  switch (name) {
+    case "Aave USDC":
+      return {
+        name: "Lending",
+        contract: "Simple",
+        tvl: "111M",
+        image: "https://i.imgur.com/ZVEgeLH.png",
+      };
+    case "RocketPool":
+      return {
+        name: "Staking",
+        contract: "Simple",
+        tvl: "468M",
+        image:
+          "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
+      };
+    default:
+      return {
+        name,
+        contract: "Simple",
+        tvl: "0",
+      };
+  }
+};
 
 export const averageApy = (apys: number[]) => {
   return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
 };
 
-const FooterElement = ({
+export const FooterElement = ({
   title,
   image,
   text,
   textSize,
   marginLeft,
+  styles,
 }: {
   title: string;
   image?: any;
   text: string | undefined;
   textSize?: string;
   marginLeft?: number;
+  styles?: string;
 }) => {
   return (
-    <View className={`ml-${marginLeft ? marginLeft : 2}`}>
+    <View className={styles}>
       <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
         {title}
       </Text>
@@ -59,22 +82,14 @@ const FooterElement = ({
 };
 
 const Vault = ({ vault }: { vault: VaultData }) => {
-  const {
-    name,
-    uiName,
-    description,
-    currency,
-    currencyIcon,
-    volatility,
-    color,
-    protocol,
-    image,
-  } = vault;
+  const colorScheme = useColorScheme();
+  const navigation = useNavigation() as any;
+  const { name, description, currency, currencyIcon, volatility, image } =
+    vault;
+
   const apy = vault.chains
     ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
     : "0";
-  const colorScheme = useColorScheme();
-  const navigation = useNavigation() as any;
 
   return (
     <TouchableOpacity
@@ -87,78 +102,45 @@ const Vault = ({ vault }: { vault: VaultData }) => {
       <View className="my-3 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
         <View className="mr-1 flex-row justify-between p-4">
           <View className="w-11/12">
-            <Image className="h-12 w-12 rounded-full" source={{ uri: image }} />
+            <Image
+              className="h-12 w-12 rounded-full"
+              source={{ uri: getData(name).image }}
+            />
             <Text className="mt-2 mb-1 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
-              {uiName ? uiName : name}
+              {getData(name).name}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">
               {description}
             </Text>
           </View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("VaultInfoScreen", {
-                vault,
-              })
-            }
-            className="h-8 w-8"
-          >
-            <Image
-              className="h-8 w-8 rounded-full"
-              source={
-                colorScheme === "dark"
-                  ? require("../../assets/i_white.png")
-                  : require("../../assets/i2.png")
-              }
-            />
-          </TouchableOpacity>
         </View>
         <View className="rounded-b-3xl border-t border-[#4F4F4F] bg-[#DBDBDB] dark:bg-quaternary-dark">
           <View className="flex-row justify-between p-3">
             <View className="flex-row">
               <FooterElement
-                title="Currency"
-                text={currency}
+                title="Contract"
+                text={getData(name).contract}
+                styles="ml-2"
                 image={
                   <Image
-                    className={`mr-0.5 h-6 ${
-                      currency === "Ether" ? "w-[16px]" : "w-6"
-                    } rounded-full object-contain`}
-                    source={{
-                      uri:
-                        typeof currencyIcon === "string" ||
-                        typeof currencyIcon === "undefined"
-                          ? currencyIcon
-                          : currencyIcon[colorScheme as "light" | "dark"],
-                    }}
+                    className={`mr-0.5 h-6 w-6 rounded-full object-contain`}
+                    source={
+                      getData(name).contract === "Simple" ? simple : complex
+                    }
                   />
                 }
                 textSize={"text-base"}
               />
               <FooterElement
-                title="Volatility"
-                text={volatility}
-                marginLeft={4}
-                image={
-                  <Image
-                    className="mr-0.5 h-7 w-7 rounded-full"
-                    source={
-                      volatility === Volatility.LOW
-                        ? turtle
-                        : volatility === Volatility.MEDIUM
-                        ? rabbit
-                        : cheetah
-                    }
-                  />
-                }
-                textSize={
-                  volatility === Volatility.MEDIUM ? "text-sm" : "text-base"
-                }
+                title="Total Value"
+                text={"$" + getData(name).tvl}
+                styles="ml-4"
+                textSize={"text-lg"}
               />
               <FooterElement
                 title="Annual yield"
                 text={`${apy}%`}
-                marginLeft={4}
+                styles="ml-4"
                 textSize={"text-xl"}
               />
             </View>

@@ -1,7 +1,7 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
-import { BigNumber, constants, ethers, utils } from "ethers";
+import { constants, ethers, utils } from "ethers";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -22,7 +22,7 @@ import {
 import { MultichainToken, VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
-import { averageApy } from "../components/Vault";
+import { FooterElement, averageApy, getData } from "../components/Vault";
 import useTokensStore from "../state/tokens";
 import useUserStore from "../state/user";
 import useVaultsStore from "../state/vaults";
@@ -280,6 +280,45 @@ const VaultDepositScreen = ({
                   className="h-10 w-10 rounded-full"
                   source={{ uri: image }}
                 />
+              </View>
+
+              <View className="my-3 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] p-3 dark:bg-secondary-dark">
+                <View className="mb-2 flex-row items-center">
+                  <Image
+                    className="h-8 w-8 rounded-full"
+                    source={{ uri: getData(name).image }}
+                  />
+                  <Text className="ml-2 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
+                    {getData(name).name}
+                  </Text>
+                </View>
+                <View className="flex-row justify-between">
+                  <FooterElement
+                    title="Your assets"
+                    text={"blabla"}
+                    textSize={"text-lg"}
+                  />
+                  <FooterElement
+                    styles="mr-4"
+                    title="Earnings"
+                    text={"blabla"}
+                    textSize={"text-lg"}
+                  />
+                </View>
+                <View className="my-2 border border-[#4F4F4F]" />
+                <View className="flex-row justify-between">
+                  <FooterElement
+                    title="Annual yield"
+                    text={"blabla"}
+                    textSize={"text-lg"}
+                  />
+                  <FooterElement
+                    styles="mr-4"
+                    title="Total vault value"
+                    text={"blabla"}
+                    textSize={"text-lg"}
+                  />
+                </View>
               </View>
 
               <View className="my-2 items-center">
