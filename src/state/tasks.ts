@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { address } from "../utils/address";
 import { getSmartWalletAddress, getURLInApp } from "../utils/utils";
 import useUserStore from "./user";
+import { Toast } from "react-native-toast-message/lib/src/Toast";
 
 export type Task = {
   type: string;
@@ -70,6 +71,15 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       // });
       if (pendingTasks.length < previousPendingTasks.length) {
         console.log("send Toast");
+        Toast.show(
+          {
+            type: "success",
+            text1: "Transaction confirmed",
+            text2: "Your transaction has been confirmed",
+            visibilityTime: 2500,
+            autoHide: true,
+          },
+        );
       }
       set({ tasks: data, pendingTasks: pendingTasks, previousPendingTasks: pendingTasks });
 
