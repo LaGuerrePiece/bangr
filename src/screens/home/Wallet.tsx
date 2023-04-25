@@ -11,10 +11,11 @@ import {
   Appearance,
   ActivityIndicator,
   useColorScheme,
+  Dimensions,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
 import * as Haptics from "expo-haptics";
@@ -23,8 +24,9 @@ import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 import useSettingsStore from "../../state/settings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Animated} from "react-native";
 
-const Wallet = ({ swiper }: { swiper: any }) => {
+const Wallet = () => {
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
   const tokens = useTokensStore((state) => state.tokens);
@@ -37,6 +39,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   ]);
   const currency = useSettingsStore((state) => state.currency);
   const [refreshing, setRefreshing] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const SCREEN_WIDTH = Dimensions.get('window').width
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -61,8 +65,9 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   }, []);
 
   return (
+
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
-      <ScrollView
+        <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -80,7 +85,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 onPress={() => {
                   // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("swap");
-                  swiper.current.scrollBy(-1, true);
+                  // swiper.current.scrollBy(-1, true);
                 }}
               >
                 <Image
@@ -96,7 +101,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 onPress={() => {
                   // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("Invest");
-                  swiper.current.scrollBy(1, true);
+                  // swiper.current.scrollBy(1, true);
                 }}
               >
                 <Image
@@ -146,7 +151,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                         token.symbol === "USDT"
                     )
                     .map((token) => (
-                      <Asset token={token} key={token.symbol} swiper={swiper} />
+                      <Asset token={token} key={token.symbol}/>
                     ))
                 : null}
               {tokens &&
