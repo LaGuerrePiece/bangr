@@ -225,7 +225,7 @@ const sendTx = async (body: {
   protocol?: string;
 }) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/v1/estimateGas`, body, {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/sendTx`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",
