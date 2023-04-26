@@ -367,7 +367,7 @@ const SendScreen = ({
             ) : (
               <ActionButton
                 text="Send"
-                additionalCss={"min-w-[200px]"}
+                styles={"min-w-[200px]"}
                 rounded
                 bold
                 disabled={false}

@@ -8,6 +8,9 @@ import {
   Appearance,
 } from "react-native";
 import { VaultData } from "../types/types";
+import { Investment } from "../config/yieldAssets";
+import useVaultsStore from "../state/vaults";
+import { Information } from "./Information";
 
 const simple =
   Appearance.getColorScheme() === "dark"
@@ -16,128 +19,101 @@ const simple =
 
 const complex =
   Appearance.getColorScheme() === "dark"
-    ? require("../../assets/complex.png")
-    : require("../../assets/complex.png");
-
-export const getData = (name: string) => {
-  switch (name) {
-    case "Aave USDC":
-      return {
-        name: "Lending",
-        contract: "Simple",
-        tvl: "111M",
-        image: "https://i.imgur.com/ZVEgeLH.png",
-      };
-    case "RocketPool":
-      return {
-        name: "Staking",
-        contract: "Simple",
-        tvl: "468M",
-        image:
-          "https://static.debank.com/image/token/logo_url/eth/935ae4e4d1d12d59a99717a24f2540b5.png",
-      };
-    default:
-      return {
-        name,
-        contract: "Simple",
-        tvl: "0",
-      };
-  }
-};
+    ? require("../../assets/layers_white.png")
+    : require("../../assets/layers.png");
 
 export const averageApy = (apys: number[]) => {
   return (apys.reduce((acc, cur) => acc + cur, 0) / apys.length).toFixed(2);
 };
 
-export const FooterElement = ({
-  title,
-  image,
-  text,
-  textSize,
-  marginLeft,
-  styles,
-}: {
-  title: string;
-  image?: any;
-  text: string | undefined;
-  textSize?: string;
-  marginLeft?: number;
-  styles?: string;
-}) => {
-  return (
-    <View className={styles}>
-      <Text className="font-InterMedium text-xs text-typo-light dark:text-typo-dark">
-        {title}
-      </Text>
-      <View className="flex-row items-center">
-        {image}
-        <Text
-          className={`font-InterSemiBold ${textSize} text-icon-special dark:text-secondary-light`}
-        >
-          {text}
-        </Text>
-      </View>
-    </View>
-  );
-};
-
-const Vault = ({ vault }: { vault: VaultData }) => {
+const Vault = ({ investment }: { investment: Investment }) => {
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
-  const { name, description, currency, currencyIcon, volatility, image } =
-    vault;
+  const {
+    name: uiName,
+    vaultName,
+    contract,
+    tvl: uiTvl,
+    image: uiImage,
+    description: uiDescription,
+    disabled,
+  } = investment;
 
-  const apy = vault.chains
-    ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
+  const vault = useVaultsStore((state) => state.vaults)?.filter(
+    (vault) => vault.name === vaultName
+  )[0] as VaultData;
+
+  const {
+    name,
+    description,
+    currency,
+    currencyIcon,
+    volatility,
+    status,
+    image,
+    chains,
+  } = vault;
+
+  const apy = chains
+    ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
+
+  const tvl =
+    (chains.reduce((acc, cur) => acc + cur.tvl, 0) / 10 ** 6 / 3).toFixed(2) +
+    "M";
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => {
+        if (disabled) return;
         navigation.navigate("VaultDeposit", {
+          investment,
           vault,
-        })
-      }
+        });
+      }}
+      activeOpacity={disabled ? 1 : 0.7}
     >
-      <View className="my-3 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
+      <View
+        className="my-3 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark"
+        style={disabled ? { opacity: 0.4 } : {}}
+      >
         <View className="mr-1 flex-row justify-between p-4">
           <View className="w-11/12">
             <Image
-              className="h-12 w-12 rounded-full"
-              source={{ uri: getData(name).image }}
+              className="h-12	w-12 rounded-full"
+              source={{ uri: uiImage ?? image }}
+              resizeMode="contain"
             />
             <Text className="mt-2 mb-1 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
-              {getData(name).name}
+              {uiName}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">
-              {description}
+              {uiDescription ?? description}
             </Text>
           </View>
         </View>
         <View className="rounded-b-3xl border-t border-[#4F4F4F] bg-[#DBDBDB] dark:bg-quaternary-dark">
           <View className="flex-row justify-between p-3">
             <View className="flex-row">
-              <FooterElement
+              <Information
                 title="Contract"
-                text={getData(name).contract}
+                text={contract}
                 styles="ml-2"
                 image={
                   <Image
                     className={`mr-0.5 h-6 w-6 rounded-full object-contain`}
-                    source={
-                      getData(name).contract === "Simple" ? simple : complex
-                    }
+                    source={contract === "Simple" ? simple : complex}
                   />
                 }
                 textSize={"text-base"}
               />
-              <FooterElement
+              <Information
                 title="Total Value"
-                text={"$" + getData(name).tvl}
+                text={"$" + (uiTvl ?? tvl)}
                 styles="ml-4"
                 textSize={"text-lg"}
               />
-              <FooterElement
+              <Information
                 title="Annual yield"
                 text={`${apy}%`}
                 styles="ml-4"

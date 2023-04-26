@@ -19,7 +19,7 @@ interface IButton {
   bold?: boolean;
   rounded?: boolean;
   spinner?: boolean;
-  additionalCss?: string;
+  styles?: string;
 }
 
 const ActionButton: FC<IButton> = ({
@@ -30,7 +30,7 @@ const ActionButton: FC<IButton> = ({
   bold,
   rounded,
   spinner,
-  additionalCss,
+  styles,
 }) => {
   const colorScheme = useColorScheme();
 
@@ -45,11 +45,11 @@ const ActionButton: FC<IButton> = ({
       <View
         className={`flex-row items-center justify-around ${
           rounded ? "rounded-full" : "rounded-lg"
-        } mx-2 py-3 px-4 ${
+        } py-2 px-4 ${
           disabled
             ? "bg-icon-light dark:bg-[#2D2D2D]"
             : "bg-icon-special dark:bg-special-dark"
-        } ${additionalCss ?? ""}`}
+        } ${styles ?? ""}`}
       >
         {icon ? <Image className="mr-2 h-7 w-7" source={icon} /> : null}
         {spinner ? (

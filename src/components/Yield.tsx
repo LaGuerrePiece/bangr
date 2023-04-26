@@ -24,7 +24,7 @@ const Yield = ({
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("ChooseVault", {
-          symbol,
+          asset,
         })
       }
     >
@@ -33,7 +33,11 @@ const Yield = ({
           <View className="w-9/12 flex-row items-center">
             <Image
               className="h-10 w-10 rounded-full"
-              source={{ uri: token?.logoURI }}
+              source={{
+                uri:
+                  token?.logoURI ??
+                  "https://static.debank.com/image/eth_token/logo_url/0x1a7e4e63778b4f12a199c062f3efdd288afcbce8/950fda44a9f4598d2a7a6e9df24b7332.png",
+              }}
             />
             <Text className="ml-2 font-InterSemiBold text-[16px] font-bold text-typo-light dark:text-secondary-light">
               Earn from{" "}

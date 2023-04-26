@@ -15,20 +15,12 @@ import useVaultsStore from "../state/vaults";
 import Vault from "../components/Vault";
 import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import useTokensStore from "../state/tokens";
+import { YieldAsset } from "../config/yieldAssets";
 
 type ChooseVaultParams = {
   ChooseVaultScreen: {
-    symbol: string;
+    asset: YieldAsset;
   };
-};
-
-const symbolToVaultNames = (symbol: string) => {
-  switch (symbol) {
-    case "ETH":
-      return ["RocketPool"];
-    case "USDC":
-      return ["Aave USDC"];
-  }
 };
 
 const ChooseVaultScreen = ({
@@ -39,15 +31,9 @@ const ChooseVaultScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
-  const { symbol } = route.params;
+  const { asset } = route.params;
   const getToken = useTokensStore((state) => state.getToken);
-  const token = getToken(symbol);
-
-  const vaults = useVaultsStore((state) => state.vaults)?.filter(
-    (vault) =>
-      (vault.status === "active" || vault.status === "preview") &&
-      symbolToVaultNames(symbol)?.includes(vault.name)
-  );
+  const token = getToken(asset.symbol);
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -69,8 +55,9 @@ const ChooseVaultScreen = ({
               />
             </View>
 
-            {vaults &&
-              vaults.map((vault) => <Vault key={vault.name} vault={vault} />)}
+            {asset.investments.map((investment) => (
+              <Vault key={investment.name} investment={investment} />
+            ))}
 
             <View className="mb-8 mt-2 w-full rounded-lg border border-[#4F4F4F] bg-[#EFEEEC] p-2 pr-3 dark:bg-secondary-dark">
               <TouchableOpacity

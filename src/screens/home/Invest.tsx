@@ -6,28 +6,12 @@ import {
   TouchableOpacity,
   Image,
   useColorScheme,
-  Linking,
 } from "react-native";
-import Vault from "../../components/Vault";
-import useVaultsStore from "../../state/vaults";
 import Yield from "../../components/Yield";
+import { yieldAssets } from "../../config/yieldAssets";
 
 const Invest = ({ swiper }: { swiper: any }) => {
-  const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
-
-  const yieldAssets = [
-    {
-      symbol: "ETH",
-      yieldLow: "5.06",
-      yieldHigh: "9.36",
-    },
-    {
-      symbol: "USDC",
-      yieldLow: "1.22",
-      yieldHigh: "12.59",
-    },
-  ];
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">

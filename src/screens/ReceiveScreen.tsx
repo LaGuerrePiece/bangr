@@ -147,7 +147,7 @@ const ReceiveScreen = () => {
               text="Buy crypto"
               rounded
               bold
-              additionalCss={"min-w-[200px]"}
+              styles={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp" as never);
               }}
