@@ -181,7 +181,7 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("withdraw");
 
-    await relay(
+    relay(
       calls,
       wallet!,
       smartWalletAddress!,
@@ -197,6 +197,8 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    navigation.navigate("History" as never, { waitingForTask: true } as never);
+
   };
 
   const validateInput = (action: string) => {
