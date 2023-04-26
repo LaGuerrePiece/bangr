@@ -47,12 +47,12 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       )) as {
         data: Task[];
       };
-      console.log(`fetched ${data.length} tasks`);
-      console.log(data);
+      // console.log(`fetched ${data.length} tasks`);
+      // console.log(data);
       const pendingTasks = data.filter(
         (task) => task.state !== 2 && task.state !== -20
       );
-      console.log(`fetched ${pendingTasks.length} pending tasks`);
+      // console.log(`fetched ${pendingTasks.length} pending tasks`);
       // if task in pending task and in previous pending task
       // and has state 2 in pending tasks but not in previous pending tasks
       // then send Toast
@@ -70,7 +70,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       //   }
       // });
       if (pendingTasks.length < previousPendingTasks.length) {
-        console.log("send Toast");
+        // console.log("send Toast");
         Toast.show(
           {
             type: "success",

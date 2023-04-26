@@ -109,6 +109,7 @@ export const relay = async (
     amount,
     protocol,
   });
+  console.log("relayResponse", relayResponse);
 
   if (!relayResponse) {
     Toast.show({
@@ -224,7 +225,7 @@ const sendTx = async (body: {
   protocol?: string;
 }) => {
   try {
-    const { data } = (await axios.post(`${getURLInApp()}/api/v1/sendTx`, body, {
+    const { data } = (await axios.post(`${getURLInApp()}/api/v1/estimateGas`, body, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json; charset=UTF-8",
