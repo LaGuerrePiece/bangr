@@ -148,7 +148,7 @@ const VaultDepositScreen = ({
 
     if (wallet && smartWalletAddress) {
       try {
-        await relay(
+        relay(
           calls,
           wallet,
           smartWalletAddress,
@@ -161,6 +161,7 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
+        navigation.navigate("History" as never, { waitingForTask: true } as never);
       } catch (error) {
         console.log(error);
         Toast.show({
