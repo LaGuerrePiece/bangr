@@ -12,7 +12,8 @@ import { colors } from "../../config/configs";
 import useSettingsStore from "../../state/settings";
 import { Picker } from "@react-native-picker/picker";
 
-const Settings = ({ swiper }: { swiper: any }) => {
+
+const Settings = () => {
   const colorScheme = Appearance.getColorScheme();
   const [currency, setCurrency] = useSettingsStore((state) => [
     state.currency,
@@ -32,7 +33,7 @@ const Settings = ({ swiper }: { swiper: any }) => {
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image

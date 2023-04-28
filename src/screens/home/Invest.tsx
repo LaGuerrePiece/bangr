@@ -12,7 +12,7 @@ import Vault from "../../components/Vault";
 import useVaultsStore from "../../state/vaults";
 import * as Haptics from "expo-haptics";
 
-const Invest = ({ swiper }: { swiper: any }) => {
+const Invest = () => {
   const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
 
@@ -22,7 +22,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -36,7 +36,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(1, true);
+              // swiper.current.scrollBy(1, true);
             }}
           >
             <Image

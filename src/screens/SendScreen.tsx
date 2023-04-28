@@ -212,7 +212,7 @@ const SendScreen = ({
     const amount = amountIn;
 
     try {
-      await relay(
+      relay(
         calls,
         wallet,
         smartWalletAddress,
@@ -225,6 +225,8 @@ const SendScreen = ({
         successMessage,
         errorMessage
       );
+      navigation.navigate("History" as never, { waitingForTask: true } as never);
+
     } catch (error) {
       console.log(error);
       Toast.show({

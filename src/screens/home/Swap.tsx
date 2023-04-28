@@ -37,6 +37,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
 import useTasksStore from "../../state/tasks";
+import { useNavigation } from "@react-navigation/native";
 
 type ButtonStatus = {
   disabled: boolean;
@@ -44,11 +45,9 @@ type ButtonStatus = {
 };
 
 const Swap = ({
-  swiper,
   updatedToken,
   tokenToUpdate,
 }: {
-  swiper: any;
   updatedToken: MultichainToken | undefined;
   tokenToUpdate: string | undefined;
 }) => {
@@ -75,6 +74,8 @@ const Swap = ({
   const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
   const colorScheme = useColorScheme();
+  const navigation = useNavigation();
+
 
   useEffect(() => {
     if (updatedToken && tokenToUpdate) {
@@ -219,7 +220,7 @@ const Swap = ({
     const asset2 = dstToken!.symbol;
     const amount = amountIn;
     try {
-      await relay(
+      relay(
         calls,
         wallet,
         smartWalletAddress,
@@ -239,9 +240,11 @@ const Swap = ({
         text1: "error relaying transaction",
       });
     }
-    clearAfterSwap();
-    fetchBalances();
-    fetchTasks();
+    // clearAfterSwap();
+    // fetchBalances();
+    // navigate with params to the component of the screen you want to navigate to
+    console.log("navigate to history");
+    navigation.navigate("History" as never, { waitingForTask: true } as never);
   };
 
   // test swap and then invest
@@ -343,14 +346,14 @@ const Swap = ({
   };
 
   return (
-    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
+    <SafeAreaView className="h-full bg-sedondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("history");
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -366,7 +369,7 @@ const Swap = ({
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("Invest");
-              swiper.current.scrollBy(1, true);
+              // swiper.current.scrollBy(1, true);
             }}
           >
             <Image

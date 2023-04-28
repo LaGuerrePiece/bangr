@@ -154,7 +154,7 @@ const VaultDepositScreen = ({
 
     if (wallet && smartWalletAddress && calls) {
       try {
-        await relay(
+        relay(
           calls,
           wallet,
           smartWalletAddress,
@@ -167,6 +167,7 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
+        navigation.navigate("History" as never, { waitingForTask: true } as never);
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -213,7 +214,8 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
-    fetchTasks();
+    navigation.navigate("History" as never, { waitingForTask: true } as never);
+
   };
 
   const validateInput = (action: string) => {
