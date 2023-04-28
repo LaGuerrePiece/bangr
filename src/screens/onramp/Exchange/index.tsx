@@ -126,7 +126,7 @@ const ReceiveScreen = () => {
             rounded
             bold
             action={() => {
-              navigation.navigate("Wallet" as never);
+              navigation.navigate("MainScreen" as never);
             }}
           />
         </View>

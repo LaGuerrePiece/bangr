@@ -1,10 +1,16 @@
-import { View, Text, TouchableOpacity, Image, useColorScheme } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  useColorScheme,
+} from "react-native";
 
-export function TabBar({ state, descriptors, navigation } : any) {
-    const colorScheme = useColorScheme();
+export function TabBar({ state, descriptors, navigation }: any) {
+  const colorScheme = useColorScheme();
 
   return (
-    <View className='flex flex-row p-4 bg-primary-light dark:bg-secondary-dark'>
+    <View className="flex flex-row bg-primary-light p-4 dark:bg-secondary-dark">
       {state.routes.map((route: any, index: any) => {
         const { options } = descriptors[route.key];
         const label =
@@ -18,7 +24,7 @@ export function TabBar({ state, descriptors, navigation } : any) {
 
         const onPress = () => {
           const event = navigation.emit({
-            type: 'tabPress',
+            type: "tabPress",
             target: route.key,
             canPreventDefault: true,
           });
@@ -31,7 +37,7 @@ export function TabBar({ state, descriptors, navigation } : any) {
 
         const onLongPress = () => {
           navigation.emit({
-            type: 'tabLongPress',
+            type: "tabLongPress",
             target: route.key,
           });
         };
@@ -45,14 +51,15 @@ export function TabBar({ state, descriptors, navigation } : any) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ flex: 1 }}
-            
+            key={index}
           >
-
             <View className="w-full flex-col justify-between">
-            <Image
-                className={isFocused ? "h-7 w-7 m-auto" : "h-7 w-7 m-auto opacity-50"}
-                source={ label === "Invest"
-                    && colorScheme === "dark"
+              <Image
+                className={
+                  isFocused ? "m-auto h-7 w-7" : "m-auto h-7 w-7 opacity-50"
+                }
+                source={
+                  label === "Invest" && colorScheme === "dark"
                     ? require("../../assets/seed-drk.png")
                     : label === "Invest" && colorScheme === "light"
                     ? require("../../assets/seed.png")
@@ -70,20 +77,21 @@ export function TabBar({ state, descriptors, navigation } : any) {
                     ? require("../../assets/swap.png")
                     : label === "History" && colorScheme === "dark"
                     ? require("../../assets/history-drk.png")
-                    : label === "History" && colorScheme === "light" 
+                    : label === "History" && colorScheme === "light"
                     ? require("../../assets/history.png")
                     : label === "Home" && colorScheme === "dark"
                 }
-    
-            />
-            <Text className={
-                isFocused? "text-center font-InterBold text-typo-light dark:text-typo-dark" : "text-center font-InterBold text-typo-light dark:text-typo-dark opacity-50"
-
-            }>
-              {label}
-            </Text>
+              />
+              <Text
+                className={
+                  isFocused
+                    ? "text-center font-InterBold text-typo-light dark:text-typo-dark"
+                    : "text-center font-InterBold text-typo-light opacity-50 dark:text-typo-dark"
+                }
+              >
+                {label}
+              </Text>
             </View>
-
           </TouchableOpacity>
         );
       })}

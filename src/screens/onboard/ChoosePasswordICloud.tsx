@@ -169,7 +169,9 @@ export default function ChoosePasswordICloud({
           bold
           rounded
           action={() => {
-            step === 0 ? secureAccountICloud() : navigation.navigate("Wallet");
+            step === 0
+              ? secureAccountICloud()
+              : navigation.navigate("MainScreen");
           }}
         />
       </View>

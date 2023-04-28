@@ -180,7 +180,7 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
             bold
             rounded
             action={() => {
-              step === 0 ? secureAccount() : navigation.navigate("Wallet");
+              step === 0 ? secureAccount() : navigation.navigate("MainScreen");
             }}
           />
         </View>
