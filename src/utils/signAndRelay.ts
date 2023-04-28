@@ -108,7 +108,7 @@ export const relay = async (
 
   console.log("Success. relayResponse :", relayResponse);
 
-  //until the cron
+  // until the cron
   // const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
   // console.log("cron called", ping);
 
