@@ -35,7 +35,10 @@ export default function SelectTokenButton({
       }}
     >
       <View className="flex flex-row items-center">
-        <Image className="h-8 w-8" source={{ uri: selectedToken.logoURI }} />
+        <Image
+          className="h-8 w-8 rounded-full"
+          source={{ uri: selectedToken.logoURI }}
+        />
         <Text className="mx-1 text-xl font-bold text-typo-light dark:text-typo-dark">
           {selectedToken.symbol}
         </Text>

@@ -31,6 +31,7 @@ import { correctInput, getURLInApp } from "../utils/utils";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import SelectTokenButton from "../components/SelectTokenButton";
 import { colors } from "../config/configs";
+import useTasksStore from "../state/tasks";
 
 const calculateGains = (
   amount: number,
@@ -55,6 +56,7 @@ const VaultDepositScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -115,16 +117,10 @@ const VaultDepositScreen = ({
     // Input token is sent : USDC when we deposit and aUSDc when we withdraw
     const token = action === "deposit" ? selectedToken : vaultTkn;
 
-    console.log(
-      "token",
-      token,
-      "amount",
-      amount,
-      "action",
-      action,
-      "vaultName",
-      name
-    );
+    console.log("token", token);
+    console.log("amount", amount);
+    console.log("action", action);
+    console.log("vaultName", name);
 
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
@@ -134,6 +130,16 @@ const VaultDepositScreen = ({
         amount: utils.parseUnits(amount, token!.decimals),
         token,
       });
+
+      if (calls.data.length === 0) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Error fetching quote",
+        });
+        console.log("error fetching quote");
+        return;
+      }
 
       return calls.data;
     } catch (err) {
@@ -146,7 +152,7 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("deposit");
 
-    if (wallet && smartWalletAddress) {
+    if (wallet && smartWalletAddress && calls) {
       try {
         relay(
           calls,
@@ -173,6 +179,7 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    fetchTasks();
   };
 
   const handleWithdraw = async () => {
@@ -181,19 +188,29 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("withdraw");
 
-    relay(
-      calls,
-      wallet!,
-      smartWalletAddress!,
-      "0",
-      "Withdraw",
-      name,
-      selectedTokenSymbol,
-      "",
-      amount,
-      "Deposit successful",
-      "Deposit failed"
-    );
+    if (wallet && smartWalletAddress && calls) {
+      try {
+        await relay(
+          calls,
+          wallet,
+          smartWalletAddress,
+          "0",
+          "Withdraw",
+          name,
+          selectedTokenSymbol,
+          "",
+          amount,
+          "Withdraw successful",
+          "Withdraw failed"
+        );
+      } catch (error) {
+        console.log(error);
+        Toast.show({
+          type: "error",
+          text1: "error relaying transaction",
+        });
+      }
+    }
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);

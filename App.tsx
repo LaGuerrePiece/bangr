@@ -134,12 +134,11 @@ const App = () => {
                 ? ChoosePasswordScreen
                 : ChoosePasswordICloud
             }
-            options={{ animation: "slide_from_left" 
-               , presentation: "modal" }}
+            options={{ animation: "slide_from_left", presentation: "modal" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
-            name="Wallet"
+            name="MainScreen"
             component={MainScreen}
             options={{ gestureEnabled: false }}
           />

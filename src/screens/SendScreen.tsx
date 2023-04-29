@@ -38,6 +38,7 @@ import { MultichainToken, Quote } from "../types/types";
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { toastConfig } from "../components/toasts";
+import useTasksStore from "../state/tasks";
 
 type SendParams = {
   SendScreen: {
@@ -66,6 +67,7 @@ const SendScreen = ({
     clearAfterSend,
   } = useSendStore();
   const tokens = useTokensStore((state) => state.tokens);
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -234,6 +236,7 @@ const SendScreen = ({
     }
     clearAfterSend();
     fetchBalances();
+    fetchTasks();
   };
 
   return (

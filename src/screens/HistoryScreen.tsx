@@ -11,7 +11,6 @@ import {
 import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
-import * as Haptics from "expo-haptics";
 import { cutDecimals } from "../utils/format";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";

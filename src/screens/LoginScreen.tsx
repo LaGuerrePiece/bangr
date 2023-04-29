@@ -55,7 +55,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));
-      navigation.navigate("Wallet");
+      navigation.navigate("MainScreen");
     }
   };
 

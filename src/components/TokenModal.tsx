@@ -70,7 +70,7 @@ const TokenModal = () => {
   }
 
   const swap = () => {
-    navigation.navigate("Wallet" as never);
+    navigation.navigate("MainScreen" as never);
     updateSwapSrcToken(token);
     setTab("Swap");
   };

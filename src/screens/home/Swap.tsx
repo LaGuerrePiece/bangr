@@ -36,6 +36,7 @@ import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
+import useTasksStore from "../../state/tasks";
 import { useNavigation } from "@react-navigation/native";
 
 type ButtonStatus = {
@@ -70,6 +71,8 @@ const Swap = ({
     clearAfterSwap,
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
+
   const colorScheme = useColorScheme();
   const navigation = useNavigation();
 
@@ -170,10 +173,16 @@ const Swap = ({
       const dai = tokens?.find((token) => token.symbol === "DAI");
       if (dai) srcTokenSave = dai;
     }
+
+    // console.log("amountIn", amountIn);
+
     update({
-      amountIn: quote?.sumOfToAmount
-        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
-        : amountIn,
+      // causes bugs for now with USDC
+      // amountIn: quote?.sumOfToAmount
+      //   ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+      //   : "0",
+      amountIn: "0",
+      debouncedAmountIn: "0",
       quote: null,
       calls: null,
       srcToken: dstToken,
@@ -236,7 +245,6 @@ const Swap = ({
     // navigate with params to the component of the screen you want to navigate to
     console.log("navigate to history");
     navigation.navigate("History" as never, { waitingForTask: true } as never);
-
   };
 
   // test swap and then invest

@@ -41,18 +41,6 @@ import useVaultsStore from "../state/vaults";
 //   }
 // };
 
-// const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
-//   (state) => ({
-//     smartWalletAddress: state.smartWalletAddress,
-//     wallet: state.wallet,
-//     fetchBalances: state.fetchBalances,
-//   })
-// );
-// const { fetchVaults, vaults } = useVaultsStore((state) => ({
-//   fetchVaults: state.fetchVaults,
-//   vaults: state.vaults,
-// }));
-
 export const relay = async (
   calls: CallWithNonce[],
   wallet: ethers.Wallet,
@@ -111,7 +99,7 @@ export const relay = async (
   });
   console.log("relayResponse", relayResponse);
 
-  if (!relayResponse) {
+  if (!relayResponse || relayResponse.error) {
     Toast.show({
       type: "error",
       text1: "error relaying transaction",
@@ -127,13 +115,6 @@ export const relay = async (
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
-  if (relayResponse.error) {
-    Toast.show({
-      type: "error",
-      text1: "error relaying transaction",
-    });
-    return;
-  }
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
       const chainId = Number(cid) as ChainId;

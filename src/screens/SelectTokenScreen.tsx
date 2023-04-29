@@ -12,8 +12,6 @@ import { MultichainToken } from "../types/types";
 import { formatUnits } from "../utils/format";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
-import useSwapStore from "../state/swap";
-import useSendStore from "../state/send";
 import { colors } from "../config/configs";
 import * as Haptics from "expo-haptics";
 
@@ -40,8 +38,8 @@ export default function SelectToken({
   const previousScreen = routes[routes.length - 2];
 
   return (
-    <View className="h-full bg-secondary-light dark:bg-secondary-dark">
-      <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-secondary-dark">
+      <View className="mx-auto h-full w-11/12 rounded-lg p-3">
         <TouchableWithoutFeedback onPress={navigation.goBack}>
           <View className="my-2 flex-row justify-end">
             <XMarkIcon
@@ -88,7 +86,7 @@ export default function SelectToken({
             );
           })}
         </ScrollView>
-        </SafeAreaView>
       </View>
+    </SafeAreaView>
   );
 }
