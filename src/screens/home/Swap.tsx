@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   View,
   Text,
@@ -37,19 +37,30 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
 import useTasksStore from "../../state/tasks";
-import { useNavigation } from "@react-navigation/native";
+import { RouteProp } from "@react-navigation/native";
 
 type ButtonStatus = {
   disabled: boolean;
   text: string;
 };
 
+type SwapParams = {
+  Swap: {
+    tokenToUpdate?: string;
+    updatedToken?: MultichainToken;
+  };
+};
+
 const Swap = ({
   updatedToken,
   tokenToUpdate,
+  navigation,
+  route,
 }: {
   updatedToken: MultichainToken | undefined;
   tokenToUpdate: string | undefined;
+  navigation: any;
+  route: RouteProp<SwapParams, "Swap">;
 }) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -74,10 +85,11 @@ const Swap = ({
   const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
-
 
   useEffect(() => {
+    const updatedToken = route.params?.updatedToken;
+    const tokenToUpdate = route.params?.tokenToUpdate;
+
     if (updatedToken && tokenToUpdate) {
       if (
         tokenToUpdate === "srcToken" &&
@@ -95,7 +107,7 @@ const Swap = ({
       }
       update({ [tokenToUpdate]: updatedToken });
     }
-  }, [updatedToken, tokenToUpdate]);
+  }, [route.params?.updatedToken, route.params?.tokenToUpdate]);
 
   useEffect(() => {
     if (!srcToken) {
@@ -244,7 +256,7 @@ const Swap = ({
     // fetchBalances();
     // navigate with params to the component of the screen you want to navigate to
     console.log("navigate to history");
-    navigation.navigate("History" as never, { waitingForTask: true } as never);
+    navigation.navigate("History", { waitingForTask: true });
   };
 
   // test swap and then invest
@@ -346,7 +358,7 @@ const Swap = ({
   };
 
   return (
-    <SafeAreaView className="h-full bg-sedondary-light dark:bg-primary-dark">
+    <SafeAreaView className="bg-sedondary-light h-full dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity

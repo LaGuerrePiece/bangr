@@ -35,7 +35,9 @@ export default function SelectToken({
   const colorScheme = useColorScheme();
 
   const routes = navigation.getState()?.routes;
-  const previousScreen = routes[routes.length - 2];
+  let previousScreenName = routes[routes.length - 2].name;
+
+  if (previousScreenName === "MainScreen") previousScreenName = "Swap";
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-secondary-dark">
@@ -58,7 +60,7 @@ export default function SelectToken({
                 className="mx-2 my-1 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                 onPress={() => {
                   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-                  navigation.navigate(previousScreen.name, {
+                  navigation.navigate(previousScreenName, {
                     updatedToken: token,
                     tokenToUpdate: route.params.tokenToUpdate,
                     ...paramsToPassBack,
