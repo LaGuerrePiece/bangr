@@ -35,13 +35,13 @@ const HistoryScreen = ({
 }) => {
   const colorScheme = useColorScheme();
 
-  const { tasks, fetchTasks } = useTasksStore((state) => ({
+  const { tasks, pendingTasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
+    pendingTasks : state.pendingTasks,
     // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
   }));
 
-  const [prevPendings, setPrevPendings] = useState<Task[]>([]);
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
   const [isTrackingTasks, setIsTrackingTasks] = useState(false);
 
@@ -75,10 +75,16 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
+  let interval : any = null;
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
-    setInterval(async () => {
+    interval = setInterval(async () => {
       fetchTasks();
+      if (pendingTasks && pendingTasks.length === 0) {
+        clearInterval(interval);
+        setIsTrackingTasks(false);
+        return;
+      }
     }, 2000);
   }
 

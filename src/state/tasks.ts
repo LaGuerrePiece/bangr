@@ -4,6 +4,7 @@ import { address } from "../utils/address";
 import { getSmartWalletAddress, getURLInApp } from "../utils/utils";
 import useUserStore from "./user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import useVaultsStore from "./vaults";
 
 export type Task = {
   type: string;
@@ -80,6 +81,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             autoHide: true,
           },
         );
+        useUserStore.getState().fetchBalances()
+        useVaultsStore.getState().fetchVaults()
       }
       set({ tasks: data, pendingTasks: pendingTasks, previousPendingTasks: pendingTasks });
 
