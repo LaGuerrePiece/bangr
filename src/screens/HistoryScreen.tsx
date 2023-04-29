@@ -230,7 +230,7 @@ const HistoryScreen = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state === 2 || task.state == -20)
-            // .reverse()
+            .reverse()
             .map((task, index) => (
               <TouchableOpacity
                 onPress={() => {
