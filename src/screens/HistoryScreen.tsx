@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   View,
   useColorScheme,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
-import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
 import { cutDecimals } from "../utils/format";
