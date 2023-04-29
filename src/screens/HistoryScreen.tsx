@@ -2,6 +2,7 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   Image,
+  Linking,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -15,7 +16,7 @@ import { cutDecimals } from "../utils/format";
 import useTokensStore from "../state/tokens";
 import useVaultsStore from "../state/vaults";
 import axios from "axios";
-import { getURLInApp } from "../utils/utils";
+import { etherscanLink, getURLInApp } from "../utils/utils";
 import { Task } from "../state/tasks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 
@@ -225,101 +226,112 @@ const HistoryScreen = ({
             .filter((task) => task.state === 2 || task.state == -20)
             // .reverse()
             .map((task, index) => (
-              <View
-                className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
-                key={index}
+              <TouchableOpacity
+                onPress={() => {
+                  if (
+                    task.txHash != null &&
+                    task.txHash != undefined &&
+                    task.txHash != ""
+                  )
+                    Linking.openURL(etherscanLink(task.chainId, task.txHash));
+                }}
               >
-                <View className="flex-row items-center py-2 px-2">
-                  <Image
-                    className="h-8 w-8"
-                    source={
-                      task.type === "Swap"
-                        ? colorScheme == "light"
-                          ? require("../../assets/swap.png")
-                          : require("../../assets/swap-drk.png")
-                        : task.type === "Invest"
-                        ? colorScheme == "light"
-                          ? require("../../assets/invest.png")
-                          : require("../../assets/invest-drk.png")
-                        : task.type === "send"
-                        ? colorScheme == "light"
-                          ? require("../../assets/send.png")
-                          : require("../../assets/send-drk.png")
-                        : colorScheme == "light"
-                        ? require("../../assets/receive.png")
-                        : require("../../assets/receive-drk.png")
-                    }
-                  />
-                </View>
-                <View className="flex-row">
-                  <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                    {cutDecimals(task.amount, 2)} {}
-                  </Text>
-                  <Image
-                    className="h-5 w-5"
-                    source={
-                      getToken(task.asset1)?.logoURI
-                        ? { uri: getToken(task.asset1)?.logoURI }
-                        : require("../../assets/task-error.png")
-                    }
-                  />
-                  <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
-                    {task.type === "Swap"
-                      ? "to"
-                      : task.type === "Invest"
-                      ? "into"
-                      : task.type === "Withdraw"
-                      ? "from"
-                      : "to"}{" "}
-                  </Text>
-                  {task.type === "send" ? (
-                    <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
-                      {task.asset2.substring(0, 6) +
-                        "..." +
-                        task.asset2.slice(-4)}
-                    </Text>
-                  ) : (
+                <View
+                  className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
+                  key={index}
+                >
+                  <View className="flex-row items-center py-2 px-2">
                     <Image
-                      className="ml-1 h-5 w-5"
-                      // if swap get asset2 logo else get vault logo from vaults where vault is protocol
+                      className="h-8 w-8"
                       source={
                         task.type === "Swap"
-                          ? getToken(task.asset2)?.logoURI
-                            ? { uri: getToken(task.asset2)?.logoURI }
-                            : require("../../assets/task-error.png")
-                          : vaults!.find(
-                              (vault) => vault.name === task.protocol
-                            )?.image
-                          ? {
-                              uri: vaults!.find(
-                                (vault) => vault.name === task.protocol
-                              )?.image,
-                            }
+                          ? colorScheme == "light"
+                            ? require("../../assets/swap.png")
+                            : require("../../assets/swap-drk.png")
+                          : task.type === "Invest"
+                          ? colorScheme == "light"
+                            ? require("../../assets/invest.png")
+                            : require("../../assets/invest-drk.png")
+                          : task.type === "send"
+                          ? colorScheme == "light"
+                            ? require("../../assets/send.png")
+                            : require("../../assets/send-drk.png")
+                          : colorScheme == "light"
+                          ? require("../../assets/receive.png")
+                          : require("../../assets/receive-drk.png")
+                      }
+                    />
+                  </View>
+                  <View className="flex-row">
+                    <Text className="font-bold text-typo2-light dark:text-typo2-dark">
+                      {cutDecimals(task.amount, 2)} {}
+                    </Text>
+                    <Image
+                      className="h-5 w-5"
+                      source={
+                        getToken(task.asset1)?.logoURI
+                          ? { uri: getToken(task.asset1)?.logoURI }
                           : require("../../assets/task-error.png")
                       }
                     />
-                  )}
+                    <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
+                      {task.type === "Swap"
+                        ? "to"
+                        : task.type === "Invest"
+                        ? "into"
+                        : task.type === "Withdraw"
+                        ? "from"
+                        : "to"}{" "}
+                    </Text>
+                    {task.type === "send" ? (
+                      <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
+                        {task.asset2.substring(0, 6) +
+                          "..." +
+                          task.asset2.slice(-4)}
+                      </Text>
+                    ) : (
+                      <Image
+                        className="ml-1 h-5 w-5"
+                        // if swap get asset2 logo else get vault logo from vaults where vault is protocol
+                        source={
+                          task.type === "Swap"
+                            ? getToken(task.asset2)?.logoURI
+                              ? { uri: getToken(task.asset2)?.logoURI }
+                              : require("../../assets/task-error.png")
+                            : vaults!.find(
+                                (vault) => vault.name === task.protocol
+                              )?.image
+                            ? {
+                                uri: vaults!.find(
+                                  (vault) => vault.name === task.protocol
+                                )?.image,
+                              }
+                            : require("../../assets/task-error.png")
+                        }
+                      />
+                    )}
+                  </View>
+                  <View>
+                    <Image
+                      className="mr-1 h-8 w-8"
+                      source={
+                        // task is 1 or 0
+                        task.state === 1 || task.state === 0
+                          ? colorScheme == "light"
+                            ? require("../../assets/task-1.png")
+                            : require("../../assets/task-1-drk.png")
+                          : task.state === 2
+                          ? colorScheme == "light"
+                            ? require("../../assets/task-2.png")
+                            : require("../../assets/task-2-drk.png")
+                          : colorScheme == "light"
+                          ? require("../../assets/task-error.png")
+                          : require("../../assets/task-error-drk.png")
+                      }
+                    />
+                  </View>
                 </View>
-                <View>
-                  <Image
-                    className="mr-1 h-8 w-8"
-                    source={
-                      // task is 1 or 0
-                      task.state === 1 || task.state === 0
-                        ? colorScheme == "light"
-                          ? require("../../assets/task-1.png")
-                          : require("../../assets/task-1-drk.png")
-                        : task.state === 2
-                        ? colorScheme == "light"
-                          ? require("../../assets/task-2.png")
-                          : require("../../assets/task-2-drk.png")
-                        : colorScheme == "light"
-                        ? require("../../assets/task-error.png")
-                        : require("../../assets/task-error-drk.png")
-                    }
-                  />
-                </View>
-              </View>
+              </TouchableOpacity>
             ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
