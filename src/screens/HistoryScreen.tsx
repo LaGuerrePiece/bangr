@@ -19,6 +19,7 @@ import axios from "axios";
 import { etherscanLink, getURLInApp } from "../utils/utils";
 import { Task } from "../state/tasks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import useActionsStore from "../state/actions";
 
 type HistoryParams = {
   HistoryScreen: {
@@ -38,8 +39,13 @@ const HistoryScreen = ({
   const { tasks, pendingTasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
     pendingTasks : state.pendingTasks,
-    // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
+  }));
+
+  const { actions, pendingActions, fetchActions } = useActionsStore((state) => ({
+    actions: state.actions,
+    pendingActions : state.pendingActions,
+    fetchActions: state.fetchActions,
   }));
 
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
@@ -63,13 +69,15 @@ const HistoryScreen = ({
 
   useEffect(() => {
     if (!smartWalletAddress) return;
-    fetchTasks();
+    // fetchTasks();
+    fetchActions();
     console.log("route.params?.waitingForTask", route.params?.waitingForTask);
   }, [smartWalletAddress]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchTasks();
+    // await fetchTasks();
+    await fetchActions();
     setRefreshing(false);
   }, []);
 
@@ -79,7 +87,8 @@ const HistoryScreen = ({
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
     interval = setInterval(async () => {
-      fetchTasks();
+      // fetchTasks();
+      fetchActions();
       if (pendingTasks && pendingTasks.length === 0) {
         clearInterval(interval);
         setIsTrackingTasks(false);
@@ -114,9 +123,9 @@ const HistoryScreen = ({
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {tasks.length !== 0 &&
+        {tasks.length - 1 !== 0 &&
         vaults &&
-        tasks.filter((task) => task.state != 2 && task.state != -20).length >
+        actions.filter((action) => action.tasks[action.tasks.length - 1].state != 2 && action.tasks[action.tasks.length - 1].state != -20).length >
           0 ? (
           <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
             Pending
@@ -125,11 +134,11 @@ const HistoryScreen = ({
 
         {/* tasks that dont have state = 2 */}
 
-        {tasks.length !== 0 ? (
-          tasks
-            .filter((task) => task.state !== 2 && task.state != -20)
+        {actions.length !== 0 ? (
+          actions
+            .filter((action) => action.tasks[action.tasks.length - 1].state !== 2 && action.tasks[action.tasks.length - 1].state != -20)
             .reverse()
-            .map((task, index) => (
+            .map((action, index) => (
               <View
                 className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
                 key={index}
@@ -138,15 +147,15 @@ const HistoryScreen = ({
                   <Image
                     className="h-8 w-8"
                     source={
-                      task.type === "Swap"
+                      action.tasks[action.tasks.length - 1].type === "Swap"
                         ? colorScheme == "light"
                           ? require("../../assets/swap.png")
                           : require("../../assets/swap-drk.png")
-                        : task.type === "Invest"
+                        : action.tasks[action.tasks.length - 1].type === "Invest"
                         ? colorScheme == "light"
                           ? require("../../assets/invest.png")
                           : require("../../assets/invest-drk.png")
-                        : task.type === "Send"
+                        : action.tasks[action.tasks.length - 1].type === "Send"
                         ? colorScheme == "light"
                           ? require("../../assets/send.png")
                           : require("../../assets/send-drk.png")
@@ -158,22 +167,22 @@ const HistoryScreen = ({
                 </View>
                 <View className="flex-row">
                   <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                    {cutDecimals(task.amount, 2)} {}
+                    {cutDecimals(action.tasks[action.tasks.length - 1].amount, 2)} {}
                   </Text>
                   <Image
                     className="h-5 w-5"
                     source={
-                      getToken(task.asset1)?.logoURI
-                        ? { uri: getToken(task.asset1)?.logoURI }
+                      getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI
+                        ? { uri: getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI }
                         : require("../../assets/task-error.png")
                     }
                   />
                   <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
-                    {task.type === "Swap"
+                    {action.tasks[action.tasks.length - 1].type === "Swap"
                       ? "to"
-                      : task.type === "Invest"
+                      : action.tasks[action.tasks.length - 1].type === "Invest"
                       ? "into"
-                      : task.type === "Withdraw"
+                      : action.tasks[action.tasks.length - 1].type === "Withdraw"
                       ? "from"
                       : "to"}{" "}
                   </Text>
@@ -181,15 +190,15 @@ const HistoryScreen = ({
                     className="ml-1 h-5 w-5"
                     // if swap get asset2 logo else get vault logo from vaults where vault is protocol
                     source={
-                      task.type === "Swap"
-                        ? getToken(task.asset2)?.logoURI
-                          ? { uri: getToken(task.asset2)?.logoURI }
+                      action.tasks[action.tasks.length - 1].type === "Swap"
+                        ? getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI
+                          ? { uri: getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI }
                           : require("../../assets/task-error.png")
-                        : vaults!.find((vault) => vault.name === task.protocol)
+                        : vaults!.find((vault) => vault.name === action.tasks[action.tasks.length - 1].protocol)
                             ?.image
                         ? {
                             uri: vaults!.find(
-                              (vault) => vault.name === task.protocol
+                              (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
                             )?.image,
                           }
                         : require("../../assets/task-error.png")
@@ -201,11 +210,11 @@ const HistoryScreen = ({
                     className="mr-1 h-8 w-8"
                     source={
                       // task is 1 or 0
-                      task.state === 1 || task.state === 0
+                      action.tasks[action.tasks.length - 1].state === 1 || action.tasks[action.tasks.length - 1].state === 0
                         ? colorScheme == "light"
                           ? require("../../assets/task-1.png")
                           : require("../../assets/task-1-drk.png")
-                        : task.state === 2
+                        : action.tasks[action.tasks.length - 1].state === 2
                         ? colorScheme == "light"
                           ? require("../../assets/task-2.png")
                           : require("../../assets/task-2-drk.png")
@@ -227,19 +236,19 @@ const HistoryScreen = ({
         <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
           Completed
         </Text>
-        {tasks.length !== 0 ? (
-          tasks
-            .filter((task) => task.state === 2 || task.state == -20)
+        {actions.length !== 0 ? (
+          actions
+            .filter((action) => action.tasks[action.tasks.length - 1].state === 2 || action.tasks[action.tasks.length - 1].state == -20)
             .reverse()
-            .map((task, index) => (
+            .map((action, index) => (
               <TouchableOpacity
                 onPress={() => {
                   if (
-                    task.txHash != null &&
-                    task.txHash != undefined &&
-                    task.txHash != ""
+                    action.tasks[action.tasks.length - 1].txHash != null &&
+                    action.tasks[action.tasks.length - 1].txHash != undefined &&
+                    action.tasks[action.tasks.length - 1].txHash != ""
                   )
-                    Linking.openURL(etherscanLink(task.chainId, task.txHash));
+                    Linking.openURL(etherscanLink(action.tasks[action.tasks.length - 1].chainId, action.tasks[action.tasks.length - 1].txHash));
                 }}
               >
                 <View
@@ -250,15 +259,15 @@ const HistoryScreen = ({
                     <Image
                       className="h-8 w-8"
                       source={
-                        task.type === "Swap"
+                        action.tasks[action.tasks.length - 1].type === "Swap"
                           ? colorScheme == "light"
                             ? require("../../assets/swap.png")
                             : require("../../assets/swap-drk.png")
-                          : task.type === "Invest"
+                          : action.tasks[action.tasks.length - 1].type === "Invest"
                           ? colorScheme == "light"
                             ? require("../../assets/invest.png")
                             : require("../../assets/invest-drk.png")
-                          : task.type === "send"
+                          : action.tasks[action.tasks.length - 1].type === "send"
                           ? colorScheme == "light"
                             ? require("../../assets/send.png")
                             : require("../../assets/send-drk.png")
@@ -270,46 +279,46 @@ const HistoryScreen = ({
                   </View>
                   <View className="flex-row">
                     <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                      {cutDecimals(task.amount, 2)} {}
+                      {cutDecimals(action.tasks[action.tasks.length - 1].amount, 2)} {}
                     </Text>
                     <Image
                       className="h-5 w-5"
                       source={
-                        getToken(task.asset1)?.logoURI
-                          ? { uri: getToken(task.asset1)?.logoURI }
+                        getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI
+                          ? { uri: getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI }
                           : require("../../assets/task-error.png")
                       }
                     />
                     <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
-                      {task.type === "Swap"
+                      {action.tasks[action.tasks.length - 1].type === "Swap"
                         ? "to"
-                        : task.type === "Invest"
+                        : action.tasks[action.tasks.length - 1].type === "Invest"
                         ? "into"
-                        : task.type === "Withdraw"
+                        : action.tasks[action.tasks.length - 1].type === "Withdraw"
                         ? "from"
                         : "to"}{" "}
                     </Text>
-                    {task.type === "send" ? (
+                    {action.tasks[action.tasks.length - 1].type === "send" ? (
                       <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
-                        {task.asset2.substring(0, 6) +
+                        {action.tasks[action.tasks.length - 1].asset2.substring(0, 6) +
                           "..." +
-                          task.asset2.slice(-4)}
+                          action.tasks[action.tasks.length - 1].asset2.slice(-4)}
                       </Text>
                     ) : (
                       <Image
                         className="ml-1 h-5 w-5"
                         // if swap get asset2 logo else get vault logo from vaults where vault is protocol
                         source={
-                          task.type === "Swap"
-                            ? getToken(task.asset2)?.logoURI
-                              ? { uri: getToken(task.asset2)?.logoURI }
+                          action.tasks[action.tasks.length - 1].type === "Swap"
+                            ? getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI
+                              ? { uri: getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI }
                               : require("../../assets/task-error.png")
                             : vaults!.find(
-                                (vault) => vault.name === task.protocol
+                                (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
                               )?.image
                             ? {
                                 uri: vaults!.find(
-                                  (vault) => vault.name === task.protocol
+                                  (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
                                 )?.image,
                               }
                             : require("../../assets/task-error.png")
@@ -322,11 +331,11 @@ const HistoryScreen = ({
                       className="mr-1 h-8 w-8"
                       source={
                         // task is 1 or 0
-                        task.state === 1 || task.state === 0
+                        action.tasks[action.tasks.length - 1].state === 1 || action.tasks[action.tasks.length - 1].state === 0
                           ? colorScheme == "light"
                             ? require("../../assets/task-1.png")
                             : require("../../assets/task-1-drk.png")
-                          : task.state === 2
+                          : action.tasks[action.tasks.length - 1].state === 2
                           ? colorScheme == "light"
                             ? require("../../assets/task-2.png")
                             : require("../../assets/task-2-drk.png")
