@@ -206,7 +206,7 @@ const SendScreen = ({
     const type = "send";
     const protocol = getChain(calls[0].cid).name;
     const asset1 = token?.symbol;
-    const asset2 = "";
+    const asset2 = toAddress;
     const amount = amountIn;
 
     try {

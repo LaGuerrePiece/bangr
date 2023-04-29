@@ -75,59 +75,12 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  if (route.params?.waitingForTask && !isTrackingTasks)
-  {
+  if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
     setInterval(async () => {
       fetchTasks();
     }, 2000);
-
   }
-
-  // if (route.params?.waitingForTask && !isTrackingTasks) {
-  //   setIsTrackingTasks(true);
-  //   // wait half a second for the task to be created
-
-  //   const waitForTasks = async () => {
-  //     // wait half a second for the task to be created
-  //     await new Promise((resolve) => setTimeout(resolve, 2000));
-  //     await fetchTasks();
-  //     const pendingTasks = tasks.filter(
-  //       (task) => task.state !== 2 && task.state != -20
-  //     );
-  //     const interval = setInterval(async () => {
-  //       console.log("pendingTasks", pendingTasks);
-
-  //       for (let i = 0; i < pendingTasks.length; i++) {
-  //         const task = pendingTasks[i];
-  //         const prevTask = prevPendings.find(
-  //           (t: Task) =>
-  //             t.chainId === task.chainId &&
-  //             t.type === task.type &&
-  //             t.protocol === task.protocol &&
-  //             t.asset1 === task.asset1 &&
-  //             t.asset2 === task.asset2 &&
-  //             t.state !== task.state
-  //         );
-  //         console.log("prevTask", prevTask);
-  //         console.log("state", prevTask?.state);
-  //         if (prevTask && prevTask.state === 1) {
-  //           Toast.show({
-  //             type: "success",
-  //             position: "bottom",
-  //             text1: "Success",
-  //             text2: "Your transaction has been completed",
-  //             visibilityTime: 4000,
-  //             autoHide: true,
-  //           });
-  //           clearInterval(interval);
-  //         }
-  //       }
-  //       setPrevPendings(pendingTasks);
-  //     }, 2000);
-  //   };
-  //   waitForTasks();
-  // }
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
@@ -187,6 +140,10 @@ const HistoryScreen = ({
                         ? colorScheme == "light"
                           ? require("../../assets/invest.png")
                           : require("../../assets/invest-drk.png")
+                        : task.type === "Send"
+                        ? colorScheme == "light"
+                          ? require("../../assets/send.png")
+                          : require("../../assets/send-drk.png")
                         : colorScheme == "light"
                         ? require("../../assets/receive.png")
                         : require("../../assets/receive-drk.png")
@@ -285,6 +242,10 @@ const HistoryScreen = ({
                         ? colorScheme == "light"
                           ? require("../../assets/invest.png")
                           : require("../../assets/invest-drk.png")
+                        : task.type === "send"
+                        ? colorScheme == "light"
+                          ? require("../../assets/send.png")
+                          : require("../../assets/send-drk.png")
                         : colorScheme == "light"
                         ? require("../../assets/receive.png")
                         : require("../../assets/receive-drk.png")
@@ -312,24 +273,33 @@ const HistoryScreen = ({
                       ? "from"
                       : "to"}{" "}
                   </Text>
-                  <Image
-                    className="ml-1 h-5 w-5"
-                    // if swap get asset2 logo else get vault logo from vaults where vault is protocol
-                    source={
-                      task.type === "Swap"
-                        ? getToken(task.asset2)?.logoURI
-                          ? { uri: getToken(task.asset2)?.logoURI }
-                          : require("../../assets/task-error.png")
-                        : vaults!.find((vault) => vault.name === task.protocol)
-                            ?.image
-                        ? {
-                            uri: vaults!.find(
+                  {task.type === "send" ? (
+                    <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
+                      {task.asset2.substring(0, 6) +
+                        "..." +
+                        task.asset2.slice(-4)}
+                    </Text>
+                  ) : (
+                    <Image
+                      className="ml-1 h-5 w-5"
+                      // if swap get asset2 logo else get vault logo from vaults where vault is protocol
+                      source={
+                        task.type === "Swap"
+                          ? getToken(task.asset2)?.logoURI
+                            ? { uri: getToken(task.asset2)?.logoURI }
+                            : require("../../assets/task-error.png")
+                          : vaults!.find(
                               (vault) => vault.name === task.protocol
-                            )?.image,
-                          }
-                        : require("../../assets/task-error.png")
-                    }
-                  />
+                            )?.image
+                          ? {
+                              uri: vaults!.find(
+                                (vault) => vault.name === task.protocol
+                              )?.image,
+                            }
+                          : require("../../assets/task-error.png")
+                      }
+                    />
+                  )}
                 </View>
                 <View>
                   <Image
