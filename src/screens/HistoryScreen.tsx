@@ -38,7 +38,7 @@ const HistoryScreen = ({
 
   const { tasks, pendingTasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
-    pendingTasks : state.pendingTasks,
+    pendingTasks: state.pendingTasks,
     // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
   }));
@@ -76,7 +76,7 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  let interval : any = null;
+  let interval: any = null;
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
     interval = setInterval(async () => {
@@ -242,11 +242,9 @@ const HistoryScreen = ({
                   )
                     Linking.openURL(etherscanLink(task.chainId, task.txHash));
                 }}
+                key={index}
               >
-                <View
-                  className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
-                  key={index}
-                >
+                <View className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark">
                   <View className="flex-row items-center py-2 px-2">
                     <Image
                       className="h-8 w-8"
