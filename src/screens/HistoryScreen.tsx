@@ -37,7 +37,7 @@ const HistoryScreen = ({
 
   const { tasks, pendingTasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
-    pendingTasks : state.pendingTasks,
+    pendingTasks: state.pendingTasks,
     // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
   }));
@@ -75,7 +75,7 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  let interval : any = null;
+  let interval: any = null;
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
     interval = setInterval(async () => {
@@ -177,24 +177,33 @@ const HistoryScreen = ({
                       ? "from"
                       : "to"}{" "}
                   </Text>
-                  <Image
-                    className="ml-1 h-5 w-5"
-                    // if swap get asset2 logo else get vault logo from vaults where vault is protocol
-                    source={
-                      task.type === "Swap"
-                        ? getToken(task.asset2)?.logoURI
-                          ? { uri: getToken(task.asset2)?.logoURI }
-                          : require("../../assets/task-error.png")
-                        : vaults!.find((vault) => vault.name === task.protocol)
-                            ?.image
-                        ? {
-                            uri: vaults!.find(
+                  {task.type === "send" ? (
+                    <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
+                      {task.asset2.substring(0, 6) +
+                        "..." +
+                        task.asset2.slice(-4)}
+                    </Text>
+                  ) : (
+                    <Image
+                      className="ml-1 h-5 w-5"
+                      // if swap get asset2 logo else get vault logo from vaults where vault is protocol
+                      source={
+                        task.type === "Swap"
+                          ? getToken(task.asset2)?.logoURI
+                            ? { uri: getToken(task.asset2)?.logoURI }
+                            : require("../../assets/task-error.png")
+                          : vaults!.find(
                               (vault) => vault.name === task.protocol
-                            )?.image,
-                          }
-                        : require("../../assets/task-error.png")
-                    }
-                  />
+                            )?.image
+                          ? {
+                              uri: vaults!.find(
+                                (vault) => vault.name === task.protocol
+                              )?.image,
+                            }
+                          : require("../../assets/task-error.png")
+                      }
+                    />
+                  )}
                 </View>
                 <View>
                   <Image
