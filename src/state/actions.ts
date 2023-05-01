@@ -57,18 +57,7 @@ const useActionsStore = create<ActionsState>()((set, get) => ({
       // and has state 2 in pending actions but not in previous pending actions
       // then send Toast
       const previousPendingActions = get().previousPendingActions;
-      // pendingActions.forEach((task) => {
-      //   if (
-      //     previousPendingActions.find(
-      //       (previousPendingAction) =>
-      //         previousPendingAction.txHash === task.txHash &&
-      //         previousPendingAction.state === 2
-      //     ) === undefined &&
-      //     task.state === 2
-      //   ) {
-      //     console.log("send Toast");
-      //   }
-      // });
+
       if (pendingActions.length < previousPendingActions.length) {
         // console.log("send Toast");
         Toast.show({

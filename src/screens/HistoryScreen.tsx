@@ -38,15 +38,17 @@ const HistoryScreen = ({
 
   const { tasks, pendingTasks, fetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
-    pendingTasks : state.pendingTasks,
+    pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
   }));
 
-  const { actions, pendingActions, fetchActions } = useActionsStore((state) => ({
-    actions: state.actions,
-    pendingActions : state.pendingActions,
-    fetchActions: state.fetchActions,
-  }));
+  const { actions, pendingActions, fetchActions } = useActionsStore(
+    (state) => ({
+      actions: state.actions,
+      pendingActions: state.pendingActions,
+      fetchActions: state.fetchActions,
+    })
+  );
 
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
   const [isTrackingTasks, setIsTrackingTasks] = useState(false);
@@ -83,7 +85,7 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  let interval : any = null;
+  let interval: any = null;
   if (route.params?.waitingForTask && !isTrackingTasks) {
     setIsTrackingTasks(true);
     interval = setInterval(async () => {
@@ -125,8 +127,11 @@ const HistoryScreen = ({
       >
         {tasks.length - 1 !== 0 &&
         vaults &&
-        actions.filter((action) => action.tasks[action.tasks.length - 1].state != 2 && action.tasks[action.tasks.length - 1].state != -20).length >
-          0 ? (
+        actions.filter(
+          (action) =>
+            action.tasks[action.tasks.length - 1].state != 2 &&
+            action.tasks[action.tasks.length - 1].state != -20
+        ).length > 0 ? (
           <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
             Pending
           </Text>
@@ -136,8 +141,14 @@ const HistoryScreen = ({
 
         {actions.length !== 0 ? (
           actions
-            .filter((action) => action.tasks[action.tasks.length - 1].state !== 2 && action.tasks[action.tasks.length - 1].state != -20)
-            .reverse()
+            .filter(
+              (action) =>
+                action.tasks[action.tasks.length - 1].state !== 2 &&
+                action.tasks[action.tasks.length - 1].state != -20
+            )
+            .sort(function (a, b) {
+              return b.id - a.id;
+            })
             .map((action, index) => (
               <View
                 className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
@@ -151,7 +162,8 @@ const HistoryScreen = ({
                         ? colorScheme == "light"
                           ? require("../../assets/swap.png")
                           : require("../../assets/swap-drk.png")
-                        : action.tasks[action.tasks.length - 1].type === "Invest"
+                        : action.tasks[action.tasks.length - 1].type ===
+                          "Invest"
                         ? colorScheme == "light"
                           ? require("../../assets/invest.png")
                           : require("../../assets/invest-drk.png")
@@ -167,13 +179,22 @@ const HistoryScreen = ({
                 </View>
                 <View className="flex-row">
                   <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                    {cutDecimals(action.tasks[action.tasks.length - 1].amount, 2)} {}
+                    {cutDecimals(
+                      action.tasks[action.tasks.length - 1].amount,
+                      2
+                    )}{" "}
+                    {}
                   </Text>
                   <Image
                     className="h-5 w-5"
                     source={
-                      getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI
-                        ? { uri: getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI }
+                      getToken(action.tasks[action.tasks.length - 1].asset1)
+                        ?.logoURI
+                        ? {
+                            uri: getToken(
+                              action.tasks[action.tasks.length - 1].asset1
+                            )?.logoURI,
+                          }
                         : require("../../assets/task-error.png")
                     }
                   />
@@ -182,7 +203,8 @@ const HistoryScreen = ({
                       ? "to"
                       : action.tasks[action.tasks.length - 1].type === "Invest"
                       ? "into"
-                      : action.tasks[action.tasks.length - 1].type === "Withdraw"
+                      : action.tasks[action.tasks.length - 1].type ===
+                        "Withdraw"
                       ? "from"
                       : "to"}{" "}
                   </Text>
@@ -191,14 +213,24 @@ const HistoryScreen = ({
                     // if swap get asset2 logo else get vault logo from vaults where vault is protocol
                     source={
                       action.tasks[action.tasks.length - 1].type === "Swap"
-                        ? getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI
-                          ? { uri: getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI }
+                        ? getToken(action.tasks[action.tasks.length - 1].asset2)
+                            ?.logoURI
+                          ? {
+                              uri: getToken(
+                                action.tasks[action.tasks.length - 1].asset2
+                              )?.logoURI,
+                            }
                           : require("../../assets/task-error.png")
-                        : vaults!.find((vault) => vault.name === action.tasks[action.tasks.length - 1].protocol)
-                            ?.image
+                        : vaults!.find(
+                            (vault) =>
+                              vault.name ===
+                              action.tasks[action.tasks.length - 1].protocol
+                          )?.image
                         ? {
                             uri: vaults!.find(
-                              (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
+                              (vault) =>
+                                vault.name ===
+                                action.tasks[action.tasks.length - 1].protocol
                             )?.image,
                           }
                         : require("../../assets/task-error.png")
@@ -210,7 +242,8 @@ const HistoryScreen = ({
                     className="mr-1 h-8 w-8"
                     source={
                       // task is 1 or 0
-                      action.tasks[action.tasks.length - 1].state === 1 || action.tasks[action.tasks.length - 1].state === 0
+                      action.tasks[action.tasks.length - 1].state === 1 ||
+                      action.tasks[action.tasks.length - 1].state === 0
                         ? colorScheme == "light"
                           ? require("../../assets/task-1.png")
                           : require("../../assets/task-1-drk.png")
@@ -238,8 +271,14 @@ const HistoryScreen = ({
         </Text>
         {actions.length !== 0 ? (
           actions
-            .filter((action) => action.tasks[action.tasks.length - 1].state === 2 || action.tasks[action.tasks.length - 1].state == -20)
-            .reverse()
+            .filter(
+              (action) =>
+                action.tasks[action.tasks.length - 1].state === 2 ||
+                action.tasks[action.tasks.length - 1].state == -20
+            )
+            .sort(function (a, b) {
+              return b.id - a.id;
+            })
             .map((action, index) => (
               <TouchableOpacity
                 onPress={() => {
@@ -248,7 +287,12 @@ const HistoryScreen = ({
                     action.tasks[action.tasks.length - 1].txHash != undefined &&
                     action.tasks[action.tasks.length - 1].txHash != ""
                   )
-                    Linking.openURL(etherscanLink(action.tasks[action.tasks.length - 1].chainId, action.tasks[action.tasks.length - 1].txHash));
+                    Linking.openURL(
+                      etherscanLink(
+                        action.tasks[action.tasks.length - 1].chainId,
+                        action.tasks[action.tasks.length - 1].txHash
+                      )
+                    );
                 }}
               >
                 <View
@@ -263,11 +307,13 @@ const HistoryScreen = ({
                           ? colorScheme == "light"
                             ? require("../../assets/swap.png")
                             : require("../../assets/swap-drk.png")
-                          : action.tasks[action.tasks.length - 1].type === "Invest"
+                          : action.tasks[action.tasks.length - 1].type ===
+                            "Invest"
                           ? colorScheme == "light"
                             ? require("../../assets/invest.png")
                             : require("../../assets/invest-drk.png")
-                          : action.tasks[action.tasks.length - 1].type === "send"
+                          : action.tasks[action.tasks.length - 1].type ===
+                            "send"
                           ? colorScheme == "light"
                             ? require("../../assets/send.png")
                             : require("../../assets/send-drk.png")
@@ -279,30 +325,46 @@ const HistoryScreen = ({
                   </View>
                   <View className="flex-row">
                     <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                      {cutDecimals(action.tasks[action.tasks.length - 1].amount, 2)} {}
+                      {cutDecimals(
+                        action.tasks[action.tasks.length - 1].amount,
+                        2
+                      )}{" "}
+                      {}
                     </Text>
                     <Image
                       className="h-5 w-5"
                       source={
-                        getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI
-                          ? { uri: getToken(action.tasks[action.tasks.length - 1].asset1)?.logoURI }
+                        getToken(action.tasks[action.tasks.length - 1].asset1)
+                          ?.logoURI
+                          ? {
+                              uri: getToken(
+                                action.tasks[action.tasks.length - 1].asset1
+                              )?.logoURI,
+                            }
                           : require("../../assets/task-error.png")
                       }
                     />
                     <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
                       {action.tasks[action.tasks.length - 1].type === "Swap"
                         ? "to"
-                        : action.tasks[action.tasks.length - 1].type === "Invest"
+                        : action.tasks[action.tasks.length - 1].type ===
+                          "Invest"
                         ? "into"
-                        : action.tasks[action.tasks.length - 1].type === "Withdraw"
+                        : action.tasks[action.tasks.length - 1].type ===
+                          "Withdraw"
                         ? "from"
                         : "to"}{" "}
                     </Text>
                     {action.tasks[action.tasks.length - 1].type === "send" ? (
                       <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">
-                        {action.tasks[action.tasks.length - 1].asset2.substring(0, 6) +
+                        {action.tasks[action.tasks.length - 1].asset2.substring(
+                          0,
+                          6
+                        ) +
                           "..." +
-                          action.tasks[action.tasks.length - 1].asset2.slice(-4)}
+                          action.tasks[action.tasks.length - 1].asset2.slice(
+                            -4
+                          )}
                       </Text>
                     ) : (
                       <Image
@@ -310,15 +372,26 @@ const HistoryScreen = ({
                         // if swap get asset2 logo else get vault logo from vaults where vault is protocol
                         source={
                           action.tasks[action.tasks.length - 1].type === "Swap"
-                            ? getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI
-                              ? { uri: getToken(action.tasks[action.tasks.length - 1].asset2)?.logoURI }
+                            ? getToken(
+                                action.tasks[action.tasks.length - 1].asset2
+                              )?.logoURI
+                              ? {
+                                  uri: getToken(
+                                    action.tasks[action.tasks.length - 1].asset2
+                                  )?.logoURI,
+                                }
                               : require("../../assets/task-error.png")
                             : vaults!.find(
-                                (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
+                                (vault) =>
+                                  vault.name ===
+                                  action.tasks[action.tasks.length - 1].protocol
                               )?.image
                             ? {
                                 uri: vaults!.find(
-                                  (vault) => vault.name === action.tasks[action.tasks.length - 1].protocol
+                                  (vault) =>
+                                    vault.name ===
+                                    action.tasks[action.tasks.length - 1]
+                                      .protocol
                                 )?.image,
                               }
                             : require("../../assets/task-error.png")
@@ -331,7 +404,8 @@ const HistoryScreen = ({
                       className="mr-1 h-8 w-8"
                       source={
                         // task is 1 or 0
-                        action.tasks[action.tasks.length - 1].state === 1 || action.tasks[action.tasks.length - 1].state === 0
+                        action.tasks[action.tasks.length - 1].state === 1 ||
+                        action.tasks[action.tasks.length - 1].state === 0
                           ? colorScheme == "light"
                             ? require("../../assets/task-1.png")
                             : require("../../assets/task-1-drk.png")
