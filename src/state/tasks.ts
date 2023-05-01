@@ -58,18 +58,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       // and has state 2 in pending tasks but not in previous pending tasks
       // then send Toast
       const previousPendingTasks = get().previousPendingTasks;
-      // pendingTasks.forEach((task) => {
-      //   if (
-      //     previousPendingTasks.find(
-      //       (previousPendingTask) =>
-      //         previousPendingTask.txHash === task.txHash &&
-      //         previousPendingTask.state === 2
-      //     ) === undefined &&
-      //     task.state === 2
-      //   ) {
-      //     console.log("send Toast");
-      //   }
-      // });
+
       if (pendingTasks.length < previousPendingTasks.length) {
         // console.log("send Toast");
         Toast.show(
