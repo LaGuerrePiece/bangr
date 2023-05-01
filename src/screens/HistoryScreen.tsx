@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   View,
   useColorScheme,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
-import { RefreshControl, ScrollView } from "react-native-gesture-handler";
 import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
 import { cutDecimals } from "../utils/format";
@@ -250,11 +251,9 @@ const HistoryScreen = ({
                   )
                     Linking.openURL(etherscanLink(task.chainId, task.txHash));
                 }}
+                key={index}
               >
-                <View
-                  className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
-                  key={index}
-                >
+                <View className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark">
                   <View className="flex-row items-center py-2 px-2">
                     <Image
                       className="h-8 w-8"
