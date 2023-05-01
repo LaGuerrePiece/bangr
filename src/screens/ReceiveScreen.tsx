@@ -128,8 +128,8 @@ const ReceiveScreen = () => {
           <Text className="w-36 text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
             Networks:
           </Text>
-          <Text className="my-3 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            <View className="flex-col pl-20">
+          <View className="my-3 flex items-center justify-center">
+            <View className="mx-auto flex-col">
               <View className="flex-row items-center">
                 <Image
                   className="h-7 w-7"
@@ -158,7 +158,7 @@ const ReceiveScreen = () => {
                 </View>
               </View>
             </View>
-          </Text>
+          </View>
 
           <View className="mt-4 flex-row justify-between">
             <ActionButton
