@@ -24,8 +24,10 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
     (vault) => vault.name === investments[0].vaultName
   )[0] as VaultData;
 
-  const apy = vault.chains
-    ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
+  const apy = vault
+    ? vault.chains
+      ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
+      : "0"
     : "0";
 
   return (

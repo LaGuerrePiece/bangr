@@ -35,6 +35,7 @@ import { Tab } from "../components/Tab";
 import { Protocol } from "../components/Protocol";
 import { HowItWorks } from "../components/HowItWorks";
 import { Information } from "../components/Information";
+import useTasksStore from "../state/tasks";
 
 const calculateGains = (
   amount: number,
@@ -59,6 +60,8 @@ const VaultDepositScreen = ({
   route: RouteProp<VaultParams, "VaultDepositScreen">;
   navigation: any;
 }) => {
+  const colorScheme = useColorScheme();
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
