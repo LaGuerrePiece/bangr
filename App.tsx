@@ -44,7 +44,7 @@ import {
   SecondScreen,
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
-import { Toaster } from "react-native-customizable-toast";
+import ChooseVaultScreen from "./src/screens/ChooseVault";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -167,6 +167,7 @@ const App = () => {
             component={SelectChainScreen}
             options={{ presentation: "modal" }}
           />
+          <Stack.Screen name="ChooseVault" component={ChooseVaultScreen} />
           <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
           <Stack.Screen
             name="Send"

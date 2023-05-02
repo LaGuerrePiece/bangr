@@ -165,7 +165,7 @@ const ReceiveScreen = () => {
               text="Buy with cash"
               rounded
               bold
-              additionalCss={"min-w-[200px]"}
+              styles={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp" as never);
               }}

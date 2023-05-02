@@ -7,6 +7,7 @@ import { getURLInApp } from "../utils/utils";
 import { Balance, Price } from "../types/types";
 import useTokensStore from "./tokens";
 import useVaultsStore from "./vaults";
+import useYieldsStore from "./yields";
 
 interface UserState {
   wallet: Wallet | undefined;
@@ -50,6 +51,8 @@ const useUserStore = create<UserState>()((set, get) => ({
 
     get().fetchBalances(scwAddress);
     get().fetchPrices();
+
+    useYieldsStore.getState().fetchYields(scwAddress);
     useVaultsStore.getState().fetchVaults(scwAddress);
   },
 
