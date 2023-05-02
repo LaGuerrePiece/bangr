@@ -167,7 +167,10 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
-        navigation.navigate("History" as never, { waitingForTask: true } as never);
+        navigation.navigate(
+          "History" as never,
+          { waitingForTask: true } as never
+        );
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -188,6 +191,8 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("withdraw");
 
+    // console.log("calls", calls);
+
     if (wallet && smartWalletAddress && calls) {
       try {
         await relay(
@@ -204,7 +209,7 @@ const VaultDepositScreen = ({
           "Withdraw failed"
         );
       } catch (error) {
-        console.log(error);
+        console.log("error relaying:", error);
         Toast.show({
           type: "error",
           text1: "error relaying transaction",
@@ -215,7 +220,6 @@ const VaultDepositScreen = ({
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
     navigation.navigate("History" as never, { waitingForTask: true } as never);
-
   };
 
   const validateInput = (action: string) => {

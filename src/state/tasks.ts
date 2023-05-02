@@ -37,9 +37,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
   },
   fetchTasks: async () => {
     try {
-      const wallet = useUserStore.getState().wallet;
-      if (!wallet) return;
-      const scwAddress = await getSmartWalletAddress(wallet.address);
+      const scwAddress = useUserStore.getState().smartWalletAddress;
       console.log("Get tasks for ", scwAddress);
       // axios get request to fetch tasks for a scwAddress
       // with a get parameter scwAddress
@@ -72,20 +70,21 @@ const useTasksStore = create<TasksState>()((set, get) => ({
       // });
       if (pendingTasks.length < previousPendingTasks.length) {
         // console.log("send Toast");
-        Toast.show(
-          {
-            type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your transaction has been confirmed",
-            visibilityTime: 2500,
-            autoHide: true,
-          },
-        );
-        useUserStore.getState().fetchBalances()
-        useVaultsStore.getState().fetchVaults()
+        Toast.show({
+          type: "success",
+          text1: "Transaction confirmed",
+          text2: "Your transaction has been confirmed",
+          visibilityTime: 2500,
+          autoHide: true,
+        });
+        useUserStore.getState().fetchBalances(scwAddress);
+        useVaultsStore.getState().fetchVaults(scwAddress);
       }
-      set({ tasks: data, pendingTasks: pendingTasks, previousPendingTasks: pendingTasks });
-
+      set({
+        tasks: data,
+        pendingTasks: pendingTasks,
+        previousPendingTasks: pendingTasks,
+      });
     } catch (error) {
       console.log("error fetching tasks:", error);
     }
