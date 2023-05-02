@@ -66,30 +66,30 @@ const useTasksStore = create<TasksState>()((set, get) => ({
           (task) => !pendingTasks.includes(task)
         )[0];
         if (task.state > 0) {
-          Toast.show(
-            {
-              type: "success",
-              text1: "Transaction confirmed",
-              text2: "Your transaction has been confirmed",
-              visibilityTime: 2500,
-              autoHide: true,
-            },
-          );
+          Toast.show({
+            type: "success",
+            text1: "Transaction confirmed",
+            text2: "Your transaction has been confirmed",
+            visibilityTime: 2500,
+            autoHide: true,
+          });
         } else {
-          Toast.show(
-            {
-              type: "error",
-              text1: "Transaction failed",
-              text2: "Your transaction has failed",
-              visibilityTime: 2500,
-              autoHide: true,
-            },
-          );
-        useUserStore.getState().fetchBalances()
-        useVaultsStore.getState().fetchVaults()
+          Toast.show({
+            type: "error",
+            text1: "Transaction failed",
+            text2: "Your transaction has failed",
+            visibilityTime: 2500,
+            autoHide: true,
+          });
+          useUserStore.getState().fetchBalances();
+          useVaultsStore.getState().fetchVaults();
+        }
       }
-      set({ tasks: data, pendingTasks: pendingTasks, previousPendingTasks: pendingTasks });
-
+      set({
+        tasks: data,
+        pendingTasks: pendingTasks,
+        previousPendingTasks: pendingTasks,
+      });
     } catch (error) {
       console.log("error fetching tasks:", error);
     }
