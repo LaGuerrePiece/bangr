@@ -134,11 +134,11 @@ const App = () => {
                 ? ChoosePasswordScreen
                 : ChoosePasswordICloud
             }
-            options={{ animation: "slide_from_right" }}
+            options={{ animation: "slide_from_left", presentation: "modal" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
-            name="Wallet"
+            name="MainScreen"
             component={MainScreen}
             options={{ gestureEnabled: false }}
           />
@@ -147,6 +147,11 @@ const App = () => {
             component={VaultInfoScreen}
             options={{ presentation: "modal" }}
           />
+          {/* <Stack.Screen
+            name="HistoryScreen"
+            component={HistoryScreen}
+            options={{ animation: "slide_from_right" }}
+          /> */}
           <Stack.Screen
             name="Token"
             component={TokenScreen}
@@ -222,6 +227,7 @@ const App = () => {
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />
+        {/* <Toaster/> */}
         <StatusBar
           barStyle={
             Appearance.getColorScheme() === "light"

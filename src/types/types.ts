@@ -77,6 +77,7 @@ export type Quote = {
   sumOfToAmount?: string;
   totalToAmountUSD?: Number;
   totalFromAmountUSD?: Number;
+  totalGasCostUSD?: Number;
 };
 
 export type SingleQuote = LifiQuote | TransferQuote;

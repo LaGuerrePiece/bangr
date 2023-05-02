@@ -142,7 +142,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
         type: "success",
         text1: "Account recovered !",
       });
-      navigation.navigate("Wallet");
+      navigation.navigate("MainScreen");
     } catch (e) {
       console.log(e);
       Toast.show({

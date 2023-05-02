@@ -36,6 +36,14 @@ import { Protocol } from "../components/Protocol";
 import { HowItWorks } from "../components/HowItWorks";
 import { Information } from "../components/Information";
 
+const calculateGains = (
+  amount: number,
+  apy: number,
+  period: number
+): string => {
+  return ((amount * (apy / 100)) / (365 / period)).toFixed(2);
+};
+
 type VaultParams = {
   VaultDepositScreen: {
     vault: VaultData;
@@ -51,6 +59,7 @@ const VaultDepositScreen = ({
   route: RouteProp<VaultParams, "VaultDepositScreen">;
   navigation: any;
 }) => {
+
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -119,16 +128,10 @@ const VaultDepositScreen = ({
     // Input token is sent : USDC when we deposit and aUSDc when we withdraw
     const token = action === "deposit" ? selectedToken : vaultTkn;
 
-    console.log(
-      "token",
-      token,
-      "amount",
-      amount,
-      "action",
-      action,
-      "vaultName",
-      name
-    );
+    console.log("token", token);
+    console.log("amount", amount);
+    console.log("action", action);
+    console.log("vaultName", name);
 
     try {
       const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
@@ -139,9 +142,19 @@ const VaultDepositScreen = ({
         token,
       });
 
+      if (calls.data.length === 0) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Error fetching quote",
+        });
+        console.log("error fetching quote");
+        return;
+      }
+
       return calls.data;
     } catch (err) {
-      console.log(err);
+      console.log("err in VaultDepositScreen", err);
     }
   };
 
@@ -150,9 +163,9 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("deposit");
 
-    if (wallet && smartWalletAddress) {
+    if (wallet && smartWalletAddress && calls) {
       try {
-        await relay(
+        relay(
           calls,
           wallet,
           smartWalletAddress,
@@ -165,6 +178,10 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
+        navigation.navigate(
+          "History" as never,
+          { waitingForTask: true } as never
+        );
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -176,6 +193,7 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    fetchTasks();
   };
 
   const handleWithdraw = async () => {
@@ -184,22 +202,35 @@ const VaultDepositScreen = ({
 
     const calls = await handleAmountChange("withdraw");
 
-    await relay(
-      calls,
-      wallet!,
-      smartWalletAddress!,
-      "0",
-      "Withdraw",
-      name,
-      selectedTokenSymbol,
-      "",
-      amount,
-      "Deposit successful",
-      "Deposit failed"
-    );
+    // console.log("calls", calls);
+
+    if (wallet && smartWalletAddress && calls) {
+      try {
+        await relay(
+          calls,
+          wallet,
+          smartWalletAddress,
+          "0",
+          "Withdraw",
+          name,
+          selectedTokenSymbol,
+          "",
+          amount,
+          "Withdraw successful",
+          "Withdraw failed"
+        );
+      } catch (error) {
+        console.log("error relaying:", error);
+        Toast.show({
+          type: "error",
+          text1: "error relaying transaction",
+        });
+      }
+    }
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
+    navigation.navigate("History" as never, { waitingForTask: true } as never);
   };
 
   const validateInput = (action: string) => {

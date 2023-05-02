@@ -16,7 +16,7 @@ import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
 import useVaultsStore from "../state/vaults";
 
-const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
+const Asset = ({ token }: { token: MultichainToken; }) => {
   const [chart, setChart] = useState<Point[]>();
   useEffect(() => {
     getChart(token);
@@ -75,7 +75,7 @@ const Asset = ({ token, swiper }: { token: MultichainToken; swiper: any }) => {
               navigation.navigate("VaultDeposit" as never, { vault } as never);
             }
           } else {
-            swiper.current.scrollBy(-1, true);
+            // swiper.current.scrollBy(-1, true);
           }
         }}
       >

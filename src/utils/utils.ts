@@ -274,3 +274,11 @@ export const getURLInApp = () =>
 export const correctInput = (input: string): string => {
   return input.replace(/,/g, ".");
 };
+
+export const etherscanLink = (chainId: number, hash: string) => {
+  // url is polygonscan.io for chain id 137
+  // arbiscan.io for chain id 42161
+  // optimistic.etherscan.io for chain id 10
+  const url = chainId === 137 ? "https://polygonscan.com" : chainId == 42161 ?  "https://arbiscan.io" : "https://optimistic.etherscan.io";
+  return `${url}/tx/${hash}`;
+};

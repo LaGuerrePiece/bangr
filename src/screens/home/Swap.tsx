@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   View,
   Text,
@@ -36,20 +36,33 @@ import { relay } from "../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
+import useTasksStore from "../../state/tasks";
+import { RouteProp } from "@react-navigation/native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Icon from "../../components/Icon";
 
 type ButtonStatus = {
   disabled: boolean;
   text: string;
 };
 
+type SwapParams = {
+  Swap: {
+    tokenToUpdate?: string;
+    updatedToken?: MultichainToken;
+  };
+};
+
 const Swap = ({
-  swiper,
   updatedToken,
   tokenToUpdate,
+  navigation,
+  route,
 }: {
-  swiper: any;
   updatedToken: MultichainToken | undefined;
   tokenToUpdate: string | undefined;
+  navigation: any;
+  route: RouteProp<SwapParams, "Swap">;
 }) => {
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -65,15 +78,21 @@ const Swap = ({
     dstToken,
     quote,
     calls,
+    gasFeeEstimateUSD,
     isSearching,
     update,
     set,
     clearAfterSwap,
   } = useSwapStore();
   const tokens = useTokensStore((state) => state.tokens);
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
+
   const colorScheme = useColorScheme();
 
   useEffect(() => {
+    const updatedToken = route.params?.updatedToken;
+    const tokenToUpdate = route.params?.tokenToUpdate;
+
     if (updatedToken && tokenToUpdate) {
       if (
         tokenToUpdate === "srcToken" &&
@@ -91,7 +110,7 @@ const Swap = ({
       }
       update({ [tokenToUpdate]: updatedToken });
     }
-  }, [updatedToken, tokenToUpdate]);
+  }, [route.params?.updatedToken, route.params?.tokenToUpdate]);
 
   useEffect(() => {
     if (!srcToken) {
@@ -154,6 +173,7 @@ const Swap = ({
       update({
         quote: response.infos.quote,
         calls: response.calls,
+        gasFeeEstimateUSD: response.infos.gasFeeEstimateUSD,
         isSearching: false,
       });
     } catch (error) {
@@ -169,10 +189,14 @@ const Swap = ({
       const dai = tokens?.find((token) => token.symbol === "DAI");
       if (dai) srcTokenSave = dai;
     }
+
     update({
-      amountIn: quote?.sumOfToAmount
-        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
-        : amountIn,
+      // causes bugs for now with USDC
+      // amountIn: quote?.sumOfToAmount
+      //   ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+      //   : "0",
+      amountIn: "0",
+      debouncedAmountIn: "0",
       quote: null,
       calls: null,
       srcToken: dstToken,
@@ -210,7 +234,7 @@ const Swap = ({
     const asset2 = dstToken!.symbol;
     const amount = amountIn;
     try {
-      await relay(
+      relay(
         calls,
         wallet,
         smartWalletAddress,
@@ -230,65 +254,9 @@ const Swap = ({
         text1: "error relaying transaction",
       });
     }
-    clearAfterSwap();
-    fetchBalances();
-  };
 
-  // test swap and then invest
-  // const swapAndInvest = async () => {
-  //   if (!calls || !wallet || !quote || !smartWalletAddress) return;
-  //   const value = getRelayerValueToSend(quote);
-  //   const type = "Swap";
-  //   const protocol = "bangrswap";
-  //   const asset1 = srcToken!.symbol;
-  //   const asset2 = dstToken!.symbol;
-  //   const amount = amountIn;
-  //   const dcalls = await axios.post(`${getURLInApp()}/api/v1/quote/swap`, {
-  //     srcToken: dstToken,
-  //     dstToken: srcToken,
-  //     amountIn: ethers.utils.parseUnits(quote.sumOfToAmount!),
-  //     fromAddress: EXAMPLE_WALLET_ADDRESS,
-  //   });
-  //   try {
-  //     Promise.all([
-  //       relay(
-  //         calls,
-  //         wallet,
-  //         smartWalletAddress,
-  //         value,
-  //         type,
-  //         protocol,
-  //         asset1,
-  //         asset2,
-  //         "2",
-  //         successMessage,
-  //         errorMessage
-  //       ),
-  //       relay(
-  //         dcalls.data,
-  //         wallet,
-  //         smartWalletAddress,
-  //         "0",
-  //         type,
-  //         protocol,
-  //         asset2,
-  //         asset1,
-  //         "1",
-  //         "🦄 Invest successful!",
-  //         "🤯 Invest failed. Please try again later or contact us."
-  //       ),
-  //     ]);
-  //   } catch (error) {
-  //     console.log(error);
-  //     Toast.show({
-  //       type: "error",
-  //       text1: "error relaying transaction",
-  //     });
-  //   }
-  //   clearAfterSwap();
-  //   fetchBalances();
-  //   console.log("swap and invest done");
-  // };
+    navigation.navigate("History", { waitingForTask: true });
+  };
 
   const buttonStatus = (): ButtonStatus => {
     if (!debouncedAmountIn) {
@@ -333,14 +301,14 @@ const Swap = ({
   };
 
   return (
-    <SafeAreaView className="h-full bg-primary-light dark:bg-primary-dark">
+    <SafeAreaView className="bg-sedondary-light h-full dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("history");
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -356,7 +324,7 @@ const Swap = ({
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
               console.log("Invest");
-              swiper.current.scrollBy(1, true);
+              // swiper.current.scrollBy(1, true);
             }}
           >
             <Image
@@ -495,11 +463,11 @@ const Swap = ({
                 </View>
               </View>
             </View>
-            <View className="flex flex-row">
+            <View className="w-full flex-row justify-between">
               <TouchableHighlight onPress={flip}>
-                <View className="flex flex-row items-center">
+                <View className="flex-row items-center">
                   <Image
-                    className="ml-3 mb-4 h-6 w-6"
+                    className="ml-3 h-6 w-6"
                     source={
                       colorScheme === "light"
                         ? require("../../../assets/flip.png")
@@ -511,6 +479,24 @@ const Swap = ({
                   </Text>
                 </View>
               </TouchableHighlight>
+              {gasFeeEstimateUSD ? (
+                <TouchableHighlight>
+                  <View className="mr-3 flex-row items-center">
+                    <Icon
+                      icon={(props: any) => (
+                        <MaterialIcons
+                          name="local-gas-station"
+                          size={28}
+                          {...props}
+                        />
+                      )}
+                    />
+                    <Text className="ml-1 text-typo-light dark:text-typo-dark">
+                      {gasFeeEstimateUSD.toFixed(2)} USD
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              ) : null}
             </View>
 
             <ActionButton

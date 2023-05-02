@@ -10,7 +10,8 @@ import {
 import Yield from "../../components/Yield";
 import useYieldsStore from "../../state/yields";
 
-const Invest = ({ swiper }: { swiper: any }) => {
+const Invest = () => {
+  const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
   const yields = useYieldsStore((state) => state.yields);
 
@@ -22,7 +23,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
         <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -36,7 +37,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(1, true);
+              // swiper.current.scrollBy(1, true);
             }}
           >
             <Image

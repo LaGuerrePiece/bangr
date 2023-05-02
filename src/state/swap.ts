@@ -9,6 +9,7 @@ interface SwapState {
   dstToken: MultichainToken | null;
   quote: Quote | null;
   calls: CallWithNonce[] | null;
+  gasFeeEstimateUSD: number | null;
   isSearching: boolean;
   update: (patch: any) => void;
   clearAfterSwap: () => void;
@@ -25,6 +26,7 @@ const useSwapStore = create<SwapState>()(
     dstToken: null,
     quote: null,
     calls: null,
+    gasFeeEstimateUSD: null,
     isSearching: false,
 
     update: (patch) => {
@@ -74,6 +76,7 @@ const useSwapStore = create<SwapState>()(
         quote: null,
         calls: null,
         isSearching: false,
+        gasFeeEstimateUSD: null,
       });
     },
   }))

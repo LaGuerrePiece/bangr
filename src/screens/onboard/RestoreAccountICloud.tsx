@@ -73,7 +73,7 @@ export default function RestoreAccountICloud({
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
       login(new ethers.Wallet(decrypted));
-      navigation.navigate("Wallet");
+      navigation.navigate("MainScreen");
     } catch (e) {
       console.log(e);
       Toast.show({

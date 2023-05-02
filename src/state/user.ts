@@ -7,7 +7,6 @@ import { getURLInApp } from "../utils/utils";
 import { Balance, Price } from "../types/types";
 import useTokensStore from "./tokens";
 import useVaultsStore from "./vaults";
-import { State } from "@web3auth/react-native-sdk";
 import useYieldsStore from "./yields";
 
 interface UserState {

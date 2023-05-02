@@ -27,7 +27,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
           <ActionButton
             text="Back to Home"
             rounded
-            action={() => navigation.navigate("Wallet")}
+            action={() => navigation.navigate("MainScreen")}
           />
         </View>
       </SafeAreaView>
@@ -58,7 +58,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
           <ActionButton
             text="Back to Home"
             rounded
-            action={() => navigation.navigate("Wallet")}
+            action={() => navigation.navigate("MainScreen")}
           />
         </View>
       </SafeAreaView>
@@ -117,7 +117,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
         <ActionButton
           text="Back to Home"
           rounded
-          action={() => navigation.navigate("Wallet")}
+          action={() => navigation.navigate("MainScreen")}
         />
       </View>
     </SafeAreaView>
