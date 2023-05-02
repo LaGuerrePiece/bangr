@@ -38,6 +38,8 @@ import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
 import useTasksStore from "../../state/tasks";
 import { RouteProp } from "@react-navigation/native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Icon from "../../components/Icon";
 
 type ButtonStatus = {
   disabled: boolean;
@@ -76,6 +78,7 @@ const Swap = ({
     dstToken,
     quote,
     calls,
+    gasFeeEstimateUSD,
     isSearching,
     update,
     set,
@@ -170,6 +173,7 @@ const Swap = ({
       update({
         quote: response.infos.quote,
         calls: response.calls,
+        gasFeeEstimateUSD: response.infos.gasFeeEstimateUSD,
         isSearching: false,
       });
     } catch (error) {
@@ -459,11 +463,11 @@ const Swap = ({
                 </View>
               </View>
             </View>
-            <View className="flex flex-row">
+            <View className="w-full flex-row justify-between">
               <TouchableHighlight onPress={flip}>
-                <View className="flex flex-row items-center">
+                <View className="flex-row items-center">
                   <Image
-                    className="ml-3 mb-4 h-6 w-6"
+                    className="ml-3 h-6 w-6"
                     source={
                       colorScheme === "light"
                         ? require("../../../assets/flip.png")
@@ -475,6 +479,24 @@ const Swap = ({
                   </Text>
                 </View>
               </TouchableHighlight>
+              {gasFeeEstimateUSD ? (
+                <TouchableHighlight>
+                  <View className="mr-3 flex-row items-center">
+                    <Icon
+                      icon={(props: any) => (
+                        <MaterialIcons
+                          name="local-gas-station"
+                          size={28}
+                          {...props}
+                        />
+                      )}
+                    />
+                    <Text className="ml-1 text-typo-light dark:text-typo-dark">
+                      {gasFeeEstimateUSD.toFixed(2)} USD
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              ) : null}
             </View>
 
             <ActionButton

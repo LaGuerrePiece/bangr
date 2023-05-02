@@ -39,6 +39,8 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { toastConfig } from "../components/toasts";
 import useTasksStore from "../state/tasks";
+import Icon from "../components/Icon";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
 type SendParams = {
   SendScreen: {
@@ -62,6 +64,7 @@ const SendScreen = ({
     quote,
     calls,
     isSearching,
+    gasFeeEstimateUSD,
     update,
     set,
     clearAfterSend,
@@ -166,6 +169,7 @@ const SendScreen = ({
       update({
         quote: response.infos.quote as Quote,
         calls: response.calls,
+        gasFeeEstimateUSD: response.infos.gasFeeEstimateUSD,
         isSearching: false,
       });
     } catch (error: any) {
@@ -323,6 +327,24 @@ const SendScreen = ({
                 Amount received: {cutDecimals(quote.sumOfToAmount, 5)}{" "}
                 {token.symbol}
               </Text>
+              {gasFeeEstimateUSD ? (
+                <TouchableHighlight>
+                  <View className="mx-auto mt-3 flex-row items-center">
+                    <Icon
+                      icon={(props: any) => (
+                        <MaterialIcons
+                          name="local-gas-station"
+                          size={28}
+                          {...props}
+                        />
+                      )}
+                    />
+                    <Text className="ml-1 text-typo-light dark:text-typo-dark">
+                      {gasFeeEstimateUSD.toFixed(2)} USD
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              ) : null}
               {Number(quote.sumOfToAmount) * 1.2 < Number(debouncedAmountIn) &&
                 quote.singleQuotes[0]?.type === "lifi" && (
                   <Text className="mx-auto mt-2 text-center font-semibold text-typo-light dark:text-typo-dark">

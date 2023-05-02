@@ -143,7 +143,7 @@ const VaultDepositScreen = ({
 
       return calls.data;
     } catch (err) {
-      console.log(err);
+      console.log("err in VaultDepositScreen", err);
     }
   };
 
