@@ -123,15 +123,18 @@ const VaultDepositScreen = ({
     console.log("vaultName", name);
 
     try {
-      const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
-        address: smartWalletAddress,
-        vaultName: name,
-        action,
-        amount: utils.parseUnits(amount, token!.decimals),
-        token,
-      });
+      const { data: response } = await axios.post(
+        `${getURLInApp()}/api/v1/quote/vault`,
+        {
+          address: smartWalletAddress,
+          vaultName: name,
+          action,
+          amount: utils.parseUnits(amount, token!.decimals),
+          token,
+        }
+      );
 
-      if (calls.data.length === 0) {
+      if (response.calls.length === 0) {
         Toast.show({
           type: "error",
           text1: "Error",
@@ -141,7 +144,7 @@ const VaultDepositScreen = ({
         return;
       }
 
-      return calls.data;
+      return response;
     } catch (err) {
       console.log(err);
     }

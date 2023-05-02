@@ -9,6 +9,7 @@ interface SendState {
   chainId: ChainId;
   toAddress: string | null;
   quote: Quote | null;
+  gasFeeEstimateUSD: number | null;
   calls: CallWithNonce[] | null;
   isSearching: boolean;
   update: (patch: any) => void;
@@ -25,6 +26,7 @@ const useSendStore = create<SendState>()(
     chainId: 137,
     toAddress: null,
     quote: null,
+    gasFeeEstimateUSD: null,
     calls: null,
     isSearching: false,
 
