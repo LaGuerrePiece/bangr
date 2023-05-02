@@ -92,7 +92,7 @@ const HistoryScreen = ({
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center rounded-xl">
-        <View className="w-full flex-row justify-end">
+        {/* <View className="w-full flex-row justify-end">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -107,7 +107,7 @@ const HistoryScreen = ({
               }
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <ScrollView
         className="mx-auto mt-5 w-11/12 rounded-lg"

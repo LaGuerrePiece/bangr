@@ -12,7 +12,6 @@ import useYieldsStore from "../../state/yields";
 import useVaultsStore from "../../state/vaults";
 
 const Invest = () => {
-  const vaults = useVaultsStore((state) => state.vaults);
   const colorScheme = useColorScheme();
   const yields = useYieldsStore((state) => state.yields);
 
@@ -21,7 +20,7 @@ const Invest = () => {
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        <View className="w-full flex-row justify-between">
+        {/* <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
               // swiper.current.scrollBy(-1, true);
@@ -50,7 +49,7 @@ const Invest = () => {
               }
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <ScrollView>
         <View className="mx-auto w-[91%]">

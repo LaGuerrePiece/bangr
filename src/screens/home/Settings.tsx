@@ -12,7 +12,6 @@ import { colors } from "../../config/configs";
 import useSettingsStore from "../../state/settings";
 import { Picker } from "@react-native-picker/picker";
 
-
 const Settings = () => {
   const colorScheme = Appearance.getColorScheme();
   const [currency, setCurrency] = useSettingsStore((state) => [
@@ -29,7 +28,7 @@ const Settings = () => {
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        <View className="w-full">
+        {/* <View className="w-full">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -45,8 +44,8 @@ const Settings = () => {
               }
             />
           </TouchableOpacity>
-        </View>
-        <Text className="text-2xl font-bold text-typo-light dark:text-typo-dark">
+        </View> */}
+        <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
           Settings
         </Text>
         <Text className="mt-8 text-typo-light dark:text-typo-dark">
