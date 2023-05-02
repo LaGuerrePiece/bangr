@@ -73,6 +73,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             visibilityTime: 2500,
             autoHide: true,
           });
+          useUserStore.getState().fetchBalances();
+          useVaultsStore.getState().fetchVaults();
         } else {
           Toast.show({
             type: "error",
@@ -81,8 +83,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             visibilityTime: 2500,
             autoHide: true,
           });
-          useUserStore.getState().fetchBalances();
-          useVaultsStore.getState().fetchVaults();
+          
         }
       }
       set({
