@@ -19,7 +19,7 @@ import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
-import { MultichainToken, VaultData } from "../types/types";
+import { Investment, MultichainToken, VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
 import { averageApy } from "../components/Vault";
@@ -34,7 +34,6 @@ import { colors } from "../config/configs";
 import { Tab } from "../components/Tab";
 import { Protocol } from "../components/Protocol";
 import { HowItWorks } from "../components/HowItWorks";
-import { Investment } from "../config/yieldAssets";
 import { Information } from "../components/Information";
 
 type VaultParams = {
@@ -71,9 +70,12 @@ const VaultDepositScreen = ({
   const {
     name: uiName,
     vaultName,
+    longDescription: uiLongDescription,
     contract,
     tvl: uiTvl,
     image: uiImage,
+    protocols,
+    risks,
   } = route.params.investment;
 
   const {
@@ -468,27 +470,32 @@ const VaultDepositScreen = ({
                 </Text>
               </View> */}
 
-              {longDescription ? (
-                <View className="mt-3">
-                  <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
-                    Description
-                  </Text>
-                  <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
-                    {longDescription}
-                  </Text>
-                </View>
-              ) : null}
+              <View className="mt-3">
+                <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+                  Description
+                </Text>
+                <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
+                  {uiLongDescription ?? longDescription}
+                </Text>
+              </View>
 
               <View className="mt-3">
                 <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
                   Utilized Protocols
                 </Text>
                 <View className="flex-wrap">
-                  <Protocol
-                    name={protocol}
-                    image={image}
-                    link={"https://www.youtube.com/"}
-                  />
+                  {protocols && protocols?.length > 0
+                    ? protocols?.map((protocol) => {
+                        return (
+                          <Protocol
+                            key={protocol.name}
+                            name={protocol.name}
+                            image={protocol.icon}
+                            link={protocol.link}
+                          />
+                        );
+                      })
+                    : null}
                 </View>
               </View>
 
@@ -497,14 +504,15 @@ const VaultDepositScreen = ({
                   Risks
                 </Text>
                 <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
-                  {"blablablabla"}
+                  {risks}
                 </Text>
               </View>
 
               <HowItWorks
                 action={() =>
                   navigation.navigate("VaultInfoScreen", {
-                    vault: route.params.vault,
+                    investment: route.params.investment,
+                    apy: apy,
                   })
                 }
               />

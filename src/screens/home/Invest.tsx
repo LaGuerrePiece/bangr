@@ -8,10 +8,13 @@ import {
   useColorScheme,
 } from "react-native";
 import Yield from "../../components/Yield";
-import { yieldAssets } from "../../config/yieldAssets";
+import useYieldsStore from "../../state/yields";
 
 const Invest = ({ swiper }: { swiper: any }) => {
   const colorScheme = useColorScheme();
+  const yields = useYieldsStore((state) => state.yields);
+
+  // console.log("yields", yields);
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
@@ -53,9 +56,13 @@ const Invest = ({ swiper }: { swiper: any }) => {
             Invest
           </Text>
 
-          {yieldAssets.map((asset) => (
-            <Yield key={asset.symbol} asset={asset} />
-          ))}
+          {yields ? (
+            yields.map((asset) => <Yield key={asset.symbol} asset={asset} />)
+          ) : (
+            <Text className="mb-2 mt-8 text-center font-Inter text-xl text-typo-light dark:text-typo-dark">
+              No opportunities available
+            </Text>
+          )}
         </View>
         <View className="my-16" />
       </ScrollView>

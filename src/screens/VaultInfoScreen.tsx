@@ -12,27 +12,24 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
-import { VaultData } from "../types/types";
+import { Investment, VaultData } from "../types/types";
 import { averageApy } from "../components/Vault";
 import { colors } from "../config/configs";
 
 type VaultParams = {
   VaultScreen: {
-    vault: VaultData;
+    investment: Investment;
+    apy: number;
   };
 };
 
 const VaultInfoScreen = () => {
   const navigation = useNavigation();
   const { params } = useRoute<RouteProp<VaultParams, "VaultScreen">>();
-  const vault = params.vault;
-  const { name, uiName, image, description, longDescription, infos } = vault;
+  const investment = params.investment;
+  const { name, image, description, longDescription, infos } = investment;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
-
-  const apy = vault.chains
-    ? averageApy(vault.chains.map((chain) => chain.apy)).toString()
-    : "0";
 
   const LinkButton = ({ text, link }: any) => {
     return (
@@ -68,13 +65,17 @@ const VaultInfoScreen = () => {
         <View className="mb-6 flex-row justify-between">
           <View className="w-4/5">
             <Text className="mb-1 font-InterSemiBold text-3xl text-typo-light dark:text-secondary-light">
-              {uiName ? uiName : name}
+              {name}
             </Text>
             <Text className="text-[17px] text-typo-light dark:text-typo-dark">
               {description}
             </Text>
           </View>
-          <Image className="h-12 w-12" source={{ uri: image }} />
+          <Image
+            className="h-12 w-12"
+            source={{ uri: image }}
+            resizeMode="contain"
+          />
         </View>
         <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
           {longDescription}
@@ -97,7 +98,7 @@ const VaultInfoScreen = () => {
                     key={index}
                     className="my-2 text-2xl font-bold text-typo-light dark:text-typo-dark"
                   >
-                    Current APY: {apy}%
+                    Current APY: {params.apy}%
                   </Text>
                 );
               case "image":

@@ -15,7 +15,7 @@ import useVaultsStore from "../state/vaults";
 import Vault from "../components/Vault";
 import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import useTokensStore from "../state/tokens";
-import { YieldAsset } from "../config/yieldAssets";
+import { YieldAsset } from "../types/types";
 
 type ChooseVaultParams = {
   ChooseVaultScreen: {

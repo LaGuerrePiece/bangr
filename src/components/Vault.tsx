@@ -7,8 +7,7 @@ import {
   useColorScheme,
   Appearance,
 } from "react-native";
-import { VaultData } from "../types/types";
-import { Investment } from "../config/yieldAssets";
+import { Investment, VaultData } from "../types/types";
 import useVaultsStore from "../state/vaults";
 import { Information } from "./Information";
 
