@@ -36,16 +36,17 @@ const HistoryScreen = ({
 }) => {
   const colorScheme = useColorScheme();
 
-  const { tasks, pendingTasks, fetchTasks, repeatFetchTasks } = useTasksStore((state) => ({
+  const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } = useTasksStore((state) => ({
     tasks: state.tasks,
     pendingTasks: state.pendingTasks,
+    repeat: state.repeat,
     // pendingTasks: state.pendingTasks,
     fetchTasks: state.fetchTasks,
     repeatFetchTasks: state.repeatFetchTasks,
   }));
 
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
-  const [isTrackingTasks, setIsTrackingTasks] = useState(false);
+  // const [isTrackingTasks, setIsTrackingTasks] = useState(false);
 
   const { smartWalletAddress, fetchBalances } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
@@ -77,8 +78,7 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  if (route.params?.waitingForTask && !isTrackingTasks) {
-    setIsTrackingTasks(true);
+  if (route.params?.waitingForTask && !repeat) {
     repeatFetchTasks();
   }
 
