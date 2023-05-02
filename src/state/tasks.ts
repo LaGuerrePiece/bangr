@@ -74,7 +74,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             autoHide: true,
           });
           useUserStore.getState().fetchBalances();
-          useVaultsStore.getState().fetchVaults();
+          useVaultsStore.getState().fetchVaults(scwAddress);
         } else {
           Toast.show({
             type: "error",

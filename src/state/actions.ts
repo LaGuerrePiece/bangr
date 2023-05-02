@@ -60,15 +60,34 @@ const useActionsStore = create<ActionsState>()((set, get) => ({
 
       if (pendingActions.length < previousPendingActions.length) {
         // console.log("send Toast");
-        Toast.show({
-          type: "success",
-          text1: "Transaction confirmed",
-          text2: "Your transaction has been confirmed",
-          visibilityTime: 2500,
-          autoHide: true,
-        });
-        useUserStore.getState().fetchBalances();
-        useVaultsStore.getState().fetchVaults();
+        // if last task of action that is in previouspendingactions but not in pending actions has state positive
+
+        if (
+          previousPendingActions.filter(
+            (action) =>
+              action.tasks[action.tasks.length - 1].state === 2 &&
+              !pendingActions.includes(action)
+          ).length > 0
+        ) {
+          Toast.show({
+            type: "success",
+            text1: "Transaction confirmed",
+            text2: "Your transaction has been confirmed",
+            visibilityTime: 2500,
+            autoHide: true,
+          });
+
+          useUserStore.getState().fetchBalances();
+          useVaultsStore.getState().fetchVaults();
+        } else {
+          Toast.show({
+            type: "error",
+            text1: "Transaction failed",
+            text2: "Your transaction has failed",
+            visibilityTime: 2500,
+            autoHide: true,
+          });
+        }
       }
       set({
         actions: data,
