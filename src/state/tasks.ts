@@ -86,9 +86,11 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             autoHide: true,
           });
         }
-        if (pendingTasks.length === 0) {
-          set({ repeat: false });
-        }
+        console.log("pendingTasks.lenght", pendingTasks.length);
+        
+      }
+      if (pendingTasks.length === 0) {
+        set({ repeat: false });
       }
       set({
         tasks: data,
@@ -103,6 +105,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
     console.log("repeat fetch tasks");
     set({ repeat: true });
     let interval = setInterval(async () => {
+      console.log("repeat " , get().repeat);
       if (get().repeat) {
         await get().fetchTasks();
       } else {
