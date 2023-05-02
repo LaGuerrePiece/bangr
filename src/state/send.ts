@@ -5,7 +5,7 @@ import { devtools } from "zustand/middleware";
 interface SendState {
   amountIn: string | null;
   debouncedAmountIn: string | null;
-  token: MultichainToken | null;
+  tokenSymbol: string;
   chainId: ChainId;
   toAddress: string | null;
   quote: Quote | null;
@@ -14,14 +14,14 @@ interface SendState {
   update: (patch: any) => void;
   clearAfterSend: () => void;
   set: (patch: any) => void;
-  updateSendToken: (token: MultichainToken) => void;
+  updateSendToken: (tokenSymbol: string) => void;
 }
 
 const useSendStore = create<SendState>()(
   devtools((set, get) => ({
     amountIn: null,
     debouncedAmountIn: null,
-    token: null,
+    tokenSymbol: "USDC",
     chainId: 137,
     toAddress: null,
     quote: null,
@@ -37,10 +37,10 @@ const useSendStore = create<SendState>()(
 
     set,
 
-    updateSendToken: (token: MultichainToken) => {
+    updateSendToken: (tokenSymbol: string) => {
       set({
         ...get(),
-        token,
+        tokenSymbol,
       });
     },
 

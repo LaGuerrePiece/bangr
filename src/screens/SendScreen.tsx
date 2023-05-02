@@ -56,7 +56,7 @@ const SendScreen = ({
   const {
     amountIn,
     debouncedAmountIn,
-    token,
+    tokenSymbol,
     chainId,
     toAddress,
     quote,
@@ -66,7 +66,10 @@ const SendScreen = ({
     set,
     clearAfterSend,
   } = useSendStore();
-  const tokens = useTokensStore((state) => state.tokens);
+  const { tokens, getToken } = useTokensStore((state) => ({
+    tokens: state.tokens,
+    getToken: state.getToken,
+  }));
   const fetchTasks = useTasksStore((state) => state.fetchTasks);
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
@@ -75,20 +78,15 @@ const SendScreen = ({
       fetchBalances: state.fetchBalances,
     })
   );
+
+  const token = tokens?.find((token) => token.symbol === tokenSymbol);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (route.params?.updatedToken) {
-      update({ token: route.params.updatedToken });
+      update({ token: route.params.updatedToken.symbol });
     }
   }, [route.params?.updatedToken]);
-
-  useEffect(() => {
-    if (!token) {
-      const usdc = tokens?.find((token) => token.symbol === "USDC");
-      if (usdc) update({ token: usdc });
-    }
-  });
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -225,8 +223,10 @@ const SendScreen = ({
         successMessage,
         errorMessage
       );
-      navigation.navigate("History" as never, { waitingForTask: true } as never);
-
+      navigation.navigate(
+        "History" as never,
+        { waitingForTask: true } as never
+      );
     } catch (error) {
       console.log(error);
       Toast.show({
