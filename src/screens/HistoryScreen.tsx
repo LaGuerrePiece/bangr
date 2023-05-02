@@ -125,7 +125,7 @@ const HistoryScreen = ({
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {tasks.length - 1 !== 0 &&
+        {actions.length - 1 !== 0 &&
         vaults &&
         actions.filter(
           (action) =>

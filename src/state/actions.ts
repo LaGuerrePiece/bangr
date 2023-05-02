@@ -45,48 +45,55 @@ const useActionsStore = create<ActionsState>()((set, get) => ({
       };
       // console.log(`fetched ${data.length} actions`);
       // console.log(data);
-      console.log(data);
-      console.log(data[0].tasks[data[0].tasks.length - 1 - 1].state);
-      const pendingActions = data.filter(
-        (action) =>
-          action.tasks[action.tasks.length - 1].state !== 2 &&
-          action.tasks[action.tasks.length - 1].state !== -200
-      );
-      // console.log(`fetched ${pendingActions.length} pending actions`);
-      // if task in pending task and in previous pending task
-      // and has state 2 in pending actions but not in previous pending actions
-      // then send Toast
-      const previousPendingActions = get().previousPendingActions;
+      // console.log(data);
+      // console.log(data[0].tasks[data[0].tasks.length - 1].state);
 
-      if (pendingActions.length < previousPendingActions.length) {
-        // console.log("send Toast");
-        // if last task of action that is in previouspendingactions but not in pending actions has state positive
+      let pendingActions: Action[] = [];
 
-        if (
-          previousPendingActions.filter(
-            (action) =>
-              action.tasks[action.tasks.length - 1].state === 2 &&
-              !pendingActions.includes(action)
-          ).length > 0
-        ) {
-          Toast.show({
-            type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your transaction has been confirmed",
-            visibilityTime: 2500,
-            autoHide: true,
-          });
+      if (data.length > 0) {
+        pendingActions = data.filter(
+          (action) =>
+            action.tasks[action.tasks.length - 1].state !== 2 &&
+            action.tasks[action.tasks.length - 1].state !== -200
+        );
 
-          useUserStore.getState().fetchBalances();
-          useVaultsStore.getState().fetchVaults();
-        } else {
-          Toast.show({
-            type: "error",
-            text1: "Transaction failed",
-            text2: "Your transaction has failed",
-            visibilityTime: 2500,
-            autoHide: true,
-          });
+        console.log(`fetched ${pendingActions.length} pending actions`);
+        // console.log(`fetched ${pendingActions.length} pending actions`);
+        // if task in pending task and in previous pending task
+        // and has state 2 in pending actions but not in previous pending actions
+        // then send Toast
+        const previousPendingActions = get().previousPendingActions;
+
+        if (pendingActions.length < previousPendingActions.length) {
+          // console.log("send Toast");
+          // if last task of action that is in previouspendingactions but not in pending actions has state positive
+
+          if (
+            previousPendingActions.filter(
+              (action) =>
+                action.tasks[action.tasks.length - 1].state === 2 &&
+                !pendingActions.includes(action)
+            ).length > 0
+          ) {
+            Toast.show({
+              type: "success",
+              text1: "Transaction confirmed",
+              text2: "Your transaction has been confirmed",
+              visibilityTime: 2500,
+              autoHide: true,
+            });
+
+            useUserStore.getState().fetchBalances();
+            useVaultsStore.getState().fetchVaults();
+          } else {
+            Toast.show({
+              type: "error",
+              text1: "Transaction failed",
+              text2: "Your transaction has failed",
+              visibilityTime: 2500,
+              autoHide: true,
+            });
+          }
         }
       }
       set({
