@@ -24,7 +24,7 @@ import ActionButton from "../../components/ActionButton";
 import { useNavigation } from "@react-navigation/native";
 import useSettingsStore from "../../state/settings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Animated} from "react-native";
+import { Animated } from "react-native";
 
 const Wallet = () => {
   const colorScheme = useColorScheme();
@@ -40,7 +40,7 @@ const Wallet = () => {
   const currency = useSettingsStore((state) => state.currency);
   const [refreshing, setRefreshing] = useState(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const SCREEN_WIDTH = Dimensions.get('window').width
+  const SCREEN_WIDTH = Dimensions.get("window").width;
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -65,9 +65,8 @@ const Wallet = () => {
   }, []);
 
   return (
-
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
-        <ScrollView
+      <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -81,7 +80,7 @@ const Wallet = () => {
         ) : (
           <View className="mx-auto mt-4 w-11/12 items-center">
             <View className="w-full flex-row justify-between">
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("swap");
@@ -112,7 +111,7 @@ const Wallet = () => {
                       : require("../../../assets/invest.png")
                   }
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
               <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
@@ -150,9 +149,7 @@ const Wallet = () => {
                             token.symbol === "USDC")) ||
                         token.symbol === "USDT"
                     )
-                    .map((token) => (
-                      <Asset token={token} key={token.symbol}/>
-                    ))
+                    .map((token) => <Asset token={token} key={token.symbol} />)
                 : null}
               {tokens &&
               (forceWalletEmpty ||

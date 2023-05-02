@@ -303,7 +303,7 @@ const Swap = ({
   return (
     <SafeAreaView className="bg-sedondary-light h-full dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        <View className="w-full flex-row justify-between">
+        {/* <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -336,7 +336,7 @@ const Swap = ({
               }
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
             <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">

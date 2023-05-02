@@ -6,6 +6,7 @@ export function formatUnits(
   tokenDecimals: number | undefined | null,
   decimalsToKeep: number
 ): string {
+  if (unformatted === "") unformatted = "0";
   const formatted = ethers.utils.formatUnits(
     unformatted ?? "0",
     tokenDecimals ?? 18

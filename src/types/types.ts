@@ -164,3 +164,28 @@ export type Task = {
   asset2: string;
   amount: string;
 };
+
+export type YieldAsset = {
+  symbol: string;
+  yieldLow: string;
+  yieldHigh: string;
+  investments: Investment[];
+};
+
+export type Investment = {
+  name: string;
+  vaultName?: string;
+  image?: string;
+  description?: string;
+  longDescription?: string;
+  contract?: string;
+  tvl?: string;
+  disabled?: boolean;
+  protocols?: {
+    name: string;
+    icon: string;
+    link: string;
+  }[];
+  risks?: string;
+  infos?: any;
+};
