@@ -101,8 +101,7 @@ const VaultDepositScreen = ({
   const defaultTokenSymbol = tokensIn[0];
 
   const [amount, setAmount] = useState("");
-  const [selectedTokenSymbol, setSelectedTokenSymbol] =
-    useState(defaultTokenSymbol);
+  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(tokensIn[0]);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
   const [tab, setTab] = useState("Deposit");
@@ -111,12 +110,6 @@ const VaultDepositScreen = ({
     (token) => token.symbol === selectedTokenSymbol
   );
   const vaultTkn = tokens?.find((token) => token.symbol === vaultToken);
-
-  useEffect(() => {
-    if (route.params?.updatedToken) {
-      setSelectedTokenSymbol(route.params.updatedToken.symbol);
-    }
-  }, [route.params?.updatedToken]);
 
   const handleAmountChange = async (action: string) => {
     if (!parseFloat(amount)) {
@@ -341,6 +334,49 @@ const VaultDepositScreen = ({
                   />
                 </View>
 
+                {/* Input asset is now selected before that. But might reuse this for multi-asset vaults like glp */}
+                {/* <View className="my-2 items-center">
+                  {selectedToken && (
+                    <SelectTokenButton
+                      tokens={
+                        tokensIn
+                          .map((token) => getToken(token))
+                          .filter((token) => {
+                            return token !== undefined;
+                          }) as MultichainToken[]
+                      }
+                      selectedToken={selectedToken}
+                      paramsToPassBack={{
+                        vault: route.params.vault,
+                      }}
+                    />
+                  )}
+                  <Text className="mt-3 text-typo-light dark:text-typo-dark">
+                    Available:{" "}
+                    {balance
+                      ? formatUnits(balance, selectedToken?.decimals, 3)
+                      : "0"}{" "}
+                    {selectedTokenSymbol}
+                  </Text>
+                </View> */}
+
+                {tokensIn.length > 1 ? (
+                  <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                    <Tab
+                      image={getToken(tokensIn[0])?.logoURI}
+                      text={tokensIn[0]}
+                      action={() => setSelectedTokenSymbol(tokensIn[0])}
+                      active={selectedTokenSymbol === tokensIn[0]}
+                    />
+                    <Tab
+                      image={getToken(tokensIn[1])?.logoURI}
+                      text={tokensIn[1]}
+                      action={() => setSelectedTokenSymbol(tokensIn[1])}
+                      active={selectedTokenSymbol === tokensIn[1]}
+                    />
+                  </View>
+                ) : null}
+
                 <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
                   <Tab
                     text="Deposit"
@@ -394,6 +430,7 @@ const VaultDepositScreen = ({
                     </Text>
                   </TouchableOpacity>
                 </View>
+
                 <View className="my-1 h-14 flex-row items-center justify-center rounded-xl bg-quaternary-light px-2 dark:bg-quaternary-dark">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
@@ -443,32 +480,6 @@ const VaultDepositScreen = ({
                   />
                 </View>
               </View>
-
-              {/* Input asset is now selected before that. But might reuse this for multi-asset vaults like glp */}
-              {/* <View className="my-2 items-center">
-                {selectedToken && (
-                  <SelectTokenButton
-                    tokens={
-                      tokensIn
-                        .map((token) => getToken(token))
-                        .filter((token) => {
-                          return token !== undefined;
-                        }) as MultichainToken[]
-                    }
-                    selectedToken={selectedToken}
-                    paramsToPassBack={{
-                      vault: route.params.vault,
-                    }}
-                  />
-                )}
-                <Text className="mt-3 text-typo-light dark:text-typo-dark">
-                  Available:{" "}
-                  {balance
-                    ? formatUnits(balance, selectedToken?.decimals, 3)
-                    : "0"}{" "}
-                  {selectedTokenSymbol}
-                </Text>
-              </View> */}
 
               <View className="mt-3">
                 <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
