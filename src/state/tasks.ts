@@ -61,15 +61,30 @@ const useTasksStore = create<TasksState>()((set, get) => ({
 
       if (pendingTasks.length < previousPendingTasks.length) {
         // console.log("send Toast");
-        Toast.show(
-          {
-            type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your transaction has been confirmed",
-            visibilityTime: 2500,
-            autoHide: true,
-          },
-        );
+        // get the task that is not in pending tasks
+        const task = previousPendingTasks.filter(
+          (task) => !pendingTasks.includes(task)
+        )[0];
+        if (task.state > 0) {
+          Toast.show(
+            {
+              type: "success",
+              text1: "Transaction confirmed",
+              text2: "Your transaction has been confirmed",
+              visibilityTime: 2500,
+              autoHide: true,
+            },
+          );
+        } else {
+          Toast.show(
+            {
+              type: "error",
+              text1: "Transaction failed",
+              text2: "Your transaction has failed",
+              visibilityTime: 2500,
+              autoHide: true,
+            },
+          );
         useUserStore.getState().fetchBalances()
         useVaultsStore.getState().fetchVaults()
       }
