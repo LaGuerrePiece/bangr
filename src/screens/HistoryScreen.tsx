@@ -20,6 +20,7 @@ import axios from "axios";
 import { etherscanLink, getURLInApp } from "../utils/utils";
 import { Task } from "../state/tasks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { fetchText } from "react-native-svg/lib/typescript/xml";
 
 type HistoryParams = {
   HistoryScreen: {
@@ -36,14 +37,15 @@ const HistoryScreen = ({
 }) => {
   const colorScheme = useColorScheme();
 
-  const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } = useTasksStore((state) => ({
-    tasks: state.tasks,
-    pendingTasks: state.pendingTasks,
-    repeat: state.repeat,
-    // pendingTasks: state.pendingTasks,
-    fetchTasks: state.fetchTasks,
-    repeatFetchTasks: state.repeatFetchTasks,
-  }));
+  const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } =
+    useTasksStore((state) => ({
+      tasks: state.tasks,
+      pendingTasks: state.pendingTasks,
+      repeat: state.repeat,
+      // pendingTasks: state.pendingTasks,
+      fetchTasks: state.fetchTasks,
+      repeatFetchTasks: state.repeatFetchTasks,
+    }));
 
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
   // const [isTrackingTasks, setIsTrackingTasks] = useState(false);
@@ -67,8 +69,10 @@ const HistoryScreen = ({
   useEffect(() => {
     if (!smartWalletAddress) return;
     fetchTasks();
-    console.log("route.params?.waitingForTask", route.params?.waitingForTask);
   }, [smartWalletAddress]);
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -78,7 +82,10 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  if (route.params?.waitingForTask && !repeat) {
+  console.log("route.params?.waitingForTask", route.params?.waitingForTask);
+  console.log("repeat", repeat);
+  console.log("pendingTasks", pendingTasks.length);
+  if (route.params?.waitingForTask && !repeat && pendingTasks.length !== 0) {
     repeatFetchTasks();
   }
 
@@ -122,7 +129,8 @@ const HistoryScreen = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state !== 2 && task.state != -20)
-            .reverse()
+            //sort by id alphabetically
+            .sort((a, b) => a.id.localeCompare(b.id))
             .map((task, index) => (
               <View
                 className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
@@ -233,7 +241,7 @@ const HistoryScreen = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state === 2 || task.state == -20)
-            .reverse()
+            .sort((b, a) => a.id.localeCompare(b.id))
             .map((task, index) => (
               <TouchableOpacity
                 onPress={() => {
