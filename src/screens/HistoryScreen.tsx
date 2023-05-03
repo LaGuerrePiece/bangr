@@ -10,6 +10,7 @@ import {
   useColorScheme,
   ScrollView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import useTasksStore from "../state/tasks";
 import useUserStore from "../state/user";
@@ -106,6 +107,13 @@ const HistoryScreen = ({
             />
           </TouchableOpacity>
         </View> */}
+        {repeat ? (
+             <View className="w-full flex-row justify-between justify-end">
+             <ActivityIndicator   /> 
+             </View>
+        ) : null
+        }
+     
       </View>
       <ScrollView
         className="mx-auto mt-5 w-11/12 rounded-lg"
