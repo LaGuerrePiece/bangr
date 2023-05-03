@@ -419,17 +419,21 @@ const VaultDepositScreen = ({
                   </View>
                 ) : null}
 
-                <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                <View className="my-3 px-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                  <View className="mx-3 ">
                   <Tab
                     text="Deposit"
                     action={() => switchTab("Deposit")}
                     active={tab === "Deposit"}
                   />
+                  </View>
+                  <View className="mx-3">
                   <Tab
                     text="Withdraw"
                     action={() => switchTab("Withdraw")}
                     active={tab === "Withdraw"}
                   />
+                  </View>
                 </View>
 
                 <View className="mt-2 flex-row justify-between">
