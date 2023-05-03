@@ -403,19 +403,23 @@ const VaultDepositScreen = ({
                 </View> */}
 
                 {tokensIn.length > 1 ? (
-                  <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                  <View className="mt-3 px-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                    <View className="mx-3 ">
                     <Tab
                       image={getToken(tokensIn[0])?.logoURI}
                       text={tokensIn[0]}
                       action={() => setSelectedTokenSymbol(tokensIn[0])}
                       active={selectedTokenSymbol === tokensIn[0]}
                     />
+                    </View>
+                    <View className="mx-3">
                     <Tab
                       image={getToken(tokensIn[1])?.logoURI}
                       text={tokensIn[1]}
                       action={() => setSelectedTokenSymbol(tokensIn[1])}
                       active={selectedTokenSymbol === tokensIn[1]}
                     />
+                    </View>
                   </View>
                 ) : null}
 
