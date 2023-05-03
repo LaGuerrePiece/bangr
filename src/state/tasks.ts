@@ -77,9 +77,6 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             autoHide: true,
           });
           
-          useUserStore.getState().fetchBalances(scwAddress);
-          useVaultsStore.getState().fetchVaults(scwAddress);
-          
         } else if (task.state < 0) {
           Toast.show({
             type: "error",
@@ -93,6 +90,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         if (pendingTasks.length === 0 && previousPendingTasks.length > 0) {
           console.log("set repeat to false");
           set({ repeat: false });
+          useUserStore.getState().fetchBalances(scwAddress);
+          useVaultsStore.getState().fetchVaults(scwAddress);
         }
         console.log("pendingTasks.lenght", pendingTasks.length);
       }
