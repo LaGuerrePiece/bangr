@@ -61,8 +61,7 @@ const VaultDepositScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
-  const { repeatFetchTasks } =
-  useTasksStore((state) => ({
+  const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -81,16 +80,21 @@ const VaultDepositScreen = ({
     getToken: state.getToken,
   }));
 
-  const {
-    name: uiName,
-    vaultName,
-    longDescription: uiLongDescription,
-    contract,
-    tvl: uiTvl,
-    image: uiImage,
-    protocols,
-    risks,
-  } = route.params.investment;
+    const {
+      name: uiName,
+      vaultName,
+      longDescription: uiLongDescription,
+      contract,
+      tvl: uiTvl,
+      image: uiImage,
+      protocols,
+      risks,
+    } = {
+      ... route.params.investment,
+    };
+    
+    
+  
 
   const {
     name,
@@ -200,7 +204,6 @@ const VaultDepositScreen = ({
     fetchVaults(smartWalletAddress);
     repeatFetchTasks();
     navigation.navigate("History" as never, { waitingForTask: true } as never);
-
   };
 
   const handleWithdraw = async () => {
