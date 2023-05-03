@@ -15,9 +15,7 @@ import {
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
-import useHistoricStore from "../state/historic";
-import useUserStore from "../state/user";
-import useVaultsStore from "../state/vaults";
+
 
 // const getTasks = async (scwAddress: string) => {
 //   try {

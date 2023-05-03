@@ -64,6 +64,12 @@ const Swap = ({
   navigation: any;
   route: RouteProp<SwapParams, "Swap">;
 }) => {
+
+  const { repeatFetchTasks } =
+  useTasksStore((state) => ({
+    repeatFetchTasks: state.repeatFetchTasks,
+  }));
+
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -254,7 +260,7 @@ const Swap = ({
         text1: "error relaying transaction",
       });
     }
-
+    repeatFetchTasks();
     navigation.navigate("History", { waitingForTask: true });
   };
 

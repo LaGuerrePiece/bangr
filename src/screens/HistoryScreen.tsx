@@ -82,12 +82,10 @@ const HistoryScreen = ({
 
   if (!vaults) return null;
 
-  console.log("route.params?.waitingForTask", route.params?.waitingForTask);
-  console.log("repeat", repeat);
-  console.log("pendingTasks", pendingTasks.length);
-  if (route.params?.waitingForTask && !repeat && pendingTasks.length !== 0) {
-    repeatFetchTasks();
-  }
+
+  // if (route.params?.waitingForTask && !repeat) {
+  //   repeatFetchTasks();
+  // }
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
