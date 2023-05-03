@@ -260,6 +260,7 @@ const Swap = ({
         text1: "error relaying transaction",
       });
     }
+    clearAfterSwap();
     repeatFetchTasks();
     navigation.navigate("History", { waitingForTask: true });
   };
