@@ -1,4 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
+import {
+  CompositeNavigationProp,
+  useNavigation,
+} from "@react-navigation/native";
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import {
@@ -9,22 +12,35 @@ import {
   useColorScheme,
   View,
 } from "react-native";
-import { MultichainToken } from "../types/types";
+import { Investment, MultichainToken, VaultData } from "../types/types";
 import { Point } from "./Chart";
 import { getURLInApp } from "../utils/utils";
 import axios from "axios";
 import { LineChart } from "react-native-wagmi-charts";
 import useVaultsStore from "../state/vaults";
+import useYieldsStore from "../state/yields";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MainScreenStackParamList } from "../screens/MainScreen";
+import { RootStackParamList } from "../../App";
 
-const Asset = ({ token }: { token: MultichainToken; }) => {
+const Asset = ({
+  navigation,
+  token,
+}: {
+  navigation: CompositeNavigationProp<
+    NativeStackNavigationProp<MainScreenStackParamList, "Wallet">,
+    NativeStackNavigationProp<RootStackParamList>
+  >;
+  token: MultichainToken;
+}) => {
   const [chart, setChart] = useState<Point[]>();
   useEffect(() => {
     getChart(token);
   }, [token]);
 
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
   const vaults = useVaultsStore((state) => state.vaults);
+  const yields = useYieldsStore((state) => state.yields);
 
   // state with width and height of the chart
   const [width, setWidth] = useState(0);
@@ -52,9 +68,23 @@ const Asset = ({ token }: { token: MultichainToken; }) => {
       console.log(`fetched chart for ${token.symbol}`);
       setChart(lessData);
     } catch (error) {
-      console.log("error fetching chart:", error);
+      console.log(`error fetching chart for ${token.symbol}`, error);
     }
   }
+
+  // look for the vault corresponding to the token
+  const vault = token.vaultToken
+    ? vaults?.find((vault) => vault.vaultToken === token.symbol)
+    : null;
+  const investment = token.vaultToken
+    ? yields
+        ?.map((y) =>
+          y.investments.find(
+            (investment) => investment.vaultName === vault?.name
+          )
+        )
+        .filter((investment) => investment !== undefined)[0]
+    : null;
 
   return (
     <View
@@ -66,16 +96,10 @@ const Asset = ({ token }: { token: MultichainToken; }) => {
     >
       <TouchableOpacity
         onPress={() => {
-          // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           if (token.vaultToken) {
-            const vault = vaults?.find(
-              (vault) => vault.uiName === token.name
-            ) as any;
-            if (vault) {
-              navigation.navigate("VaultDeposit" as never, { vault } as never);
+            if (vault && investment) {
+              navigation.navigate("VaultDeposit", { vault, investment });
             }
-          } else {
-            // swiper.current.scrollBy(-1, true);
           }
         }}
       >
@@ -101,49 +125,59 @@ const Asset = ({ token }: { token: MultichainToken; }) => {
         <View className="flex-row items-center justify-between py-3">
           <View className="flex-row items-center">
             {token.vaultToken ? (
-              <View>
+              <>
+                <View>
+                  <Image
+                    className="h-12 w-12"
+                    source={
+                      colorScheme === "dark"
+                        ? require("../../assets/vault-drk.png")
+                        : require("../../assets/vault.png")
+                    }
+                  />
+                  {investment?.image ? (
+                    <Image
+                      className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
+                      resizeMode="contain"
+                      source={{ uri: investment.image }}
+                    />
+                  ) : null}
+                </View>
+                <View className="ml-3">
+                  <Text className="font-bold text-typo-light dark:text-typo-dark">
+                    {investment?.name}
+                  </Text>
+                  <Text className="text-typo2-light dark:text-typo2-dark">
+                    Vault
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
                 <Image
-                  className="h-12 w-12"
-                  source={
-                    colorScheme === "dark"
-                      ? require("../../assets/vault-drk.png")
-                      : require("../../assets/vault.png")
-                  } // other: vault_1.png
-                />
-                <Image
-                  className="absolute -bottom-2 -right-2 h-8 w-8 rounded-full"
+                  className="h-12 w-12 rounded-full"
                   source={
                     token.logoURI
                       ? { uri: token.logoURI }
                       : require("../../assets/poche.png")
                   }
                 />
-              </View>
-            ) : (
-              <Image
-                className="h-12 w-12 rounded-full"
-                source={
-                  token.logoURI
-                    ? { uri: token.logoURI }
-                    : require("../../assets/poche.png")
-                }
-              />
-            )}
-            <View className="ml-3">
-              <Text className="font-bold text-typo-light dark:text-typo-dark">
-                {token.name}
-              </Text>
-              <Text className="text-typo2-light dark:text-typo2-dark">
-                {token.vaultToken
-                  ? "Vault"
-                  : `${Number(
+                <View className="ml-3">
+                  <Text className="font-bold text-typo-light dark:text-typo-dark">
+                    {token.name}
+                  </Text>
+                  <Text className="text-typo2-light dark:text-typo2-dark">
+                    {Number(
                       ethers.utils.formatUnits(
                         token.balance || 0,
                         token.decimals
                       )
-                    ).toFixed(2)} ${token.symbol}`}
-              </Text>
-            </View>
+                    ).toFixed(2)}{" "}
+                    {token.symbol}
+                  </Text>
+                </View>
+              </>
+            )}
           </View>
           <View>
             <Text className="font-bold text-typo-light dark:text-typo-dark">

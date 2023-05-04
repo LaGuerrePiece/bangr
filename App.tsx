@@ -91,7 +91,7 @@ export type RootStackParamList = {
   VaultDeposit: {
     vault: VaultData;
     investment: Investment;
-    updatedToken: MultichainToken | undefined;
+    updatedToken?: MultichainToken | undefined;
   };
   Send: { updatedToken: MultichainToken | undefined };
   Receive: undefined;

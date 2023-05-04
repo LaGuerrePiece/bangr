@@ -44,6 +44,8 @@ const VaultDepositScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
   const colorScheme = useColorScheme();
 
+  const { investment, vault } = route.params;
+
   const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
@@ -72,9 +74,7 @@ const VaultDepositScreen = ({
     image: uiImage,
     protocols,
     risks,
-  } = {
-    ...route.params.investment,
-  };
+  } = investment;
 
   const {
     name,
@@ -86,7 +86,7 @@ const VaultDepositScreen = ({
     color,
     chains,
     vaultToken,
-  } = vaults?.find((v) => v.name === route.params.vault.name)!;
+  } = vaults?.find((v) => v.name === vault.name)!;
 
   const apy = chains
     ? averageApy(chains.map((chain) => chain.apy)).toString()

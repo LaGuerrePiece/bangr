@@ -11,9 +11,11 @@ import { colors } from "../../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
 import { toastConfig } from "../../components/toasts";
+import useRampsStore from "../../state/ramps";
 
 const OnrampScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
+  const ramps = useRampsStore((state) => state.ramps);
 
   const RampOption = ({
     logo,
@@ -25,7 +27,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
     methods,
     comingSoon,
   }: {
-    logo: number;
+    logo: string;
     description: string;
     name: string;
     screen: string;
@@ -47,7 +49,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           style={comingSoon ? { opacity: 0.4 } : {}}
         >
           <View className="flex-row">
-            <Image className="h-8 w-8 rounded-full" source={logo} />
+            <Image className="h-8 w-8 rounded-full" source={{ uri: logo }} />
             <Text className="ml-2 text-2xl font-bold text-typo-light dark:text-typo-dark">
               {name}
             </Text>
@@ -148,46 +150,25 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         contentContainerStyle={{ alignItems: "center" }}
         className="w-full"
       >
-        <RampOption
-          logo={require("../../../assets/onramps/coinbase_logo.png")}
-          description={"Already have an account in a exchange ?"}
-          name={"Exchange"}
-          screen={"Exchange"}
-          instant={true}
-          fees={"0-3%"}
-          methods={["card", "bank"]}
-          comingSoon={false}
-        />
-        <RampOption
-          logo={require("../../../assets/onramps/mt_pelerin_logo.png")}
-          description={"0% fee on first bank transfer up to 500€."}
-          name={"Mt Pelerin"}
-          screen={"MtPelerin"}
-          instant={true}
-          fees={"0-2.5%"}
-          methods={["card", "bank"]}
-          comingSoon={false}
-        />
-        <RampOption
-          logo={require("../../../assets/onramps/monerium_logo.png")}
-          description={"For large amounts, Monerium is the best."}
-          name={"Monerium"}
-          screen={"Monerium"}
-          instant={true}
-          fees={"0%"}
-          methods={["bank"]}
-          comingSoon={false}
-        />
-        <RampOption
-          logo={require("../../../assets/onramps/transak_logo.png")}
-          description={"Cards, banks and international options."}
-          name={"Transak"}
-          screen={"Transak"}
-          instant={true}
-          fees={"1-3.5%"}
-          methods={["card", "bank"]}
-          comingSoon={false}
-        />
+        {ramps ? (
+          ramps.map((ramp) => (
+            <RampOption
+              key={ramp.name}
+              logo={ramp.logo}
+              description={ramp.description}
+              name={ramp.name}
+              screen={ramp.screen}
+              instant={ramp.instant}
+              fees={ramp.fees}
+              methods={ramp.methods}
+              comingSoon={ramp.comingSoon}
+            />
+          ))
+        ) : (
+          <Text className="text-typo-light dark:text-typo-dark">
+            No ramp option available now
+          </Text>
+        )}
       </ScrollView>
       <Toast config={toastConfig} />
     </View>
