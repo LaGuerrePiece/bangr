@@ -5,20 +5,21 @@ import {
   useColorScheme,
   TouchableOpacity,
   Share,
-  TouchableWithoutFeedback,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import QRCode from "react-native-qrcode-svg";
 import useUserStore from "../../../state/user";
 import Toast from "react-native-toast-message";
 import ActionButton from "../../../components/ActionButton";
-import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../../../config/configs";
 import { toastConfig } from "../../../components/toasts";
+import { RootStackParamList } from "../../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const ReceiveScreen = () => {
-  const navigation = useNavigation();
+const ReceiveScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Exchange">) => {
   const smartWalletAddress = useUserStore((state) => state.smartWalletAddress);
 
   const showToast = (text1: string, text2: string) => {
@@ -126,7 +127,7 @@ const ReceiveScreen = () => {
             rounded
             bold
             action={() => {
-              navigation.navigate("Wallet" as never);
+              navigation.navigate("MainScreen", { screen: "Wallet" });
             }}
           />
         </View>

@@ -15,43 +15,29 @@ import {
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
-import useHistoricStore from "../state/historic";
-import useUserStore from "../state/user";
-import useVaultsStore from "../state/vaults";
 
-const getTasks = async (scwAddress: string) => {
-  try {
-    const { data } = (await axios.post(
-      `${getURLInApp()}/api/v1/tasks`,
-      scwAddress,
-      {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-      }
-    )) as { data: Task[] };
-    return data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      console.log("error relaying transaction: ", error.message);
-    } else {
-      console.log("unexpected error relaying transaction: ", error);
-    }
-  }
-};
 
-// const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
-//   (state) => ({
-//     smartWalletAddress: state.smartWalletAddress,
-//     wallet: state.wallet,
-//     fetchBalances: state.fetchBalances,
-//   })
-// );
-// const { fetchVaults, vaults } = useVaultsStore((state) => ({
-//   fetchVaults: state.fetchVaults,
-//   vaults: state.vaults,
-// }));
+// const getTasks = async (scwAddress: string) => {
+//   try {
+//     const { data } = (await axios.post(
+//       `${getURLInApp()}/api/v1/tasks`,
+//       scwAddress,
+//       {
+//         headers: {
+//           Accept: "application/json",
+//           "Content-Type": "application/json; charset=UTF-8",
+//         },
+//       }
+//     )) as { data: Task[] };
+//     return data;
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       console.log("error relaying transaction: ", error.message);
+//     } else {
+//       console.log("unexpected error relaying transaction: ", error);
+//     }
+//   }
+// };
 
 export const relay = async (
   calls: CallWithNonce[],
@@ -66,11 +52,11 @@ export const relay = async (
   successMessage: string,
   errorMessage: string
 ) => {
-  Toast.show({
-    type: "info",
-    text1: "Transaction sent",
-    text2: "Waiting for confirmation...",
-  });
+  // Toast.show({
+  //   type: "info",
+  //   text1: "Transaction sent",
+  //   text2: "Waiting for confirmation...",
+  // });
 
   const callsObject = {
     Calls: calls,
@@ -109,8 +95,9 @@ export const relay = async (
     amount,
     protocol,
   });
+  console.log("relayResponse", relayResponse);
 
-  if (!relayResponse) {
+  if (!relayResponse || relayResponse.error) {
     Toast.show({
       type: "error",
       text1: "error relaying transaction",
@@ -120,19 +107,12 @@ export const relay = async (
 
   console.log("Success. relayResponse :", relayResponse);
 
-  //until the cron
+  // until the cron
   // const ping = await axios.get(`${getURLInApp()}/api/v1/tRelay`);
   // console.log("cron called", ping);
 
   const txSuccesses: boolean[] = [];
   //the following part is dirty and will change when the relayer is updated
-  if (relayResponse.error) {
-    Toast.show({
-      type: "error",
-      text1: "error relaying transaction",
-    });
-    return;
-  }
   await Promise.all(
     Object.keys(relayResponse).map(async (cid: string) => {
       const chainId = Number(cid) as ChainId;
@@ -168,24 +148,24 @@ export const relay = async (
   // get user tasks by making a request to the tasks api every 5 seconds and check if this tx has state 2
   // if yes, show success toast
 
-  let task;
-  do {
-    const tasks = await getTasks(scwAddress);
-    task = tasks!.find((t) => t.signature == signature);
-    console.log("task", task?.state);
-    if (task && task.state === 2) {
-      Toast.show({
-        type: "success",
-        text1: successMessage,
-      });
-      console.log("success");
-      // fetchBalances(smartWalletAddress);
-      // fetchVaults(smartWalletAddress);
-      return;
-    }
-    // wait 2.5 seconds
-    await new Promise((r) => setTimeout(r, 2500));
-  } while (!task || task.state !== 2);
+  // let task;
+  // do {
+  //   const tasks = await getTasks(scwAddress);
+  //   task = tasks!.find((t) => t.signature == signature);
+  //   console.log("task", task?.state);
+  //   if (task && task.state === 2) {
+  //     Toast.show({
+  //       type: "success",
+  //       text1: successMessage,
+  //     });
+  //     console.log("success");
+  //     // fetchBalances(smartWalletAddress);
+  //     // fetchVaults(smartWalletAddress);
+  //     return;
+  //   }
+  //   // wait 2.5 seconds
+  //   await new Promise((r) => setTimeout(r, 2500));
+  // } while (!task || task.state !== 2);
 
   // const ping = setInterval(() => {
   //   getTasks(scwAddress).then((tasks) => {

@@ -77,6 +77,7 @@ export type Quote = {
   sumOfToAmount?: string;
   totalToAmountUSD?: Number;
   totalFromAmountUSD?: Number;
+  totalGasCostUSD?: Number;
 };
 
 export type SingleQuote = LifiQuote | TransferQuote;
@@ -164,4 +165,38 @@ export type Task = {
   amount: string;
 };
 
+export type YieldAsset = {
+  symbol: string;
+  yieldLow: string;
+  yieldHigh: string;
+  investments: Investment[];
+};
 
+export type Investment = {
+  name: string;
+  vaultName?: string;
+  image?: string;
+  description?: string;
+  longDescription?: string;
+  contract?: string;
+  tvl?: string;
+  disabled?: boolean;
+  protocols?: {
+    name: string;
+    icon: string;
+    link: string;
+  }[];
+  risks?: string;
+  infos?: any;
+};
+
+export type Ramp = {
+  logo: string;
+  description: string;
+  name: string;
+  screen: string;
+  instant: boolean;
+  fees: string;
+  methods: string[];
+  comingSoon: boolean;
+};

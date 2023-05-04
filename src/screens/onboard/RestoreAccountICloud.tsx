@@ -18,6 +18,8 @@ import useUserStore from "../../state/user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import * as DocumentPicker from "expo-document-picker";
+import { RootStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -27,9 +29,7 @@ const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
 export default function RestoreAccountICloud({
   navigation,
-}: {
-  navigation: any;
-}) {
+}: NativeStackScreenProps<RootStackParamList, "RestoreAccount">) {
   const colorScheme = useColorScheme();
   const login = useUserStore((state) => state.login);
 
@@ -73,7 +73,7 @@ export default function RestoreAccountICloud({
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
       login(new ethers.Wallet(decrypted));
-      navigation.navigate("Wallet");
+      navigation.navigate("MainScreen", { screen: "Wallet" });
     } catch (e) {
       console.log(e);
       Toast.show({

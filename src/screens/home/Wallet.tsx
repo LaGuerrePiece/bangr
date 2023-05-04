@@ -11,22 +11,31 @@ import {
   Appearance,
   ActivityIndicator,
   useColorScheme,
+  Dimensions,
 } from "react-native";
 import HomeButton from "../../components/HomeButton";
 import useTokensStore from "../../state/tokens";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
-import * as Haptics from "expo-haptics";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
-import { useNavigation } from "@react-navigation/native";
 import useSettingsStore from "../../state/settings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Animated } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MainScreenStackParamList } from "../MainScreen";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { RootStackParamList } from "../../../App";
 
-const Wallet = ({ swiper }: { swiper: any }) => {
+const Wallet = ({
+  route,
+  navigation,
+}: CompositeScreenProps<
+  NativeStackScreenProps<MainScreenStackParamList, "Wallet">,
+  NativeStackScreenProps<RootStackParamList>
+>) => {
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
@@ -37,6 +46,8 @@ const Wallet = ({ swiper }: { swiper: any }) => {
   ]);
   const currency = useSettingsStore((state) => state.currency);
   const [refreshing, setRefreshing] = useState(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const SCREEN_WIDTH = Dimensions.get("window").width;
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -76,11 +87,11 @@ const Wallet = ({ swiper }: { swiper: any }) => {
         ) : (
           <View className="mx-auto mt-4 w-11/12 items-center">
             <View className="w-full flex-row justify-between">
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() => {
                   // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("swap");
-                  swiper.current.scrollBy(-1, true);
+                  // swiper.current.scrollBy(-1, true);
                 }}
               >
                 <Image
@@ -96,7 +107,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                 onPress={() => {
                   // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
                   console.log("Invest");
-                  swiper.current.scrollBy(1, true);
+                  // swiper.current.scrollBy(1, true);
                 }}
               >
                 <Image
@@ -107,7 +118,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                       : require("../../../assets/invest.png")
                   }
                 />
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </View>
             <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
               <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
@@ -123,7 +134,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
 
             {!backedUp && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("ChoosePassword" as never)}
+                onPress={() => navigation.navigate("ChoosePassword")}
               >
                 <View className="w-11/12 rounded-md border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
                   <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
@@ -146,7 +157,11 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                         token.symbol === "USDT"
                     )
                     .map((token) => (
-                      <Asset token={token} key={token.symbol} swiper={swiper} />
+                      <Asset
+                        token={token}
+                        key={token.symbol}
+                        navigation={navigation}
+                      />
                     ))
                 : null}
               {tokens &&
@@ -158,7 +173,7 @@ const Wallet = ({ swiper }: { swiper: any }) => {
                     text="Get your first assets"
                     bold
                     rounded
-                    action={() => navigation.navigate("Onramp" as never)}
+                    action={() => navigation.navigate("Onramp")}
                   />
                 </View>
               ) : null}

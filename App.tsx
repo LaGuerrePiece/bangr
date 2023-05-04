@@ -1,8 +1,5 @@
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Toast from "react-native-toast-message";
-import { toastConfig } from "./src/components/toasts";
-import { useCallback, useEffect, useState } from "react";
+import "react-native-get-random-values";
+import "@ethersproject/shims";
 import {
   Appearance,
   StatusBar,
@@ -10,6 +7,14 @@ import {
   useColorScheme,
   Platform,
 } from "react-native";
+import {
+  NavigationContainer,
+  NavigatorScreenParams,
+} from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "./src/components/toasts";
+import { useCallback, useEffect, useState } from "react";
 import { colors, forceOnboarding } from "./src/config/configs";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -32,7 +37,7 @@ import MoneriumWebviewScreen from "./src/screens/onramp/Monerium/Webview";
 import IbanScreen from "./src/screens/onramp/Monerium/Iban";
 import OrderConfirmedScreen from "./src/screens/onramp/OrderConfirmed";
 import ExchangeScreen from "./src/screens/onramp/Exchange";
-import MainScreen from "./src/screens/MainScreen";
+import MainScreen, { MainScreenStackParamList } from "./src/screens/MainScreen";
 import CreateAccountScreen from "./src/screens/onboard/CreateAccount";
 import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
@@ -44,10 +49,67 @@ import {
   SecondScreen,
   ThirdScreen,
 } from "./src/screens/onboard/OnboardScreens";
+import ChooseVaultScreen from "./src/screens/ChooseVault";
+import {
+  ChainId,
+  Investment,
+  MultichainToken,
+  VaultData,
+  YieldAsset,
+} from "./src/types/types";
 
 SplashScreen.preventAutoHideAsync();
 
-const Stack = createNativeStackNavigator();
+// params of all screens
+export type RootStackParamList = {
+  FirstScreen: undefined;
+  SecondScreen: undefined;
+  ThirdScreen: undefined;
+  FourthScreen: undefined;
+  CreateAccount: undefined;
+  RestoreAccount: undefined;
+  ChoosePassword: undefined;
+  Login: undefined;
+  MainScreen: NavigatorScreenParams<MainScreenStackParamList>;
+  VaultInfoScreen: {
+    investment: Investment;
+    apy: string;
+  };
+  HistoryScreen: undefined;
+  Token: undefined;
+  SelectToken: {
+    tokenList: MultichainToken[];
+    paramsToPassBack?: any;
+    tokenToUpdate?: string;
+  };
+  SelectChain: {
+    chainId: ChainId;
+  };
+  ChooseVault: {
+    asset: YieldAsset;
+  };
+  VaultDeposit: {
+    vault: VaultData;
+    investment: Investment;
+    updatedToken?: MultichainToken | undefined;
+  };
+  Send: { updatedToken: MultichainToken | undefined };
+  Receive: undefined;
+  Onramp: undefined;
+  Transak: undefined;
+  MtPelerin: undefined;
+  MtPelerinWebview: undefined;
+  Monerium: undefined;
+  MoneriumWebview: {
+    webWiewUri: string;
+    codeVerifier: string;
+  };
+  Iban: undefined;
+  OrderConfirmed: undefined;
+  Exchange: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -90,7 +152,7 @@ const App = () => {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={initialRouteName}
+          initialRouteName={initialRouteName as keyof RootStackParamList}
         >
           <Stack.Screen
             name="FirstScreen"
@@ -133,11 +195,11 @@ const App = () => {
                 ? ChoosePasswordScreen
                 : ChoosePasswordICloud
             }
-            options={{ animation: "slide_from_right" }}
+            options={{ animation: "slide_from_left", presentation: "modal" }}
           />
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen
-            name="Wallet"
+            name="MainScreen"
             component={MainScreen}
             options={{ gestureEnabled: false }}
           />
@@ -161,6 +223,7 @@ const App = () => {
             component={SelectChainScreen}
             options={{ presentation: "modal" }}
           />
+          <Stack.Screen name="ChooseVault" component={ChooseVaultScreen} />
           <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
           <Stack.Screen
             name="Send"
@@ -220,6 +283,7 @@ const App = () => {
           />
         </Stack.Navigator>
         <Toast config={toastConfig} />
+        {/* <Toaster/> */}
         <StatusBar
           barStyle={
             Appearance.getColorScheme() === "light"

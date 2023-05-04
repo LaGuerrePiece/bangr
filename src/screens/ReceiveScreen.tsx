@@ -12,15 +12,16 @@ import QRCode from "react-native-qrcode-svg";
 import useUserStore from "../state/user";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
-import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { toastConfig } from "../components/toasts";
 import { getChain } from "../utils/utils";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const ReceiveScreen = () => {
-  const navigation = useNavigation();
-
+const ReceiveScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Receive">) => {
   const showToast = (text1: string, text2: string) => {
     Toast.show({
       type: "success",
@@ -115,6 +116,7 @@ const ReceiveScreen = () => {
             >
               <Image
                 className="mx-1 h-6 w-5"
+                resizeMode="contain"
                 source={
                   colorScheme === "light"
                     ? require("../../assets/share.png")
@@ -123,33 +125,50 @@ const ReceiveScreen = () => {
               />
             </TouchableOpacity>
           </View>
-          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            Send funds on any of the following networks:
+
+          <Text className="w-36 text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
+            Networks:
           </Text>
-          <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            <View className="flex-row">
-              <Image className="h-7 w-7" source={getChain(10).logo} />
-              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
-                Optimism,{" "}
-              </Text>
-              <Image className="h-7 w-7" source={getChain(42161).logo} />
-              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
-                Arbitrum,{" "}
-              </Text>
-              <Image className="h-7 w-7" source={getChain(137).logo} />
-              <Text className="text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
-                Polygon
-              </Text>
+          <View className="my-3 flex items-center justify-center">
+            <View className="mx-auto flex-col">
+              <View className="flex-row items-center">
+                <Image
+                  className="h-7 w-7"
+                  resizeMode="contain"
+                  source={getChain(10).logo}
+                />
+                <Text className="ml-0.5 text-center font-InterSemiBold text-typo-light dark:text-typo-dark">
+                  Optimism{" "}
+                </Text>
+              </View>
+              <View className="my-2 flex-row items-center">
+                <Image className="h-7 w-7" source={getChain(42161).logo} />
+                <Text className="ml-0.5 text-center font-InterSemiBold text-typo-light dark:text-typo-dark">
+                  Arbitrum{" "}
+                </Text>
+              </View>
+              <View className="flex-row items-center">
+                <Image className="h-7 w-7" source={getChain(137).logo} />
+                <Text className="ml-1 text-center font-InterSemiBold text-typo-light dark:text-typo-dark">
+                  Polygon
+                </Text>
+                <View className="ml-2 w-14 flex-row items-center rounded-md border border-[#4F4F4F] bg-[#EFEEEC] p-0.5 dark:bg-secondary-dark">
+                  <Text className="mx-auto text-center font-InterSemiBold text-[10px]	leading-3 text-typo-light dark:text-typo-dark">
+                    Lowest fees
+                  </Text>
+                </View>
+              </View>
             </View>
-          </Text>
-          <View className="mt-8 flex-row justify-between">
+          </View>
+
+          <View className="mt-4 flex-row justify-between">
             <ActionButton
-              text="Buy crypto"
+              text="Buy with cash"
               rounded
               bold
-              additionalCss={"min-w-[200px]"}
+              styles={"min-w-[200px]"}
               action={() => {
-                navigation.navigate("Onramp" as never);
+                navigation.navigate("Onramp");
               }}
             />
           </View>

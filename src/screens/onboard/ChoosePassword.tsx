@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
-import "react-native-get-random-values";
 // @ts-ignore
 import GDrive from "expo-google-drive-api-wrapper";
 import * as WebBrowser from "expo-web-browser";
@@ -22,12 +21,16 @@ import { googleConfig } from "./RestoreAccount";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUserStore from "../../state/user";
+import { RootStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
 WebBrowser.maybeCompleteAuthSession();
 
-export default function ChoosePassword({ navigation }: { navigation: any }) {
+export default function ChoosePassword({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
   const colorScheme = useColorScheme();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
 
@@ -180,7 +183,9 @@ export default function ChoosePassword({ navigation }: { navigation: any }) {
             bold
             rounded
             action={() => {
-              step === 0 ? secureAccount() : navigation.navigate("Wallet");
+              step === 0
+                ? secureAccount()
+                : navigation.navigate("MainScreen", { screen: "Wallet" });
             }}
           />
         </View>

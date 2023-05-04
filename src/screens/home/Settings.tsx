@@ -11,13 +11,32 @@ import {
 import { colors } from "../../config/configs";
 import useSettingsStore from "../../state/settings";
 import { Picker } from "@react-native-picker/picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
-const Settings = ({ swiper }: { swiper: any }) => {
+const Settings = () => {
   const colorScheme = Appearance.getColorScheme();
   const [currency, setCurrency] = useSettingsStore((state) => [
     state.currency,
     state.setCurrency,
   ]);
+
+  const handleCurrencyChange = async (value?: string) => {
+    if (!value) setCurrency((await AsyncStorage.getItem("currency")) || "Euro");
+    else
+      try {
+        await AsyncStorage.setItem("currency", value);
+        setCurrency(value);
+      } catch (e) {
+        console.log(e);
+      }
+  };
+
+  useEffect(() => {
+    handleCurrencyChange();
+  }, []);
+
+  // Styles for the currency picker
 
   const pickerSelectStyles = StyleSheet.create({
     backgroundColor:
@@ -28,11 +47,11 @@ const Settings = ({ swiper }: { swiper: any }) => {
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        <View className="w-full">
+        {/* <View className="w-full">
           <TouchableOpacity
             onPress={() => {
               // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -44,8 +63,8 @@ const Settings = ({ swiper }: { swiper: any }) => {
               }
             />
           </TouchableOpacity>
-        </View>
-        <Text className="text-2xl font-bold text-typo-light dark:text-typo-dark">
+        </View> */}
+        <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
           Settings
         </Text>
         <Text className="mt-8 text-typo-light dark:text-typo-dark">
@@ -56,7 +75,7 @@ const Settings = ({ swiper }: { swiper: any }) => {
             selectedValue={currency}
             onValueChange={(value) => {
               console.log(value);
-              setCurrency(value);
+              handleCurrencyChange(value);
             }}
             itemStyle={{
               backgroundColor:

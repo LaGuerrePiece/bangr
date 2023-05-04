@@ -34,38 +34,41 @@ import {
   getRelayerValueToSend,
 } from "../utils/utils";
 import { relay } from "../utils/signAndRelay";
-import { MultichainToken, Quote } from "../types/types";
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { Quote } from "../types/types";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { toastConfig } from "../components/toasts";
-
-type SendParams = {
-  SendScreen: {
-    updatedToken: MultichainToken | undefined;
-  };
-};
+import useTasksStore from "../state/tasks";
+import Icon from "../components/Icon";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const SendScreen = ({
   route,
   navigation,
-}: {
-  route: RouteProp<SendParams, "SendScreen">;
-  navigation: any;
-}) => {
+}: NativeStackScreenProps<RootStackParamList, "Send">) => {
   const {
     amountIn,
     debouncedAmountIn,
-    token,
+    tokenSymbol,
     chainId,
     toAddress,
     quote,
     calls,
     isSearching,
+    gasFeeEstimateUSD,
     update,
     set,
     clearAfterSend,
   } = useSendStore();
-  const tokens = useTokensStore((state) => state.tokens);
+  const { tokens, getToken } = useTokensStore((state) => ({
+    tokens: state.tokens,
+    getToken: state.getToken,
+  }));
+  const fetchTasks = useTasksStore((state) => state.fetchTasks);
+  const { repeatFetchTasks } = useTasksStore((state) => ({
+    repeatFetchTasks: state.repeatFetchTasks,
+  }));
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -73,20 +76,15 @@ const SendScreen = ({
       fetchBalances: state.fetchBalances,
     })
   );
+
+  const token = tokens?.find((token) => token.symbol === tokenSymbol);
   const colorScheme = useColorScheme();
 
   useEffect(() => {
     if (route.params?.updatedToken) {
-      update({ token: route.params.updatedToken });
+      update({ token: route.params.updatedToken.symbol });
     }
   }, [route.params?.updatedToken]);
-
-  useEffect(() => {
-    if (!token) {
-      const usdc = tokens?.find((token) => token.symbol === "USDC");
-      if (usdc) update({ token: usdc });
-    }
-  });
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -166,6 +164,7 @@ const SendScreen = ({
       update({
         quote: response.infos.quote as Quote,
         calls: response.calls,
+        gasFeeEstimateUSD: response.infos.gasFeeEstimateUSD,
         isSearching: false,
       });
     } catch (error: any) {
@@ -206,11 +205,11 @@ const SendScreen = ({
     const type = "send";
     const protocol = getChain(calls[0].cid).name;
     const asset1 = token?.symbol;
-    const asset2 = "";
+    const asset2 = toAddress;
     const amount = amountIn;
 
     try {
-      await relay(
+      relay(
         calls,
         wallet,
         smartWalletAddress,
@@ -223,6 +222,10 @@ const SendScreen = ({
         successMessage,
         errorMessage
       );
+      navigation.navigate("MainScreen", {
+        screen: "History",
+        params: { waitingForTask: true },
+      });
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -232,6 +235,11 @@ const SendScreen = ({
     }
     clearAfterSend();
     fetchBalances();
+    repeatFetchTasks();
+    navigation.navigate("MainScreen", {
+      screen: "History",
+      params: { waitingForTask: true },
+    });
   };
 
   return (
@@ -318,6 +326,24 @@ const SendScreen = ({
                 Amount received: {cutDecimals(quote.sumOfToAmount, 5)}{" "}
                 {token.symbol}
               </Text>
+              {gasFeeEstimateUSD ? (
+                <TouchableHighlight>
+                  <View className="mx-auto mt-3 flex-row items-center">
+                    <Icon
+                      icon={(props: any) => (
+                        <MaterialIcons
+                          name="local-gas-station"
+                          size={28}
+                          {...props}
+                        />
+                      )}
+                    />
+                    <Text className="ml-1 text-typo-light dark:text-typo-dark">
+                      {gasFeeEstimateUSD.toFixed(2)} USD
+                    </Text>
+                  </View>
+                </TouchableHighlight>
+              ) : null}
               {Number(quote.sumOfToAmount) * 1.2 < Number(debouncedAmountIn) &&
                 quote.singleQuotes[0]?.type === "lifi" && (
                   <Text className="mx-auto mt-2 text-center font-semibold text-typo-light dark:text-typo-dark">
@@ -367,7 +393,7 @@ const SendScreen = ({
             ) : (
               <ActionButton
                 text="Send"
-                additionalCss={"min-w-[200px]"}
+                styles={"min-w-[200px]"}
                 rounded
                 bold
                 disabled={false}

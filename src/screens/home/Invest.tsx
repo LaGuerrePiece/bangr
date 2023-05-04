@@ -6,23 +6,23 @@ import {
   TouchableOpacity,
   Image,
   useColorScheme,
-  Linking,
 } from "react-native";
-import Vault from "../../components/Vault";
-import useVaultsStore from "../../state/vaults";
-import * as Haptics from "expo-haptics";
+import Yield from "../../components/Yield";
+import useYieldsStore from "../../state/yields";
 
-const Invest = ({ swiper }: { swiper: any }) => {
-  const vaults = useVaultsStore((state) => state.vaults);
+const Invest = () => {
   const colorScheme = useColorScheme();
+  const yields = useYieldsStore((state) => state.yields);
+
+  // console.log("yields", yields);
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        <View className="w-full flex-row justify-between">
+        {/* <View className="w-full flex-row justify-between">
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(-1, true);
+              // swiper.current.scrollBy(-1, true);
             }}
           >
             <Image
@@ -36,7 +36,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              swiper.current.scrollBy(1, true);
+              // swiper.current.scrollBy(1, true);
             }}
           >
             <Image
@@ -48,7 +48,7 @@ const Invest = ({ swiper }: { swiper: any }) => {
               }
             />
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       <ScrollView>
         <View className="mx-auto w-[91%]">
@@ -56,42 +56,13 @@ const Invest = ({ swiper }: { swiper: any }) => {
             Invest
           </Text>
 
-          {vaults &&
-            vaults
-              .filter(
-                (vault) =>
-                  vault.status === "active" || vault.status === "preview"
-              )
-              .map((vault) => <Vault key={vault.name} vault={vault} />)}
-          <View className="mb-8 w-full rounded-lg border border-[#4F4F4F] bg-[#EFEEEC] p-2 pr-3 dark:bg-secondary-dark">
-            <TouchableOpacity
-              onPress={() => Linking.openURL("https://tally.so/r/w2jYLb")}
-            >
-              <View className="flex-row items-center justify-between">
-                <View className="flex-row items-center">
-                  <Image
-                    className="h-6 w-6"
-                    source={
-                      colorScheme === "light"
-                        ? require("../../../assets/idea.png")
-                        : require("../../../assets/idea_white.png")
-                    }
-                  />
-                  <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                    Suggest a vault
-                  </Text>
-                </View>
-                <Image
-                  className="h-[16px] w-[24px]"
-                  source={
-                    colorScheme === "light"
-                      ? require("../../../assets/arrowright.png")
-                      : require("../../../assets/arrowrightwhite.png")
-                  }
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
+          {yields ? (
+            yields.map((asset) => <Yield key={asset.symbol} asset={asset} />)
+          ) : (
+            <Text className="mb-2 mt-8 text-center font-Inter text-xl text-typo-light dark:text-typo-dark">
+              No opportunities available
+            </Text>
+          )}
         </View>
         <View className="my-16" />
       </ScrollView>

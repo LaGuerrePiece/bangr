@@ -37,7 +37,7 @@ export default function OrderConfirmed({ navigation }: { navigation: any }) {
           text="Back to home"
           bold
           rounded
-          action={() => navigation.navigate("Wallet")}
+          action={() => navigation.navigate("MainScreen")}
         />
       </View>
     </SafeAreaView>
