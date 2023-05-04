@@ -10,6 +10,7 @@ import {
   useColorScheme,
   ScrollView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import useTasksStore from "../../state/tasks";
 import useUserStore from "../../state/user";
@@ -23,6 +24,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { MainScreenStackParamList } from "../MainScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
+import { fetchText } from "react-native-svg/lib/typescript/xml";
 
 const History = ({
   route,
@@ -65,8 +67,10 @@ const History = ({
   useEffect(() => {
     if (!smartWalletAddress) return;
     fetchTasks();
-    console.log("route.params?.waitingForTask", route.params?.waitingForTask);
   }, [smartWalletAddress]);
+  useEffect(() => {
+    fetchTasks();
+  }, []);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -76,9 +80,9 @@ const History = ({
 
   if (!vaults) return null;
 
-  if (route.params?.waitingForTask && !repeat) {
-    repeatFetchTasks();
-  }
+  // if (route.params?.waitingForTask && !repeat) {
+  //   repeatFetchTasks();
+  // }
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
@@ -99,6 +103,11 @@ const History = ({
             />
           </TouchableOpacity>
         </View> */}
+        {repeat ? (
+          <View className="w-full flex-row justify-center justify-between">
+            <ActivityIndicator />
+          </View>
+        ) : null}
       </View>
       <ScrollView
         className="mx-auto mt-5 w-11/12 rounded-lg"
@@ -120,7 +129,8 @@ const History = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state !== 2 && task.state != -20)
-            .reverse()
+            //sort by id alphabetically
+            .sort((a, b) => a.id.localeCompare(b.id))
             .map((task, index) => (
               <View
                 className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
@@ -231,7 +241,7 @@ const History = ({
         {tasks.length !== 0 ? (
           tasks
             .filter((task) => task.state === 2 || task.state == -20)
-            .reverse()
+            .sort((b, a) => a.id.localeCompare(b.id))
             .map((task, index) => (
               <TouchableOpacity
                 onPress={() => {

@@ -56,6 +56,10 @@ const Swap = ({
   NativeStackScreenProps<MainScreenStackParamList, "Swap">,
   NativeStackScreenProps<RootStackParamList>
 >) => {
+  const { repeatFetchTasks } = useTasksStore((state) => ({
+    repeatFetchTasks: state.repeatFetchTasks,
+  }));
+
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
     (state) => ({
       smartWalletAddress: state.smartWalletAddress,
@@ -246,7 +250,8 @@ const Swap = ({
         text1: "error relaying transaction",
       });
     }
-
+    clearAfterSwap();
+    repeatFetchTasks();
     navigation.navigate("History", { waitingForTask: true });
   };
 

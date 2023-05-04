@@ -7,6 +7,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useVaultsStore from "./vaults";
 
 export type Task = {
+  id: string;
   type: string;
   protocol: string;
   chainId: number;
@@ -75,8 +76,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             visibilityTime: 2500,
             autoHide: true,
           });
-          useUserStore.getState().fetchBalances(scwAddress);
-          useVaultsStore.getState().fetchVaults(scwAddress);
+          
         } else if (task.state < 0) {
           Toast.show({
             type: "error",
@@ -85,11 +85,17 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             visibilityTime: 2500,
             autoHide: true,
           });
+        
         }
-        if (pendingTasks.length === 0) {
+        if (pendingTasks.length === 0 && previousPendingTasks.length > 0) {
+          console.log("set repeat to false");
           set({ repeat: false });
+          useUserStore.getState().fetchBalances(scwAddress);
+          useVaultsStore.getState().fetchVaults(scwAddress);
         }
+        console.log("pendingTasks.lenght", pendingTasks.length);
       }
+
       set({
         tasks: data,
         pendingTasks: pendingTasks,
@@ -100,9 +106,13 @@ const useTasksStore = create<TasksState>()((set, get) => ({
     }
   },
   repeatFetchTasks: () => {
-    console.log("repeat fetch tasks");
+    // console.log("repeat fetch tasks");
     set({ repeat: true });
     let interval = setInterval(async () => {
+      // if (get().pendingTasks.length === 0) {
+      //   set({ repeat: false });
+      // }
+      console.log("repeat fetch tasks", get().repeat);
       if (get().repeat) {
         await get().fetchTasks();
       } else {
