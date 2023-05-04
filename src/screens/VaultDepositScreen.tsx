@@ -465,11 +465,11 @@ const VaultDepositScreen = ({
                     <Text className="text-typo-light dark:text-typo-dark">
                       Use max (
                       {tab === "Deposit"
-                        ? formatUnits(balance, selectedToken?.decimals, 3)
+                        ? formatUnits(balance, selectedToken?.decimals, 4)
                         : formatUnits(
                             deposited,
                             selectedToken?.decimals,
-                            3
+                            4
                           )}{" "}
                       {selectedTokenSymbol})
                     </Text>
