@@ -189,3 +189,14 @@ export type Investment = {
   risks?: string;
   infos?: any;
 };
+
+export type Ramp = {
+  logo: string;
+  description: string;
+  name: string;
+  screen: string;
+  instant: boolean;
+  fees: string;
+  methods: string[];
+  comingSoon: boolean;
+};
