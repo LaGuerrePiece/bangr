@@ -156,7 +156,13 @@ const Wallet = ({
                             token.symbol === "USDC")) ||
                         token.symbol === "USDT"
                     )
-                    .map((token) => <Asset token={token} key={token.symbol} />)
+                    .map((token) => (
+                      <Asset
+                        token={token}
+                        key={token.symbol}
+                        navigation={navigation}
+                      />
+                    ))
                 : null}
               {tokens &&
               (forceWalletEmpty ||
