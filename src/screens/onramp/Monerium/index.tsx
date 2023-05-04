@@ -4,7 +4,6 @@ import CryptoJS from "crypto-js";
 import { useEffect, useState } from "react";
 import useUserStore from "../../../state/user";
 import { ethers } from "ethers";
-import "react-native-get-random-values";
 import useMoneriumStore from "../../../state/monerium";
 import { getChain } from "../../../utils/utils";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";

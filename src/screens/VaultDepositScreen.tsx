@@ -1,4 +1,3 @@
-import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
 import { constants, ethers, utils } from "ethers";
@@ -19,7 +18,6 @@ import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
-import { Investment, MultichainToken, VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
 import { averageApy } from "../components/Vault";
@@ -36,30 +34,13 @@ import { Protocol } from "../components/Protocol";
 import { HowItWorks } from "../components/HowItWorks";
 import { Information } from "../components/Information";
 import useTasksStore from "../state/tasks";
-
-const calculateGains = (
-  amount: number,
-  apy: number,
-  period: number
-): string => {
-  return ((amount * (apy / 100)) / (365 / period)).toFixed(2);
-};
-
-type VaultParams = {
-  VaultDepositScreen: {
-    vault: VaultData;
-    investment: Investment;
-    updatedToken: MultichainToken | undefined;
-  };
-};
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
 
 const VaultDepositScreen = ({
   route,
   navigation,
-}: {
-  route: RouteProp<VaultParams, "VaultDepositScreen">;
-  navigation: any;
-}) => {
+}: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
   const colorScheme = useColorScheme();
   const fetchTasks = useTasksStore((state) => state.fetchTasks);
 
@@ -181,10 +162,10 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
-        navigation.navigate(
-          "History" as never,
-          { waitingForTask: true } as never
-        );
+        navigation.navigate("MainScreen", {
+          screen: "History",
+          params: { waitingForTask: true },
+        });
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -233,7 +214,10 @@ const VaultDepositScreen = ({
 
     fetchBalances(smartWalletAddress);
     fetchVaults(smartWalletAddress);
-    navigation.navigate("History" as never, { waitingForTask: true } as never);
+    navigation.navigate("MainScreen", {
+      screen: "History",
+      params: { waitingForTask: true },
+    });
   };
 
   const validateInput = (action: string) => {

@@ -1,9 +1,7 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import {
   Text,
   View,
   Image,
-  SafeAreaView,
   TouchableWithoutFeedback,
   useColorScheme,
   ScrollView,
@@ -12,21 +10,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { XMarkIcon } from "react-native-heroicons/outline";
-import { Investment, VaultData } from "../types/types";
-import { averageApy } from "../components/Vault";
 import { colors } from "../config/configs";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
 
-type VaultParams = {
-  VaultScreen: {
-    investment: Investment;
-    apy: number;
-  };
-};
-
-const VaultInfoScreen = () => {
-  const navigation = useNavigation();
-  const { params } = useRoute<RouteProp<VaultParams, "VaultScreen">>();
-  const investment = params.investment;
+const VaultInfoScreen = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "VaultInfoScreen">) => {
+  const { investment, apy } = route.params;
   const { name, image, description, longDescription, infos } = investment;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
@@ -98,7 +90,7 @@ const VaultInfoScreen = () => {
                     key={index}
                     className="my-2 text-2xl font-bold text-typo-light dark:text-typo-dark"
                   >
-                    Current APY: {params.apy}%
+                    Current APY: {apy}%
                   </Text>
                 );
               case "image":

@@ -3,7 +3,6 @@ import ActionButton from "../../../components/ActionButton";
 import { useEffect, useState } from "react";
 import useUserStore from "../../../state/user";
 import { ethers } from "ethers";
-import "react-native-get-random-values";
 import { getChain } from "../../../utils/utils";
 import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";

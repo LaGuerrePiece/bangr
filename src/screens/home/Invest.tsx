@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import Yield from "../../components/Yield";
 import useYieldsStore from "../../state/yields";
-import useVaultsStore from "../../state/vaults";
 
 const Invest = () => {
   const colorScheme = useColorScheme();

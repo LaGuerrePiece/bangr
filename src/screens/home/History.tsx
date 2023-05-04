@@ -1,4 +1,4 @@
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import { useCallback, useEffect, useState } from "react";
 import {
   Image,
@@ -11,39 +11,37 @@ import {
   ScrollView,
   RefreshControl,
 } from "react-native";
-import useTasksStore from "../state/tasks";
-import useUserStore from "../state/user";
-import { cutDecimals } from "../utils/format";
-import useTokensStore from "../state/tokens";
-import useVaultsStore from "../state/vaults";
+import useTasksStore from "../../state/tasks";
+import useUserStore from "../../state/user";
+import { cutDecimals } from "../../utils/format";
+import useTokensStore from "../../state/tokens";
+import useVaultsStore from "../../state/vaults";
 import axios from "axios";
-import { etherscanLink, getURLInApp } from "../utils/utils";
-import { Task } from "../state/tasks";
+import { etherscanLink, getURLInApp } from "../../utils/utils";
+import { Task } from "../../state/tasks";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
+import { MainScreenStackParamList } from "../MainScreen";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../App";
 
-type HistoryParams = {
-  HistoryScreen: {
-    waitingForTask: boolean;
-  };
-};
-
-const HistoryScreen = ({
+const History = ({
   route,
   navigation,
-}: {
-  route: RouteProp<HistoryParams, "HistoryScreen">;
-  navigation: any;
-}) => {
+}: CompositeScreenProps<
+  NativeStackScreenProps<MainScreenStackParamList, "History">,
+  NativeStackScreenProps<RootStackParamList>
+>) => {
   const colorScheme = useColorScheme();
 
-  const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } = useTasksStore((state) => ({
-    tasks: state.tasks,
-    pendingTasks: state.pendingTasks,
-    repeat: state.repeat,
-    // pendingTasks: state.pendingTasks,
-    fetchTasks: state.fetchTasks,
-    repeatFetchTasks: state.repeatFetchTasks,
-  }));
+  const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } =
+    useTasksStore((state) => ({
+      tasks: state.tasks,
+      pendingTasks: state.pendingTasks,
+      repeat: state.repeat,
+      // pendingTasks: state.pendingTasks,
+      fetchTasks: state.fetchTasks,
+      repeatFetchTasks: state.repeatFetchTasks,
+    }));
 
   // const [pendingTasks, setPendingTasks] = useState<Task[]>([]);
   // const [isTrackingTasks, setIsTrackingTasks] = useState(false);
@@ -95,8 +93,8 @@ const HistoryScreen = ({
               className="h-7 w-7"
               source={
                 colorScheme === "dark"
-                  ? require("../../assets/swap-drk.png")
-                  : require("../../assets/swap.png")
+                  ? require("../../../assets/swap-drk.png")
+                  : require("../../../assets/swap.png")
               }
             />
           </TouchableOpacity>
@@ -134,19 +132,19 @@ const HistoryScreen = ({
                     source={
                       task.type === "Swap"
                         ? colorScheme == "light"
-                          ? require("../../assets/swap.png")
-                          : require("../../assets/swap-drk.png")
+                          ? require("../../../assets/swap.png")
+                          : require("../../../assets/swap-drk.png")
                         : task.type === "Invest"
                         ? colorScheme == "light"
-                          ? require("../../assets/invest.png")
-                          : require("../../assets/invest-drk.png")
+                          ? require("../../../assets/invest.png")
+                          : require("../../../assets/invest-drk.png")
                         : task.type === "Send"
                         ? colorScheme == "light"
-                          ? require("../../assets/send.png")
-                          : require("../../assets/send-drk.png")
+                          ? require("../../../assets/send.png")
+                          : require("../../../assets/send-drk.png")
                         : colorScheme == "light"
-                        ? require("../../assets/receive.png")
-                        : require("../../assets/receive-drk.png")
+                        ? require("../../../assets/receive.png")
+                        : require("../../../assets/receive-drk.png")
                     }
                   />
                 </View>
@@ -159,7 +157,7 @@ const HistoryScreen = ({
                     source={
                       getToken(task.asset1)?.logoURI
                         ? { uri: getToken(task.asset1)?.logoURI }
-                        : require("../../assets/task-error.png")
+                        : require("../../../assets/task-error.png")
                     }
                   />
                   <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
@@ -185,7 +183,7 @@ const HistoryScreen = ({
                         task.type === "Swap"
                           ? getToken(task.asset2)?.logoURI
                             ? { uri: getToken(task.asset2)?.logoURI }
-                            : require("../../assets/task-error.png")
+                            : require("../../../assets/task-error.png")
                           : vaults!.find(
                               (vault) => vault.name === task.protocol
                             )?.image
@@ -194,7 +192,7 @@ const HistoryScreen = ({
                                 (vault) => vault.name === task.protocol
                               )?.image,
                             }
-                          : require("../../assets/task-error.png")
+                          : require("../../../assets/task-error.png")
                       }
                     />
                   )}
@@ -206,15 +204,15 @@ const HistoryScreen = ({
                       // task is 1 or 0
                       task.state === 1 || task.state === 0
                         ? colorScheme == "light"
-                          ? require("../../assets/task-1.png")
-                          : require("../../assets/task-1-drk.png")
+                          ? require("../../../assets/task-1.png")
+                          : require("../../../assets/task-1-drk.png")
                         : task.state === 2
                         ? colorScheme == "light"
-                          ? require("../../assets/task-2.png")
-                          : require("../../assets/task-2-drk.png")
+                          ? require("../../../assets/task-2.png")
+                          : require("../../../assets/task-2-drk.png")
                         : colorScheme == "light"
-                        ? require("../../assets/task-error.png")
-                        : require("../../assets/task-error-drk.png")
+                        ? require("../../../assets/task-error.png")
+                        : require("../../../assets/task-error-drk.png")
                     }
                   />
                 </View>
@@ -253,19 +251,19 @@ const HistoryScreen = ({
                       source={
                         task.type === "Swap"
                           ? colorScheme == "light"
-                            ? require("../../assets/swap.png")
-                            : require("../../assets/swap-drk.png")
+                            ? require("../../../assets/swap.png")
+                            : require("../../../assets/swap-drk.png")
                           : task.type === "Invest"
                           ? colorScheme == "light"
-                            ? require("../../assets/invest.png")
-                            : require("../../assets/invest-drk.png")
+                            ? require("../../../assets/invest.png")
+                            : require("../../../assets/invest-drk.png")
                           : task.type === "send"
                           ? colorScheme == "light"
-                            ? require("../../assets/send.png")
-                            : require("../../assets/send-drk.png")
+                            ? require("../../../assets/send.png")
+                            : require("../../../assets/send-drk.png")
                           : colorScheme == "light"
-                          ? require("../../assets/receive.png")
-                          : require("../../assets/receive-drk.png")
+                          ? require("../../../assets/receive.png")
+                          : require("../../../assets/receive-drk.png")
                       }
                     />
                   </View>
@@ -278,7 +276,7 @@ const HistoryScreen = ({
                       source={
                         getToken(task.asset1)?.logoURI
                           ? { uri: getToken(task.asset1)?.logoURI }
-                          : require("../../assets/task-error.png")
+                          : require("../../../assets/task-error.png")
                       }
                     />
                     <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
@@ -304,7 +302,7 @@ const HistoryScreen = ({
                           task.type === "Swap"
                             ? getToken(task.asset2)?.logoURI
                               ? { uri: getToken(task.asset2)?.logoURI }
-                              : require("../../assets/task-error.png")
+                              : require("../../../assets/task-error.png")
                             : vaults!.find(
                                 (vault) => vault.name === task.protocol
                               )?.image
@@ -313,7 +311,7 @@ const HistoryScreen = ({
                                   (vault) => vault.name === task.protocol
                                 )?.image,
                               }
-                            : require("../../assets/task-error.png")
+                            : require("../../../assets/task-error.png")
                         }
                       />
                     )}
@@ -325,15 +323,15 @@ const HistoryScreen = ({
                         // task is 1 or 0
                         task.state === 1 || task.state === 0
                           ? colorScheme == "light"
-                            ? require("../../assets/task-1.png")
-                            : require("../../assets/task-1-drk.png")
+                            ? require("../../../assets/task-1.png")
+                            : require("../../../assets/task-1-drk.png")
                           : task.state === 2
                           ? colorScheme == "light"
-                            ? require("../../assets/task-2.png")
-                            : require("../../assets/task-2-drk.png")
+                            ? require("../../../assets/task-2.png")
+                            : require("../../../assets/task-2-drk.png")
                           : colorScheme == "light"
-                          ? require("../../assets/task-error.png")
-                          : require("../../assets/task-error-drk.png")
+                          ? require("../../../assets/task-error.png")
+                          : require("../../../assets/task-error-drk.png")
                       }
                     />
                   </View>
@@ -350,4 +348,4 @@ const HistoryScreen = ({
   );
 };
 
-export default HistoryScreen;
+export default History;
