@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
-import "react-native-get-random-values";
 import { encrypt } from "../../utils/encrypt";
 import { colors } from "../../config/configs";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
@@ -19,14 +18,14 @@ import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUserStore from "../../state/user";
+import { RootStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
 export default function ChoosePasswordICloud({
   navigation,
-}: {
-  navigation: any;
-}) {
+}: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
   const colorScheme = useColorScheme();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
 
@@ -171,7 +170,7 @@ export default function ChoosePasswordICloud({
           action={() => {
             step === 0
               ? secureAccountICloud()
-              : navigation.navigate("MainScreen");
+              : navigation.navigate("MainScreen", { screen: "Wallet" });
           }}
         />
       </View>

@@ -8,26 +8,20 @@ import {
   TouchableWithoutFeedback,
   useColorScheme,
 } from "react-native";
-import { ChainId } from "../types/types";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { chainData, colors } from "../config/configs";
 import useSendStore from "../state/send";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type SelectChainParams = {
-  SelectChainScreen: {
-    chainId: ChainId;
-  };
-};
-
-export default function SelectChain() {
-  const navigation = useNavigation();
-  const { params } =
-    useRoute<RouteProp<SelectChainParams, "SelectChainScreen">>();
-  const { chainId } = params;
-
+export default function SelectChain({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "SelectChain">) {
+  const { chainId } = route.params;
   const { update } = useSendStore();
   const colorScheme = useColorScheme();
+
   return (
     <View className="h-full bg-secondary-light dark:bg-secondary-dark">
       <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">

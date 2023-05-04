@@ -1,4 +1,3 @@
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useState } from "react";
 import {
   Text,
@@ -21,20 +20,17 @@ import useSwapStore from "../state/swap";
 import useTabStore from "../state/tab";
 import { colors } from "../config/configs";
 import * as Haptics from "expo-haptics";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-type TokenParams = {
-  TokenScreen: {
-    token: MultichainToken;
-  };
-};
-
-const TokenModal = () => {
-  const navigation = useNavigation();
+const TokenModal = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "TokenModal">) => {
   const setTab = useTabStore((state) => state.setTab);
   const colorScheme = useColorScheme();
 
-  const { params } = useRoute<RouteProp<TokenParams, "TokenScreen">>();
-  const { token } = params;
+  const { token } = route.params;
   const [chart, setChart] = useState<Point[]>();
   const updateSendStore = useSendStore((state) => state.update);
   const updateSwapSrcToken = useSwapStore((state) => state.updateSrcToken);
@@ -70,7 +66,7 @@ const TokenModal = () => {
   }
 
   const swap = () => {
-    navigation.navigate("MainScreen" as never);
+    navigation.navigate("MainScreen", { screen: "Wallet" });
     updateSwapSrcToken(token);
     setTab("Swap");
   };

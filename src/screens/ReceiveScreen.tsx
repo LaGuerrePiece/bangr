@@ -12,15 +12,16 @@ import QRCode from "react-native-qrcode-svg";
 import useUserStore from "../state/user";
 import Toast from "react-native-toast-message";
 import ActionButton from "../components/ActionButton";
-import { useNavigation } from "@react-navigation/native";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { toastConfig } from "../components/toasts";
 import { getChain } from "../utils/utils";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
-const ReceiveScreen = () => {
-  const navigation = useNavigation();
-
+const ReceiveScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Receive">) => {
   const showToast = (text1: string, text2: string) => {
     Toast.show({
       type: "success",
@@ -167,7 +168,7 @@ const ReceiveScreen = () => {
               bold
               styles={"min-w-[200px]"}
               action={() => {
-                navigation.navigate("Onramp" as never);
+                navigation.navigate("Onramp");
               }}
             />
           </View>

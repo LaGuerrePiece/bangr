@@ -13,13 +13,16 @@ import ActionButton from "../../components/ActionButton";
 import * as SecureStore from "expo-secure-store";
 import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
-import "react-native-get-random-values";
+import { RootStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
 };
 
-export default function CreateAccount({ navigation }: { navigation: any }) {
+export default function CreateAccount({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "CreateAccount">) {
   const colorScheme = useColorScheme();
   const { login } = useUserStore((state) => ({
     login: state.login,
@@ -129,7 +132,7 @@ export default function CreateAccount({ navigation }: { navigation: any }) {
           <TouchableOpacity
             className={intro ? "opacity-0" : ""}
             onPress={() => {
-              navigation.navigate("MainScreen");
+              navigation.navigate("MainScreen", { screen: "Wallet" });
             }}
           >
             <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">

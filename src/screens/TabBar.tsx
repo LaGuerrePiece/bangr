@@ -1,3 +1,4 @@
+import { MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
 import {
   View,
   Text,
@@ -6,12 +7,16 @@ import {
   useColorScheme,
 } from "react-native";
 
-export function TabBar({ state, descriptors, navigation }: any) {
+export function TabBar({
+  state,
+  descriptors,
+  navigation,
+}: MaterialTopTabBarProps) {
   const colorScheme = useColorScheme();
 
   return (
     <View className="flex flex-row bg-primary-light p-4 dark:bg-secondary-dark">
-      {state.routes.map((route: any, index: any) => {
+      {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
@@ -31,7 +36,7 @@ export function TabBar({ state, descriptors, navigation }: any) {
 
           if (!isFocused && !event.defaultPrevented) {
             // The `merge: true` option makes sure that the params inside the tab screen are preserved
-            navigation.navigate({ name: route.name, merge: true });
+            navigation.navigate({ name: route.name, merge: true } as any);
           }
         };
 
@@ -89,7 +94,7 @@ export function TabBar({ state, descriptors, navigation }: any) {
                     : "text-center font-InterBold text-typo-light opacity-50 dark:text-typo-dark"
                 }
               >
-                {label}
+                {label as string}
               </Text>
             </View>
           </TouchableOpacity>

@@ -34,27 +34,19 @@ import {
   getRelayerValueToSend,
 } from "../utils/utils";
 import { relay } from "../utils/signAndRelay";
-import { MultichainToken, Quote } from "../types/types";
-import { RouteProp, useNavigation } from "@react-navigation/native";
+import { Quote } from "../types/types";
 import { XMarkIcon } from "react-native-heroicons/outline";
 import { toastConfig } from "../components/toasts";
 import useTasksStore from "../state/tasks";
 import Icon from "../components/Icon";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-
-type SendParams = {
-  SendScreen: {
-    updatedToken: MultichainToken | undefined;
-  };
-};
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const SendScreen = ({
   route,
   navigation,
-}: {
-  route: RouteProp<SendParams, "SendScreen">;
-  navigation: any;
-}) => {
+}: NativeStackScreenProps<RootStackParamList, "Send">) => {
   const {
     amountIn,
     debouncedAmountIn,
@@ -231,10 +223,10 @@ const SendScreen = ({
         successMessage,
         errorMessage
       );
-      navigation.navigate(
-        "History" as never,
-        { waitingForTask: true } as never
-      );
+      navigation.navigate("MainScreen", {
+        screen: "History",
+        params: { waitingForTask: true },
+      });
     } catch (error) {
       console.log(error);
       Toast.show({

@@ -1,4 +1,3 @@
-import { RouteProp } from "@react-navigation/native";
 import axios from "axios";
 import "@ethersproject/shims";
 import { constants, ethers, utils } from "ethers";
@@ -20,7 +19,6 @@ import {
   ArrowLeftIcon,
   InformationCircleIcon,
 } from "react-native-heroicons/outline";
-import { Investment, MultichainToken, VaultData } from "../types/types";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
 import { averageApy } from "../components/Vault";
@@ -37,30 +35,13 @@ import { Protocol } from "../components/Protocol";
 import { HowItWorks } from "../components/HowItWorks";
 import { Information } from "../components/Information";
 import useTasksStore from "../state/tasks";
-
-const calculateGains = (
-  amount: number,
-  apy: number,
-  period: number
-): string => {
-  return ((amount * (apy / 100)) / (365 / period)).toFixed(2);
-};
-
-type VaultParams = {
-  VaultDepositScreen: {
-    vault: VaultData;
-    investment: Investment;
-    updatedToken: MultichainToken | undefined;
-  };
-};
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
 
 const VaultDepositScreen = ({
   route,
   navigation,
-}: {
-  route: RouteProp<VaultParams, "VaultDepositScreen">;
-  navigation: any;
-}) => {
+}: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
   const colorScheme = useColorScheme();
 
   const { repeatFetchTasks } = useTasksStore((state) => ({
@@ -187,10 +168,10 @@ const VaultDepositScreen = ({
           "Deposit successful",
           "Deposit failed"
         );
-        navigation.navigate(
-          "History" as never,
-          { waitingForTask: true } as never
-        );
+        navigation.navigate("MainScreen", {
+          screen: "History",
+          params: { waitingForTask: true },
+        });
       } catch (error) {
         console.log(error);
         Toast.show({
@@ -202,7 +183,10 @@ const VaultDepositScreen = ({
 
     repeatFetchTasks();
     setLoading(false);
-    navigation.navigate("History" as never, { waitingForTask: true } as never);
+    navigation.navigate("MainScreen", {
+      screen: "History",
+      params: { waitingForTask: true },
+    });
   };
 
   const handleWithdraw = async () => {
@@ -237,7 +221,10 @@ const VaultDepositScreen = ({
 
     repeatFetchTasks();
     setLoading(false);
-    navigation.navigate("History" as never, { waitingForTask: true } as never);
+    navigation.navigate("MainScreen", {
+      screen: "History",
+      params: { waitingForTask: true },
+    });
   };
 
   const validateInput = (action: string) => {
@@ -313,7 +300,6 @@ const VaultDepositScreen = ({
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
         <ScrollView className="h-full">
           <View onStartShouldSetResponder={() => true}>
-          
             <View className="mx-auto w-11/12 p-3">
               <View className="mb-2 flex-row justify-between">
                 <View className="flex-row items-center">
@@ -325,10 +311,10 @@ const VaultDepositScreen = ({
                   </Text> */}
                 </View>
                 {loading ? (
-          <View className="flex-1 items-center justify-center">
-            <ActivityIndicator />
-          </View>
-        ) : null}
+                  <View className="flex-1 items-center justify-center">
+                    <ActivityIndicator />
+                  </View>
+                ) : null}
                 {/* <Image
                   className="h-10 w-10 rounded-full"
                   source={{ uri: uiImage ?? image }}
