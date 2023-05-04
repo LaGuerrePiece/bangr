@@ -92,9 +92,9 @@ const VaultDepositScreen = ({
     ? averageApy(chains.map((chain) => chain.apy)).toString()
     : "0";
 
-  const tvl =
-    (chains.reduce((acc, cur) => acc + cur.tvl, 0) / 10 ** 6 / 3).toFixed(2) +
-    "M";
+  // const tvl =
+  //   (chains.reduce((acc, cur) => acc + cur.tvl, 0) / 10 ** 6 / 3).toFixed(2) +
+  //   "M";
 
   const defaultTokenSymbol = tokensIn[0];
 
@@ -124,7 +124,7 @@ const VaultDepositScreen = ({
     console.log("vaultName", name);
 
     try {
-      const calls = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
+      const res = await axios.post(`${getURLInApp()}/api/v1/quote/vault`, {
         address: smartWalletAddress,
         vaultName: name,
         action,
@@ -132,19 +132,17 @@ const VaultDepositScreen = ({
         token,
       });
 
-      if (calls.data.length === 0) {
+      return res.data;
+    } catch (error: any) {
+      console.log("error in VaultDepositScreen", error);
+      if (error.response && error.response.data.error) {
+        console.log(error.response.data);
         Toast.show({
           type: "error",
           text1: "Error",
-          text2: "Error fetching quote",
+          text2: error.response.data.message,
         });
-        console.log("error fetching quote");
-        return;
       }
-
-      return calls.data;
-    } catch (err) {
-      console.log("err in VaultDepositScreen", err);
     }
   };
 
@@ -153,32 +151,35 @@ const VaultDepositScreen = ({
     setLoading(true);
     const calls = await handleAmountChange("deposit");
 
-    if (wallet && smartWalletAddress && calls) {
-      try {
-        relay(
-          calls,
-          wallet,
-          smartWalletAddress,
-          "0",
-          "Invest",
-          name,
-          selectedTokenSymbol,
-          "",
-          amount,
-          "Deposit successful",
-          "Deposit failed"
-        );
-        navigation.navigate("MainScreen", {
-          screen: "History",
-          params: { waitingForTask: true },
-        });
-      } catch (error) {
-        console.log(error);
-        Toast.show({
-          type: "error",
-          text1: "error relaying transaction",
-        });
-      }
+    if (!wallet || !smartWalletAddress || !calls) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        "0",
+        "Invest",
+        name,
+        selectedTokenSymbol,
+        "",
+        amount,
+        "Deposit successful",
+        "Deposit failed"
+      );
+      navigation.navigate("MainScreen", {
+        screen: "History",
+        params: { waitingForTask: true },
+      });
+    } catch (error) {
+      console.log(error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
     }
 
     repeatFetchTasks();
@@ -194,29 +195,32 @@ const VaultDepositScreen = ({
     if (!validateInput("withdraw")) return;
     setLoading(true);
     const calls = await handleAmountChange("withdraw");
-    // console.log("calls", calls);
-    if (wallet && smartWalletAddress && calls) {
-      try {
-        relay(
-          calls,
-          wallet,
-          smartWalletAddress,
-          "0",
-          "Withdraw",
-          name,
-          selectedTokenSymbol,
-          "",
-          amount,
-          "Withdraw successful",
-          "Withdraw failed"
-        );
-      } catch (error) {
-        console.log("error relaying:", error);
-        Toast.show({
-          type: "error",
-          text1: "error relaying transaction",
-        });
-      }
+
+    if (!wallet || !smartWalletAddress || !calls) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      relay(
+        calls,
+        wallet,
+        smartWalletAddress,
+        "0",
+        "Withdraw",
+        name,
+        selectedTokenSymbol,
+        "",
+        amount,
+        "Withdraw successful",
+        "Withdraw failed"
+      );
+    } catch (error) {
+      console.log("error relaying:", error);
+      Toast.show({
+        type: "error",
+        text1: "error relaying transaction",
+      });
     }
 
     repeatFetchTasks();
@@ -359,7 +363,7 @@ const VaultDepositScreen = ({
                   <Information
                     styles="mr-4"
                     title="Total vault value"
-                    text={"$" + (tvl ?? tvl)}
+                    text={"$" + uiTvl}
                     textSize={"text-lg"}
                   />
                 </View>

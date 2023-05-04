@@ -66,8 +66,7 @@ const SendScreen = ({
     getToken: state.getToken,
   }));
   const fetchTasks = useTasksStore((state) => state.fetchTasks);
-  const { repeatFetchTasks } =
-  useTasksStore((state) => ({
+  const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
   const { smartWalletAddress, wallet, fetchBalances } = useUserStore(
@@ -237,9 +236,10 @@ const SendScreen = ({
     clearAfterSend();
     fetchBalances();
     repeatFetchTasks();
-    navigation.navigate("History" as never, { waitingForTask: true } as never);
-
-
+    navigation.navigate("MainScreen", {
+      screen: "History",
+      params: { waitingForTask: true },
+    });
   };
 
   return (
