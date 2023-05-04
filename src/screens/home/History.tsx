@@ -146,8 +146,8 @@ const History = ({
                           : require("../../../assets/swap-drk.png")
                         : task.type === "Invest"
                         ? colorScheme == "light"
-                          ? require("../../../assets/invest.png")
-                          : require("../../../assets/invest-drk.png")
+                          ? require("../../../assets/seed.png")
+                          : require("../../../assets/seed-drk.png")
                         : task.type === "Send"
                         ? colorScheme == "light"
                           ? require("../../../assets/send.png")
@@ -265,8 +265,8 @@ const History = ({
                             : require("../../../assets/swap-drk.png")
                           : task.type === "Invest"
                           ? colorScheme == "light"
-                            ? require("../../../assets/invest.png")
-                            : require("../../../assets/invest-drk.png")
+                            ? require("../../../assets/seed.png")
+                            : require("../../../assets/seed-drk.png")
                           : task.type === "send"
                           ? colorScheme == "light"
                             ? require("../../../assets/send.png")
