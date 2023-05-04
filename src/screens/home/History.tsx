@@ -160,7 +160,7 @@ const History = ({
                 </View>
                 <View className="flex-row">
                   <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                    {cutDecimals(task.amount, 2)} {}
+                    {cutDecimals(task.amount, 4)} {}
                   </Text>
                   <Image
                     className="h-5 w-5"
@@ -279,7 +279,7 @@ const History = ({
                   </View>
                   <View className="flex-row">
                     <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                      {cutDecimals(task.amount, 2)} {}
+                      {cutDecimals(task.amount, 4)} {}
                     </Text>
                     <Image
                       className="h-5 w-5"
