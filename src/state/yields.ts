@@ -4,12 +4,12 @@ import axios from "axios";
 import { devtools } from "zustand/middleware";
 import { getURLInApp } from "../utils/utils";
 
-interface YieldState {
+interface YieldsState {
   yields: YieldAsset[] | undefined;
   fetchYields: (scw?: string) => void;
 }
 
-const useYieldsStore = create<YieldState>()(
+const useYieldsStore = create<YieldsState>()(
   devtools((set, get) => ({
     yields: undefined,
 

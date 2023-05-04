@@ -68,7 +68,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         const task = previousPendingTasks.filter(
           (task) => !pendingTasks.includes(task)
         )[0];
-        if (task.state === 2) {
+        console.log("task", task.state);
+        if (task.state >= 1) {
           Toast.show({
             type: "success",
             text1: "Transaction confirmed",
