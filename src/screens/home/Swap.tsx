@@ -37,36 +37,26 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import * as Haptics from "expo-haptics";
 import { MultichainToken } from "../../types/types";
 import useTasksStore from "../../state/tasks";
-import { RouteProp } from "@react-navigation/native";
+import { CompositeScreenProps } from "@react-navigation/native";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Icon from "../../components/Icon";
+import { MainScreenStackParamList } from "../MainScreen";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../App";
 
 type ButtonStatus = {
   disabled: boolean;
   text: string;
 };
 
-type SwapParams = {
-  Swap: {
-    tokenToUpdate?: string;
-    updatedToken?: MultichainToken;
-  };
-};
-
 const Swap = ({
-  updatedToken,
-  tokenToUpdate,
   navigation,
   route,
-}: {
-  updatedToken: MultichainToken | undefined;
-  tokenToUpdate: string | undefined;
-  navigation: any;
-  route: RouteProp<SwapParams, "Swap">;
-}) => {
-
-  const { repeatFetchTasks } =
-  useTasksStore((state) => ({
+}: CompositeScreenProps<
+  NativeStackScreenProps<MainScreenStackParamList, "Swap">,
+  NativeStackScreenProps<RootStackParamList>
+>) => {
+  const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
 

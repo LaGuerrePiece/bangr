@@ -1,24 +1,16 @@
 import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
-import "react-native-get-random-values";
-import "@ethersproject/shims";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useRef, useState } from "react";
-import ActionButton from "../../../components/ActionButton";
+import { useEffect, useState } from "react";
 import QueryString from "query-string";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { ParamListBase, RouteProp, useRoute } from "@react-navigation/native";
 import { MONERIUM_SETTINGS } from ".";
 import { Camera } from "expo-camera";
 import useMoneriumStore from "../../../state/monerium";
 import useUserStore from "../../../state/user";
 import { ethers } from "ethers";
-
-type MoneriumWebviewParams = {
-  MoneriumWebviewScreen: {
-    webWiewUri: string;
-    codeVerifier: string;
-  };
-};
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../../App";
 
 export type MoneriumUserData = {
   id: string;
@@ -38,9 +30,13 @@ export type MoneriumUserData = {
   }[];
 };
 
-export default function MoneriumWebview({ navigation }: { navigation: any }) {
+export default function MoneriumWebview({
+  navigation,
+}: {
+  navigation: NativeStackNavigationProp<ParamListBase, "MoneriumWebview">;
+}) {
   const { params } =
-    useRoute<RouteProp<MoneriumWebviewParams, "MoneriumWebviewScreen">>();
+    useRoute<RouteProp<RootStackParamList, "MoneriumWebview">>();
 
   const { webWiewUri, codeVerifier } = params;
   const windowWidth = Dimensions.get("window").width;

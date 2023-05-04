@@ -1,4 +1,4 @@
-import { RouteProp } from "@react-navigation/native";
+import { ParamListBase, RouteProp } from "@react-navigation/native";
 import {
   Text,
   View,
@@ -16,20 +16,13 @@ import Vault from "../components/Vault";
 import { ArrowLeftIcon } from "react-native-heroicons/outline";
 import useTokensStore from "../state/tokens";
 import { YieldAsset } from "../types/types";
-
-type ChooseVaultParams = {
-  ChooseVaultScreen: {
-    asset: YieldAsset;
-  };
-};
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 const ChooseVaultScreen = ({
   route,
   navigation,
-}: {
-  route: RouteProp<ChooseVaultParams, "ChooseVaultScreen">;
-  navigation: any;
-}) => {
+}: NativeStackScreenProps<RootStackParamList, "ChooseVault">) => {
   const colorScheme = useColorScheme();
   const { asset } = route.params;
   const getToken = useTokensStore((state) => state.getToken);

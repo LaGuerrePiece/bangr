@@ -18,17 +18,24 @@ import useTokensStore from "../../state/tokens";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useUserStore from "../../state/user";
 import Asset from "../../components/Asset";
-import * as Haptics from "expo-haptics";
 import { forceWalletEmpty } from "../../config/configs";
 import ActionButton from "../../components/ActionButton";
-import { useNavigation } from "@react-navigation/native";
 import useSettingsStore from "../../state/settings";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Animated } from "react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MainScreenStackParamList } from "../MainScreen";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { RootStackParamList } from "../../../App";
 
-const Wallet = () => {
+const Wallet = ({
+  route,
+  navigation,
+}: CompositeScreenProps<
+  NativeStackScreenProps<MainScreenStackParamList, "Wallet">,
+  NativeStackScreenProps<RootStackParamList>
+>) => {
   const colorScheme = useColorScheme();
-  const navigation = useNavigation();
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
@@ -127,7 +134,7 @@ const Wallet = () => {
 
             {!backedUp && (
               <TouchableOpacity
-                onPress={() => navigation.navigate("ChoosePassword" as never)}
+                onPress={() => navigation.navigate("ChoosePassword")}
               >
                 <View className="w-11/12 rounded-md border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
                   <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
@@ -160,7 +167,7 @@ const Wallet = () => {
                     text="Get your first assets"
                     bold
                     rounded
-                    action={() => navigation.navigate("Onramp" as never)}
+                    action={() => navigation.navigate("Onramp")}
                   />
                 </View>
               ) : null}

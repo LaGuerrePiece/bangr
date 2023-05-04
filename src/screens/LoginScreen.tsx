@@ -15,9 +15,13 @@ import "@ethersproject/shims";
 import { Wallet } from "ethers";
 import useTokensStore from "../state/tokens";
 import { skipBiometrics } from "../config/configs";
+import { RootStackParamList } from "../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 global.Buffer = global.Buffer || Buffer;
 
-const LoginScreen = ({ navigation }: { navigation: any }) => {
+const LoginScreen = ({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Login">) => {
   const colorScheme = useColorScheme();
   const { login } = useUserStore((state) => ({
     login: state.login,
@@ -55,7 +59,7 @@ const LoginScreen = ({ navigation }: { navigation: any }) => {
     }
     if (await loginThroughBiometrics()) {
       login(new Wallet(privKey));
-      navigation.navigate("MainScreen");
+      navigation.navigate("MainScreen", { screen: "Wallet" });
     }
   };
 

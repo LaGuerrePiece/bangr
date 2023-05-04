@@ -23,6 +23,8 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { colors } from "../../config/configs";
 import { makeRedirectUri, startAsync } from "expo-auth-session";
 import { supabase, supabaseUrl } from "./supabase";
+import { RootStackParamList } from "../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -55,7 +57,9 @@ export const googleConfig = {
   // usePKCE: true,
 };
 
-export default function RestoreAccount({ navigation }: { navigation: any }) {
+export default function RestoreAccount({
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "RestoreAccount">) {
   const colorScheme = useColorScheme();
   const login = useUserStore((state) => state.login);
 
@@ -142,7 +146,7 @@ export default function RestoreAccount({ navigation }: { navigation: any }) {
         type: "success",
         text1: "Account recovered !",
       });
-      navigation.navigate("MainScreen");
+      navigation.navigate("MainScreen", { screen: "Wallet" });
     } catch (e) {
       console.log(e);
       Toast.show({
