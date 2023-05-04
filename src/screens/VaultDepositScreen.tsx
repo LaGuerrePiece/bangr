@@ -14,6 +14,7 @@ import {
   Keyboard,
   ScrollView,
   useColorScheme,
+  ActivityIndicator,
 } from "react-native";
 import {
   ArrowLeftIcon,
@@ -61,6 +62,7 @@ const VaultDepositScreen = ({
   navigation: any;
 }) => {
   const colorScheme = useColorScheme();
+
   const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
@@ -80,21 +82,18 @@ const VaultDepositScreen = ({
     getToken: state.getToken,
   }));
 
-    const {
-      name: uiName,
-      vaultName,
-      longDescription: uiLongDescription,
-      contract,
-      tvl: uiTvl,
-      image: uiImage,
-      protocols,
-      risks,
-    } = {
-      ... route.params.investment,
-    };
-    
-    
-  
+  const {
+    name: uiName,
+    vaultName,
+    longDescription: uiLongDescription,
+    contract,
+    tvl: uiTvl,
+    image: uiImage,
+    protocols,
+    risks,
+  } = {
+    ...route.params.investment,
+  };
 
   const {
     name,
@@ -123,6 +122,7 @@ const VaultDepositScreen = ({
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
   const [tab, setTab] = useState("Deposit");
+  const [loading, setLoading] = useState(false);
 
   const selectedToken = tokens?.find(
     (token) => token.symbol === selectedTokenSymbol
@@ -169,7 +169,7 @@ const VaultDepositScreen = ({
 
   const handleDeposit = async () => {
     if (!validateInput("deposit")) return;
-
+    setLoading(true);
     const calls = await handleAmountChange("deposit");
 
     if (wallet && smartWalletAddress && calls) {
@@ -200,23 +200,20 @@ const VaultDepositScreen = ({
       }
     }
 
-    fetchBalances(smartWalletAddress);
-    fetchVaults(smartWalletAddress);
     repeatFetchTasks();
+    setLoading(false);
     navigation.navigate("History" as never, { waitingForTask: true } as never);
   };
 
   const handleWithdraw = async () => {
     console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
-
+    setLoading(true);
     const calls = await handleAmountChange("withdraw");
-
     // console.log("calls", calls);
-
     if (wallet && smartWalletAddress && calls) {
       try {
-        await relay(
+        relay(
           calls,
           wallet,
           smartWalletAddress,
@@ -238,9 +235,8 @@ const VaultDepositScreen = ({
       }
     }
 
-    fetchBalances(smartWalletAddress);
-    fetchVaults(smartWalletAddress);
     repeatFetchTasks();
+    setLoading(false);
     navigation.navigate("History" as never, { waitingForTask: true } as never);
   };
 
@@ -317,6 +313,7 @@ const VaultDepositScreen = ({
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
         <ScrollView className="h-full">
           <View onStartShouldSetResponder={() => true}>
+          
             <View className="mx-auto w-11/12 p-3">
               <View className="mb-2 flex-row justify-between">
                 <View className="flex-row items-center">
@@ -327,6 +324,11 @@ const VaultDepositScreen = ({
                     {uiName}
                   </Text> */}
                 </View>
+                {loading ? (
+          <View className="flex-1 items-center justify-center">
+            <ActivityIndicator />
+          </View>
+        ) : null}
                 {/* <Image
                   className="h-10 w-10 rounded-full"
                   source={{ uri: uiImage ?? image }}
@@ -403,40 +405,40 @@ const VaultDepositScreen = ({
                 </View> */}
 
                 {tokensIn.length > 1 ? (
-                  <View className="mt-3 px-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                  <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
                     <View className="mx-3 ">
-                    <Tab
-                      image={getToken(tokensIn[0])?.logoURI}
-                      text={tokensIn[0]}
-                      action={() => setSelectedTokenSymbol(tokensIn[0])}
-                      active={selectedTokenSymbol === tokensIn[0]}
-                    />
+                      <Tab
+                        image={getToken(tokensIn[0])?.logoURI}
+                        text={tokensIn[0]}
+                        action={() => setSelectedTokenSymbol(tokensIn[0])}
+                        active={selectedTokenSymbol === tokensIn[0]}
+                      />
                     </View>
                     <View className="mx-3">
-                    <Tab
-                      image={getToken(tokensIn[1])?.logoURI}
-                      text={tokensIn[1]}
-                      action={() => setSelectedTokenSymbol(tokensIn[1])}
-                      active={selectedTokenSymbol === tokensIn[1]}
-                    />
+                      <Tab
+                        image={getToken(tokensIn[1])?.logoURI}
+                        text={tokensIn[1]}
+                        action={() => setSelectedTokenSymbol(tokensIn[1])}
+                        active={selectedTokenSymbol === tokensIn[1]}
+                      />
                     </View>
                   </View>
                 ) : null}
 
-                <View className="my-3 px-3 flex-row items-center justify-around rounded-xl bg-quaternary-light dark:bg-quaternary-dark">
+                <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
                   <View className="mx-3 ">
-                  <Tab
-                    text="Deposit"
-                    action={() => switchTab("Deposit")}
-                    active={tab === "Deposit"}
-                  />
+                    <Tab
+                      text="Deposit"
+                      action={() => switchTab("Deposit")}
+                      active={tab === "Deposit"}
+                    />
                   </View>
                   <View className="mx-3">
-                  <Tab
-                    text="Withdraw"
-                    action={() => switchTab("Withdraw")}
-                    active={tab === "Withdraw"}
-                  />
+                    <Tab
+                      text="Withdraw"
+                      action={() => switchTab("Withdraw")}
+                      active={tab === "Withdraw"}
+                    />
                   </View>
                 </View>
 
@@ -445,6 +447,7 @@ const VaultDepositScreen = ({
                     {tab}
                   </Text>
                   <TouchableOpacity
+                    disabled={loading}
                     onPress={() => {
                       if (tab === "Deposit") {
                         setAmount(

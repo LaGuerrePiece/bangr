@@ -108,7 +108,7 @@ const HistoryScreen = ({
           </TouchableOpacity>
         </View> */}
         {repeat ? (
-             <View className="w-full flex-row justify-between justify-end">
+             <View className="w-full flex-row justify-between justify-center">
              <ActivityIndicator   /> 
              </View>
         ) : null
