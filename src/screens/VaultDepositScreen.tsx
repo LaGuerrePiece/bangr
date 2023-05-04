@@ -147,6 +147,7 @@ const VaultDepositScreen = ({
   };
 
   const handleDeposit = async () => {
+    if (loading) return;
     if (!validateInput("deposit")) return;
     setLoading(true);
     const calls = await handleAmountChange("deposit");
@@ -191,6 +192,7 @@ const VaultDepositScreen = ({
   };
 
   const handleWithdraw = async () => {
+    if (loading) return;
     console.log("handleWithdraw");
     if (!validateInput("withdraw")) return;
     setLoading(true);
@@ -517,7 +519,7 @@ const VaultDepositScreen = ({
                 <View className="mt-4 mb-1">
                   <ActionButton
                     text={tab}
-                    styles={`rounded-xl`}
+                    styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
                     bold
                     action={tab === "Deposit" ? handleDeposit : handleWithdraw}
                   />

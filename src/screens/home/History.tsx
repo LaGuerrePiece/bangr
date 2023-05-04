@@ -146,8 +146,8 @@ const History = ({
                           : require("../../../assets/swap-drk.png")
                         : task.type === "Invest"
                         ? colorScheme == "light"
-                          ? require("../../../assets/invest.png")
-                          : require("../../../assets/invest-drk.png")
+                          ? require("../../../assets/seed.png")
+                          : require("../../../assets/seed-drk.png")
                         : task.type === "Send"
                         ? colorScheme == "light"
                           ? require("../../../assets/send.png")
@@ -160,7 +160,7 @@ const History = ({
                 </View>
                 <View className="flex-row">
                   <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                    {cutDecimals(task.amount, 2)} {}
+                    {cutDecimals(task.amount, 4)} {}
                   </Text>
                   <Image
                     className="h-5 w-5"
@@ -265,8 +265,8 @@ const History = ({
                             : require("../../../assets/swap-drk.png")
                           : task.type === "Invest"
                           ? colorScheme == "light"
-                            ? require("../../../assets/invest.png")
-                            : require("../../../assets/invest-drk.png")
+                            ? require("../../../assets/seed.png")
+                            : require("../../../assets/seed-drk.png")
                           : task.type === "send"
                           ? colorScheme == "light"
                             ? require("../../../assets/send.png")
@@ -279,7 +279,7 @@ const History = ({
                   </View>
                   <View className="flex-row">
                     <Text className="font-bold text-typo2-light dark:text-typo2-dark">
-                      {cutDecimals(task.amount, 2)} {}
+                      {cutDecimals(task.amount, 4)} {}
                     </Text>
                     <Image
                       className="h-5 w-5"
