@@ -35,6 +35,7 @@ export default function RestoreAccountICloud({
 
   const [step, setStep] = useState(0); // 0: default, 1: connected to drive
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -69,6 +70,14 @@ export default function RestoreAccountICloud({
   };
 
   const restoreAccount = async () => {
+    if (password !== password2) {
+      Toast.show({
+        type: "error",
+        text1: "Passwords do not match",
+      });
+      setLoading(false);
+      return;
+    }
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
@@ -146,6 +155,25 @@ export default function RestoreAccountICloud({
                 className="text-xl font-semibold text-typo-light dark:text-typo-dark"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
+                placeholder="password"
+                secureTextEntry={true}
+                style={{
+                  color:
+                    colorScheme === "light"
+                      ? colors.typo.light
+                      : colors.typo.dark,
+                }}
+              />
+            </View>
+            <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
+              Repeat your password here:
+            </Text>
+            <View className="mx-auto w-2/3 rounded-md border bg-primary-light p-1 dark:bg-primary-dark">
+              <TextInput
+                placeholderTextColor={colors.typo2.light}
+                className="text-xl font-semibold text-typo-light dark:text-typo-dark"
+                onChangeText={(text) => setPassword2(text)}
+                value={password2}
                 placeholder="password"
                 secureTextEntry={true}
                 style={{
