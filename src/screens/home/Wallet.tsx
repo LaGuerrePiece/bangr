@@ -27,6 +27,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainScreenStackParamList } from "../MainScreen";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import { track } from '@amplitude/analytics-react-native';
 
 const Wallet = ({
   route,
@@ -35,6 +36,7 @@ const Wallet = ({
   NativeStackScreenProps<MainScreenStackParamList, "Wallet">,
   NativeStackScreenProps<RootStackParamList>
 >) => {
+  
   const colorScheme = useColorScheme();
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);

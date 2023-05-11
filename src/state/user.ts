@@ -9,6 +9,7 @@ import useTokensStore from "./tokens";
 import useVaultsStore from "./vaults";
 import useYieldsStore from "./yields";
 import useRampsStore from "./ramps";
+import { identify, Identify } from '@amplitude/analytics-react-native';
 
 interface UserState {
   wallet: Wallet | undefined;
@@ -55,6 +56,9 @@ const useUserStore = create<UserState>()((set, get) => ({
     useYieldsStore.getState().fetchYields(scwAddress);
     useRampsStore.getState().fetchRamps();
     useVaultsStore.getState().fetchVaults(scwAddress);
+    const identifyObj = new Identify();
+    identifyObj.set('scw', scwAddress);
+    identify(identifyObj);
   },
 
   fetchBalances: async (scwAddress?: string | null) => {

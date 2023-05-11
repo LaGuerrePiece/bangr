@@ -57,6 +57,7 @@ import {
   VaultData,
   YieldAsset,
 } from "./src/types/types";
+import * as amplitude from '@amplitude/analytics-react-native';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -143,6 +144,12 @@ const App = () => {
   if (!fontsLoaded) {
     return null;
   }
+
+  // init amplitude
+  amplitude.init("7f9a3683a65d6ba3c64f6ec9818d8e59", undefined, {
+    // optional configuration values
+    serverZone: "EU",
+  });
 
   return (
     <View
