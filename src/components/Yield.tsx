@@ -10,6 +10,7 @@ import useTokensStore from "../state/tokens";
 import { VaultData, YieldAsset } from "../types/types";
 import useVaultsStore from "../state/vaults";
 import { averageApy } from "./Vault";
+import * as amplitude from "@amplitude/analytics-react-native";
 
 const Yield = ({ asset }: { asset: YieldAsset }) => {
   const getToken = useTokensStore((state) => state.getToken);
@@ -32,11 +33,12 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={() => {
         navigation.navigate("ChooseVault", {
           asset,
-        })
-      }
+        });
+        amplitude.track("Yield Clicked: " + symbol);
+      }}
     >
       <View className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
         <View className="flex-row justify-between p-2">

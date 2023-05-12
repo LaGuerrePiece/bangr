@@ -15,6 +15,8 @@ import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { track } from "@amplitude/analytics-react-native";
+
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -127,12 +129,15 @@ export default function CreateAccount({
             rounded
             action={() => {
               navigation.navigate("ChoosePassword");
+              track("Account created and secured");
             }}
           />
           <TouchableOpacity
             className={intro ? "opacity-0" : ""}
             onPress={() => {
               navigation.navigate("MainScreen", { screen: "Wallet" });
+              track("Account created but not secured");
+              
             }}
           >
             <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">

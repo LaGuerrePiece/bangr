@@ -12,6 +12,8 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
 import { toastConfig } from "../../components/toasts";
 import useRampsStore from "../../state/ramps";
+import { track } from "@amplitude/analytics-react-native";
+
 
 const OnrampScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
@@ -41,6 +43,8 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         className="my-3 w-10/12"
         onPress={() => {
           navigation.navigate(screen);
+          track("Onramp Clicked: " + name);
+          
         }}
         disabled={comingSoon}
       >

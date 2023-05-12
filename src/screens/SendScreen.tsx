@@ -42,6 +42,8 @@ import Icon from "../components/Icon";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { track } from "@amplitude/analytics-react-native";
+
 
 const SendScreen = ({
   route,
@@ -179,6 +181,7 @@ const SendScreen = ({
             getChain(chainIdSuggested).name
           }`,
         });
+        track("No quote found");
       }
     }
   }
