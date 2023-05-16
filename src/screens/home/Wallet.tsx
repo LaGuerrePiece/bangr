@@ -27,7 +27,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainScreenStackParamList } from "../MainScreen";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
-import * as amplitude from "@amplitude/analytics-react-native";
+import { track } from "../../utils/analytics";
 
 const Wallet = ({
   route,
@@ -177,7 +177,7 @@ const Wallet = ({
                     rounded
                     action={() => {
                       navigation.navigate("Onramp");
-                      amplitude.track("Get your first assets");
+                      track("Get your first assets");
                     }}
                   />
                 </View>

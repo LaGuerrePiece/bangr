@@ -57,7 +57,7 @@ import {
   VaultData,
   YieldAsset,
 } from "./src/types/types";
-import * as amplitude from "@amplitude/analytics-react-native";
+import { track } from "./src/utils/analytics";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -150,8 +150,7 @@ const App = () => {
   //   // optional configuration values
   //   serverZone: "EU",
   // });
-  amplitude.init('7f9a3683a65d6ba3c64f6ec9818d8e59');
-  amplitude.track("App opened");
+  track("App opened");
 
   return (
     <View

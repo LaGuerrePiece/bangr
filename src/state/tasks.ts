@@ -5,7 +5,8 @@ import { getSmartWalletAddress, getURLInApp } from "../utils/utils";
 import useUserStore from "./user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useVaultsStore from "./vaults";
-import { track } from "@amplitude/analytics-react-native";
+import { track } from "../utils/analytics";
+
 
 
 export type Task = {
@@ -88,7 +89,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
             visibilityTime: 2500,
             autoHide: true,
           });
-          track("Transaction failed");
+          track("Transaction failed", scwAddress);
         
         }
         if (pendingTasks.length === 0 && previousPendingTasks.length > 0) {

@@ -12,7 +12,7 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
 import { toastConfig } from "../../components/toasts";
 import useRampsStore from "../../state/ramps";
-import { track } from "@amplitude/analytics-react-native";
+import { track } from "../../utils/analytics";
 
 
 const OnrampScreen = ({ navigation }: { navigation: any }) => {

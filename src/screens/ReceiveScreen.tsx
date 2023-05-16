@@ -19,6 +19,7 @@ import { getChain } from "../utils/utils";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import * as amplitude from "@amplitude/analytics-react-native";
+import { track } from "../utils/analytics";
 
 
 const ReceiveScreen = ({
@@ -171,7 +172,7 @@ const ReceiveScreen = ({
               styles={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp");
-                amplitude.track("Buy with cash");
+                track("Buy with cash");
               }}
             />
           </View>

@@ -15,7 +15,7 @@ import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { track } from "@amplitude/analytics-react-native";
+import { track } from "../../utils/analytics";
 
 
 const secureSave = async (key: string, value: string) => {
