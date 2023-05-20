@@ -58,6 +58,31 @@ import {
   YieldAsset,
 } from "./src/types/types";
 import VaultWithdrawalScreen from "./src/screens/VaultWithdrawalScreen";
+import i18n from "i18next";
+import RNLanguageDetector from "@os-team/i18next-react-native-language-detector";
+import { initReactI18next } from "react-i18next";
+import english from "./src/languages/english.json";
+import french from "./src/languages/french.json";
+
+i18n
+  .use(RNLanguageDetector)
+  .use(initReactI18next)
+  .init({
+    resources: {
+      en: {
+        translation: english,
+      },
+      fr: {
+        translation: french,
+      },
+    },
+    fallbackLng: "fr",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
+
+console.log("i18n", i18n);
 
 SplashScreen.preventAutoHideAsync();
 

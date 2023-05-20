@@ -7,10 +7,12 @@ import {
   useColorScheme,
 } from "react-native";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 
 const HomeButton = () => {
   const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   return (
     <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
@@ -30,7 +32,7 @@ const HomeButton = () => {
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Receive
+          {t("receive")}
         </Text>
       </TouchableOpacity>
       {/* <TouchableOpacity
@@ -61,7 +63,7 @@ const HomeButton = () => {
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Send
+          {t("send")}
         </Text>
       </TouchableOpacity>
     </View>
