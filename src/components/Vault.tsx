@@ -79,7 +79,9 @@ const Vault = ({ investment }: { investment: Investment }) => {
         <View className="mr-1 flex-row justify-between p-4">
           <View className="w-11/12">
             <Image
-              className="h-12	w-12 rounded-full"
+              className={`h-12 rounded-full ${
+                uiName === "Leveraged Staking" ? "-ml-1 w-20" : "w-12"
+              }`}
               source={{ uri: uiImage ?? image }}
               resizeMode="contain"
             />
