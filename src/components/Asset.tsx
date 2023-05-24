@@ -72,10 +72,11 @@ const Asset = ({
     }
   }
 
-  // look for the vault corresponding to the token or where the token is invested
+  // look for the vault corresponding to the token or where the token is in tokens in of the vault
   const vault = token.vaultToken
     ? vaults?.find((vault) => vault.vaultToken === token.symbol)
-    : null;
+    : vaults?.find((vault) => vault.tokensIn.find((t) => t == token.symbol));
+
   // look for the investment corresponding to the vault
   const investment = token.vaultToken
     ? yields
@@ -85,7 +86,17 @@ const Asset = ({
           )
         )
         .filter((investment) => investment !== undefined)[0]
-    : null;
+    : vault?.vaultToken
+    ? yields
+        ?.map((y) =>
+          y.investments.find(
+            (investment) => investment.vaultName === vault?.name
+          )
+        )
+        .filter((investment) => investment !== undefined)[0]
+    : undefined;
+
+  console.log(token.symbol, vault?.name, investment?.name);
 
   return (
     <View
@@ -100,6 +111,10 @@ const Asset = ({
           if (token.vaultToken) {
             if (vault && investment) {
               navigation.navigate("VaultWithdrawal", { vault, investment });
+            }
+          } else {
+            if (vault && investment) {
+              navigation.navigate("VaultDeposit", { vault, investment });
             }
           }
         }}
