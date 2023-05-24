@@ -57,6 +57,7 @@ import {
   VaultData,
   YieldAsset,
 } from "./src/types/types";
+import VaultWithdrawalScreen from "./src/screens/VaultWithdrawalScreen";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -89,6 +90,11 @@ export type RootStackParamList = {
     asset: YieldAsset;
   };
   VaultDeposit: {
+    vault: VaultData;
+    investment: Investment;
+    updatedToken?: MultichainToken | undefined;
+  };
+  VaultWithdrawal: {
     vault: VaultData;
     investment: Investment;
     updatedToken?: MultichainToken | undefined;
@@ -225,6 +231,7 @@ const App = () => {
           />
           <Stack.Screen name="ChooseVault" component={ChooseVaultScreen} />
           <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
+          <Stack.Screen name="VaultWithdrawal" component={VaultWithdrawalScreen} />
           <Stack.Screen
             name="Send"
             component={SendScreen}

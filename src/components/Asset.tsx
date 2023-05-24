@@ -72,10 +72,11 @@ const Asset = ({
     }
   }
 
-  // look for the vault corresponding to the token
+  // look for the vault corresponding to the token or where the token is invested
   const vault = token.vaultToken
     ? vaults?.find((vault) => vault.vaultToken === token.symbol)
     : null;
+  // look for the investment corresponding to the vault
   const investment = token.vaultToken
     ? yields
         ?.map((y) =>
@@ -98,7 +99,7 @@ const Asset = ({
         onPress={() => {
           if (token.vaultToken) {
             if (vault && investment) {
-              navigation.navigate("VaultDeposit", { vault, investment });
+              navigation.navigate("VaultWithdrawal", { vault, investment });
             }
           }
         }}
