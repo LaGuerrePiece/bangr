@@ -11,8 +11,8 @@ export const HowItWorks = (props: { action: any }) => {
               // className="h-[16px] w-[24px]"
               source={
                 Appearance.getColorScheme() === "light"
-                  ? require("../../assets/question.png")
-                  : require("../../assets/question.png")
+                  ? require("../../assets/i3.png")
+                  : require("../../assets/i.png")
               }
             />
             <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
