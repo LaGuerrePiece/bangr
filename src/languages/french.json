@@ -1,6 +1,8 @@
 {
   "send": "Envoyer",
+  "Send": "Envoyer",
   "receive": "Recevoir",
+  "Receive": "Recevoir",
   "language": "Langue",
   "currency": "Devise",
   "settings": "Paramètres",
@@ -12,6 +14,21 @@
   "Invest": "Investir",
   "Swap": "Échanger",
   "History": "Historique",
-  "Settings": "Paramètres"
-
+  "Settings": "Paramètres",
+  "Balance": "Solde",
+  "Flip": "Permuter",
+  "Enter amount": "Entrer le montant",
+  "Amount too low": "Montant trop faible",
+  "Enter address": "Entrer une adresse",
+  "Amount too small": "Montant trop faible",
+  "Insufficient balance": "Solde insuffisant",
+  "Computing route...": "Calcul de l'itinéraire...",
+  "No route found": "Aucun itinéraire trouvé",
+  "Networks": "Réseaux",
+  "Lowest fees": "Plus bas frais",
+  "Buy with cash": "Acheter de la crypto",
+  "Amount": "Montant",
+  "Amount received": "Montant reçu",
+  "Earn": "Gagnez",
+  "annually on" : "annuellement sur vos",
 }

@@ -9,8 +9,10 @@ import {
 } from "react-native";
 import Yield from "../../components/Yield";
 import useYieldsStore from "../../state/yields";
+import { useTranslation } from "react-i18next";
 
 const Invest = () => {
+  const {t} = useTranslation();
   const colorScheme = useColorScheme();
   const yields = useYieldsStore((state) => state.yields);
 
@@ -53,7 +55,7 @@ const Invest = () => {
       <ScrollView>
         <View className="mx-auto w-[91%]">
           <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
-            Invest
+            {t("Invest")}
           </Text>
 
           {yields ? (

@@ -42,6 +42,7 @@ import Icon from "../components/Icon";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const SendScreen = ({
   route,
@@ -61,6 +62,7 @@ const SendScreen = ({
     set,
     clearAfterSend,
   } = useSendStore();
+  const { t } = useTranslation();
   const { tokens, getToken } = useTokensStore((state) => ({
     tokens: state.tokens,
     getToken: state.getToken,
@@ -256,7 +258,7 @@ const SendScreen = ({
           </View>
         </TouchableWithoutFeedback>
         <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
-          Send
+          {t("Send")}
         </Text>
 
         <View className="mx-auto w-11/12 items-center rounded-xl bg-primary-light py-6  dark:bg-primary-dark">
@@ -278,7 +280,7 @@ const SendScreen = ({
             )}
           </View>
           <Text className="mt-6 w-11/12 text-lg font-bold text-typo-light dark:text-typo-dark">
-            Amount
+            {t("Amount")}
           </Text>
           <View className="mt-2 h-16 w-11/12 flex-row items-center justify-center rounded-lg bg-secondary-light px-2 dark:bg-secondary-dark">
             <TextInput
@@ -300,7 +302,7 @@ const SendScreen = ({
           {token && (
             <View className="my-2 w-full flex-row justify-end pr-6">
               <Text className="text-sm text-typo-light dark:text-typo-dark">
-                Balance : {formatUnits(token.balance, token.decimals, 4)}{" "}
+                {t("Balance")} : {formatUnits(token.balance, token.decimals, 4)}{" "}
                 {token.symbol}
               </Text>
             </View>
@@ -323,7 +325,7 @@ const SendScreen = ({
           {token && quote && quote.sumOfToAmount && (
             <View className="my-5">
               <Text className="mx-auto font-semibold text-typo-light dark:text-typo-dark">
-                Amount received: {cutDecimals(quote.sumOfToAmount, 5)}{" "}
+                {t("Amount received")}: {cutDecimals(quote.sumOfToAmount, 5)}{" "}
                 {token.symbol}
               </Text>
               {gasFeeEstimateUSD ? (
@@ -370,20 +372,20 @@ const SendScreen = ({
               <ActionButton
                 text={
                   !debouncedAmountIn
-                    ? "Enter amount"
+                    ? t("Enter amount")
                     : Number(debouncedAmountIn) * (token?.priceUSD ?? 0) <
                       SWAPAMOUNTIN_USD_THRESHOLD
-                    ? "Amount too low"
+                    ? t("Amount too low")
                     : !toAddress
-                    ? "Enter address"
+                    ? t("Enter address")
                     : token &&
                       ethers.utils
                         .parseUnits(debouncedAmountIn, token.decimals)
                         .gt(token.balance ?? "0")
-                    ? "Balance too low"
+                    ? t("Balance too low")
                     : isSearching
-                    ? "Computing route..."
-                    : "No route found."
+                    ? t("Computing route...")
+                    : t("No route found")
                 }
                 disabled={true}
                 rounded

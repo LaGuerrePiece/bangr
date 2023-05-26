@@ -10,8 +10,10 @@ import useTokensStore from "../state/tokens";
 import { VaultData, YieldAsset } from "../types/types";
 import useVaultsStore from "../state/vaults";
 import { averageApy } from "./Vault";
+import { useTranslation } from "react-i18next";
 
 const Yield = ({ asset }: { asset: YieldAsset }) => {
+  const {t} = useTranslation();
   const getToken = useTokensStore((state) => state.getToken);
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
@@ -57,7 +59,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
               annual yield on {symbol}
             </Text> */}
             <Text className="ml-2 font-InterSemiBold text-[16px] font-bold text-typo-light dark:text-secondary-light">
-              Earn <Text className="text-green-600">{apy}%</Text> annually on{" "}
+              {t("Earn")} <Text className="text-green-600">{apy}%</Text> {t("annually on")}{" "}
               {symbol}
             </Text>
           </View>
