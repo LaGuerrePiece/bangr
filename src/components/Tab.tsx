@@ -1,5 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
 
 export const Tab = (props: {
   text: string;
@@ -8,6 +9,7 @@ export const Tab = (props: {
   image?: string;
 }) => {
   const { text, action, active, image } = props;
+  const {t} = useTranslation();
   return (
     <TouchableOpacity
       onPress={async () => {
@@ -24,7 +26,7 @@ export const Tab = (props: {
           <Text
             className={`w-fit text-center text-base font-bold text-icon-special dark:text-secondary-light`}
           >
-            {text}
+            {t(text)}
           </Text>
         </View>
       ) : (
@@ -37,7 +39,7 @@ export const Tab = (props: {
           <Text
             className={`w-fit text-center text-base font-bold text-icon-special dark:text-secondary-light`}
           >
-            {text}
+            {t(text)}
           </Text>
         </View>
       )}

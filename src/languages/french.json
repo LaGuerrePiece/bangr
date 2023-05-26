@@ -3,5 +3,15 @@
   "receive": "Recevoir",
   "language": "Langue",
   "currency": "Devise",
-  "settings": "Paramètres"
+  "settings": "Paramètres",
+  "noBackup": "Votre compte n'est pas sauvegardé ! Veuillez sauvegarder votre compte.",
+  "pending": "En attente",
+  "noTxFound": "Aucune transaction trouvée.",
+  "completed": "Validées",
+  "Wallet": "Portefeuille",
+  "Invest": "Investir",
+  "Swap": "Échanger",
+  "History": "Historique",
+  "Settings": "Paramètres"
+
 }

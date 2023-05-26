@@ -25,6 +25,7 @@ import { MainScreenStackParamList } from "../MainScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
 import { fetchText } from "react-native-svg/lib/typescript/xml";
+import { useTranslation } from "react-i18next";
 
 const History = ({
   route,
@@ -34,6 +35,8 @@ const History = ({
   NativeStackScreenProps<RootStackParamList>
 >) => {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+
 
   const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } =
     useTasksStore((state) => ({
@@ -120,7 +123,7 @@ const History = ({
         tasks.filter((task) => task.state != 2 && task.state != -20).length >
           0 ? (
           <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
-            Pending
+            {t("pending")}
           </Text>
         ) : null}
 
@@ -230,13 +233,13 @@ const History = ({
             ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
-            No transaction yet
+            {t("noTxFound")}
           </Text>
         )}
 
         {/* tasks that have state = 2 */}
         <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
-          Completed
+          {t("completed")}
         </Text>
         {tasks.length !== 0 ? (
           tasks
@@ -350,7 +353,7 @@ const History = ({
             ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
-            No complete transaction yet
+            {t("noTxFound")}
           </Text>
         )}
       </ScrollView>

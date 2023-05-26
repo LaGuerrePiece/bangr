@@ -3,5 +3,9 @@
   "receive": "Receive",
   "language": "Language",
   "currency": "Currency",
-  "settings": "Settings"
+  "settings": "Settings",
+  "noBackup": "Your account is not backed up yet!",
+  "pending": "Pending",
+  "noTxFound": "No transactions found.",
+  "completed": "Completed"
 }
