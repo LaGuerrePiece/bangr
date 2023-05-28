@@ -24,11 +24,15 @@
   "Insufficient balance": "Solde insuffisant",
   "Computing route...": "Calcul de l'itinéraire...",
   "No route found": "Aucun itinéraire trouvé",
-  "Networks": "Réseaux",
+  "Networks": "Réseaux ",
   "Lowest fees": "Plus bas frais",
   "Buy with cash": "Acheter de la crypto",
   "Amount": "Montant",
   "Amount received": "Montant reçu",
   "Earn": "Gagnez",
   "annually on" : "annuellement sur vos",
+  "Instant": "Instantané",
+  "Fees": "Frais",
+  "Methods": "Méthodes",
+  "chooseOnramp": "Choisis un moyen d'achat"
 }

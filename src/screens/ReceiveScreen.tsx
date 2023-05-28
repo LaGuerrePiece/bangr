@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 const ReceiveScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Receive">) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const showToast = (text1: string, text2: string) => {
     Toast.show({
       type: "success",

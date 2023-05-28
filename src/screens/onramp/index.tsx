@@ -12,10 +12,12 @@ import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { TouchableOpacity } from "react-native";
 import { toastConfig } from "../../components/toasts";
 import useRampsStore from "../../state/ramps";
+import { useTranslation } from "react-i18next";
 
 const OnrampScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
   const ramps = useRampsStore((state) => state.ramps);
+  const { t } = useTranslation();
 
   const RampOption = ({
     logo,
@@ -60,7 +62,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           <View className="flex-row justify-between">
             <View>
               <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Instant
+                {t("Instant")}
               </Text>
               <View className="flex-row">
                 {instant ? (
@@ -80,7 +82,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             </View>
             <View>
               <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Fees
+                {t("Fees")}
               </Text>
               <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
                 {fees}
@@ -88,7 +90,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
             </View>
             <View>
               <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Methods
+                {t("Methods")}
               </Text>
               <View className="flex-row justify-center">
                 {methods.map((method) => {
@@ -144,7 +146,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         </View>
       </TouchableWithoutFeedback>
       <Text className="mt-2 mr-4 font-InterBold text-[22px] leading-9 text-typo-light dark:text-typo-dark">
-        Choose a payment option
+        {t("chooseOnramp")}
       </Text>
       <ScrollView
         contentContainerStyle={{ alignItems: "center" }}

@@ -68,6 +68,7 @@ i18n
   .use(RNLanguageDetector)
   .use(initReactI18next)
   .init({
+    compatibilityJSON: "v3",
     resources: {
       en: {
         translation: english,
@@ -256,7 +257,10 @@ const App = () => {
           />
           <Stack.Screen name="ChooseVault" component={ChooseVaultScreen} />
           <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
-          <Stack.Screen name="VaultWithdrawal" component={VaultWithdrawalScreen} />
+          <Stack.Screen
+            name="VaultWithdrawal"
+            component={VaultWithdrawalScreen}
+          />
           <Stack.Screen
             name="Send"
             component={SendScreen}
