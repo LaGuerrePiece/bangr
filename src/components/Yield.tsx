@@ -11,14 +11,16 @@ import { VaultData, YieldAsset } from "../types/types";
 import useVaultsStore from "../state/vaults";
 import { averageApy } from "./Vault";
 import { useTranslation } from "react-i18next";
+import useYieldsStore from "../state/yields";
 
 const Yield = ({ asset }: { asset: YieldAsset }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const getToken = useTokensStore((state) => state.getToken);
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
   const { symbol, yieldLow, yieldHigh, investments } = asset;
 
+  const yields = useYieldsStore((state) => state.yields);
   const token = getToken(symbol);
 
   // displays apy of the first one for now
@@ -32,13 +34,35 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
       : "0"
     : "0";
 
+    const investment = token?.vaultToken
+    ? yields
+        ?.map((y) =>
+          y.investments.find(
+            (investment) => investment.vaultName === vault?.name
+          )
+        )
+        .filter((investment) => investment !== undefined)[0]
+    : vault?.vaultToken
+    ? yields
+        ?.map((y) =>
+          y.investments.find(
+            (investment) => investment.vaultName === vault?.name
+          )
+        )
+        .filter((investment) => investment !== undefined)[0]
+    : undefined;
+
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("ChooseVault", {
-          asset,
-        })
-      }
+      onPress={() => {
+        if (vault && investment) {
+          navigation.navigate("VaultDeposit", { vault, investment });
+        } else {
+          navigation.navigate("ChooseVault", {
+            asset,
+          });
+        }
+      }}
     >
       <View className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
         <View className="flex-row justify-between p-2">
@@ -59,8 +83,8 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
               annual yield on {symbol}
             </Text> */}
             <Text className="ml-2 font-InterSemiBold text-[16px] font-bold text-typo-light dark:text-secondary-light">
-              {t("Earn")} <Text className="text-green-600">{apy}%</Text> {t("annually on")}{" "}
-              {symbol}
+              {t("Earn")} <Text className="text-green-600">{apy}%</Text>{" "}
+              {t("annually on")} {symbol}
             </Text>
           </View>
           <Image
