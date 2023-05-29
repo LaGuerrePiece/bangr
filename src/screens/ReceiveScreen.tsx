@@ -90,8 +90,8 @@ const ReceiveScreen = ({
                   console.log("smartWalletAddress: ", smartWalletAddress);
                   Clipboard.setStringAsync(smartWalletAddress ?? "");
                   showToast(
-                    "Address copied to clipboard",
-                    "You can now paste it anywhere you want"
+                    t("copiedClipboard"),
+                    t("youCanPaste")
                   );
                 }}
               >

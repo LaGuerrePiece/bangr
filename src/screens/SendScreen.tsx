@@ -176,10 +176,8 @@ const SendScreen = ({
       if (chainIdSuggested) {
         Toast.show({
           type: "error",
-          text1: "Error",
-          text2: `No quote found. Please try with a higher amount or on ${
-            getChain(chainIdSuggested).name
-          }`,
+          text1: t("error"),
+          text2: t("noQuoteSend") + getChain(chainIdSuggested).name,
         });
       }
     }
@@ -197,8 +195,8 @@ const SendScreen = ({
     ) {
       Toast.show({
         type: "error",
-        text1: "Error",
-        text2: "Invalid address",
+        text1: t("error"),
+        text2: t("invalidAddress"),
       });
       return;
     }
@@ -232,7 +230,7 @@ const SendScreen = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: "error relaying transaction",
+        text1: t("errorRelayingTransaction"),
       });
     }
     clearAfterSend();

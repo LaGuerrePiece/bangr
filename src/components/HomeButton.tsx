@@ -37,11 +37,18 @@ const HomeButton = () => {
       </TouchableOpacity>
       <TouchableOpacity
         className="w-1/3"
-        onPress={() => navigation.navigate("Onramp", {})}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          navigation.navigate("Onramp", {});
+        }}
       >
         <Image
           className="m-auto h-12 w-12"
-          source={colorScheme === "light" ? require("../../assets/dollar.png") : require("../../assets/dollar-drk.png")}
+          source={
+            colorScheme === "light"
+              ? require("../../assets/dollar.png")
+              : require("../../assets/dollar-drk.png")
+          }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Buy

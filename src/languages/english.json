@@ -36,5 +36,13 @@
   "Methods": "Methods",
   "chooseOnramp": "Choose a payment option",
   "notMainnet": "Do NOT send funds on the Ethereum mainnet (ERC20)",
-
+  "errorAuthGoogle": "Error while authenticating with Google",
+  "passNotMatch" : "Passwords do not match",
+  "cloudOK": "Your account is now secured on your cloud",
+  "copiedClipboard": "Copied to clipboard",
+  "youCanPaste": "You can now paste it",
+  "error": "Error",
+  "noQuoteSend": "No quote found. Please try with a higher amount or on ",
+  "invalidAddress": "Invalid address",
+  "errorRelayingTransaction": "Error while relaying transaction",
 }

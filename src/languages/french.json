@@ -36,4 +36,14 @@
   "Methods": "Méthodes",
   "chooseOnramp": "Choisis un moyen d'achat",
   "notMainnet": "N'envoyez pas de fonds sur le réseau principal Ethereum (ERC20)",
+  "errorAuthGoogle": "Erreur d'authentification Google",
+  "passNotMatch" : "Les mots de passe ne correspondent pas",
+  "cloudOK": "Votre compte est sauvegardé dans votre cloud !",
+  "copiedClipboard": "Copié dans le presse-papier",
+  "youCanPaste":  "Vous pouvez coller l'adresse",
+  "error": "Erreur",
+  "noQuoteSend": "Pas d'itinéraire trouvé. Veuillez essayer un autre montant ou sur ",
+  "errorRelayingTransaction": "Erreur lors du relais de la transaction",
+
+
 }

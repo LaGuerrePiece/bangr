@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUserStore from "../../state/user";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
@@ -32,6 +33,7 @@ export default function ChoosePassword({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
 
   const [step, setStep] = useState(0); // 0: default, 1: success
@@ -53,7 +55,7 @@ export default function ChoosePassword({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: "Could not authenticate with Google",
+          text1: t("errorAuthGoogle"),
         });
         setLoading(false);
         return;
@@ -71,7 +73,7 @@ export default function ChoosePassword({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: "Could not authenticate with Google",
+        text1: t("errorAuthGoogle"),
       });
       setLoading(false);
       return;
@@ -79,7 +81,7 @@ export default function ChoosePassword({
     if (password !== password2) {
       Toast.show({
         type: "error",
-        text1: "Passwords do not match",
+        text1: t("passNotMatch"),
       });
       setLoading(false);
       return;
@@ -106,7 +108,7 @@ export default function ChoosePassword({
     Toast.show({
       type: "success",
       text1: "Account secured",
-      text2: "Your account is now secured on " + driveName,
+      text2: t("cloudOK"),
     });
 
     await AsyncStorage.setItem("backup", "true");
