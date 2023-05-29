@@ -15,6 +15,7 @@ import useUserStore from "../../state/user";
 import { Wallet, ethers } from "ethers";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const secureSave = async (key: string, value: string) => {
   await SecureStore.setItemAsync(key, value);
@@ -27,10 +28,9 @@ export default function CreateAccount({
   const { login } = useUserStore((state) => ({
     login: state.login,
   }));
+  const { t } = useTranslation();
 
-  const [heroSentence, setHeroSentence] = useState(
-    "Generating your account..."
-  );
+  const [heroSentence, setHeroSentence] = useState(t("generating") + "...");
   const [intro, setIntro] = useState(true);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -66,12 +66,12 @@ export default function CreateAccount({
 
   useEffect(() => {
     if (!intro) {
-      setHeroSentence("Account generated");
+      setHeroSentence(t("accountGenerated") ?? "Account generated");
       return;
     }
     setTimeout(() => {
       if (heroSentence.length >= 26) {
-        setHeroSentence("Generating your account");
+        setHeroSentence(t("generating") ?? "Generating your account");
       } else {
         setHeroSentence(heroSentence + ".");
       }
@@ -98,7 +98,7 @@ export default function CreateAccount({
               }
             />
             <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-              Welcome to Bangr
+              {t("OnboardScreenWelcome")}
             </Text>
           </View>
           <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
@@ -113,15 +113,14 @@ export default function CreateAccount({
         <View className="mb-8">
           <Animated.View style={{ opacity: fadeAnim }}>
             <Text className="my-2 text-center font-InterBold text-lg text-typo-light dark:text-typo-dark">
-              Your account is now ready
+              {t("accountReady")}
             </Text>
             <Text className="mx-auto mb-5 w-64 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-              Before we take you to it, let's secure it on{" "}
-              {Platform.OS === "ios" ? "iCloud" : "Google Drive"}!
+              {t("letsSecureItOn")}
             </Text>
           </Animated.View>
           <ActionButton
-            text={"Secure my account"}
+            text={t("secureButton")}
             spinner={intro}
             bold
             rounded
@@ -136,7 +135,7 @@ export default function CreateAccount({
             }}
           >
             <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
-              I don't want to secure my account now
+              {t("dontWannaSecure")}
             </Text>
           </TouchableOpacity>
         </View>

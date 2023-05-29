@@ -30,6 +30,7 @@ export default function ChoosePasswordICloud({
   const {t} = useTranslation();
   const colorScheme = useColorScheme();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
+  const { t } = useTranslation();
 
   const [step, setStep] = useState(0); // 0: default, 1: success
   const [password, setPassword] = useState("");
@@ -55,7 +56,7 @@ export default function ChoosePasswordICloud({
       // Share the file, allowing the user to save it to iCloud Drive
       await Sharing.shareAsync(fileUri, {
         mimeType: "text/plain",
-        dialogTitle: "Save the file to iCloud Drive",
+        dialogTitle: t("saveToICloud") ?? "Save the file to iCloud Drive",
       });
     } catch (error) {
       console.error("Error saving and sharing file:", error);
@@ -104,29 +105,26 @@ export default function ChoosePasswordICloud({
             }
           />
           <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
+            {t("OnboardScreenWelcome")}
           </Text>
         </View>
         <Text className="mt-2 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-          Secure on {driveName}
+          {t("secureOn")} {driveName}
         </Text>
 
         {step === 0 ? (
           <View>
             <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
-              Bangr stores an encrypted copy of your key in a file, which we
-              will prompt you to save in your iCloud.
+              {t("choosePasswordICloud1")}
             </Text>
             <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
-              If you ever lose your phone, you will be able to recover your
-              account through this file.
+              {t("choosePasswordICloud2")}
             </Text>
             <Text className="m-auto mt-3 w-11/12 text-center font-bold text-typo-light dark:text-typo-dark">
-              Be sure not to lose your password! If you do, bangr will not be
-              able to recover your account.
+              {t("choosePasswordICloud3")}
             </Text>
             <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-              Create a new password:
+              {t("createPassword")}
             </Text>
             <View className="mx-auto w-2/3 rounded-md border bg-primary-light p-1 dark:bg-primary-dark">
               <TextInput
@@ -145,7 +143,7 @@ export default function ChoosePasswordICloud({
               />
             </View>
             <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-              Repeat password:
+              {t("repeatPassword")}
             </Text>
             <View className="mx-auto w-2/3 rounded-md border bg-primary-light p-1 dark:bg-primary-dark">
               <TextInput
@@ -168,38 +166,37 @@ export default function ChoosePasswordICloud({
           <ActivityIndicator size="large" className="mt-32" />
         ) : (
           <Text className="mt-12 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-            Backup successful!
+            {t("backupSuccessful")}
           </Text>
         )}
 
-        <Image
+        {/* <Image
           className="mx-auto mt-8 h-52 w-52"
           source={require("../../../assets/figma/security.png")}
-        />
+        /> */}
       </View>
 
       {step === 0 && (
         <View className="m-auto w-11/12">
           <Text className="mt-3 mb-1 text-center font-[Inter] text-typo-light dark:text-typo-dark">
-            After clicking this button, you will be prompted to save a file
-            called "bangr.wallet" to your files.
+            {t("choosePasswordICloud4")}
           </Text>
           <Text className="my-2 text-center font-bold text-typo-light dark:text-typo-dark">
-            Make sure that you are choosing "Save to Files" then depositing
-            anywhere in your iCloud Drive.
+            {t("choosePasswordICloud5")}
           </Text>
         </View>
       )}
 
       <View className="mx-auto mb-8 w-11/12">
         <ActionButton
-          text={step === 0 ? "Save to " + driveName : "Next"}
+          text={step === 0 ? t("saveToICloud") : t("Next")}
           bold
           rounded
           action={() => {
             step === 0
               ? secureAccountICloud()
-              : navigation.navigate("MainScreen", { screen: "Wallet" });
+              : // : navigation.navigate("MainScreen", { screen: "Wallet" });
+                navigation.replace("MainScreen", { screen: "Wallet" });
           }}
         />
       </View>
