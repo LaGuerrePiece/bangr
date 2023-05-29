@@ -13,6 +13,7 @@ import { averageApy } from "./Vault";
 import { useTranslation } from "react-i18next";
 import useYieldsStore from "../state/yields";
 import { track } from "../utils/analytics";
+import useUserStore from "../state/user";
 
 const Yield = ({ asset }: { asset: YieldAsset }) => {
   const { t } = useTranslation();
@@ -20,6 +21,9 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
   const { symbol, yieldLow, yieldHigh, investments } = asset;
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
   const yields = useYieldsStore((state) => state.yields);
   const token = getToken(symbol);
@@ -63,7 +67,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
             asset,
           });
         }
-        track("Yield Clicked: " + symbol);
+        track("Yield Clicked: " + symbol, scw);
       }}
     >
       <View className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">

@@ -39,6 +39,9 @@ const Wallet = ({
 >) => {
   const { t } = useTranslation();
   const colorScheme = useColorScheme();
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
@@ -178,7 +181,7 @@ const Wallet = ({
                     rounded
                     action={() => {
                       navigation.navigate("Onramp");
-                      track("Get your first assets");
+                      track("Get your first assets", scw);
                     }}
                   />
                 </View>

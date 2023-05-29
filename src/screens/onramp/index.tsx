@@ -14,11 +14,15 @@ import { toastConfig } from "../../components/toasts";
 import useRampsStore from "../../state/ramps";
 import { useTranslation } from "react-i18next";
 import { track } from "../../utils/analytics";
+import useUserStore from "../../state/user";
 
 const OnrampScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
   const ramps = useRampsStore((state) => state.ramps);
   const { t } = useTranslation();
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
   const RampOption = ({
     logo,
@@ -44,7 +48,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
         className="my-3 w-10/12"
         onPress={() => {
           navigation.navigate(screen);
-          track("Onramp Clicked: " + name);
+          track("Onramp Clicked: " + name, scw);
         }}
         disabled={comingSoon}
       >
