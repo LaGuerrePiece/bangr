@@ -69,6 +69,7 @@ export default function RestoreAccountICloud({
   };
 
   const restoreAccount = async () => {
+
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);

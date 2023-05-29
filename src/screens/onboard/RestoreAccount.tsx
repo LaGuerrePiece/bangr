@@ -65,6 +65,7 @@ export default function RestoreAccount({
 
   const [step, setStep] = useState(0); // 0: default, 1: connected to drive
   const [password, setPassword] = useState("");
+
   const [fileContentUri, setFileContentUri] = useState("");
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
@@ -137,6 +138,7 @@ export default function RestoreAccount({
   };
 
   const restoreAccount = async () => {
+   
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
@@ -229,6 +231,7 @@ export default function RestoreAccount({
                 }}
               />
             </View>
+            
           </View>
         )}
       </View>

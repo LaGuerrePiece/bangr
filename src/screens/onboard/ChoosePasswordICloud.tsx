@@ -31,6 +31,7 @@ export default function ChoosePasswordICloud({
 
   const [step, setStep] = useState(0); // 0: default, 1: success
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [loading, setLoading] = useState(false);
 
   const saveAndShareFile = async (content: string) => {
@@ -61,7 +62,14 @@ export default function ChoosePasswordICloud({
 
   const secureAccountICloud = async () => {
     setLoading(true);
-
+    if (password !== password2) {
+      Toast.show({
+        type: "error",
+        text1: "Passwords do not match",
+      });
+      setLoading(false);
+      return;
+    }
     const key = (await SecureStore.getItemAsync("privKey")) as string;
     const encryptedKey = await encrypt(key, password);
 
@@ -124,6 +132,25 @@ export default function ChoosePasswordICloud({
                 className="text-xl font-semibold text-typo-light dark:text-typo-dark"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
+                placeholder="*******"
+                secureTextEntry={true}
+                style={{
+                  color:
+                    colorScheme === "light"
+                      ? colors.typo.light
+                      : colors.typo.dark,
+                }}
+              />
+            </View>
+            <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
+              Repeat password:
+            </Text>
+            <View className="mx-auto w-2/3 rounded-md border bg-primary-light p-1 dark:bg-primary-dark">
+              <TextInput
+                placeholderTextColor={colors.typo2.light}
+                className="text-xl font-semibold text-typo-light dark:text-typo-dark"
+                onChangeText={(text) => setPassword2(text)}
+                value={password2}
                 placeholder="*******"
                 secureTextEntry={true}
                 style={{
