@@ -13,6 +13,7 @@ import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { Protocol } from "../components/Protocol";
 
 const VaultInfoScreen = ({
   route,
@@ -22,6 +23,17 @@ const VaultInfoScreen = ({
   const { name, image, description, longDescription, infos } = investment;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
+
+  const {
+    name: uiName,
+    vaultName,
+    longDescription: uiLongDescription,
+    contract,
+    tvl: uiTvl,
+    image: uiImage,
+    protocols,
+    risks,
+  } = investment;
 
   const LinkButton = ({ text, link }: any) => {
     return (
@@ -53,16 +65,14 @@ const VaultInfoScreen = ({
           />
         </View>
       </TouchableWithoutFeedback>
-      <ScrollView className="mx-auto mt-2 w-11/12 rounded-lg p-3">
-        <View className="mb-6 flex-row justify-between">
-          <View className="w-4/5">
-            <Text className="mb-1 font-InterSemiBold text-3xl text-typo-light dark:text-secondary-light">
-              {name}
-            </Text>
-            <Text className="text-[17px] text-typo-light dark:text-typo-dark">
-              {description}
-            </Text>
-          </View>
+      <ScrollView className="m-auto mt-2 w-11/12 rounded-lg p-3">
+        <View className="flex-row justify-between">
+          <View className="">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            Description
+          </Text>
+          
+        </View>
           <Image
             className="h-12 w-12"
             source={{ uri: image }}
@@ -109,7 +119,7 @@ const VaultInfoScreen = ({
               case "links":
                 return (
                   <View
-                    className="my-4 mb-12 w-full flex-row justify-around"
+                    className="my-4 w-full flex-row justify-around"
                     key={index}
                   >
                     {item.links &&
@@ -134,6 +144,38 @@ const VaultInfoScreen = ({
             More coming soon™
           </Text>
         )}
+
+        
+
+        <View className="">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            Utilized Protocols
+          </Text>
+          <View className="flex-wrap">
+            {protocols && protocols?.length > 0
+              ? protocols?.map((protocol) => {
+                  return (
+                    <Protocol
+                      key={protocol.name}
+                      name={protocol.name}
+                      image={protocol.icon}
+                      link={protocol.link}
+                    />
+                  );
+                })
+              : null}
+          </View>
+        </View>
+
+        <View className="mt-3 mb-12">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            Risks
+          </Text>
+          <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
+            {risks}
+          </Text>
+        </View>
+        
       </ScrollView>
     </View>
   );
