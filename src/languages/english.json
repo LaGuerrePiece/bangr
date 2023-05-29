@@ -145,6 +145,6 @@
   "transactionFailed": "Transaction failed",
   "yourTransactionHasFailed": "Your transaction failed",
   "errorDeployingSCW": "Error while deploying your smart wallet",
-  "SCWDeployed": "Your smart wallet has been deployed on ",
+  "SCWDeployed": "Your smart wallet has been deployed on "
 
 }

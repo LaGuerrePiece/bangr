@@ -144,6 +144,5 @@
   "transactionFailed": "Transaction échouée",
   "yourTransactionHasFailed": "Votre transaction a échoué",
   "errorDeployingSCW": "Erreur lors du déploiement de votre portefeuille",
-  "SCWDeployed": "Votre portefeuille a été déployé sur ",
-
+  "SCWDeployed": "Votre portefeuille a été déployé sur "
 }
