@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
+import { track } from "../utils/analytics";
 
 const HomeButton = () => {
   const navigation = useNavigation() as any;
@@ -40,6 +41,7 @@ const HomeButton = () => {
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           navigation.navigate("Onramp", {});
+          track("Buy button clicked");
         }}
       >
         <Image
