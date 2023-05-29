@@ -132,11 +132,11 @@ export default function ChoosePassword({
               }
             />
             <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
-              Welcome to Bangr
+              {t("OnboardScreenWelcome")}
             </Text>
           </View>
           <Text className="mt-2 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-            Secure on {driveName}
+            {t("secureOn")} {driveName}
           </Text>
 
           {loading ? (
@@ -144,14 +144,12 @@ export default function ChoosePassword({
           ) : step === 0 ? (
             <View className="mt-6 mb-24">
               <Text className="my-3 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-                Bangr will store an encrypted copy of your key on {driveName}.{" "}
-                {"\n"}
-                If you ever lose your phone, you will be able to recover your
-                account. {"\n"}
-                Be sure not to loose your password!
+                {t("choosePasswordAndroid1")} {driveName}. {"\n"}
+                {t("choosePasswordAndroid2")} {"\n"}
+                {t("choosePasswordAndroid3")}
               </Text>
               <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Create a new password:
+                {t("createPassword")}
               </Text>
               <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
                 <TextInput
@@ -170,7 +168,7 @@ export default function ChoosePassword({
                 />
               </View>
               <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Repeat password:
+                {t("repeatPassword")}
               </Text>
               <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
                 <TextInput
@@ -196,7 +194,7 @@ export default function ChoosePassword({
                 source={require("../../../assets/green_check.png")}
               />
               <Text className="ml-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Backup successful!
+                {t("backupSuccessful")}
               </Text>
             </View>
           )}
@@ -209,7 +207,7 @@ export default function ChoosePassword({
 
         <View className="mx-auto mb-8 w-11/12">
           <ActionButton
-            text={step === 0 ? "Save to " + driveName : "Next"}
+            text={step === 0 ? t("saveTo") + driveName : t("Next")}
             bold
             rounded
             action={() => {

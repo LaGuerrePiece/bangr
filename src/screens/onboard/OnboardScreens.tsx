@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import ActionButton from "../../components/ActionButton";
 import useTokensStore from "../../state/tokens";
+import { useTranslation } from "react-i18next";
 
 function OnboardScreenTemplate({
   navigation,
@@ -31,6 +32,8 @@ function OnboardScreenTemplate({
   restoreAccountOption?: boolean;
 }) {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+
   return (
     <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
       <View className="mx-auto h-full w-11/12 justify-between">
@@ -45,7 +48,7 @@ function OnboardScreenTemplate({
               }
             />
             <Text className="ml-1 mt-1 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-              Welcome to Bangr
+              {t("OnboardScreenWelcome")}
             </Text>
           </View>
           <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
@@ -78,7 +81,7 @@ function OnboardScreenTemplate({
               }}
             >
               <Text className="mt-4 text-center text-typo-light dark:text-typo-dark">
-                Restore a previous account
+                {t("restore")}
               </Text>
             </TouchableOpacity>
           ) : null}
@@ -90,60 +93,65 @@ function OnboardScreenTemplate({
 
 export function FirstScreen({ navigation }: { navigation: any }) {
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchTokensStatic();
   });
+
   return (
     <OnboardScreenTemplate
       navigation={navigation}
-      title="Managing crypto is easy with Bangr"
+      title={t("OnboardScreenOneTitle")}
       image={require("../../../assets/figma/phone.png")}
-      text1="Bangr lets you buy, send and swap crypto in minutes"
-      text2="Never bother with gas or bridging anymore"
-      ButtonText="Next"
+      text1={t("OnboardScreenOneText1")}
+      text2={t("OnboardScreenOneText2")}
+      ButtonText={t("Next")}
       nextPage="SecondScreen"
     />
   );
 }
 
 export function SecondScreen({ navigation }: { navigation: any }) {
+  const { t } = useTranslation();
   return (
     <OnboardScreenTemplate
       navigation={navigation}
-      title="Grow your crypto"
-      image={require("../../../assets/figma/server.png")}
-      text1="Bangr curates the best protocols and lets you deposit seemlessly"
-      text2="Don't try to time the market, let time do its thing"
-      ButtonText="Next"
-      nextPage="ThirdScreen"
+      title={t("OnboardScreenTwoTitle")}
+      image={require("../../../assets/figma/security.png")}
+      text1={t("OnboardScreenTwoText1")}
+      text2={t("OnboardScreenTwoText2")}
+      ButtonText={t("Next")}
+      nextPage="FourthScreen" //nextPage="ThirdScreen"
     />
   );
 }
 
 export function ThirdScreen({ navigation }: { navigation: any }) {
+  const { t } = useTranslation();
   return (
     <OnboardScreenTemplate
       navigation={navigation}
-      title="Top-notch security"
+      title={t("OnboardScreenThreeTitle")}
       image={require("../../../assets/figma/processor.png")}
-      text1="Your keys stay in your phone's Secure Element"
-      text2="No more hack! Secure encrypted backup on iCloud"
-      ButtonText="Next"
+      text1={t("OnboardScreenThreeText1")}
+      text2={t("OnboardScreenThreeText2")}
+      ButtonText={t("Next")}
       nextPage="FourthScreen"
     />
   );
 }
 
 export function FourthScreen({ navigation }: { navigation: any }) {
+  const { t } = useTranslation();
   return (
     <OnboardScreenTemplate
       navigation={navigation}
-      title="Your keys, your crypto"
-      image={require("../../../assets/figma/security.png")}
-      text1="Bangr is non-custodial: we never access your funds"
-      text2="Even if we were to disappear, you could still recover your keys!"
-      ButtonText="Create my account"
+      title={t("OnboardScreenFourTitle")}
+      image={require("../../../assets/figma/server.png")}
+      text1={t("OnboardScreenFourText1")}
+      text2={t("OnboardScreenFourText2")}
+      ButtonText={t("createAccount")}
       nextPage="CreateAccount"
       restoreAccountOption={true}
     />
