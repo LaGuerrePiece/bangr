@@ -177,7 +177,7 @@ const Wallet = ({
                     bold
                     rounded
                     action={() => {
-                      navigation.navigate("Onramp");
+                      navigation.navigate("Onramp", {});
                       track("Get your first assets");
                     }}
                   />

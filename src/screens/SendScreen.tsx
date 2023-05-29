@@ -43,7 +43,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
-import {track} from "../utils/analytics";
+import { track } from "../utils/analytics";
 
 const SendScreen = ({
   route,
@@ -177,7 +177,7 @@ const SendScreen = ({
       if (chainIdSuggested) {
         Toast.show({
           type: "error",
-          text1: t("error"),
+          text1: t("error") as string,
           text2: t("noQuoteSend") + getChain(chainIdSuggested).name,
         });
         track("No quote found", smartWalletAddress);
@@ -197,8 +197,8 @@ const SendScreen = ({
     ) {
       Toast.show({
         type: "error",
-        text1: t("error"),
-        text2: t("invalidAddress"),
+        text1: t("error") as string,
+        text2: t("invalidAddress") as string,
       });
       return;
     }
@@ -232,7 +232,7 @@ const SendScreen = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: t("errorRelayingTransaction"),
+        text1: t("errorRelayingTransaction") as string,
       });
     }
     clearAfterSend();

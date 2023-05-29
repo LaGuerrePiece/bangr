@@ -126,10 +126,14 @@ export type RootStackParamList = {
     investment: Investment;
     updatedToken?: MultichainToken | undefined;
   };
-  Send: { updatedToken: MultichainToken | undefined };
+  Send: { updatedToken?: MultichainToken | undefined };
   Receive: undefined;
-  Onramp: undefined;
-  Transak: undefined;
+  Onramp: { updatedToken?: MultichainToken | undefined };
+  Transak: {
+    fiatAmount: string;
+    cryptoCurrencyCode: string;
+    paymentMethod: string;
+  };
   MtPelerin: undefined;
   MtPelerinWebview: undefined;
   Monerium: undefined;

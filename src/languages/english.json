@@ -145,6 +145,11 @@
   "transactionFailed": "Transaction failed",
   "yourTransactionHasFailed": "Your transaction failed",
   "errorDeployingSCW": "Error while deploying your smart wallet",
-  "SCWDeployed": "Your smart wallet has been deployed on "
-
+  "SCWDeployed": "Your smart wallet has been deployed on ",
+  "onrampScreenTitle": "Buy crypto",
+  "card": "Card",
+  "transfer": "Transfer",
+  "Buy": "Buy",
+  "transakScreenTitle" : "Add money to Bangr",
+  "orderShouldArriveSoon": "Your order is confirmed and should arrive soon."
 }
