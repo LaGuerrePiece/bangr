@@ -16,11 +16,13 @@ import { colors } from "../../../config/configs";
 import { toastConfig } from "../../../components/toasts";
 import { RootStackParamList } from "../../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const ReceiveScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Exchange">) => {
   const smartWalletAddress = useUserStore((state) => state.smartWalletAddress);
+  const {t} = useTranslation();
 
   const showToast = (text1: string, text2: string) => {
     Toast.show({
@@ -55,11 +57,10 @@ const ReceiveScreen = ({
   return (
     <View className="h-full items-center bg-primary-light p-5 py-6 dark:bg-primary-dark">
       <Text className="my-3 text-center font-InterBold text-[22px] text-typo-light dark:text-typo-dark">
-        Send funds from an exchange
+        {t("sendFromExchange")}
       </Text>
       <Text className="my-3 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-        You can copy this address and send funds from any exchange to your
-        wallet. {"\n"}
+        {t("youCanCopyToExchange")} {"\n"}
       </Text>
 
       {smartWalletAddress && (
@@ -82,8 +83,8 @@ const ReceiveScreen = ({
                   console.log("smartWalletAddress: ", smartWalletAddress);
                   Clipboard.setStringAsync(smartWalletAddress ?? "");
                   showToast(
-                    "Address copied to clipboard",
-                    "You can now paste it anywhere you want"
+                    t("copiedToClipboard"),
+                    t("youCanPaste")
                   );
                 }}
               >
@@ -119,7 +120,7 @@ const ReceiveScreen = ({
             </TouchableOpacity>
           </View>
           <Text className="my-4 text-center font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-            Send them on any of the following networks: {"\n"}
+            {t("sendToNetworks")} {"\n"}
             Polygon, Arbitrum, Optimism
           </Text>
           <ActionButton

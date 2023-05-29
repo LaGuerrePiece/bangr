@@ -20,12 +20,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUserStore from "../../state/user";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
 export default function ChoosePasswordICloud({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
+  const {t} = useTranslation();
   const colorScheme = useColorScheme();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
 
@@ -65,7 +67,7 @@ export default function ChoosePasswordICloud({
     if (password !== password2) {
       Toast.show({
         type: "error",
-        text1: "Passwords do not match",
+        text1: t("passNotMatch"),
       });
       setLoading(false);
       return;
@@ -79,7 +81,7 @@ export default function ChoosePasswordICloud({
     Toast.show({
       type: "success",
       text1: "Account secured",
-      text2: "Your account is now secured on " + driveName,
+      text2: t("cloudOK"),
     });
 
     await AsyncStorage.setItem("backup", "true");

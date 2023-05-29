@@ -79,8 +79,8 @@ export default function RestoreAccountICloud({
       console.log(e);
       Toast.show({
         type: "error",
-        text1: "Wrong password",
-        text2: "Please try again !",
+        text1: t("wrongPassword"),
+        text2: t("tryAgain"),
       });
     }
   };

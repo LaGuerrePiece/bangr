@@ -25,6 +25,7 @@ import { makeRedirectUri, startAsync } from "expo-auth-session";
 import { supabase, supabaseUrl } from "./supabase";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { t } from "i18next";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -84,7 +85,7 @@ export default function RestoreAccount({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: "Could not authenticate with Google",
+          text1: t("errorAuthGoogle"),
         });
         setLoading(false);
         return;
@@ -101,7 +102,7 @@ export default function RestoreAccount({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: "Could not authenticate with Google",
+        text1: t("errorAuthGoogle"),
       });
       setLoading(false);
       return;
@@ -126,8 +127,8 @@ export default function RestoreAccount({
     if (!content) {
       Toast.show({
         type: "error",
-        text1: "No backup found",
-        text2: "Please try again !",
+        text1: t("noBackupFound"),
+        text2: t("tryAgain")
       });
       setLoading(false);
       return;
@@ -146,15 +147,15 @@ export default function RestoreAccount({
       await FileSystem.deleteAsync(fileContentUri);
       Toast.show({
         type: "success",
-        text1: "Account recovered !",
+        text1: t("accountRestored"),
       });
       navigation.navigate("MainScreen", { screen: "Wallet" });
     } catch (e) {
       console.log(e);
       Toast.show({
         type: "error",
-        text1: "Wrong password",
-        text2: "Please try again !",
+        text1: t("wrongPassword"),
+        text2: t("tryAgain"),
       });
     }
   };

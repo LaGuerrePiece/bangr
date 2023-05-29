@@ -55,6 +55,13 @@
   "Deposit": "Déposer",
   "Withdraw": "Retirer",
   "howItWorks": "Comment ça marche",
+  "noBackupFound": "Aucune sauvegarde trouvée",
+  "tryAgain": "Réessayez svp",
+  "wrongPassword": "Wrong password",
+  "accountRecoverd: ": "Account recovered: ",
+  "sendFromExchange": "Envoyer depuis un échange",
+  "youCanCopyToExchange": "Vous pouvez copier l'adresse ci-dessous pour envoyer des fonds depuis un échange",
+  "sendToNetworks": "Envoyez vers les réseaux suivants:",
 
 
 }

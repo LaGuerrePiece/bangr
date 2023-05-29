@@ -55,5 +55,12 @@
   "Deposit": "Deposit",
   "Withdraw": "Withdraw",
   "howItWorks": "How it works",
+  "noBackupFound": "No backup found",
+  "tryAgain": "Please try again",
+  "wrongPassword": "Wrong password",
+  "accountRecoverd: ": "Account recovered: ",
+  "sendFromExchange": "Send funds from an exchange",
+  "youCanCopyToExchange": "You can copy this address and send funds from any exchange to your wallet.",
+  "sendToNetworks": "Send them on any of the following networks:",
   
 }
