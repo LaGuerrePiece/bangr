@@ -84,6 +84,7 @@ i18n
   });
 
 console.log("i18n", i18n);
+import { track } from "./src/utils/analytics";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -175,6 +176,13 @@ const App = () => {
   if (!fontsLoaded) {
     return null;
   }
+
+  // init amplitude
+  // amplitude.init("7f9a3683a65d6ba3c64f6ec9818d8e59", undefined, {
+  //   // optional configuration values
+  //   serverZone: "EU",
+  // });
+  track("App opened");
 
   return (
     <View

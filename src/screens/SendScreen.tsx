@@ -43,6 +43,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
+import {track} from "../utils/analytics";
 
 const SendScreen = ({
   route,
@@ -179,6 +180,7 @@ const SendScreen = ({
           text1: t("error"),
           text2: t("noQuoteSend") + getChain(chainIdSuggested).name,
         });
+        track("No quote found", smartWalletAddress);
       }
     }
   }

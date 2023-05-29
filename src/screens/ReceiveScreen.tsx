@@ -19,6 +19,8 @@ import { getChain } from "../utils/utils";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
+import { track } from "../utils/analytics";
+
 
 const ReceiveScreen = ({
   navigation,
@@ -176,6 +178,7 @@ const ReceiveScreen = ({
               styles={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp");
+                track("Buy with cash");
               }}
             />
           </View>

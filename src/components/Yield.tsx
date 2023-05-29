@@ -12,6 +12,7 @@ import useVaultsStore from "../state/vaults";
 import { averageApy } from "./Vault";
 import { useTranslation } from "react-i18next";
 import useYieldsStore from "../state/yields";
+import { track } from "../utils/analytics";
 
 const Yield = ({ asset }: { asset: YieldAsset }) => {
   const { t } = useTranslation();
@@ -34,7 +35,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
       : "0"
     : "0";
 
-    const investment = token?.vaultToken
+  const investment = token?.vaultToken
     ? yields
         ?.map((y) =>
           y.investments.find(
@@ -62,6 +63,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
             asset,
           });
         }
+        track("Yield Clicked: " + symbol);
       }}
     >
       <View className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
