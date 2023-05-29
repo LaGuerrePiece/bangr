@@ -53,11 +53,11 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           <View className="flex-row">
             <Image className="h-8 w-8 rounded-full" source={{ uri: logo }} />
             <Text className="ml-2 text-2xl font-bold text-typo-light dark:text-typo-dark">
-              {name}
+              {t(name)}
             </Text>
           </View>
           <Text className="my-1 text-lg leading-6 text-typo-light dark:text-typo-dark">
-            {description}
+            {t(name + "Description")}
           </Text>
           <View className="flex-row justify-between">
             <View>
@@ -76,7 +76,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
                   />
                 ) : null}
                 <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                  {instant ? "Yes" : "No"}
+                  {instant ? t("yes") : t("no")}
                 </Text>
               </View>
             </View>
@@ -168,7 +168,7 @@ const OnrampScreen = ({ navigation }: { navigation: any }) => {
           ))
         ) : (
           <Text className="text-typo-light dark:text-typo-dark">
-            No ramp option available now
+            {t("noOnrampsNow")}
           </Text>
         )}
       </ScrollView>

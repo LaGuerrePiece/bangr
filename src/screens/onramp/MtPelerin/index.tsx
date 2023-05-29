@@ -8,6 +8,7 @@ import walletLogicABI from "../../../config/abi/WalletLogic.json";
 import { deployWalletsIfNotDeployed } from "../../../utils/signAndRelay";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { toastConfig } from "../../../components/toasts";
+import { useTranslation } from "react-i18next";
 
 const newABI = [
   ...walletLogicABI,
@@ -66,6 +67,7 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
     smartWalletAddress: state.smartWalletAddress,
     wallet: state.wallet,
   }));
+  const { t } = useTranslation();
 
   const [walletDeployed, setWalletDeployed] = useState<boolean>(true);
   const [supportsMtPelerin, setSupportsMtPelerin] = useState<boolean>(false);
@@ -107,20 +109,17 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View className="p-5">
         <Text className="mt-6 text-center font-InterBold text-[22px] text-typo-light dark:text-typo-dark">
-          Add euros from your bank account or your card with our partner
-          MtPelerin
+          {t("MtPelerinScreenTitle")}
         </Text>
         <Text className="mt-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-          The first 500 euros by bank transfer have a 0% fee {"\n\n"}
-          You will have to verify your identity with a selfie, an ID and a proof
-          of address. Otherwise your funds will only be delivered after a 7-days
-          withholding period.{"\n"}
+          {t("MtPelerinScreenText1")} {"\n\n"}
+          {t("MtPelerinScreenText2")} {"\n"}
         </Text>
 
         {!walletDeployed ? (
           <>
             <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-              Before continuing, deploy your smart wallet by clicking here
+              {t("deploySCW")}
             </Text>
             <ActionButton
               text="Deploy"
@@ -148,8 +147,7 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
         ) : !supportsMtPelerin ? (
           <>
             <Text className="mb-6 font-InterSemiBold text-base text-typo-light dark:text-typo-dark">
-              Unfortunately, your smart wallet is not compatible with MtPelerin
-              right now. Please contact us to resolve this.
+              {t("scwNotCompatible")}
               {/* Pour upgrade, il faut envoyer du matic sur l'eoa puis call upgradeTo(newImpl) */}
               {/* car on ne supportait pas l'upgrade relayée */}
             </Text>

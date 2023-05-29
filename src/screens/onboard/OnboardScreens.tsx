@@ -90,7 +90,6 @@ function OnboardScreenTemplate({
     </SafeAreaView>
   );
 }
-
 export function FirstScreen({ navigation }: { navigation: any }) {
   const fetchTokensStatic = useTokensStore((state) => state.fetchTokensStatic);
   const { t } = useTranslation();

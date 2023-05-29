@@ -2,6 +2,7 @@ import { View, Text, useColorScheme, Image, SafeAreaView } from "react-native";
 import ActionButton from "../../../components/ActionButton";
 import useMoneriumStore from "../../../state/monerium";
 import useUserStore from "../../../state/user";
+import { useTranslation } from "react-i18next";
 
 const IbanScreen = ({ navigation }: { navigation: any }) => {
   const colorScheme = useColorScheme();
@@ -10,6 +11,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
     userData: state.userData,
     update: state.update,
   }));
+  const { t } = useTranslation();
 
   if (
     userData?.kyc?.outcome === "none" ||
@@ -19,8 +21,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
     return (
       <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
         <Text className="mx-auto my-5 w-11/12 font-Inter text-base text-typo-light dark:text-typo-dark">
-          Let's wait for Monerium to validate your identity. This should take a
-          few minutes.
+          {t("MoneriumWait")}
         </Text>
 
         <View className="mx-auto mb-8 flex-row">
@@ -49,9 +50,7 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
     return (
       <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
         <Text className="mx-auto my-5 w-11/12 font-Inter text-base text-typo-light dark:text-typo-dark">
-          It seems like you already had an account at Monerium, so your new
-          wallet address could not be linked to it. Please contact us for more
-          details.
+          {t("MoneriumAlreadyExists")}
         </Text>
 
         <View className="mx-auto mb-8 flex-row">
@@ -77,12 +76,12 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
             : "Here is your IBAN"}
         </Text>
         <Text className="my-5 font-Inter text-base text-typo-light dark:text-typo-dark">
-          You can use these details to fund your account :
+          {t("MoneriumDetails")}
         </Text>
 
         <View className="my-2  rounded-md bg-secondary-light p-2 dark:bg-secondary-dark">
           <Text className="font-Inter text-typo-light dark:text-typo-dark">
-            Beneficiary
+            {t("MoneriumBeneficiary")}
           </Text>
           <Text className="font-InterMedium text-lg text-typo-light dark:text-typo-dark">
             {userData.name}
@@ -108,14 +107,13 @@ const IbanScreen = ({ navigation }: { navigation: any }) => {
         </View>
 
         <Text className=" my-5 font-Inter text-base text-typo-light dark:text-typo-dark">
-          When the funds are received, euros will be credited instantly to your
-          account.
+          {t("MoneriumWhenFundsReceived")}
         </Text>
       </View>
 
       <View className="mx-auto mb-8 flex-row">
         <ActionButton
-          text="Back to Home"
+          text={t("Back to wallet")}
           rounded
           action={() => navigation.navigate("MainScreen")}
         />
