@@ -178,7 +178,7 @@ const ReceiveScreen = ({
               styles={"min-w-[200px]"}
               action={() => {
                 navigation.navigate("Onramp");
-                track("Buy with cash");
+                track("Buy with cash", smartWalletAddress);
               }}
             />
           </View>

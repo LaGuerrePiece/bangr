@@ -9,11 +9,16 @@ import {
 import * as Haptics from "expo-haptics";
 import { useTranslation } from "react-i18next";
 import { track } from "../utils/analytics";
+import useUserStore from "../state/user";
 
 const HomeButton = () => {
   const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
+
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
   return (
     <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
@@ -41,7 +46,7 @@ const HomeButton = () => {
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           navigation.navigate("Onramp", {});
-          track("Buy button clicked");
+          track("Buy button clicked", scw);
         }}
       >
         <Image

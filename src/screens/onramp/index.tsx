@@ -31,6 +31,9 @@ const OnrampScreen = ({
 }: NativeStackScreenProps<RootStackParamList, "Onramp">) => {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
+  const { scw } = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
   const { smartWalletAddress } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
@@ -60,6 +63,7 @@ const OnrampScreen = ({
       cryptoCurrencyCode: selectedTokenSymbol,
       paymentMethod: tab,
     });
+    track("Onramp Clicked: ", scw);
   };
 
   const validateInput = () => {
