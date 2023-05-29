@@ -45,4 +45,14 @@
   "noQuoteSend": "No quote found. Please try with a higher amount or on ",
   "invalidAddress": "Invalid address",
   "errorRelayingTransaction": "Error while relaying transaction",
+  "inputError": "Input error",
+  "amountInvalid": "Amount invalid",
+  "amountTooHigh": "Amount too high",
+  "insufficientBalance": "Insufficient balance",
+  "insufficientDepositedBalance": "Insufficient deposited balance",
+  "available": "Available",
+  "Deposit": "Deposit",
+  "Withdraw": "Withdraw",
+  "howItWorks": "How it works",
+  
 }

@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import { Appearance, Image, Text, TouchableOpacity, View } from "react-native";
 
 export const HowItWorks = (props: { action: any }) => {
+  const {t} = useTranslation();
   return (
     <View className="m-auto my-6 w-full rounded-lg bg-secondary-light p-2 dark:bg-secondary-dark">
       <TouchableOpacity onPress={props.action}>
@@ -16,7 +18,7 @@ export const HowItWorks = (props: { action: any }) => {
               }
             />
             <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-              How it works
+              {t("howItWorks")}
             </Text>
           </View>
           <Image

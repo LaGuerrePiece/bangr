@@ -43,7 +43,17 @@
   "youCanPaste":  "Vous pouvez coller l'adresse",
   "error": "Erreur",
   "noQuoteSend": "Pas d'itinéraire trouvé. Veuillez essayer un autre montant ou sur ",
+  "invalidAddress": "Adresse invalide",
   "errorRelayingTransaction": "Erreur lors du relais de la transaction",
+  "inputError": "Erreur de saisie",
+  "amountInvalid": "Montant invalide",
+  "amountTooHigh":  "Montant trop élevé",
+  "insufficientBalance":  "Solde insuffisant",
+  "insufficientDepositedBalance": "Solde déposé insuffisant",
+  "available": "Disponible",
+  "Deposit": "Déposer",
+  "Withdraw": "Retirer",
+  "howItWorks": "Comment ça marche",
 
 
 }

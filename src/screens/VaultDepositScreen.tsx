@@ -37,12 +37,14 @@ import { Information } from "../components/Information";
 import useTasksStore from "../state/tasks";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { useTranslation } from "react-i18next";
 
 const VaultDepositScreen = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   const { investment, vault } = route.params;
 
@@ -139,7 +141,7 @@ const VaultDepositScreen = ({
         console.log(error.response.data);
         Toast.show({
           type: "error",
-          text1: "Error",
+          text1: t("error"),
           text2: error.response.data.message,
         });
       }
@@ -178,8 +180,8 @@ const VaultDepositScreen = ({
     } catch (error) {
       console.log(error);
       Toast.show({
-        type: "error",
-        text1: "error relaying transaction",
+        type: t("error"),
+        text1: t("errorRelayingTransaction"),
       });
     }
 
@@ -220,8 +222,8 @@ const VaultDepositScreen = ({
     } catch (error) {
       console.log("error relaying:", error);
       Toast.show({
-        type: "error",
-        text1: "error relaying transaction",
+        type: t("error"),
+        text1: t("errorRelayingTransaction"),
       });
     }
 
@@ -239,8 +241,8 @@ const VaultDepositScreen = ({
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: "Input error",
-        text2: "Your amount is invalid",
+        text1: t("inputError"),
+        text2: t("amountInvalid"),
       });
       return false;
     }
@@ -248,8 +250,8 @@ const VaultDepositScreen = ({
     if (!parseFloat(amount) || parseFloat(amount) <= 0) {
       Toast.show({
         type: "error",
-        text1: "Input error",
-        text2: "Your amount is invalid",
+        text1: t("inputError"),
+        text2: t("amountInvalid"),
       });
       return false;
     }
@@ -261,8 +263,8 @@ const VaultDepositScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: "Amount too high",
-          text2: `${amount} exceeds your balance`,
+          text1: t("amountTooHigh"),
+          text2: t("insufficientBalance"),
         });
         return false;
       }
@@ -273,8 +275,8 @@ const VaultDepositScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: "Amount too high",
-          text2: `${amount} exceeds your deposited balance`,
+          text1: t("amountTooHigh"),
+          text2: t("insufficientDepositedBalance"),
         });
         return false;
       }
@@ -506,7 +508,7 @@ const VaultDepositScreen = ({
                   }}
                 >
                   <Text className="text-typo-light dark:text-typo-dark">
-                    Availlable:{" "}
+                    {t("available")}:{" "}
                     {tab === "Deposit"
                       ? formatUnits(balance, selectedToken?.decimals, 4)
                       : formatUnits(deposited, selectedToken?.decimals, 4)}{" "}
@@ -521,7 +523,7 @@ const VaultDepositScreen = ({
 
               <View className="mt-4 mb-1">
                 <ActionButton
-                  text={tab}
+                  text={t(tab)}
                   styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
                   bold
                   action={tab === "Deposit" ? handleDeposit : handleWithdraw}
