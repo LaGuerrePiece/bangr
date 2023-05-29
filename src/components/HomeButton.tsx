@@ -51,7 +51,7 @@ const HomeButton = () => {
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Buy
+          {t("buy")}
         </Text>
       </TouchableOpacity>
       <TouchableOpacity
