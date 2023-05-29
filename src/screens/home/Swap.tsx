@@ -249,7 +249,7 @@ const Swap = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: "error relaying transaction",
+        text1: t("errorRelayingTransaction"),
       });
     }
     clearAfterSwap();
