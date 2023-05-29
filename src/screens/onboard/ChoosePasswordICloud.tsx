@@ -27,7 +27,6 @@ const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 export default function ChoosePasswordICloud({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
-  const {t} = useTranslation();
   const colorScheme = useColorScheme();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
   const { t } = useTranslation();

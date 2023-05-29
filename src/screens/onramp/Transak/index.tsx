@@ -6,6 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { WebViewNavigation } from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { toastConfig } from "../../../components/toasts";
+import { t } from "i18next";
 
 export default function Transak({ navigation }: { navigation: any }) {
   const windowWidth = Dimensions.get("window").width;
@@ -19,8 +20,8 @@ export default function Transak({ navigation }: { navigation: any }) {
         console.log(data);
         Toast.show({
           type: "info",
-          text1: "Order processing...",
-          text2: "Your order should arrive soon",
+          text1:  t("orderProcessing"),
+          text2: t("yourOrderShouldArriveSoon"),
         });
         break;
 
@@ -28,8 +29,8 @@ export default function Transak({ navigation }: { navigation: any }) {
         console.log(data);
         Toast.show({
           type: "success",
-          text1: "Order Completed",
-          text2: "Your order is arrived !",
+          text1: t("orderConfirmed"),
+          text2: t("orderReceived"),
         });
         break;
 

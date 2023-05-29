@@ -133,5 +133,18 @@
   "MoneriumDetails": "You can use these details to fund your account :",
   "MoneriumBeneficiary": "Beneficiary",
   "MoneriumWhenFundsReceived": "When the funds are received, euros will be credited instantly to your account.",
-  "Back to wallet": "Back to wallet"
+  "Back to wallet": "Back to wallet",
+  "transactionSent": "Transaction sent",
+  "waitingForConfirmation": "Waiting for confirmation",
+  "orderProcessing": "Order processing",
+  "orderConfirmed": "Order confirmed",
+  "yourOrderShouldArriveSoon": "Your order should arrive soon",
+  "orderReceived": "Your order has been received",
+  "transactionConfirmed": "Transaction confirmed",
+  "yourTransactionHasBeenConfirmed": "Your transaction has been confirmed",
+  "transactionFailed": "Transaction failed",
+  "yourTransactionHasFailed": "Your transaction failed",
+  "errorDeployingSCW": "Error while deploying your smart wallet",
+  "SCWDeployed": "Your smart wallet has been deployed on ",
+
 }

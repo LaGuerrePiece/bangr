@@ -116,7 +116,6 @@
   "MoneriumDescription": "Pour les gros montants, le mieux c'est Monerium.",
   "Transak": "Transak",
   "TransakDescription": "Cartes, virement et options internationales.",
-
   "MtPelerinScreenTitle": "Achète des cryptos avec notre partenaire Mt Pelerin",
   "MtPelerinScreenText1": "0% de frais sur les premiers virements jusqu'à 500€.",
   "MtPelerinScreenText2": "Tu vas devoir vérifier ton identité avec un selfie, une carte d'identité et un justificatif de domicile. Sans ça, tes fonds ne seront envoyé qu'après un délai de 7 jours.",
@@ -133,5 +132,18 @@
   "MoneriumDetails": "Tu peux utiliser ses informations pour ajouter des fonds sur ton compte :",
   "MoneriumBeneficiary": "Bénéficiaire",
   "MoneriumWhenFundsReceived": "Quand les fonds sont reçus, ils sont crédités instantanément sur ton compte.",
-  "Back to wallet": "Retour au portefeuille"
+  "Back to wallet": "Retour au portefeuille",
+  "transactionSent": "Transaction envoyée",
+  "waitingForConfirmation": "En attente de confirmation...",
+  "orderProcessing": "Traitement de la commande...",
+  "yourOrderShouldArriveSoon": "Votre commande devrait arriver sous peu",
+  "orderConfirmed": "Commande confirmée",
+  "orderReceived": "Votre commande a été reçue",
+  "transactionConfirmed": "Transaction confirmée",
+  "yourTransactionHasBeenConfirmed": "Votre transaction a été confirmée",
+  "transactionFailed": "Transaction échouée",
+  "yourTransactionHasFailed": "Votre transaction a échoué",
+  "errorDeployingSCW": "Erreur lors du déploiement de votre portefeuille",
+  "SCWDeployed": "Votre portefeuille a été déployé sur ",
+
 }

@@ -5,6 +5,7 @@ import { getSmartWalletAddress, getURLInApp } from "../utils/utils";
 import useUserStore from "./user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useVaultsStore from "./vaults";
+import { useTranslation } from "react-i18next";
 
 export type Task = {
   id: string;
@@ -41,6 +42,7 @@ const useTasksStore = create<TasksState>()((set, get) => ({
   },
   fetchTasks: async () => {
     try {
+      const { t } = useTranslation();
       const scwAddress = useUserStore.getState().smartWalletAddress;
       console.log("Get tasks for ", scwAddress);
       // axios get request to fetch tasks for a scwAddress
@@ -72,8 +74,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         if (task.state >= 1) {
           Toast.show({
             type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your transaction has been confirmed",
+            text1: t("transactionConfirmed"),
+            text2: t("yourTransactionHasBeenConfirmed"),
             visibilityTime: 2500,
             autoHide: true,
           });
@@ -81,8 +83,8 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         } else if (task.state < 0) {
           Toast.show({
             type: "error",
-            text1: "Transaction failed",
-            text2: "Your transaction has failed",
+            text1: t("transactionFailed"),
+            text2: t("yourTransactionHasFailed"),
             visibilityTime: 2500,
             autoHide: true,
           });
