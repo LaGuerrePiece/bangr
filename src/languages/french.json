@@ -34,5 +34,6 @@
   "Instant": "Instantané",
   "Fees": "Frais",
   "Methods": "Méthodes",
-  "chooseOnramp": "Choisis un moyen d'achat"
+  "chooseOnramp": "Choisis un moyen d'achat",
+  "notMainnet": "N'envoyez pas de fonds sur le réseau principal Ethereum (ERC20)",
 }

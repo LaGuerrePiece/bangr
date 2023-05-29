@@ -35,18 +35,18 @@ const HomeButton = () => {
           {t("receive")}
         </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         className="w-1/3"
         onPress={() => navigation.navigate("Onramp", {})}
       >
         <Image
-          className="m-auto h-14 w-14"
-          source={colorScheme === "light" ? require("../../assets/onrampbtn.png") : require("../../assets/onrampbtn-drk.png")}
+          className="m-auto h-12 w-12"
+          source={colorScheme === "light" ? require("../../assets/dollar.png") : require("../../assets/dollar-drk.png")}
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
           Buy
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <TouchableOpacity
         className="w-1/3"
         onPress={() => {

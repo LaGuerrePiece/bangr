@@ -163,8 +163,8 @@ const ReceiveScreen = ({
             </View>
             <View className="w-11/12 rounded-md mt-2">
               <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
-                Do NOT send funds on the Ethereum mainnet (ERC20)
-              </Text>
+              {t("notMainnet")}             
+            </Text>
             </View>
           </View>
 

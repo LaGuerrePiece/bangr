@@ -34,5 +34,7 @@
   "Instant": "Instant",
   "Fees": "Fees",
   "Methods": "Methods",
-  "chooseOnramp": "Choose a payment option"
+  "chooseOnramp": "Choose a payment option",
+  "notMainnet": "Do NOT send funds on the Ethereum mainnet (ERC20)",
+
 }
