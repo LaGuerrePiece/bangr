@@ -152,6 +152,13 @@
   "transakScreenTitle" : "Ajoute de l'argent sur Bangr",
   "orderShouldArriveSoon": "Votre ordre est confirmé et arrive bientôt.",
   "paymentMethod": "Moyen de paiement",
-  "accountSecured": "Compte sécurisé"
-
+  "accountSecured": "Compte sécurisé",
+  "Website": "Site",
+  "Video": "Vidéo",
+  "risks": "Risques",
+  "utilized protocols": "Protocoles utilisés",
+  "Aave USDC longDescription": "frDollars deposited on Aave allow other users to strengthen their position if they give any currency as collateral.\nAave's smart contracts ensures that any loan remains secured, otherwise it is liquidated.\nYou will earn interest on your dollars and can withdraw them at any time.",
+  "Aave USDC risks": "frAave is one of the oldest DeFi protocols. It's also considered to be one of the safest and most reliable. However, depositing in Aave has risks, such as smart contract bugs or oracle attacks. Just like with any investment, only invest what you can afford to lose.",
+  "Lido longDescription": "frEthers deposited on Lido ensure the stability of the Ethereum network.\nEach day, new ethers are emitted and distributed proportionally to all deposits.\nYou will earn interest on your ethers and can withdraw them at any time.",
+  "Lido risks": "frLido is considered one of the safest DeFi protocol. However, there still are risks, such as smart contract bugs or validator slashing. Just like with any investment, only invest what you can afford to lose."
 }

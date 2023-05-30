@@ -14,6 +14,7 @@ import { colors } from "../config/configs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 import { Protocol } from "../components/Protocol";
+import { useTranslation } from "react-i18next";
 
 const VaultInfoScreen = ({
   route,
@@ -23,6 +24,7 @@ const VaultInfoScreen = ({
   const { name, image, description, longDescription, infos } = investment;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
+  const { t } = useTranslation();
 
   const {
     name: uiName,
@@ -66,23 +68,58 @@ const VaultInfoScreen = ({
         </View>
       </TouchableWithoutFeedback>
       <ScrollView className="m-auto mt-2 w-11/12 rounded-lg p-3">
-        <View className="flex-row justify-between">
-          <View className="">
+        <View className="my-3">
           <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
             Description
           </Text>
-          
+          <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
+            {t(vaultName + " longDescription")}
+          </Text>
         </View>
-          <Image
-            className="h-12 w-12"
-            source={{ uri: image }}
-            resizeMode="contain"
-          />
+
+        <View className="my-3">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            {t("risks")}
+          </Text>
+          <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
+            {t(vaultName + " risks")}
+          </Text>
         </View>
-        <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
-          {longDescription}
-        </Text>
-        {infos ? (
+        <View>
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            {t("utilized protocols")}
+          </Text>
+          <View className="flex-wrap">
+            {protocols && protocols?.length > 0
+              ? protocols?.map((protocol) => {
+                  return (
+                    <Protocol
+                      key={protocol.name}
+                      name={protocol.name}
+                      image={protocol.icon}
+                      link={protocol.link}
+                    />
+                  );
+                })
+              : null}
+          </View>
+        </View>
+
+        {/* <View className="w-full flex-row justify-around">
+          {vaultName === "Aave USDC" ? (
+            <>
+              <LinkButton text={t("Website")} link={"https://aave.com/"} />
+              <LinkButton text={"Docs"} link={"https://docs.aave.com/hub/"} />
+            </>
+          ) : (
+            <>
+              <LinkButton text={t("Website")} link={"https://lido.fi/"} />
+              <LinkButton text={t("Video")} link={"https://lido.fi/"} />
+            </>
+          )}
+        </View> */}
+
+        {/* {infos ? (
           infos.map((item: any, index: number) => {
             switch (item.type) {
               case "text":
@@ -143,39 +180,7 @@ const VaultInfoScreen = ({
           <Text className="my-1 text-typo-light dark:text-typo-dark">
             More coming soon™
           </Text>
-        )}
-
-        
-
-        <View className="">
-          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
-            Utilized Protocols
-          </Text>
-          <View className="flex-wrap">
-            {protocols && protocols?.length > 0
-              ? protocols?.map((protocol) => {
-                  return (
-                    <Protocol
-                      key={protocol.name}
-                      name={protocol.name}
-                      image={protocol.icon}
-                      link={protocol.link}
-                    />
-                  );
-                })
-              : null}
-          </View>
-        </View>
-
-        <View className="mt-3 mb-12">
-          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
-            Risks
-          </Text>
-          <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
-            {risks}
-          </Text>
-        </View>
-        
+        )} */}
       </ScrollView>
     </View>
   );
