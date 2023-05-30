@@ -63,6 +63,7 @@ import RNLanguageDetector from "@os-team/i18next-react-native-language-detector"
 import { initReactI18next } from "react-i18next";
 import english from "./src/languages/english.json";
 import french from "./src/languages/french.json";
+import { track } from "./src/utils/analytics";
 
 i18n
   .use(RNLanguageDetector)
@@ -82,9 +83,6 @@ i18n
       escapeValue: false,
     },
   });
-
-console.log("i18n", i18n);
-import { track } from "./src/utils/analytics";
 
 SplashScreen.preventAutoHideAsync();
 
