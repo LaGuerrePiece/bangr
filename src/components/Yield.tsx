@@ -21,7 +21,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
   const { symbol, yieldLow, yieldHigh, investments } = asset;
-  const {scw} = useUserStore((state) => ({
+  const { scw } = useUserStore((state) => ({
     scw: state.smartWalletAddress,
   }));
 
@@ -57,9 +57,11 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
         .filter((investment) => investment !== undefined)[0]
     : undefined;
 
+  const disabled = investments[0].disabled === true ? true : false;
   return (
     <TouchableOpacity
       onPress={() => {
+        if (disabled) return;
         if (vault && investment) {
           navigation.navigate("VaultDeposit", { vault, investment });
         } else {
@@ -69,8 +71,12 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
         }
         track("Yield Clicked: " + symbol, scw);
       }}
+      activeOpacity={disabled ? 1 : 0.7}
     >
-      <View className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
+      <View
+        className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark"
+        style={disabled ? { opacity: 0.4 } : {}}
+      >
         <View className="flex-row justify-between p-2">
           <View className="w-9/12 flex-row items-center">
             <Image
