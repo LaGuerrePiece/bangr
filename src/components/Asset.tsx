@@ -96,7 +96,7 @@ const Asset = ({
         .filter((investment) => investment !== undefined)[0]
     : undefined;
 
-  console.log(token.symbol, vault?.name, investment?.name);
+  // console.log(token.symbol, vault?.name, investment?.name);
 
   return (
     <View
