@@ -43,6 +43,8 @@ const OnrampScreen = ({
 
   const [amount, setAmount] = useState<string>("");
   const [tab, setTab] = useState<string>("card");
+  const [tab2, setTab2] = useState<string>("USDC");
+
   const [selectedTokenSymbol, setSelectedTokenSymbol] = useState<string>("ETH");
 
   const selectedToken =
@@ -60,7 +62,7 @@ const OnrampScreen = ({
     if (!validateInput() || !smartWalletAddress) return;
     navigation.navigate("Transak", {
       fiatAmount: amount,
-      cryptoCurrencyCode: selectedTokenSymbol,
+      cryptoCurrencyCode: tab2,
       paymentMethod: tab,
     });
     track("Onramp Clicked: ", scw);
@@ -95,6 +97,61 @@ const OnrampScreen = ({
                 </View>
               </View>
 
+              <View className="flex flex-col items-center">
+                <Text className="mt-4 text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                  {t("Amount")}
+                </Text>
+                <View className="h-18 my-4 flex-row items-center justify-center rounded-xl px-2">
+                  <TextInput
+                    placeholderTextColor={colors.typo2.light}
+                    className="h-20 text-center text-6xl font-semibold text-typo-light dark:text-typo-dark"
+                    onChangeText={(e) => setAmount(correctInput(e))}
+                    value={amount}
+                    keyboardType="numeric"
+                    placeholder="0"
+                  />
+                  <Text className="text-5xl font-semibold text-typo-light dark:text-typo-dark">
+                    €
+                  </Text>
+                </View>
+              </View>
+
+              <View className="mx-auto my-3 flex-col">
+                <Text className="text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                  {t("currency")}
+                </Text>
+                {/* <SelectTokenButton
+                  tokens={tokens as MultichainToken[]}
+                  selectedToken={selectedToken}
+                  tokenToUpdate={"Onramp"}
+                /> */}
+                <View className="mt-6 flex-row items-center justify-around rounded-xl bg-quaternary-light py-0.5 px-3 dark:bg-quaternary-dark">
+                  <View className="mx-3">
+                    {/* <Image source={require("../../../assets/onramps/bank.png")} /> */}
+                    <Tab
+                      image={
+                        // asset === "USDC"
+                        require("../../../assets/usdc.png")
+                      }
+                      text={"USDC"}
+                      action={() => setTab2("USDC")}
+                      active={tab2 === "USDC"}
+                    />
+                  </View>
+                  <View className="mx-3">
+                    <Tab
+                      image={require("../../../assets/ethereum.png")}
+                      text={"ETH"}
+                      action={() => setTab2("ETH")}
+                      active={tab2 === "ETH"}
+                    />
+                  </View>
+                </View>
+              </View>
+
+              <Text className="mt-4 text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                {t("paymentMethod")}
+              </Text>
               <View className="mt-6 flex-row items-center justify-around rounded-xl bg-quaternary-light py-0.5 px-3 dark:bg-quaternary-dark">
                 <View className="mx-3">
                   {/* <Image source={require("../../../assets/onramps/bank.png")} /> */}
@@ -123,34 +180,11 @@ const OnrampScreen = ({
                 </View>
               </View>
 
-              <View className="flex flex-col items-center">
-                <View className="h-18 my-8 flex-row items-center justify-center rounded-xl px-2">
-                  <TextInput
-                    placeholderTextColor={colors.typo2.light}
-                    className="h-20 text-center text-6xl font-semibold text-typo-light dark:text-typo-dark"
-                    onChangeText={(e) => setAmount(correctInput(e))}
-                    value={amount}
-                    keyboardType="numeric"
-                    placeholder="0"
-                  />
-                  <Text className="text-5xl font-semibold text-typo-light dark:text-typo-dark">
-                    €
-                  </Text>
-                </View>
-              </View>
+             
 
-              <View className="mx-auto my-3 flex-row">
-                <Text className="mx-2 text-xl font-semibold text-typo-light dark:text-typo-dark">
-                  {t("Buy")}
-                </Text>
-                <SelectTokenButton
-                  tokens={tokens as MultichainToken[]}
-                  selectedToken={selectedToken}
-                  tokenToUpdate={"Onramp"}
-                />
-              </View>
+              
 
-              <View className="mt-4 mb-1">
+              <View className="mt-8 mb-1">
                 <ActionButton
                   text={t("Next")}
                   // styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
