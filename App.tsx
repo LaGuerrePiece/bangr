@@ -57,6 +57,32 @@ import {
   VaultData,
   YieldAsset,
 } from "./src/types/types";
+import VaultWithdrawalScreen from "./src/screens/VaultWithdrawalScreen";
+import i18n from "i18next";
+import RNLanguageDetector from "@os-team/i18next-react-native-language-detector";
+import { initReactI18next } from "react-i18next";
+import english from "./src/languages/english.json";
+import french from "./src/languages/french.json";
+import { track } from "./src/utils/analytics";
+
+i18n
+  .use(RNLanguageDetector)
+  .use(initReactI18next)
+  .init({
+    compatibilityJSON: "v3",
+    resources: {
+      en: {
+        translation: english,
+      },
+      fr: {
+        translation: french,
+      },
+    },
+    fallbackLng: "fr",
+    interpolation: {
+      escapeValue: false,
+    },
+  });
 
 SplashScreen.preventAutoHideAsync();
 
@@ -93,10 +119,19 @@ export type RootStackParamList = {
     investment: Investment;
     updatedToken?: MultichainToken | undefined;
   };
-  Send: { updatedToken: MultichainToken | undefined };
+  VaultWithdrawal: {
+    vault: VaultData;
+    investment: Investment;
+    updatedToken?: MultichainToken | undefined;
+  };
+  Send: { updatedToken?: MultichainToken | undefined };
   Receive: undefined;
-  Onramp: undefined;
-  Transak: undefined;
+  Onramp: { updatedToken?: MultichainToken | undefined };
+  Transak: {
+    fiatAmount: string;
+    cryptoCurrencyCode: string;
+    paymentMethod: string;
+  };
   MtPelerin: undefined;
   MtPelerinWebview: undefined;
   Monerium: undefined;
@@ -143,6 +178,13 @@ const App = () => {
   if (!fontsLoaded) {
     return null;
   }
+
+  // init amplitude
+  // amplitude.init("7f9a3683a65d6ba3c64f6ec9818d8e59", undefined, {
+  //   // optional configuration values
+  //   serverZone: "EU",
+  // });
+  track("App opened");
 
   return (
     <View
@@ -225,6 +267,10 @@ const App = () => {
           />
           <Stack.Screen name="ChooseVault" component={ChooseVaultScreen} />
           <Stack.Screen name="VaultDeposit" component={VaultDepositScreen} />
+          <Stack.Screen
+            name="VaultWithdrawal"
+            component={VaultWithdrawalScreen}
+          />
           <Stack.Screen
             name="Send"
             component={SendScreen}

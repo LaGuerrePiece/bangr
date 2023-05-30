@@ -26,7 +26,8 @@ export default function SelectToken({
   let previousScreenName = routes[routes.length - 2].name as
     | "Send"
     | "VaultDeposit"
-    | "MainScreen";
+    | "MainScreen"
+    | "Onramp";
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-secondary-dark">

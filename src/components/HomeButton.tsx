@@ -7,10 +7,18 @@ import {
   useColorScheme,
 } from "react-native";
 import * as Haptics from "expo-haptics";
+import { useTranslation } from "react-i18next";
+import { track } from "../utils/analytics";
+import useUserStore from "../state/user";
 
 const HomeButton = () => {
   const navigation = useNavigation() as any;
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
+
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
   return (
     <View className="m-auto mt-4 flex w-11/12 flex-row justify-evenly">
@@ -30,21 +38,29 @@ const HomeButton = () => {
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Receive
+          {t("receive")}
         </Text>
       </TouchableOpacity>
-      {/* <TouchableOpacity
+      <TouchableOpacity
         className="w-1/3"
-        onPress={() => navigation.navigate("Onramp", {})}
+        onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+          navigation.navigate("Onramp", {});
+          track("Buy button clicked", scw);
+        }}
       >
         <Image
-          className="m-auto h-14 w-14"
-          source={colorScheme === "light" ? require("../../assets/onrampbtn.png") : require("../../assets/onrampbtn-drk.png")}
+          className="m-auto h-12 w-12"
+          source={
+            colorScheme === "light"
+              ? require("../../assets/dollar.png")
+              : require("../../assets/dollar-drk.png")
+          }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Buy
+          {t("buy")}
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <TouchableOpacity
         className="w-1/3"
         onPress={() => {
@@ -61,7 +77,7 @@ const HomeButton = () => {
           }
         />
         <Text className="text-center font-bold text-typo-light dark:text-typo-dark">
-          Send
+          {t("send")}
         </Text>
       </TouchableOpacity>
     </View>

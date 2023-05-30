@@ -25,6 +25,7 @@ import { makeRedirectUri, startAsync } from "expo-auth-session";
 import { supabase, supabaseUrl } from "./supabase";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -62,9 +63,11 @@ export default function RestoreAccount({
 }: NativeStackScreenProps<RootStackParamList, "RestoreAccount">) {
   const colorScheme = useColorScheme();
   const login = useUserStore((state) => state.login);
+  const { t } = useTranslation();
 
   const [step, setStep] = useState(0); // 0: default, 1: connected to drive
   const [password, setPassword] = useState("");
+
   const [fileContentUri, setFileContentUri] = useState("");
   const [encryptedKey, setEncryptedKey] = useState("");
   const [loading, setLoading] = useState(false);
@@ -83,7 +86,7 @@ export default function RestoreAccount({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: "Could not authenticate with Google",
+          text1: t("errorAuthGoogle") as string,
         });
         setLoading(false);
         return;
@@ -100,7 +103,7 @@ export default function RestoreAccount({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: "Could not authenticate with Google",
+        text1: t("errorAuthGoogle") as string,
       });
       setLoading(false);
       return;
@@ -125,8 +128,8 @@ export default function RestoreAccount({
     if (!content) {
       Toast.show({
         type: "error",
-        text1: "No backup found",
-        text2: "Please try again !",
+        text1: t("noBackupFound") as string,
+        text2: t("tryAgain") as string,
       });
       setLoading(false);
       return;
@@ -137,6 +140,7 @@ export default function RestoreAccount({
   };
 
   const restoreAccount = async () => {
+   
     try {
       const decrypted = await decrypt(encryptedKey, password);
       secureSave("privKey", decrypted);
@@ -144,15 +148,15 @@ export default function RestoreAccount({
       await FileSystem.deleteAsync(fileContentUri);
       Toast.show({
         type: "success",
-        text1: "Account recovered !",
+        text1: t("accountRestored") as string,
       });
       navigation.navigate("MainScreen", { screen: "Wallet" });
     } catch (e) {
       console.log(e);
       Toast.show({
         type: "error",
-        text1: "Wrong password",
-        text2: "Please try again !",
+        text1: t("wrongPassword") as string,
+        text2: t("tryAgain") as string,
       });
     }
   };
@@ -170,11 +174,11 @@ export default function RestoreAccount({
             }
           />
           <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
+            {t("OnboardScreenWelcome")}
           </Text>
         </View>
         <Text className="mt-2 mr-4 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-          Restore a previous account from your Drive
+          {t("restoreTitle")}
         </Text>
 
         {loading ? (
@@ -192,11 +196,11 @@ export default function RestoreAccount({
                 source={require("../../../assets/red_cross.png")}
               />
               <Text className="ml-2 font-[Inter] text-lg text-typo-light dark:text-typo-dark">
-                No Backup found !
+                {t("noBackupFound")}
               </Text>
             </View>
             <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-              Please contact us
+              {t("pleaseContactUs")}
             </Text>
           </View>
         ) : (
@@ -207,11 +211,11 @@ export default function RestoreAccount({
                 source={require("../../../assets/green_check.png")}
               />
               <Text className="ml-2 font-[Inter] text-lg text-typo-light dark:text-typo-dark">
-                Backup found !
+                {t("backupFound")}
               </Text>
             </View>
             <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-              Enter your password here :
+              {t("enterPassword")}
             </Text>
             <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
               <TextInput
@@ -219,7 +223,7 @@ export default function RestoreAccount({
                 className="text-xl font-semibold text-typo-light dark:text-typo-dark"
                 onChangeText={(text) => setPassword(text)}
                 value={password}
-                placeholder="password"
+                placeholder={t("passwordPlaceHolder") ?? "password"}
                 secureTextEntry={true}
                 style={{
                   color:
@@ -229,6 +233,7 @@ export default function RestoreAccount({
                 }}
               />
             </View>
+            
           </View>
         )}
       </View>
@@ -237,8 +242,8 @@ export default function RestoreAccount({
         <ActionButton
           text={
             encryptedKey === ""
-              ? `Connect to ${driveName}`
-              : "Restore my account"
+              ? t("connectToOnButton") + `${driveName}`
+              : t("restoreButton")
           }
           bold
           rounded

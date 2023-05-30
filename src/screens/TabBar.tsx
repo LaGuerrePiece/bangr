@@ -1,4 +1,6 @@
 import { MaterialTopTabBarProps } from "@react-navigation/material-top-tabs";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 import {
   View,
   Text,
@@ -7,12 +9,21 @@ import {
   useColorScheme,
 } from "react-native";
 
+export const getLanguage = () => {
+  return (
+    i18n.language ||
+    (typeof window !== "undefined" && window.localStorage.i18nextLng) ||
+    "en"
+  );
+};
+
 export function TabBar({
   state,
   descriptors,
   navigation,
 }: MaterialTopTabBarProps) {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   return (
     <View className="flex flex-row bg-primary-light p-4 dark:bg-secondary-dark">
@@ -87,15 +98,27 @@ export function TabBar({
                     : label === "Home" && colorScheme === "dark"
                 }
               />
-              <Text
-                className={
-                  isFocused
-                    ? "text-center font-InterBold text-typo-light dark:text-typo-dark"
-                    : "text-center font-InterBold text-typo-light opacity-50 dark:text-typo-dark"
-                }
-              >
-                {label as string}
-              </Text>
+              {getLanguage().substring(0, 2) == "fr" ? (
+                <Text
+                  className={
+                    isFocused
+                      ? "text-center font-Inter text-xs text-typo-light dark:text-typo-dark"
+                      : "text-center font-Inter text-xs text-typo-light opacity-50 dark:text-typo-dark"
+                  }
+                >
+                  {t(label) as string}
+                </Text>
+              ) : (
+                <Text
+                  className={
+                    isFocused
+                      ? "text-center font-InterBold text-typo-light dark:text-typo-dark"
+                      : "text-center font-InterBold text-typo-light opacity-50 dark:text-typo-dark"
+                  }
+                >
+                  {t(label) as string}
+                </Text>
+              )}
             </View>
           </TouchableOpacity>
         );
