@@ -55,7 +55,7 @@ export default function ChoosePassword({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: t("errorAuthGoogle"),
+          text1: t("errorAuthGoogle") as string,
         });
         setLoading(false);
         return;
@@ -73,7 +73,7 @@ export default function ChoosePassword({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: t("errorAuthGoogle"),
+        text1: t("errorAuthGoogle") as string,
       });
       setLoading(false);
       return;
@@ -81,7 +81,7 @@ export default function ChoosePassword({
     if (password !== password2) {
       Toast.show({
         type: "error",
-        text1: t("passNotMatch"),
+        text1: t("passNotMatch") as string,
       });
       setLoading(false);
       return;
@@ -107,8 +107,8 @@ export default function ChoosePassword({
     console.log("file", JSON.stringify(file));
     Toast.show({
       type: "success",
-      text1: "Account secured",
-      text2: t("cloudOK"),
+      text1: t("accountSecured") as string,
+      text2: t("cloudOK") as string,
     });
 
     await AsyncStorage.setItem("backup", "true");

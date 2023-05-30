@@ -152,5 +152,6 @@
   "Buy": "Buy",
   "transakScreenTitle" : "Add money to Bangr",
   "orderShouldArriveSoon": "Your order is confirmed and should arrive soon.",
-  "paymentMethod": "Payment method"
+  "paymentMethod": "Payment method",
+  "accountSecured": "Account  secured"
 }

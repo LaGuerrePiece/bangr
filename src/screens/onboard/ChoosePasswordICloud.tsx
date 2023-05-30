@@ -67,7 +67,7 @@ export default function ChoosePasswordICloud({
     if (password !== password2) {
       Toast.show({
         type: "error",
-        text1: t("passNotMatch"),
+        text1: t("passNotMatch") as string,
       });
       setLoading(false);
       return;
@@ -81,7 +81,7 @@ export default function ChoosePasswordICloud({
     Toast.show({
       type: "success",
       text1: "Account secured",
-      text2: t("cloudOK"),
+      text2: t("cloudOK") as string,
     });
 
     await AsyncStorage.setItem("backup", "true");

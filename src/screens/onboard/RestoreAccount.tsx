@@ -86,7 +86,7 @@ export default function RestoreAccount({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: t("errorAuthGoogle"),
+          text1: t("errorAuthGoogle") as string,
         });
         setLoading(false);
         return;
@@ -103,7 +103,7 @@ export default function RestoreAccount({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: t("errorAuthGoogle"),
+        text1: t("errorAuthGoogle") as string,
       });
       setLoading(false);
       return;
@@ -128,8 +128,8 @@ export default function RestoreAccount({
     if (!content) {
       Toast.show({
         type: "error",
-        text1: t("noBackupFound"),
-        text2: t("tryAgain")
+        text1: t("noBackupFound") as string,
+        text2: t("tryAgain") as string,
       });
       setLoading(false);
       return;
@@ -148,15 +148,15 @@ export default function RestoreAccount({
       await FileSystem.deleteAsync(fileContentUri);
       Toast.show({
         type: "success",
-        text1: t("accountRestored"),
+        text1: t("accountRestored") as string,
       });
       navigation.navigate("MainScreen", { screen: "Wallet" });
     } catch (e) {
       console.log(e);
       Toast.show({
         type: "error",
-        text1: t("wrongPassword"),
-        text2: t("tryAgain"),
+        text1: t("wrongPassword") as string,
+        text2: t("tryAgain") as string,
       });
     }
   };

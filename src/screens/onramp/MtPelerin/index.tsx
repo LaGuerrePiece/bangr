@@ -130,8 +130,8 @@ const MtPelerinScreen = ({ navigation }: { navigation: any }) => {
                 setLoading(true);
                 Toast.show({
                   type: "info",
-                  text1: t("transactionSent"),
-                  text2: t("waitingForConfirmation"),
+                  text1: t("transactionSent") as string,
+                  text2: t("waitingForConfirmation") as string,
                 });
                 await deployWalletsIfNotDeployed(
                   [137],

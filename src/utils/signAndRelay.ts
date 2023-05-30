@@ -78,7 +78,7 @@ export const relay = async (
   if (deployRes === "error") {
     Toast.show({
       type: "error",
-      text1: i18n.t("errorDeployingWallet"),
+      text1: i18n.t("errorDeployingWallet") as string,
     });
     return;
   }
@@ -101,7 +101,7 @@ export const relay = async (
   if (!relayResponse || relayResponse.error) {
     Toast.show({
       type: "error",
-      text1: i18n.t("errorRelayingTransaction"),
+      text1: i18n.t("errorRelayingTransaction") as string,
     });
     return;
   }
