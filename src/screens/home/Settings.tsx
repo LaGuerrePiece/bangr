@@ -13,6 +13,8 @@ import useSettingsStore from "../../state/settings";
 import { Picker } from "@react-native-picker/picker";
 import i18next from "i18next";
 import { useTranslation } from "react-i18next";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 const Setting = ({
   title,
@@ -26,6 +28,28 @@ const Setting = ({
   options: string[];
 }) => {
   const colorScheme = Appearance.getColorScheme();
+
+  const [currency, setCurrency] = useSettingsStore((state) => [
+    state.currency,
+    state.setCurrency,
+  ]);
+
+  const handleCurrencyChange = async (value?: string) => {
+    if (!value) setCurrency((await AsyncStorage.getItem("currency")) || "Euro");
+    else
+      try {
+        await AsyncStorage.setItem("currency", value);
+        setCurrency(value);
+      } catch (e) {
+        console.log(e);
+      }
+  };
+
+  useEffect(() => {
+    handleCurrencyChange();
+  }, []);
+
+  // Styles for the currency picker
   const pickerSelectStyles = StyleSheet.create({
     backgroundColor:
       colorScheme === "dark" ? colors.primary.dark : colors.secondary.light,
