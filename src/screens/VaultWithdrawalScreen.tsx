@@ -141,7 +141,7 @@ const VaultWithdrawalScreen = ({
         console.log(error.response.data);
         Toast.show({
           type: "error",
-          text1: t("error"),
+          text1: t("error") as string,
           text2: error.response.data.message,
         });
       }
@@ -181,7 +181,7 @@ const VaultWithdrawalScreen = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: t("errorRelayingTransaction"),
+        text1: t("errorRelayingTransaction") as string,
       });
     }
 
@@ -223,7 +223,7 @@ const VaultWithdrawalScreen = ({
       console.log("error relaying:", error);
       Toast.show({
         type: "error",
-        text1: t("errorRelayingTransaction"),
+        text1: t("errorRelayingTransaction") as string,
       });
     }
 
@@ -241,8 +241,8 @@ const VaultWithdrawalScreen = ({
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: t("inputError"),
-        text2: t("amountInvalid"),
+        text1: t("inputError") as string,
+        text2: t("amountInvalid") as string,
       });
       return false;
     }
@@ -250,8 +250,8 @@ const VaultWithdrawalScreen = ({
     if (!parseFloat(amount) || parseFloat(amount) <= 0) {
       Toast.show({
         type: "error",
-        text1: t("inputError"),
-        text2: t("amountInvalid"),
+        text1: t("inputError") as string,
+        text2: t("amountInvalid") as string,
       });
       return false;
     }
@@ -263,8 +263,8 @@ const VaultWithdrawalScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: t("amountTooHigh"),
-          text2:  t("insufficientBalance"),
+          text1: t("amountTooHigh") as string,
+          text2:  t("insufficientBalance") as string,
         });
         return false;
       }
@@ -275,8 +275,8 @@ const VaultWithdrawalScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: t("amountTooHigh"),
-          text2:  t("insufficientDepositedBalance"),
+          text1: t("amountTooHigh") as string,
+          text2:  t("insufficientDepositedBalance") as string,
         });
         return false;
       }
