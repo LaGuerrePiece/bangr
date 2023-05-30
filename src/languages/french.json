@@ -157,8 +157,8 @@
   "Video": "Vidéo",
   "risks": "Risques",
   "utilized protocols": "Protocoles utilisés",
-  "Aave USDC longDescription": "frDollars deposited on Aave allow other users to strengthen their position if they give any currency as collateral.\nAave's smart contracts ensures that any loan remains secured, otherwise it is liquidated.\nYou will earn interest on your dollars and can withdraw them at any time.",
-  "Aave USDC risks": "frAave is one of the oldest DeFi protocols. It's also considered to be one of the safest and most reliable. However, depositing in Aave has risks, such as smart contract bugs or oracle attacks. Just like with any investment, only invest what you can afford to lose.",
-  "Lido longDescription": "frEthers deposited on Lido ensure the stability of the Ethereum network.\nEach day, new ethers are emitted and distributed proportionally to all deposits.\nYou will earn interest on your ethers and can withdraw them at any time.",
-  "Lido risks": "frLido is considered one of the safest DeFi protocol. However, there still are risks, such as smart contract bugs or validator slashing. Just like with any investment, only invest what you can afford to lose."
+  "Aave USDC longDescription": "Les dollars déposés sur Aave permettent à d'autres utilisateurs de renforcer leur position en donnant d'autres actifs en caution. Les contrats intelligents d'Aave assurent que tout prêt reste sécurisé. Vous gagnez des intérêts sur vos dollars et vous pouvez les retirer n'importe quand.",
+  "Aave USDC risks": "Aave est un des protocoles les plus anciens de la finance décentralisée. Il est également considéré comme l'un des plus sûrs et des plus fiables. Cependant, déposer dans Aave comporte des risques, tels que des bugs de contrats intelligent. Comme pour tout investissement, n'investissez que ce que vous pouvez vous permettre de perdre.",
+  "Lido longDescription": "Les ethers déposés sur Lido assurent la stabilité du réseau Ethereum. Chaque jour, de nouveaux ethers sont émis et distribués proportionnellement à tous les dépôts. Vous percevrez des intérêts sur vos ethers et pourrez les retirer à tout moment.",
+  "Lido risks": "Lido est considéré comme l'un des protocoles les plus sûrs de la finance décentralisée. Cependant, il existe toujours des risques, tels que des bugs de contrats intelligents ou le slashing des validateurs. Comme pour tout investissement, n'investissez que ce que vous pouvez vous permettre de perdre."
 }
