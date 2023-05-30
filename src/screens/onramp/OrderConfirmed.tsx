@@ -2,9 +2,17 @@ import { View, Text, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActionButton from "../../components/ActionButton";
 import { useTranslation } from "react-i18next";
+import { track } from "../../utils/analytics";
+import useUserStore from "../../state/user";
 
 export default function OrderConfirmed({ navigation }: { navigation: any }) {
   const { t } = useTranslation();
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
+
+  track("Onramp success", scw);
+  
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View>

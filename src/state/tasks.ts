@@ -74,16 +74,16 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         if (task.state >= 1) {
           Toast.show({
             type: "success",
-            text1: i18.t("transactionConfirmed"),
-            text2: i18.t("yourTransactionHasBeenConfirmed"),
+            text1: i18.t("transactionConfirmed") as string,
+            text2: i18.t("yourTransactionHasBeenConfirmed") as string,
             visibilityTime: 2500,
             autoHide: true,
           });
         } else if (task.state < 0) {
           Toast.show({
             type: "error",
-            text1: i18.t("transactionFailed"),
-            text2: i18.t("yourTransactionHasFailed"),
+            text1: i18.t("transactionFailed") as string,
+            text2: i18.t("yourTransactionHasFailed") as string,
             visibilityTime: 2500,
             autoHide: true,
           });
