@@ -24,7 +24,7 @@ module.exports = {
         RCTAsyncStorageExcludeFromBackup: false
       },
       bundleIdentifier: "app.bangr.app",
-      buildNumber: 4
+      buildNumber: "4"
     },
     android: {
       adaptiveIcon: {
