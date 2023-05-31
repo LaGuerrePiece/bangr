@@ -37,7 +37,6 @@ const History = ({
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
-
   const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } =
     useTasksStore((state) => ({
       tasks: state.tasks,
@@ -89,7 +88,7 @@ const History = ({
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-4 w-11/12 items-center rounded-xl justify-center">
+      <View className="mx-auto mt-4 w-11/12 items-center justify-center rounded-xl">
         {/* <View className="w-full flex-row justify-end">
           <TouchableOpacity
             onPress={() => {
@@ -107,7 +106,7 @@ const History = ({
           </TouchableOpacity>
         </View> */}
         {repeat ? (
-          <View className="flex-row justify-center justify-between">
+          <View className="flex-row justify-center">
             <ActivityIndicator />
           </View>
         ) : null}

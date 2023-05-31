@@ -443,10 +443,10 @@ const VaultDepositScreen = ({
               </View>
 
               <View className="flex flex-col items-center">
-                <View className="my-1 mt-6 h-14 flex-row items-center justify-center rounded-xl px-2 ">
+                <View className="my-1 mt-6 flex-row items-center justify-center rounded-xl px-2 ">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
-                    className="w-4/5 text-center text-5xl font-semibold text-typo-light dark:text-typo-dark"
+                    className="h-14 w-4/5 text-center text-5xl font-semibold text-typo-light dark:text-typo-dark"
                     onChangeText={(e) => setAmount(correctInput(e))}
                     value={amount}
                     keyboardType="numeric"
@@ -513,9 +513,10 @@ const VaultDepositScreen = ({
                       ? formatUnits(balance, selectedToken?.decimals, 4)
                       : formatUnits(deposited, selectedToken?.decimals, 4)}{" "}
                     <Image
-                    className="h-4 w-4"
+                      className="h-4 w-4"
                       source={{ uri: getToken(selectedTokenSymbol)?.logoURI }}
-                    /> {""}
+                    />{" "}
+                    {""}
                     {selectedTokenSymbol}
                   </Text>
                 </TouchableOpacity>

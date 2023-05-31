@@ -21,7 +21,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { useTranslation } from "react-i18next";
 import { track } from "../utils/analytics";
 
-
 const ReceiveScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Receive">) => {
@@ -91,10 +90,7 @@ const ReceiveScreen = ({
                 onPress={() => {
                   console.log("smartWalletAddress: ", smartWalletAddress);
                   Clipboard.setStringAsync(smartWalletAddress ?? "");
-                  showToast(
-                    t("copiedClipboard"),
-                    t("youCanPaste")
-                  );
+                  showToast(t("copiedClipboard"), t("youCanPaste"));
                 }}
               >
                 <Text className="text-center text-lg font-bold text-typo-light dark:text-typo-dark">
@@ -163,10 +159,10 @@ const ReceiveScreen = ({
                 </View>
               </View>
             </View>
-            <View className="w-11/12 rounded-md mt-2">
+            <View className="mt-2 w-11/12 rounded-md">
               <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
-              {t("notMainnet")}             
-            </Text>
+                {t("notMainnet")}
+              </Text>
             </View>
           </View>
 
@@ -177,7 +173,7 @@ const ReceiveScreen = ({
               bold
               styles={"min-w-[200px]"}
               action={() => {
-                navigation.navigate("Onramp");
+                navigation.navigate("Onramp", {});
                 track("Buy with cash", smartWalletAddress);
               }}
             />

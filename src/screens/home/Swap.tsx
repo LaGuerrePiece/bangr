@@ -249,7 +249,7 @@ const Swap = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: t("errorRelayingTransaction"),
+        text1: t("errorRelayingTransaction") as string,
       });
     }
     clearAfterSwap();
@@ -462,7 +462,7 @@ const Swap = ({
                 </View>
               </View>
             </View>
-            <View className="w-full flex-row justify-between">
+            <View className="mb-3 w-full flex-row justify-between">
               <TouchableHighlight onPress={flip}>
                 <View className="flex-row items-center">
                   <Image

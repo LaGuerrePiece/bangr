@@ -106,7 +106,7 @@ export function TabBar({
                       : "text-center font-Inter text-xs text-typo-light opacity-50 dark:text-typo-dark"
                   }
                 >
-                  {t(label) as string}
+                  {t(label as string) as string}
                 </Text>
               ) : (
                 <Text
@@ -116,7 +116,7 @@ export function TabBar({
                       : "text-center font-InterBold text-typo-light opacity-50 dark:text-typo-dark"
                   }
                 >
-                  {t(label) as string}
+                  {t(label as string) as string}
                 </Text>
               )}
             </View>
