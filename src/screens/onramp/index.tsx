@@ -10,7 +10,7 @@ import {
   ScrollView,
   useColorScheme,
 } from "react-native";
-import { ArrowLeftIcon } from "react-native-heroicons/outline";
+import { ArrowLeftIcon, XMarkIcon } from "react-native-heroicons/outline";
 import ActionButton from "../../components/ActionButton";
 import useUserStore from "../../state/user";
 import { correctInput } from "../../utils/utils";
@@ -86,15 +86,22 @@ const OnrampScreen = ({
         <ScrollView className="h-full">
           <View onStartShouldSetResponder={() => true}>
             <View className="mx-auto w-11/12 p-3">
-              <View className="mb-2 flex-row justify-between">
-                <View className="flex-row items-center">
-                  <TouchableOpacity onPress={navigation.goBack}>
-                    <ArrowLeftIcon size={24} color="#3A5A83" />
-                  </TouchableOpacity>
-                  <Text className="ml-3 text-2xl font-bold text-typo-light dark:text-typo-dark">
-                    {t("onrampScreenTitle")}
-                  </Text>
-                </View>
+              <View className="">
+                <TouchableWithoutFeedback onPress={navigation.goBack}>
+                  <View className="flex-row justify-end">
+                    <XMarkIcon
+                      size={36}
+                      color={
+                        colorScheme === "light"
+                          ? colors.typo.light
+                          : colors.typo.dark
+                      }
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+                <Text className="m-auto text-3xl font-bold text-typo-light dark:text-typo-dark">
+                  {t("onrampScreenTitle")}
+                </Text>
               </View>
 
               <View className="flex flex-col items-center">
@@ -179,10 +186,6 @@ const OnrampScreen = ({
                   />
                 </View>
               </View>
-
-             
-
-              
 
               <View className="mt-8 mb-1">
                 <ActionButton
