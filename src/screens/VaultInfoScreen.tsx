@@ -13,6 +13,8 @@ import { XMarkIcon } from "react-native-heroicons/outline";
 import { colors } from "../config/configs";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { Protocol } from "../components/Protocol";
+import { useTranslation } from "react-i18next";
 
 const VaultInfoScreen = ({
   route,
@@ -22,6 +24,18 @@ const VaultInfoScreen = ({
   const { name, image, description, longDescription, infos } = investment;
   const colorScheme = useColorScheme();
   const windowWidth = Dimensions.get("window").width;
+  const { t } = useTranslation();
+
+  const {
+    name: uiName,
+    vaultName,
+    longDescription: uiLongDescription,
+    contract,
+    tvl: uiTvl,
+    image: uiImage,
+    protocols,
+    risks,
+  } = investment;
 
   const LinkButton = ({ text, link }: any) => {
     return (
@@ -53,26 +67,59 @@ const VaultInfoScreen = ({
           />
         </View>
       </TouchableWithoutFeedback>
-      <ScrollView className="mx-auto mt-2 w-11/12 rounded-lg p-3">
-        <View className="mb-6 flex-row justify-between">
-          <View className="w-4/5">
-            <Text className="mb-1 font-InterSemiBold text-3xl text-typo-light dark:text-secondary-light">
-              {name}
-            </Text>
-            <Text className="text-[17px] text-typo-light dark:text-typo-dark">
-              {description}
-            </Text>
-          </View>
-          <Image
-            className="h-12 w-12"
-            source={{ uri: image }}
-            resizeMode="contain"
-          />
+      <ScrollView className="m-auto mt-2 w-11/12 rounded-lg p-3">
+        <View className="my-3">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            Description
+          </Text>
+          <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
+            {t(vaultName + " longDescription")}
+          </Text>
         </View>
-        <Text className="my-1 text-base leading-[22px] text-icon-special dark:text-secondary-light">
-          {longDescription}
-        </Text>
-        {infos ? (
+
+        <View className="my-3">
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            {t("risks")}
+          </Text>
+          <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
+            {t(vaultName + " risks")}
+          </Text>
+        </View>
+        <View>
+          <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
+            {t("utilized protocols")}
+          </Text>
+          <View className="flex-wrap">
+            {protocols && protocols?.length > 0
+              ? protocols?.map((protocol) => {
+                  return (
+                    <Protocol
+                      key={protocol.name}
+                      name={protocol.name}
+                      image={protocol.icon}
+                      link={protocol.link}
+                    />
+                  );
+                })
+              : null}
+          </View>
+        </View>
+
+        {/* <View className="w-full flex-row justify-around">
+          {vaultName === "Aave USDC" ? (
+            <>
+              <LinkButton text={t("Website")} link={"https://aave.com/"} />
+              <LinkButton text={"Docs"} link={"https://docs.aave.com/hub/"} />
+            </>
+          ) : (
+            <>
+              <LinkButton text={t("Website")} link={"https://lido.fi/"} />
+              <LinkButton text={t("Video")} link={"https://lido.fi/"} />
+            </>
+          )}
+        </View> */}
+
+        {/* {infos ? (
           infos.map((item: any, index: number) => {
             switch (item.type) {
               case "text":
@@ -109,7 +156,7 @@ const VaultInfoScreen = ({
               case "links":
                 return (
                   <View
-                    className="my-4 mb-12 w-full flex-row justify-around"
+                    className="my-4 w-full flex-row justify-around"
                     key={index}
                   >
                     {item.links &&
@@ -133,7 +180,7 @@ const VaultInfoScreen = ({
           <Text className="my-1 text-typo-light dark:text-typo-dark">
             More coming soon™
           </Text>
-        )}
+        )} */}
       </ScrollView>
     </View>
   );

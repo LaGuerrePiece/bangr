@@ -15,7 +15,7 @@ import {
 } from "../config/signTypedData";
 import Toast from "react-native-toast-message";
 import { Task } from "../types/types";
-
+import i18n from "i18next";
 
 // const getTasks = async (scwAddress: string) => {
 //   try {
@@ -58,6 +58,7 @@ export const relay = async (
   //   text2: "Waiting for confirmation...",
   // });
 
+
   const callsObject = {
     Calls: calls,
   };
@@ -77,7 +78,7 @@ export const relay = async (
   if (deployRes === "error") {
     Toast.show({
       type: "error",
-      text1: "error deploying wallet",
+      text1: i18n.t("errorDeployingWallet") as string,
     });
     return;
   }
@@ -100,7 +101,7 @@ export const relay = async (
   if (!relayResponse || relayResponse.error) {
     Toast.show({
       type: "error",
-      text1: "error relaying transaction",
+      text1: i18n.t("errorRelayingTransaction") as string,
     });
     return;
   }
@@ -121,7 +122,7 @@ export const relay = async (
       if (tx.error) {
         Toast.show({
           type: "error",
-          text1: `error relaying transaction on ${getChain(chainId).name}`,
+          text1: i18n.t("errorRelayingTransaction") + getChain(chainId).name,
         });
         txSuccesses.push(false);
         return;
@@ -296,7 +297,7 @@ export const deployWalletsIfNotDeployed = async (
 
         Toast.show({
           type: "success",
-          text1: `Smart Wallet deployed on ${getChain(chainId).name}.`,
+          text1: i18n.t("SCWDeployed") + getChain(chainId).name,
         });
       }
     })

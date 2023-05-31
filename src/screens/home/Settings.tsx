@@ -11,11 +11,24 @@ import {
 import { colors } from "../../config/configs";
 import useSettingsStore from "../../state/settings";
 import { Picker } from "@react-native-picker/picker";
+import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect } from "react";
 
-const Settings = () => {
+const Setting = ({
+  title,
+  value,
+  setValue,
+  options,
+}: {
+  title: string;
+  value: string;
+  setValue: (value: string) => void;
+  options: string[];
+}) => {
   const colorScheme = Appearance.getColorScheme();
+
   const [currency, setCurrency] = useSettingsStore((state) => [
     state.currency,
     state.setCurrency,
@@ -37,7 +50,6 @@ const Settings = () => {
   }, []);
 
   // Styles for the currency picker
-
   const pickerSelectStyles = StyleSheet.create({
     backgroundColor:
       colorScheme === "dark" ? colors.primary.dark : colors.secondary.light,
@@ -45,67 +57,76 @@ const Settings = () => {
   });
 
   return (
+    <View className="mt-4 w-full items-center">
+      <Text className="text-typo-light dark:text-typo-dark">{title}</Text>
+      <View className="w-full">
+        <Picker
+          selectedValue={value}
+          onValueChange={(value) => {
+            console.log(value);
+            setValue(value);
+          }}
+          itemStyle={{
+            backgroundColor:
+              colorScheme === "dark"
+                ? colors.primary.dark
+                : colors.secondary.light,
+          }}
+          mode="dropdown"
+          dropdownIconColor={
+            colorScheme === "light" ? colors.typo.light : colors.typo.dark
+          }
+        >
+          {options.map((option, i) => (
+            <Picker.Item
+              key={i}
+              style={pickerSelectStyles}
+              color={
+                colorScheme === "light" ? colors.typo.light : colors.typo.dark
+              }
+              label={option}
+              value={option}
+            />
+          ))}
+        </Picker>
+      </View>
+    </View>
+  );
+};
+
+const Settings = () => {
+  const { t } = useTranslation();
+  const [currency, setCurrency, language, setLanguage] = useSettingsStore(
+    (state) => [
+      state.currency,
+      state.setCurrency,
+      state.language,
+      state.setLanguage,
+    ]
+  );
+
+  return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        {/* <View className="w-full">
-          <TouchableOpacity
-            onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              // swiper.current.scrollBy(-1, true);
-            }}
-          >
-            <Image
-              className="h-6 w-6"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/invest-drk.png")
-                  : require("../../../assets/invest.png")
-              }
-            />
-          </TouchableOpacity>
-        </View> */}
         <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
-          Settings
+          {t("settings")}
         </Text>
-        <Text className="mt-8 text-typo-light dark:text-typo-dark">
-          Reference currency
-        </Text>
-        <View className="mt-2 w-full">
-          <Picker
-            selectedValue={currency}
-            onValueChange={(value) => {
-              console.log(value);
-              handleCurrencyChange(value);
-            }}
-            itemStyle={{
-              backgroundColor:
-                colorScheme === "dark"
-                  ? colors.primary.dark
-                  : colors.secondary.light,
-            }}
-            mode="dropdown"
-            dropdownIconColor={
-              colorScheme === "light" ? colors.typo.light : colors.typo.dark
-            }
-          >
-            <Picker.Item
-              style={pickerSelectStyles}
-              color={
-                colorScheme === "light" ? colors.typo.light : colors.typo.dark
-              }
-              label="Euro"
-              value="Euro"
-            />
-            <Picker.Item
-              style={pickerSelectStyles}
-              color={
-                colorScheme === "light" ? colors.typo.light : colors.typo.dark
-              }
-              label="Dollar"
-              value="Dollar"
-            />
-          </Picker>
-        </View>
+        <Setting
+          title={t("currency")}
+          value={currency}
+          setValue={setCurrency}
+          options={["Euro", "Dollar"]}
+        />
+        <Setting
+          title={t("language")}
+          value={language}
+          setValue={(e) => {
+            setLanguage(e);
+            console.log("changed to", e);
+            i18next.changeLanguage(e === "Français" ? "fr" : "en");
+          }}
+          options={["Français", "English"]}
+        />
       </View>
     </SafeAreaView>
   );

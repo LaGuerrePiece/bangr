@@ -37,12 +37,14 @@ import { Information } from "../components/Information";
 import useTasksStore from "../state/tasks";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { useTranslation } from "react-i18next";
 
 const VaultDepositScreen = ({
   route,
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   const { investment, vault } = route.params;
 
@@ -139,7 +141,7 @@ const VaultDepositScreen = ({
         console.log(error.response.data);
         Toast.show({
           type: "error",
-          text1: "Error",
+          text1: t("error") as string,
           text2: error.response.data.message,
         });
       }
@@ -179,7 +181,7 @@ const VaultDepositScreen = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: "error relaying transaction",
+        text1: t("errorRelayingTransaction") as string,
       });
     }
 
@@ -221,7 +223,7 @@ const VaultDepositScreen = ({
       console.log("error relaying:", error);
       Toast.show({
         type: "error",
-        text1: "error relaying transaction",
+        text1: t("errorRelayingTransaction") as string,
       });
     }
 
@@ -239,8 +241,8 @@ const VaultDepositScreen = ({
     } catch (error) {
       Toast.show({
         type: "error",
-        text1: "Input error",
-        text2: "Your amount is invalid",
+        text1: t("inputError") as string,
+        text2: t("amountInvalid") as string,
       });
       return false;
     }
@@ -248,8 +250,8 @@ const VaultDepositScreen = ({
     if (!parseFloat(amount) || parseFloat(amount) <= 0) {
       Toast.show({
         type: "error",
-        text1: "Input error",
-        text2: "Your amount is invalid",
+        text1: t("inputError") as string,
+        text2: t("amountInvalid") as string,
       });
       return false;
     }
@@ -261,8 +263,8 @@ const VaultDepositScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: "Amount too high",
-          text2: `${amount} exceeds your balance`,
+          text1: t("amountTooHigh") as string,
+          text2: t("insufficientBalance") as string,
         });
         return false;
       }
@@ -273,8 +275,8 @@ const VaultDepositScreen = ({
       ) {
         Toast.show({
           type: "error",
-          text1: "Amount too high",
-          text2: `${amount} exceeds your deposited balance`,
+          text1: t("amountTooHigh") as string,
+          text2: t("insufficientDepositedBalance") as string,
         });
         return false;
       }
@@ -326,19 +328,19 @@ const VaultDepositScreen = ({
                   source={{ uri: uiImage ?? image }}
                 /> */}
               </View>
+              <View className="mb-2 flex-row items-center">
+                <Image
+                  className="h-8 w-8 rounded-full"
+                  source={{ uri: uiImage ?? image }}
+                  resizeMode="contain"
+                />
+                <Text className="ml-2 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
+                  {uiName}
+                </Text>
+              </View>
+              {/* <View className="my-2 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] p-3 dark:bg-secondary-dark"> */}
 
-              <View className="my-2 rounded-3xl border border-[#4F4F4F] bg-[#EFEEEC] p-3 dark:bg-secondary-dark">
-                <View className="mb-2 flex-row items-center">
-                  <Image
-                    className="h-8 w-8 rounded-full"
-                    source={{ uri: uiImage ?? image }}
-                    resizeMode="contain"
-                  />
-                  <Text className="ml-2 font-InterSemiBold text-[26px] font-bold text-typo-light dark:text-secondary-light">
-                    {uiName}
-                  </Text>
-                </View>
-                <View className="flex-row justify-between">
+              {/* <View className="flex-row justify-between">
                   <Information
                     title="Your assets"
                     text={`${formatUnits(
@@ -354,8 +356,8 @@ const VaultDepositScreen = ({
                     text={"soon™"}
                     textSize={"text-lg"}
                   />
-                </View>
-                <View className="my-2 border border-[#4F4F4F]" />
+                </View> */}
+              {/* <View className="my-2 border border-[#4F4F4F]" />
                 <View className="flex-row justify-between">
                   <Information
                     title="Annual yield"
@@ -368,10 +370,10 @@ const VaultDepositScreen = ({
                     text={"$" + uiTvl}
                     textSize={"text-lg"}
                   />
-                </View>
+                </View> */}
 
-                {/* Input asset is now selected before that. But might reuse this for multi-asset vaults like glp */}
-                {/* <View className="my-2 items-center">
+              {/* Input asset is now selected before that. But might reuse this for multi-asset vaults like glp */}
+              {/* <View className="my-2 items-center">
                   {selectedToken && (
                     <SelectTokenButton
                       tokens={
@@ -396,28 +398,28 @@ const VaultDepositScreen = ({
                   </Text>
                 </View> */}
 
-                {tokensIn.length > 1 ? (
-                  <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
-                    <View className="mx-3 ">
-                      <Tab
-                        image={getToken(tokensIn[0])?.logoURI}
-                        text={tokensIn[0]}
-                        action={() => setSelectedTokenSymbol(tokensIn[0])}
-                        active={selectedTokenSymbol === tokensIn[0]}
-                      />
-                    </View>
-                    <View className="mx-3">
-                      <Tab
-                        image={getToken(tokensIn[1])?.logoURI}
-                        text={tokensIn[1]}
-                        action={() => setSelectedTokenSymbol(tokensIn[1])}
-                        active={selectedTokenSymbol === tokensIn[1]}
-                      />
-                    </View>
+              {tokensIn.length > 1 ? (
+                <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
+                  <View className="mx-3 ">
+                    <Tab
+                      image={getToken(tokensIn[0])?.logoURI}
+                      text={tokensIn[0]}
+                      action={() => setSelectedTokenSymbol(tokensIn[0])}
+                      active={selectedTokenSymbol === tokensIn[0]}
+                    />
                   </View>
-                ) : null}
+                  <View className="mx-3">
+                    <Tab
+                      image={getToken(tokensIn[1])?.logoURI}
+                      text={tokensIn[1]}
+                      action={() => setSelectedTokenSymbol(tokensIn[1])}
+                      active={selectedTokenSymbol === tokensIn[1]}
+                    />
+                  </View>
+                </View>
+              ) : null}
 
-                <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
+              {/* <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
                   <View className="mx-3 ">
                     <Tab
                       text="Deposit"
@@ -432,54 +434,19 @@ const VaultDepositScreen = ({
                       active={tab === "Withdraw"}
                     />
                   </View>
-                </View>
+                </View> */}
 
-                <View className="mt-2 flex-row justify-between">
-                  <Text className="text-typo-light dark:text-typo-dark">
+              <View className="mt-2 flex-row justify-between">
+                {/* <Text className="text-typo-light dark:text-typo-dark">
                     {tab}
-                  </Text>
-                  <TouchableOpacity
-                    disabled={loading}
-                    onPress={() => {
-                      if (tab === "Deposit") {
-                        setAmount(
-                          balance
-                            ? ethers.utils.formatUnits(
-                                balance,
-                                selectedToken?.decimals || 18
-                              )
-                            : "0"
-                        );
-                      } else {
-                        setAmount(
-                          deposited
-                            ? ethers.utils.formatUnits(
-                                deposited,
-                                selectedToken?.decimals || 18
-                              )
-                            : "0"
-                        );
-                      }
-                    }}
-                  >
-                    <Text className="text-typo-light dark:text-typo-dark">
-                      Use max (
-                      {tab === "Deposit"
-                        ? formatUnits(balance, selectedToken?.decimals, 4)
-                        : formatUnits(
-                            deposited,
-                            selectedToken?.decimals,
-                            4
-                          )}{" "}
-                      {selectedTokenSymbol})
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+                  </Text> */}
+              </View>
 
-                <View className="my-1 h-14 flex-row items-center justify-center rounded-xl bg-quaternary-light px-2 dark:bg-quaternary-dark">
+              <View className="flex flex-col items-center">
+                <View className="my-1 mt-6 flex-row items-center justify-center rounded-xl px-2 ">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
-                    className="w-4/5 text-3xl font-semibold text-typo-light dark:text-typo-dark"
+                    className="h-14 w-4/5 text-center text-5xl font-semibold text-typo-light dark:text-typo-dark"
                     onChangeText={(e) => setAmount(correctInput(e))}
                     value={amount}
                     keyboardType="numeric"
@@ -508,34 +475,73 @@ const VaultDepositScreen = ({
                       }
                     }}
                   >
-                    <View className="rounded-full bg-btn-light px-3 py-1 dark:bg-btn-dark">
+                    {/* <View className="rounded-full bg-btn-light px-3 py-1 dark:bg-btn-dark">
                       <Text className="text-secondary-light dark:text-secondary-dark">
                         MAX
                       </Text>
-                    </View>
+                    </View> */}
                   </TouchableOpacity>
                 </View>
 
-                <View className="mt-4 mb-1">
-                  <ActionButton
-                    text={tab}
-                    styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
-                    bold
-                    action={tab === "Deposit" ? handleDeposit : handleWithdraw}
-                  />
-                </View>
+                <TouchableOpacity
+                  disabled={loading}
+                  onPress={() => {
+                    if (tab === "Deposit") {
+                      setAmount(
+                        balance
+                          ? ethers.utils.formatUnits(
+                              balance,
+                              selectedToken?.decimals || 18
+                            )
+                          : "0"
+                      );
+                    } else {
+                      setAmount(
+                        deposited
+                          ? ethers.utils.formatUnits(
+                              deposited,
+                              selectedToken?.decimals || 18
+                            )
+                          : "0"
+                      );
+                    }
+                  }}
+                >
+                  <Text className="text-typo-light dark:text-typo-dark">
+                    {t("available")}:{" "}
+                    {tab === "Deposit"
+                      ? formatUnits(balance, selectedToken?.decimals, 4)
+                      : formatUnits(deposited, selectedToken?.decimals, 4)}{" "}
+                    <Image
+                      className="h-4 w-4"
+                      source={{ uri: getToken(selectedTokenSymbol)?.logoURI }}
+                    />{" "}
+                    {""}
+                    {selectedTokenSymbol}
+                  </Text>
+                </TouchableOpacity>
               </View>
 
-              <View className="mt-3">
+              <View className="mt-4 mb-1">
+                <ActionButton
+                  text={t(tab)}
+                  styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
+                  bold
+                  action={tab === "Deposit" ? handleDeposit : handleWithdraw}
+                />
+              </View>
+              {/* </View> */}
+
+              {/* <View className="mt-3">
                 <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
                   Description
                 </Text>
                 <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
                   {uiLongDescription ?? longDescription}
                 </Text>
-              </View>
+              </View> */}
 
-              <View className="mt-3">
+              {/* <View className="mt-3">
                 <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
                   Utilized Protocols
                 </Text>
@@ -553,16 +559,16 @@ const VaultDepositScreen = ({
                       })
                     : null}
                 </View>
-              </View>
+              </View> */}
 
-              <View className="mt-3">
+              {/* <View className="mt-3">
                 <Text className="font-InterBold text-lg text-icon-special dark:text-secondary-light">
                   Risks
                 </Text>
                 <Text className="my-1 text-base leading-[22px] text-typo-light dark:text-typo-dark ">
                   {risks}
                 </Text>
-              </View>
+              </View> */}
 
               <HowItWorks
                 action={() =>

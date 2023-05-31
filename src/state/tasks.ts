@@ -5,6 +5,8 @@ import { getSmartWalletAddress, getURLInApp } from "../utils/utils";
 import useUserStore from "./user";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import useVaultsStore from "./vaults";
+import { track } from "../utils/analytics";
+import i18 from "i18next";
 
 export type Task = {
   id: string;
@@ -72,21 +74,20 @@ const useTasksStore = create<TasksState>()((set, get) => ({
         if (task.state >= 1) {
           Toast.show({
             type: "success",
-            text1: "Transaction confirmed",
-            text2: "Your transaction has been confirmed",
+            text1: i18.t("transactionConfirmed") as string,
+            text2: i18.t("yourTransactionHasBeenConfirmed") as string,
             visibilityTime: 2500,
             autoHide: true,
           });
-          
         } else if (task.state < 0) {
           Toast.show({
             type: "error",
-            text1: "Transaction failed",
-            text2: "Your transaction has failed",
+            text1: i18.t("transactionFailed") as string,
+            text2: i18.t("yourTransactionHasFailed") as string,
             visibilityTime: 2500,
             autoHide: true,
           });
-        
+          track("Transaction failed", scwAddress);
         }
         if (pendingTasks.length === 0 && previousPendingTasks.length > 0) {
           console.log("set repeat to false");

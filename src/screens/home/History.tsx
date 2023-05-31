@@ -25,6 +25,7 @@ import { MainScreenStackParamList } from "../MainScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
 import { fetchText } from "react-native-svg/lib/typescript/xml";
+import { useTranslation } from "react-i18next";
 
 const History = ({
   route,
@@ -34,6 +35,7 @@ const History = ({
   NativeStackScreenProps<RootStackParamList>
 >) => {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
 
   const { tasks, pendingTasks, repeat, fetchTasks, repeatFetchTasks } =
     useTasksStore((state) => ({
@@ -86,7 +88,7 @@ const History = ({
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-4 w-11/12 items-center rounded-xl justify-center">
+      <View className="mx-auto mt-4 w-11/12 items-center justify-center rounded-xl">
         {/* <View className="w-full flex-row justify-end">
           <TouchableOpacity
             onPress={() => {
@@ -104,7 +106,7 @@ const History = ({
           </TouchableOpacity>
         </View> */}
         {repeat ? (
-          <View className="flex-row justify-center justify-between">
+          <View className="flex-row justify-center">
             <ActivityIndicator />
           </View>
         ) : null}
@@ -120,7 +122,7 @@ const History = ({
         tasks.filter((task) => task.state != 2 && task.state != -20).length >
           0 ? (
           <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
-            Pending
+            {t("pending")}
           </Text>
         ) : null}
 
@@ -230,13 +232,13 @@ const History = ({
             ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
-            No transaction yet
+            {t("noTxFound")}
           </Text>
         )}
 
         {/* tasks that have state = 2 */}
         <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
-          Completed
+          {t("completed")}
         </Text>
         {tasks.length !== 0 ? (
           tasks
@@ -350,7 +352,7 @@ const History = ({
             ))
         ) : (
           <Text className="text-s font-bold text-typo2-light dark:text-typo2-dark">
-            No complete transaction yet
+            {t("noTxFound")}
           </Text>
         )}
       </ScrollView>

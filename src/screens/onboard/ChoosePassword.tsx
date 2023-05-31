@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useUserStore from "../../state/user";
 import { RootStackParamList } from "../../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
 const driveName = Platform.OS === "ios" ? "iCloud" : "Google Drive";
 
@@ -32,10 +33,12 @@ export default function ChoosePassword({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "ChoosePassword">) {
   const colorScheme = useColorScheme();
+  const { t } = useTranslation();
   const setBackedUp = useUserStore((state) => state.setBackedUp);
 
   const [step, setStep] = useState(0); // 0: default, 1: success
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
   const [loading, setLoading] = useState(false);
 
   const [, response, promptAsync] = Google.useAuthRequest(googleConfig);
@@ -52,7 +55,7 @@ export default function ChoosePassword({
         console.log("no authentication token");
         Toast.show({
           type: "error",
-          text1: "Could not authenticate with Google",
+          text1: t("errorAuthGoogle") as string,
         });
         setLoading(false);
         return;
@@ -70,7 +73,15 @@ export default function ChoosePassword({
       console.log("not initialized");
       Toast.show({
         type: "error",
-        text1: "Could not authenticate with Google",
+        text1: t("errorAuthGoogle") as string,
+      });
+      setLoading(false);
+      return;
+    }
+    if (password !== password2) {
+      Toast.show({
+        type: "error",
+        text1: t("passNotMatch") as string,
       });
       setLoading(false);
       return;
@@ -96,8 +107,8 @@ export default function ChoosePassword({
     console.log("file", JSON.stringify(file));
     Toast.show({
       type: "success",
-      text1: "Account secured",
-      text2: "Your account is now secured on " + driveName,
+      text1: t("accountSecured") as string,
+      text2: t("cloudOK") as string,
     });
 
     await AsyncStorage.setItem("backup", "true");
@@ -121,11 +132,11 @@ export default function ChoosePassword({
               }
             />
             <Text className="ml-1 mt-1 font-[InterSemiBold] text-base text-typo-light dark:text-typo-dark">
-              Welcome to Bangr
+              {t("OnboardScreenWelcome")}
             </Text>
           </View>
           <Text className="mt-2 font-[InterBold] text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-            Secure on {driveName}
+            {t("secureOn")} {driveName}
           </Text>
 
           {loading ? (
@@ -133,14 +144,12 @@ export default function ChoosePassword({
           ) : step === 0 ? (
             <View className="mt-6 mb-24">
               <Text className="my-3 text-center font-[Inter] text-base text-typo-light dark:text-typo-dark">
-                Bangr will store an encrypted copy of your key on {driveName}.{" "}
-                {"\n"}
-                If you ever lose your phone, you will be able to recover your
-                account. {"\n"}
-                Be sure not to loose your password!
+                {t("choosePasswordAndroid1")} {driveName}. {"\n"}
+                {t("choosePasswordAndroid2")} {"\n"}
+                {t("choosePasswordAndroid3")}
               </Text>
               <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Create a new password:
+                {t("createPassword")}
               </Text>
               <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
                 <TextInput
@@ -148,6 +157,25 @@ export default function ChoosePassword({
                   className="text-xl font-semibold text-typo-light dark:text-typo-dark"
                   onChangeText={(text) => setPassword(text)}
                   value={password}
+                  placeholder="*******"
+                  secureTextEntry={true}
+                  style={{
+                    color:
+                      colorScheme === "light"
+                        ? colors.typo.light
+                        : colors.typo.dark,
+                  }}
+                />
+              </View>
+              <Text className="my-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
+                {t("repeatPassword")}
+              </Text>
+              <View className="mx-auto w-2/3 rounded-md border border-[#4F4F4F] bg-primary-light p-1 dark:bg-primary-dark">
+                <TextInput
+                  placeholderTextColor={colors.typo2.light}
+                  className="text-xl font-semibold text-typo-light dark:text-typo-dark"
+                  onChangeText={(text) => setPassword2(text)}
+                  value={password2}
                   placeholder="*******"
                   secureTextEntry={true}
                   style={{
@@ -166,7 +194,7 @@ export default function ChoosePassword({
                 source={require("../../../assets/green_check.png")}
               />
               <Text className="ml-2 text-center font-[Inter] text-xl text-typo-light dark:text-typo-dark">
-                Backup successful!
+                {t("backupSuccessful")}
               </Text>
             </View>
           )}
@@ -179,7 +207,7 @@ export default function ChoosePassword({
 
         <View className="mx-auto mb-8 w-11/12">
           <ActionButton
-            text={step === 0 ? "Save to " + driveName : "Next"}
+            text={step === 0 ? t("saveTo") + driveName : t("Next")}
             bold
             rounded
             action={() => {
