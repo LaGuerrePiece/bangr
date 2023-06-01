@@ -154,7 +154,7 @@ const Wallet = ({
                           (Number(token.balance) > 0 ||
                             token.symbol === "ETH" ||
                             token.symbol === "USDC")) ||
-                        token.symbol === "USDT"
+                        token.symbol === "USDC"
                     )
                     .map((token) => (
                       <Asset

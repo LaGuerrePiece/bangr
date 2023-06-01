@@ -300,40 +300,7 @@ const Swap = ({
   return (
     <SafeAreaView className="bg-sedondary-light h-full dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-11/12 items-center">
-        {/* <View className="w-full flex-row justify-between">
-          <TouchableOpacity
-            onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              console.log("history");
-              // swiper.current.scrollBy(-1, true);
-            }}
-          >
-            <Image
-              className="h-7 w-7"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/history-drk.png")
-                  : require("../../../assets/history.png")
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              console.log("Invest");
-              // swiper.current.scrollBy(1, true);
-            }}
-          >
-            <Image
-              className="h-7 w-7"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/pochicon-drk.png")
-                  : require("../../../assets/pochicon.png")
-              }
-            />
-          </TouchableOpacity>
-        </View> */}
+        
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
             <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
