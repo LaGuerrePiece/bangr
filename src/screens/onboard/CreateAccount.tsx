@@ -102,7 +102,7 @@ export default function CreateAccount({
               {t("OnboardScreenWelcome")}
             </Text>
           </View>
-          <Text className="mt-2 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
+          <Text className="mt-2 font-InterBold text-[23px] leading-9 text-typo-light dark:text-typo-dark">
             {heroSentence}
           </Text>
         </View>

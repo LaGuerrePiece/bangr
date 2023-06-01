@@ -207,7 +207,7 @@ export default function ChoosePassword({
 
         <View className="mx-auto mb-8 w-11/12">
           <ActionButton
-            text={step === 0 ? t("saveTo") + driveName : t("Next")}
+            text={step === 0 ? t("secureOn") + driveName : t("Next")}
             bold
             rounded
             action={() => {

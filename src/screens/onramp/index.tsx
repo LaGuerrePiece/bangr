@@ -108,7 +108,7 @@ const OnrampScreen = ({
                 <Text className="mt-4 text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
                   {t("Amount")}
                 </Text>
-                <View className="h-18 my-4 flex-row items-center justify-center rounded-xl px-2">
+                <View className="h-18 my-4 flex-row items-center rounded-xl px-2">
                   <TextInput
                     placeholderTextColor={colors.typo2.light}
                     className="h-20 text-center text-6xl font-semibold text-typo-light dark:text-typo-dark"
@@ -117,7 +117,7 @@ const OnrampScreen = ({
                     keyboardType="numeric"
                     placeholder="0"
                   />
-                  <Text className="text-5xl font-semibold text-typo-light dark:text-typo-dark">
+                  <Text className="mt-2 text-4xl font-semibold text-typo-light dark:text-typo-dark">
                     €
                   </Text>
                 </View>

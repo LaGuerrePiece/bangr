@@ -85,7 +85,7 @@ const SendScreen = ({
 
   useEffect(() => {
     if (route.params?.updatedToken) {
-      update({ token: route.params.updatedToken.symbol });
+      update({ tokenSymbol: route.params.updatedToken.symbol });
     }
   }, [route.params?.updatedToken]);
 
