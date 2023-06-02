@@ -1,29 +1,29 @@
-import {
-  View,
-  Text,
-  useColorScheme,
-  Dimensions,
-  Image,
-  TouchableHighlight,
-  Alert,
-} from "react-native";
+import { View, Text, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ActionButton from "../../components/ActionButton";
-import { TextInput } from "react-native-gesture-handler";
-import { colors } from "../../config/configs";
+import { useTranslation } from "react-i18next";
+import { track } from "../../utils/analytics";
+import useUserStore from "../../state/user";
 
 export default function OrderConfirmed({ navigation }: { navigation: any }) {
+  const { t } = useTranslation();
+  const {scw} = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
+
+  track("Onramp success", scw);
+  
   return (
     <SafeAreaView className="h-full w-full justify-between bg-primary-light dark:bg-primary-dark">
       <View>
         <View className="mt-2 p-8">
           <Text className="text-center font-InterBold text-2xl text-typo-light dark:text-typo-dark">
-            Your order is confirmed !
+            {t("orderConfirmed")}
           </Text>
         </View>
 
         <Text className="mx-auto w-10/12 text-center text-lg text-typo-light dark:text-typo-dark">
-          Your order is confirmed and should arrive soon.
+          {t("orderShouldArriveSoon")}
         </Text>
       </View>
 
@@ -34,7 +34,7 @@ export default function OrderConfirmed({ navigation }: { navigation: any }) {
 
       <View className="mx-auto mb-8 w-11/12">
         <ActionButton
-          text="Back to home"
+          text={t("Back to wallet")}
           bold
           rounded
           action={() => navigation.navigate("MainScreen")}

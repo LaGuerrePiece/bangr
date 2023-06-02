@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
     name: "bangr",
     slug: "poche-app",
-    version: "0.0.6",
+    version: "0.0.9",
     scheme: "bangr",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -23,7 +23,8 @@ module.exports = {
         NSFaceIDUsageDescription: "Bangr uses FaceId to authenticate you.",
         RCTAsyncStorageExcludeFromBackup: false
       },
-      bundleIdentifier: "app.bangr.app"
+      bundleIdentifier: "app.bangr.app",
+      buildNumber: "5"
     },
     android: {
       adaptiveIcon: {
@@ -31,7 +32,7 @@ module.exports = {
         backgroundColor: "#FFFFFF"
       },
       package: "app.bangr.app",
-      versionCode: 2
+      versionCode: 5
     },
     web: {
       favicon: "./assets/favicon.png"
@@ -57,3 +58,4 @@ module.exports = {
       ]
     ],
   }
+

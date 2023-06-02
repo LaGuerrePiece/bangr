@@ -43,6 +43,7 @@ import Icon from "../../components/Icon";
 import { MainScreenStackParamList } from "../MainScreen";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../App";
+import { useTranslation } from "react-i18next";
 
 type ButtonStatus = {
   disabled: boolean;
@@ -56,6 +57,7 @@ const Swap = ({
   NativeStackScreenProps<MainScreenStackParamList, "Swap">,
   NativeStackScreenProps<RootStackParamList>
 >) => {
+  const { t } = useTranslation();
   const { repeatFetchTasks } = useTasksStore((state) => ({
     repeatFetchTasks: state.repeatFetchTasks,
   }));
@@ -247,7 +249,7 @@ const Swap = ({
       console.log(error);
       Toast.show({
         type: "error",
-        text1: "error relaying transaction",
+        text1: t("errorRelayingTransaction") as string,
       });
     }
     clearAfterSwap();
@@ -259,7 +261,7 @@ const Swap = ({
     if (!debouncedAmountIn) {
       return {
         disabled: true,
-        text: "Enter amount",
+        text: t("Enter amount"),
       };
     } else if (
       Number(debouncedAmountIn) * (srcToken?.priceUSD ?? 0) <
@@ -267,7 +269,7 @@ const Swap = ({
     ) {
       return {
         disabled: true,
-        text: `Amount too small`,
+        text: t(`Amount too small`),
       };
     } else if (
       srcToken &&
@@ -277,22 +279,22 @@ const Swap = ({
     ) {
       return {
         disabled: true,
-        text: `Insufficient balance`,
+        text: t(`Insufficient balance`),
       };
     } else if (isSearching) {
       return {
         disabled: true,
-        text: "Computing route...",
+        text: t("Computing route..."),
       };
     } else if (!calls) {
       return {
         disabled: true,
-        text: "No route found",
+        text: t("No route found"),
       };
     } else {
       return {
         disabled: false,
-        text: "Swap",
+        text: t("Swap"),
       };
     }
   };
@@ -304,7 +306,7 @@ const Swap = ({
           <>
             <View className="mx-auto mt-4 w-full items-center bg-primary-light dark:bg-secondary-dark">
               <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
-                Swap
+              {t("Swap")}
               </Text>
             </View>
             <View className="mx-auto  w-full items-center bg-primary-light dark:bg-secondary-dark">
@@ -331,7 +333,7 @@ const Swap = ({
                 <View className="flex-row justify-end">
                   <View className="items-end">
                     <Text className="text-xs text-typo-light dark:text-typo-dark">
-                      Balance:{" "}
+                      {t("Balance")}:{" "}
                       {formatUnits(srcToken?.balance, srcToken?.decimals, 4)}{" "}
                       {srcToken?.symbol ?? ""}
                     </Text>

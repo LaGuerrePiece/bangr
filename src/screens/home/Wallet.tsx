@@ -27,6 +27,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainScreenStackParamList } from "../MainScreen";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { RootStackParamList } from "../../../App";
+import { useTranslation } from "react-i18next";
+import { track } from "../../utils/analytics";
 
 const Wallet = ({
   route,
@@ -35,7 +37,11 @@ const Wallet = ({
   NativeStackScreenProps<MainScreenStackParamList, "Wallet">,
   NativeStackScreenProps<RootStackParamList>
 >) => {
+  const { t } = useTranslation();
   const colorScheme = useColorScheme();
+  const { scw } = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
   const tokens = useTokensStore((state) => state.tokens);
   const fetchBalances = useUserStore((state) => state.fetchBalances);
   const setLoaded = useUserStore((state) => state.setLoaded);
@@ -138,7 +144,7 @@ const Wallet = ({
               >
                 <View className="w-11/12 rounded-md border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark">
                   <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
-                    Your account is not backed up yet!
+                    {t("noBackup")}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -173,7 +179,10 @@ const Wallet = ({
                     text="Get your first assets"
                     bold
                     rounded
-                    action={() => navigation.navigate("Onramp")}
+                    action={() => {
+                      navigation.navigate("Onramp", {});
+                      track("Get your first assets", scw);
+                    }}
                   />
                 </View>
               ) : null}

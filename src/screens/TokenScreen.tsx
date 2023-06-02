@@ -73,13 +73,11 @@ const TokenScreen = () => {
       }}
     >
       <View className="m-auto w-full grow dark:bg-primary-dark">
-        <Swap />
+        {/* <Swap /> */}
       </View>
       <View className="items-center bg-secondary-light dark:bg-primary-dark">
         <View className="flex h-full w-11/12 justify-between bg-secondary-light  dark:bg-primary-dark">
-          <View className="m-auto w-full grow">
-            <TokenModal />
-          </View>
+          <View className="m-auto w-full grow">{/* <TokenModal /> */}</View>
         </View>
       </View>
       <View className="items-center bg-secondary-light dark:bg-primary-dark">

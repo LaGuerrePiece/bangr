@@ -1,177 +1,216 @@
+import { useEffect, useState } from "react";
 import {
-  View,
   Text,
+  View,
+  TouchableOpacity,
+  SafeAreaView,
   TouchableWithoutFeedback,
-  useColorScheme,
-  Image,
+  TextInput,
+  Keyboard,
   ScrollView,
+  useColorScheme,
 } from "react-native";
-import { XMarkIcon } from "react-native-heroicons/outline";
-import { colors } from "../../config/configs";
+import { ArrowLeftIcon, XMarkIcon } from "react-native-heroicons/outline";
+import ActionButton from "../../components/ActionButton";
+import useUserStore from "../../state/user";
+import { correctInput } from "../../utils/utils";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
-import { TouchableOpacity } from "react-native";
-import { toastConfig } from "../../components/toasts";
-import useRampsStore from "../../state/ramps";
+import { colors } from "../../config/configs";
+import { Tab } from "../../components/Tab";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../../App";
+import { useTranslation } from "react-i18next";
+import SelectTokenButton from "../../components/SelectTokenButton";
+import useTokensStore from "../../state/tokens";
+import { MultichainToken } from "../../types/types";
+import { track } from "../../utils/analytics";
 
-const OnrampScreen = ({ navigation }: { navigation: any }) => {
+const OnrampScreen = ({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Onramp">) => {
   const colorScheme = useColorScheme();
-  const ramps = useRampsStore((state) => state.ramps);
+  const { t } = useTranslation();
+  const { scw } = useUserStore((state) => ({
+    scw: state.smartWalletAddress,
+  }));
 
-  const RampOption = ({
-    logo,
-    description,
-    name,
-    screen,
-    instant,
-    fees,
-    methods,
-    comingSoon,
-  }: {
-    logo: string;
-    description: string;
-    name: string;
-    screen: string;
-    instant: boolean;
-    fees: string;
-    methods: string[];
-    comingSoon: boolean;
-  }) => {
-    return (
-      <TouchableOpacity
-        className="my-3 w-10/12"
-        onPress={() => {
-          navigation.navigate(screen);
-        }}
-        disabled={comingSoon}
-      >
-        <View
-          className="rounded-2xl bg-secondary-light p-3 text-xl shadow-2xl dark:bg-secondary-dark"
-          style={comingSoon ? { opacity: 0.4 } : {}}
-        >
-          <View className="flex-row">
-            <Image className="h-8 w-8 rounded-full" source={{ uri: logo }} />
-            <Text className="ml-2 text-2xl font-bold text-typo-light dark:text-typo-dark">
-              {name}
-            </Text>
-          </View>
-          <Text className="my-1 text-lg leading-6 text-typo-light dark:text-typo-dark">
-            {description}
-          </Text>
-          <View className="flex-row justify-between">
-            <View>
-              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Instant
-              </Text>
-              <View className="flex-row">
-                {instant ? (
-                  <Image
-                    className="h-7 w-7 rounded-full"
-                    source={
-                      colorScheme === "dark"
-                        ? require("../../../assets/onramps/bolt_white.png")
-                        : require("../../../assets/onramps/bolt.png")
-                    }
-                  />
-                ) : null}
-                <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                  {instant ? "Yes" : "No"}
-                </Text>
-              </View>
-            </View>
-            <View>
-              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Fees
-              </Text>
-              <Text className="text-xl font-bold text-typo-light dark:text-typo-dark">
-                {fees}
-              </Text>
-            </View>
-            <View>
-              <Text className="text-lg text-typo2-light dark:text-typo2-dark">
-                Methods
-              </Text>
-              <View className="flex-row justify-center">
-                {methods.map((method) => {
-                  if (method === "card") {
-                    return (
-                      <Image
-                        key={method}
-                        className="h-8 w-8 rounded-full"
-                        source={
-                          colorScheme === "dark"
-                            ? require("../../../assets/onramps/card_white.png")
-                            : require("../../../assets/onramps/card.png")
-                        }
-                      />
-                    );
-                  } else {
-                    return (
-                      <Image
-                        key={method}
-                        className="h-8 w-8 rounded-full"
-                        source={
-                          colorScheme === "dark"
-                            ? require("../../../assets/onramps/bank_white.png")
-                            : require("../../../assets/onramps/bank.png")
-                        }
-                      />
-                    );
-                  }
-                })}
-              </View>
-            </View>
-          </View>
-        </View>
-        {/* {comingSoon ? (
-          <Text className="absolute bottom-20 left-20 text-2xl font-bold text-typo-light dark:text-typo-dark">
-            Coming soon
-          </Text>
-        ) : null} */}
-      </TouchableOpacity>
-    );
+  const { smartWalletAddress } = useUserStore((state) => ({
+    smartWalletAddress: state.smartWalletAddress,
+  }));
+
+  const tokens = useTokensStore((state) => state.tokens);
+
+  const [amount, setAmount] = useState<string>("");
+  const [tab, setTab] = useState<string>("card");
+  const [tab2, setTab2] = useState<string>("USDC");
+
+  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState<string>("ETH");
+
+  const selectedToken =
+    tokens?.find(
+      (token: MultichainToken) => token.symbol === selectedTokenSymbol
+    ) ?? (tokens?.[0] as MultichainToken);
+
+  useEffect(() => {
+    if (route.params?.updatedToken) {
+      setSelectedTokenSymbol(route.params.updatedToken.symbol);
+    }
+  }, [route.params?.updatedToken]);
+
+  const next = async () => {
+    if (!validateInput() || !smartWalletAddress) return;
+    navigation.navigate("Transak", {
+      fiatAmount: amount,
+      cryptoCurrencyCode: tab2,
+      paymentMethod: tab,
+    });
+    track("Onramp Clicked: ", scw);
+  };
+
+  const validateInput = () => {
+    if (!parseFloat(amount) || parseFloat(amount) <= 0) {
+      Toast.show({
+        type: "error",
+        text1: t("inputError") as string,
+        text2: t("amountInvalid") as string,
+      });
+      return false;
+    }
+    return true;
   };
 
   return (
-    <View className="h-full items-center bg-primary-light py-6 dark:bg-primary-dark">
-      <TouchableWithoutFeedback onPress={navigation.goBack}>
-        <View className="w-11/12 flex-row justify-end">
-          <XMarkIcon
-            size={36}
-            color={
-              colorScheme === "light" ? colors.typo.light : colors.typo.dark
-            }
-          />
-        </View>
-      </TouchableWithoutFeedback>
-      <Text className="mt-2 mr-4 font-InterBold text-[22px] leading-9 text-typo-light dark:text-typo-dark">
-        Choose a payment option
-      </Text>
-      <ScrollView
-        contentContainerStyle={{ alignItems: "center" }}
-        className="w-full"
-      >
-        {ramps ? (
-          ramps.map((ramp) => (
-            <RampOption
-              key={ramp.name}
-              logo={ramp.logo}
-              description={ramp.description}
-              name={ramp.name}
-              screen={ramp.screen}
-              instant={ramp.instant}
-              fees={ramp.fees}
-              methods={ramp.methods}
-              comingSoon={ramp.comingSoon}
-            />
-          ))
-        ) : (
-          <Text className="text-typo-light dark:text-typo-dark">
-            No ramp option available now
-          </Text>
-        )}
-      </ScrollView>
-      <Toast config={toastConfig} />
-    </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
+        <ScrollView className="h-full">
+          <View onStartShouldSetResponder={() => true}>
+            <View className="mx-auto w-11/12 p-3">
+              <View className="">
+                <TouchableWithoutFeedback onPress={navigation.goBack}>
+                  <View className="flex-row justify-end">
+                    <XMarkIcon
+                      size={36}
+                      color={
+                        colorScheme === "light"
+                          ? colors.typo.light
+                          : colors.typo.dark
+                      }
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+                <Text className="m-auto text-3xl font-bold text-typo-light dark:text-typo-dark">
+                  {t("onrampScreenTitle")}
+                </Text>
+              </View>
+
+              <View className="flex flex-col items-center">
+                <Text className="mt-4 text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                  {t("Amount")}
+                </Text>
+                <View className="h-18 my-4 flex-row items-center rounded-xl px-2">
+                  <TextInput
+                    placeholderTextColor={colors.typo2.light}
+                    className="h-20 text-center text-6xl font-semibold text-typo-light dark:text-typo-dark"
+                    onChangeText={(e) => setAmount(correctInput(e))}
+                    value={amount}
+                    keyboardType="numeric"
+                    placeholder="0"
+                  />
+                  <Text className="mt-2 text-4xl font-semibold text-typo-light dark:text-typo-dark">
+                    €
+                  </Text>
+                </View>
+              </View>
+
+              <View className="mx-auto my-3 flex-col">
+                <Text className="text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                  {t("currency")}
+                </Text>
+                {/* <SelectTokenButton
+                  tokens={tokens as MultichainToken[]}
+                  selectedToken={selectedToken}
+                  tokenToUpdate={"Onramp"}
+                /> */}
+                <View className="mt-6 flex-row items-center justify-around rounded-xl bg-quaternary-light py-0.5 px-3 dark:bg-quaternary-dark">
+                  <View className="mx-3">
+                    {/* <Image source={require("../../../assets/onramps/bank.png")} /> */}
+                    <Tab
+                      image={
+                        // asset === "USDC"
+                        require("../../../assets/usdc.png")
+                      }
+                      text={"USDC"}
+                      action={() => setTab2("USDC")}
+                      active={tab2 === "USDC"}
+                    />
+                  </View>
+                  <View className="mx-3">
+                    <Tab
+                      image={require("../../../assets/ethereum.png")}
+                      text={"ETH"}
+                      action={() => setTab2("ETH")}
+                      active={tab2 === "ETH"}
+                    />
+                  </View>
+                </View>
+              </View>
+
+              <Text className="mt-4 text-center text-xl font-semibold text-typo-light dark:text-typo-dark">
+                {t("paymentMethod")}
+              </Text>
+              <View className="mt-6 flex-row items-center justify-around rounded-xl bg-quaternary-light py-0.5 px-3 dark:bg-quaternary-dark">
+                <View className="mx-3">
+                  {/* <Image source={require("../../../assets/onramps/bank.png")} /> */}
+                  <Tab
+                    image={
+                      colorScheme === "dark"
+                        ? require("../../../assets/onramps/card_white.png")
+                        : require("../../../assets/onramps/card.png")
+                    }
+                    text={t("card")}
+                    action={() => setTab("card")}
+                    active={tab === "card"}
+                  />
+                </View>
+                <View className="mx-3">
+                  <Tab
+                    image={
+                      colorScheme === "dark"
+                        ? require("../../../assets/onramps/bank_white.png")
+                        : require("../../../assets/onramps/bank.png")
+                    }
+                    text={t("transfer")}
+                    action={() => setTab("transfer")}
+                    active={tab === "transfer"}
+                  />
+                </View>
+              </View>
+
+              <View className="mt-8 mb-1">
+                <ActionButton
+                  text={t("Next")}
+                  // styles={loading ? "opacity-50 rounded-xl" : "rounded-xl"}
+                  styles={"rounded-xl"}
+                  bold
+                  action={next}
+                />
+              </View>
+
+              {/* <HowItWorks
+                action={() =>
+                  navigation.navigate("VaultInfoSc
+                  reen", {
+                    investment: route.params.investment,
+                    apy: apy,
+                  })
+                }
+              /> */}
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 };
 

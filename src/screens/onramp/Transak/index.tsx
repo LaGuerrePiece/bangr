@@ -6,12 +6,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { WebViewNavigation } from "react-native-webview";
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { toastConfig } from "../../../components/toasts";
+import { t } from "i18next";
+import { RootStackParamList } from "../../../../App";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
 
-export default function Transak({ navigation }: { navigation: any }) {
+export default function Transak({
+  route,
+  navigation,
+}: NativeStackScreenProps<RootStackParamList, "Transak">) {
   const windowWidth = Dimensions.get("window").width;
   const { smartWalletAddress } = useUserStore((state) => ({
     smartWalletAddress: state.smartWalletAddress,
   }));
+  const { t } = useTranslation();
 
   const transakEventHandler = (event: string, data: any) => {
     switch (event) {
@@ -19,8 +27,8 @@ export default function Transak({ navigation }: { navigation: any }) {
         console.log(data);
         Toast.show({
           type: "info",
-          text1: "Order processing...",
-          text2: "Your order should arrive soon",
+          text1: t("orderProcessing") as string,
+          text2: t("yourOrderShouldArriveSoon") as string,
         });
         break;
 
@@ -28,8 +36,8 @@ export default function Transak({ navigation }: { navigation: any }) {
         console.log(data);
         Toast.show({
           type: "success",
-          text1: "Order Completed",
-          text2: "Your order is arrived !",
+          text1: t("orderConfirmed") as string,
+          text2: t("orderReceived") as string,
         });
         break;
 
@@ -37,6 +45,12 @@ export default function Transak({ navigation }: { navigation: any }) {
         console.log(data);
     }
   };
+
+  console.log("Transak screen :", {
+    fiatAmount: route.params?.fiatAmount,
+    cryptoCurrencyCode: route.params?.cryptoCurrencyCode,
+    paymentMethod: route.params?.paymentMethod,
+  });
 
   return (
     <SafeAreaView className="h-full w-full bg-primary-light dark:bg-primary-dark">
@@ -47,21 +61,29 @@ export default function Transak({ navigation }: { navigation: any }) {
           environment: "PRODUCTION",
           // environment: "STAGING",
           networks: "polygon,optimism,arbitrum",
-          defaultNetwork: "polygon",
-          defaultCryptoCurrency: "USDC",
-          cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
+          // defaultNetwork: "polygon",
+          // defaultCryptoCurrency: "USDC",
+          // cryptoCurrencyList: "USDC,DAI,USDT,ETH,WBTC,MATIC,AGEUR,WETH",
           walletAddress: smartWalletAddress,
-          defaultFiatAmount: "100",
-          exchangeScreenTitle: "Add money to Bangr !",
+          // defaultFiatAmount: "100",
+          exchangeScreenTitle: t("transakScreenTitle"),
           disableWalletAddressForm: true,
           isDisableCrypto: true,
-          redirectURL: "https://www.youtube.com/",
+          redirectURL: "https://www.google.com/",
           // themeColor: "000000",
+          productsAvailed: "BUY",
+
+          // fiatAmount: "100",
+          fiatCurrency: "EUR",
+          fiatAmount: route.params?.fiatAmount,
+          cryptoCurrencyCode: route.params?.cryptoCurrencyCode,
+          defaultPaymentMethod:
+            route.params?.paymentMethod === "card"
+              ? "credit_debit_card"
+              : "sepa_bank_transfer",
 
           // possible de faire un form custom et de passer toutes les infos:
 
-          // fiatAmount: "100",
-          // fiatCurrency: "EUR",
           // email: userInfo?.email,
           // userData: encodeURIComponent(JSON.stringify({
           //   "firstName": "Satoshi",
@@ -92,11 +114,4 @@ export default function Transak({ navigation }: { navigation: any }) {
       <Toast config={toastConfig} />
     </SafeAreaView>
   );
-}
-
-{
-  /* <WebView
-  style={{ width: windowWidth }}
-  source={{ uri: "https://onramp.vercel.app" }}
-/> */
 }

@@ -21,7 +21,7 @@ import {
 } from "react-native-heroicons/outline";
 import { formatUnits } from "../utils/format";
 import ActionButton from "../components/ActionButton";
-import { averageApy } from "../components/Vault";
+import Vault, { averageApy } from "../components/Vault";
 import useTokensStore from "../state/tokens";
 import useUserStore from "../state/user";
 import useVaultsStore from "../state/vaults";
@@ -39,10 +39,10 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
 import { useTranslation } from "react-i18next";
 
-const VaultDepositScreen = ({
+const VaultWithdrawalScreen = ({
   route,
   navigation,
-}: NativeStackScreenProps<RootStackParamList, "VaultDeposit">) => {
+}: NativeStackScreenProps<RootStackParamList, "VaultWithdrawal">) => {
   const colorScheme = useColorScheme();
   const { t } = useTranslation();
 
@@ -104,7 +104,7 @@ const VaultDepositScreen = ({
   const [selectedTokenSymbol, setSelectedTokenSymbol] = useState(tokensIn[0]);
   const [balance, setBalance] = useState("");
   const [deposited, setDeposited] = useState("0");
-  const [tab, setTab] = useState("Deposit");
+  const [tab, setTab] = useState("Withdraw");
   const [loading, setLoading] = useState(false);
 
   const selectedToken = tokens?.find(
@@ -298,11 +298,6 @@ const VaultDepositScreen = ({
     );
   }, [selectedTokenSymbol, tokens, vaults]);
 
-  const switchTab = (tab: string) => {
-    setAmount("");
-    setTab(tab);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView className="bg-primary-light dark:bg-primary-dark">
@@ -398,7 +393,7 @@ const VaultDepositScreen = ({
                   </Text>
                 </View> */}
 
-              {tokensIn.length > 1 ? (
+              {/* {tokensIn.length > 1 ? (
                 <View className="mt-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
                   <View className="mx-3 ">
                     <Tab
@@ -417,7 +412,7 @@ const VaultDepositScreen = ({
                     />
                   </View>
                 </View>
-              ) : null}
+              ) : null} */}
 
               {/* <View className="my-3 flex-row items-center justify-around rounded-xl bg-quaternary-light px-3 dark:bg-quaternary-dark">
                   <View className="mx-3 ">
@@ -586,4 +581,4 @@ const VaultDepositScreen = ({
   );
 };
 
-export default VaultDepositScreen;
+export default VaultWithdrawalScreen;

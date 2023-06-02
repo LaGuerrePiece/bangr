@@ -9,6 +9,7 @@ import Settings from "./home/Settings";
 import { TabBar } from "./TabBar";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { MultichainToken } from "../types/types";
+import { useTranslation } from "react-i18next";
 
 export type MainScreenStackParamList = {
   History: {
@@ -26,6 +27,7 @@ export type MainScreenStackParamList = {
 const Tab = createMaterialTopTabNavigator<MainScreenStackParamList>();
 
 const MainScreen = ({ navigation, route }: { navigation: any; route: any }) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
   const colorScheme = Appearance.getColorScheme();
 

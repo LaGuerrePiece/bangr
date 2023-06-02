@@ -18,10 +18,13 @@ import { toastConfig } from "../components/toasts";
 import { getChain } from "../utils/utils";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useTranslation } from "react-i18next";
+import { track } from "../utils/analytics";
 
 const ReceiveScreen = ({
   navigation,
 }: NativeStackScreenProps<RootStackParamList, "Receive">) => {
+  const { t } = useTranslation();
   const showToast = (text1: string, text2: string) => {
     Toast.show({
       type: "success",
@@ -65,7 +68,7 @@ const ReceiveScreen = ({
         </View>
       </TouchableWithoutFeedback>
       <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
-        Receive
+        {t("Receive")}
       </Text>
 
       {smartWalletAddress && (
@@ -87,10 +90,7 @@ const ReceiveScreen = ({
                 onPress={() => {
                   console.log("smartWalletAddress: ", smartWalletAddress);
                   Clipboard.setStringAsync(smartWalletAddress ?? "");
-                  showToast(
-                    "Address copied to clipboard",
-                    "You can now paste it anywhere you want"
-                  );
+                  showToast(t("copiedClipboard"), t("youCanPaste"));
                 }}
               >
                 <Text className="text-center text-lg font-bold text-typo-light dark:text-typo-dark">
@@ -127,7 +127,7 @@ const ReceiveScreen = ({
           </View>
 
           <Text className="w-36 text-center font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
-            Networks:
+            {t("Networks")}:
           </Text>
           <View className="my-3 flex items-center justify-center">
             <View className="mx-auto flex-col">
@@ -154,21 +154,27 @@ const ReceiveScreen = ({
                 </Text>
                 <View className="ml-2 w-14 flex-row items-center rounded-md border border-[#4F4F4F] bg-[#EFEEEC] p-0.5 dark:bg-secondary-dark">
                   <Text className="mx-auto text-center font-InterSemiBold text-[10px]	leading-3 text-typo-light dark:text-typo-dark">
-                    Lowest fees
+                    {t("Lowest fees")}
                   </Text>
                 </View>
               </View>
+            </View>
+            <View className="mt-2 w-11/12 rounded-md">
+              <Text className="px-3 py-2 text-center font-bold text-[#B33A3A] underline">
+                {t("notMainnet")}
+              </Text>
             </View>
           </View>
 
           <View className="mt-4 flex-row justify-between">
             <ActionButton
-              text="Buy with cash"
+              text={t("Buy with cash")}
               rounded
               bold
               styles={"min-w-[200px]"}
               action={() => {
-                navigation.navigate("Onramp");
+                navigation.navigate("Onramp", {});
+                track("Buy with cash", smartWalletAddress);
               }}
             />
           </View>
