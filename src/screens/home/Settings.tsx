@@ -51,14 +51,13 @@ const Setting = ({
 
   // Styles for the currency picker
   const pickerSelectStyles = StyleSheet.create({
-    backgroundColor:
-      colorScheme === "dark" ? colors.primary.dark : colors.secondary.light,
+    
     color: colorScheme === "light" ? colors.typo.light : colors.typo.dark,
   });
 
   return (
-    <View className="mt-4 w-full items-center">
-      <Text className="text-typo-light dark:text-typo-dark">{title}</Text>
+    <View className="mt-4 w-full ">
+      <Text className="text-typo-light text-base dark:text-typo-dark">{title}</Text>
       <View className="w-full">
         <Picker
           selectedValue={value}
@@ -107,26 +106,31 @@ const Settings = () => {
 
   return (
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-4 w-11/12 items-center">
-        <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
+      <View className="mx-auto mt-4 w-full items-center">
+    
+        <Text className="my-4 font-InterBold text-3xl text-typo-light dark:text-typo-dark">
           {t("settings")}
         </Text>
-        <Setting
-          title={t("currency")}
-          value={currency}
-          setValue={setCurrency}
-          options={["Euro", "Dollar"]}
-        />
-        <Setting
-          title={t("language")}
-          value={language}
-          setValue={(e) => {
-            setLanguage(e);
-            console.log("changed to", e);
-            i18next.changeLanguage(e === "Français" ? "fr" : "en");
-          }}
-          options={["Français", "English"]}
-        />
+        <View className="flex-row items-center justify-between bg-primary-light py-3 px-4 dark:bg-secondary-dark">
+          <Setting
+            title={t("currency")}
+            value={currency}
+            setValue={setCurrency}
+            options={["Euro", "Dollar"]}
+          />
+        </View>
+        <View className="flex-row items-center justify-between bg-secondary-light py-3 px-4 dark:bg-primary-dark">
+          <Setting
+            title={t("language")}
+            value={language}
+            setValue={(e) => {
+              setLanguage(e);
+              console.log("changed to", e);
+              i18next.changeLanguage(e === "Français" ? "fr" : "en");
+            }}
+            options={["Français", "English"]}
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
