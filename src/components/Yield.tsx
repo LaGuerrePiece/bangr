@@ -15,12 +15,13 @@ import useYieldsStore from "../state/yields";
 import { track } from "../utils/analytics";
 import useUserStore from "../state/user";
 
-const Yield = ({ asset }: { asset: YieldAsset }) => {
+const Yield = ({ asset, even }: { asset: YieldAsset, even: boolean} ) => {
   const { t } = useTranslation();
   const getToken = useTokensStore((state) => state.getToken);
   const colorScheme = useColorScheme();
   const navigation = useNavigation() as any;
   const { symbol, yieldLow, yieldHigh, investments } = asset;
+
   const { scw } = useUserStore((state) => ({
     scw: state.smartWalletAddress,
   }));
@@ -74,11 +75,12 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
       activeOpacity={disabled ? 1 : 0.7}
     >
       <View
-        className="my-2 rounded-xl border border-[#4F4F4F] bg-[#EFEEEC] dark:bg-secondary-dark"
+        className={ even ? "bg-primary-light dark:bg-secondary-dark p-3" :
+                    "bg-secondary-light dark:bg-primary-dark p-3 "}
         style={disabled ? { opacity: 0.4 } : {}}
       >
         <View className="flex-row justify-between p-2">
-          <View className="w-9/12 flex-row items-center">
+          <View className="w-10/12 flex-row items-center">
             <Image
               className="h-8 w-8 rounded-full"
               source={{
@@ -94,7 +96,7 @@ const Yield = ({ asset }: { asset: YieldAsset }) => {
               </Text>{" "}
               annual yield on {symbol}
             </Text> */}
-            <Text className="ml-2 font-InterSemiBold text-[16px] font-bold text-typo-light dark:text-secondary-light">
+            <Text className="ml-2 font-InterSemiBold text-[17px] font-bold text-typo-light dark:text-secondary-light">
               {t("Earn")} <Text className="text-green-600">{apy}%</Text>{" "}
               {t("annually on")} {symbol}
             </Text>
