@@ -88,7 +88,7 @@ const History = ({
 
   return (
     <SafeAreaView className="h-full items-center bg-primary-light dark:bg-primary-dark">
-      <View className="mx-auto mt-4 w-11/12 items-center justify-center rounded-xl">
+      <View className="mx-auto mt-4 w-full items-center justify-center rounded-xl">
         {/* <View className="w-full flex-row justify-end">
           <TouchableOpacity
             onPress={() => {
@@ -111,8 +111,13 @@ const History = ({
           </View>
         ) : null}
       </View>
+      <View className="mx-auto mt-4 w-full items-center bg-primary-light dark:bg-primary-dark">
+        <Text className="text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
+          {t("History")}
+        </Text>
+      </View>
       <ScrollView
-        className="mx-auto mt-5 w-11/12 rounded-lg"
+        className="mx-auto w-full rounded-lg"
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
@@ -121,7 +126,7 @@ const History = ({
         vaults &&
         tasks.filter((task) => task.state != 2 && task.state != -20).length >
           0 ? (
-          <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
+          <Text className="m-4 text-lg font-bold text-typo2-light dark:text-typo2-dark">
             {t("pending")}
           </Text>
         ) : null}
@@ -135,7 +140,11 @@ const History = ({
             .sort((a, b) => a.id.localeCompare(b.id))
             .map((task, index) => (
               <View
-                className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark"
+                className={
+                  index % 2 == 0
+                    ? "flex flex-row items-center justify-between bg-secondary-light p-3 dark:bg-secondary-dark "
+                    : "flex flex-row items-center justify-between bg-primary-light p-3 dark:bg-primary-dark "
+                }
                 key={index}
               >
                 <View className="flex-row items-center py-2 px-2">
@@ -237,7 +246,7 @@ const History = ({
         )}
 
         {/* tasks that have state = 2 */}
-        <Text className="text-lg font-bold text-typo2-light dark:text-typo2-dark">
+        <Text className="m-4 text-lg font-bold text-typo2-light dark:text-typo2-dark ">
           {t("completed")}
         </Text>
         {tasks.length !== 0 ? (
@@ -256,7 +265,13 @@ const History = ({
                 }}
                 key={index}
               >
-                <View className="my-1 flex flex-row items-center justify-between rounded-lg bg-secondary-light p-1 dark:bg-secondary-dark">
+                <View
+                  className={
+                    index % 2 == 0
+                      ? "flex flex-row items-center justify-between bg-secondary-light p-3 dark:bg-secondary-dark "
+                      : "flex flex-row items-center justify-between bg-primary-light p-3 dark:bg-primary-dark "
+                  }
+                >
                   <View className="flex-row items-center py-2 px-2">
                     <Image
                       className="h-8 w-8"
