@@ -174,12 +174,12 @@ const History = ({
                   />
                   <Text className="ml-2 font-bold text-typo2-light dark:text-typo2-dark">
                     {task.type === "Swap"
-                      ? "to"
+                      ? t("to")
                       : task.type === "Invest"
-                      ? "into"
+                      ? t("into")
                       : task.type === "Withdraw"
-                      ? "from"
-                      : "to"}{" "}
+                      ? t("from")
+                      : t("to")}{" "}
                   </Text>
                   {task.type === "send" ? (
                     <Text className="ml-1 font-bold text-typo2-light dark:text-typo2-dark">

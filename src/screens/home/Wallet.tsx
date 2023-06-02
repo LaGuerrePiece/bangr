@@ -176,7 +176,7 @@ const Wallet = ({
                   0) ? (
                 <View className="my-2">
                   <ActionButton
-                    text="Get your first assets"
+                    text={t("getYourFirstAssets")}
                     bold
                     rounded
                     action={() => {

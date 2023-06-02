@@ -312,7 +312,7 @@ const Swap = ({
             <View className="mx-auto  w-full items-center bg-primary-light dark:bg-secondary-dark">
               <View className="w-11/12 flex-row justify-start">
                 <Text className="text-md text-typo-light dark:text-typo-dark">
-                  Spent:
+                  {t("spent")}:
                 </Text>
               </View>
               <View className="w-full flex-row justify-between p-2">
@@ -386,9 +386,9 @@ const Swap = ({
                 className="w-full flex-col justify-start bg-secondary-light 
             dark:bg-primary-dark"
               >
-                <View className="flex-row justify-start mt-4 ml-4 mb-4">
+                <View className="flex-row justify-start mt-4 ml-4 mb-6">
                   <Text className="text-typo-light dark:text-typo-dark">
-                    Received:
+                  {t("received")}:
                   </Text>
                 </View>
                 <View
