@@ -91,42 +91,9 @@ const Wallet = ({
             </View>
           </View>
         ) : (
-          <View className="mx-auto mt-4 w-11/12 items-center">
-            <View className="w-full flex-row justify-between">
-              {/* <TouchableOpacity
-                onPress={() => {
-                  // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  console.log("swap");
-                  // swiper.current.scrollBy(-1, true);
-                }}
-              >
-                <Image
-                  className="h-7 w-7"
-                  source={
-                    colorScheme === "dark"
-                      ? require("../../../assets/swap-drk.png")
-                      : require("../../../assets/swap.png")
-                  }
-                />
-              </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  console.log("Invest");
-                  // swiper.current.scrollBy(1, true);
-                }}
-              >
-                <Image
-                  className="h-7 w-7"
-                  source={
-                    colorScheme === "dark"
-                      ? require("../../../assets/invest-drk.png")
-                      : require("../../../assets/invest.png")
-                  }
-                />
-              </TouchableOpacity> */}
-            </View>
-            <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark">
+          <View className="mx-auto mt-4 w-full items-center">
+          
+            <View className="mt-2 rounded-xl bg-secondary-light py-8 dark:bg-primary-dark px-8">
               <Text className="text-center text-5xl font-bold text-icon-special dark:text-secondary-light">
                 {currency === "Dollar" ? "$" : ""}
                 {currency == "Euro"
@@ -150,7 +117,7 @@ const Wallet = ({
               </TouchableOpacity>
             )}
 
-            <View className="w-11/12">
+            <View className="w-full">
               {tokens
                 ? tokens
                     .filter(
@@ -162,11 +129,12 @@ const Wallet = ({
                             token.symbol === "USDC")) ||
                         token.symbol === "USDC"
                     )
-                    .map((token) => (
+                    .map((token, index) => (
                       <Asset
                         token={token}
                         key={token.symbol}
                         navigation={navigation}
+                        even= {index % 2 === 0}
                       />
                     ))
                 : null}

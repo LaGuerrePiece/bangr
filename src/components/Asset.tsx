@@ -26,12 +26,14 @@ import { RootStackParamList } from "../../App";
 const Asset = ({
   navigation,
   token,
+  even,
 }: {
   navigation: CompositeNavigationProp<
     NativeStackNavigationProp<MainScreenStackParamList, "Wallet">,
     NativeStackNavigationProp<RootStackParamList>
   >;
   token: MultichainToken;
+  even: boolean;
 }) => {
   const [chart, setChart] = useState<Point[]>();
   useEffect(() => {
@@ -138,7 +140,8 @@ const Asset = ({
             <View />
           )}
         </View>
-        <View className="flex-row items-center justify-between py-3">
+        <View className={even ? "bg-secondary-light dark:bg-primary-dark flex-row items-center justify-between py-3 px-4" : "bg-primary-light dark:bg-secondary-dark flex-row items-center justify-between py-3 px-4"}
+        >
           <View className="flex-row items-center">
             {token.vaultToken ? (
               <>
