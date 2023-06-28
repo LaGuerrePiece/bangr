@@ -107,6 +107,7 @@ const Asset = ({
         setHeight(height);
         setWidth(width);
       }}
+      className="w-full"
     >
       <TouchableOpacity
         onPress={() => {
@@ -140,7 +141,7 @@ const Asset = ({
             <View />
           )}
         </View>
-        <View className={even ? "bg-secondary-light dark:bg-primary-dark flex-row items-center justify-between py-3 px-4" : "bg-primary-light dark:bg-secondary-dark flex-row items-center justify-between py-3 px-4"}
+        <View className={even ? "bg-secondary-light dark:bg-primary-dark flex-row items-center justify-between py-4 px-6" : "bg-primary-light dark:bg-secondary-dark flex-row items-center justify-between py-4 px-6"}
         >
           <View className="flex-row items-center">
             {token.vaultToken ? (

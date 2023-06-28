@@ -30,7 +30,7 @@ const HomeButton = () => {
         }}
       >
         <Image
-          className="m-auto h-8 w-8"
+          className="m-auto h-12 w-12"
           source={
             colorScheme === "light"
               ? require("../../assets/receive.png")
@@ -50,7 +50,7 @@ const HomeButton = () => {
         }}
       >
         <Image
-          className="m-auto h-12 w-12"
+          className="m-auto h-10 w-10"
           source={
             colorScheme === "light"
               ? require("../../assets/dollar.png")
@@ -69,7 +69,7 @@ const HomeButton = () => {
         }}
       >
         <Image
-          className="m-auto h-8 w-8"
+          className="m-auto h-12 w-12"
           source={
             colorScheme === "light"
               ? require("../../assets/send.png")

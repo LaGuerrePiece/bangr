@@ -108,7 +108,7 @@ const Settings = () => {
     <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
       <View className="mx-auto mt-4 w-full items-center">
     
-        <Text className="my-4 font-InterBold text-3xl text-typo-light dark:text-typo-dark">
+        <Text className="my-4  mb-8 font-InterBold text-3xl text-typo-light dark:text-typo-dark">
           {t("settings")}
         </Text>
         <View className="flex-row items-center justify-between bg-primary-light py-3 px-4 dark:bg-secondary-dark">

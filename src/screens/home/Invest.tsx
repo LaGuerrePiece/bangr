@@ -54,7 +54,7 @@ const Invest = () => {
       </View>
       <ScrollView>
         <View className="mx-auto w-full">
-          <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
+          <Text className="mb-2 mt-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
             {t("Invest")}
           </Text>
           <View className="my-2 mt-4" >
