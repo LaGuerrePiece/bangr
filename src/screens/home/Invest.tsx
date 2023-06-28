@@ -53,18 +53,22 @@ const Invest = () => {
         </View> */}
       </View>
       <ScrollView>
-        <View className="mx-auto w-[91%]">
+        <View className="mx-auto w-full">
           <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
             {t("Invest")}
           </Text>
+          <View className="my-2 mt-4" >
 
           {yields ? (
-            yields.map((asset) => <Yield key={asset.symbol} asset={asset} />)
+            // even is a boolean that is used to alternate the background color of the yield component
+             
+            yields.map((asset, index) => <Yield key={asset.symbol} asset={asset} even={index % 2 === 0}/>)
           ) : (
             <Text className="mb-2 mt-8 text-center font-Inter text-xl text-typo-light dark:text-typo-dark">
               No opportunities available
             </Text>
           )}
+          </View>
         </View>
         <View className="my-16" />
       </ScrollView>

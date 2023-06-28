@@ -300,48 +300,21 @@ const Swap = ({
   };
 
   return (
-    <SafeAreaView className="bg-sedondary-light h-full dark:bg-primary-dark">
-      <View className="mx-auto mt-4 w-11/12 items-center">
-        {/* <View className="w-full flex-row justify-between">
-          <TouchableOpacity
-            onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              console.log("history");
-              // swiper.current.scrollBy(-1, true);
-            }}
-          >
-            <Image
-              className="h-7 w-7"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/history-drk.png")
-                  : require("../../../assets/history.png")
-              }
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              // Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-              console.log("Invest");
-              // swiper.current.scrollBy(1, true);
-            }}
-          >
-            <Image
-              className="h-7 w-7"
-              source={
-                colorScheme === "dark"
-                  ? require("../../../assets/pochicon-drk.png")
-                  : require("../../../assets/pochicon.png")
-              }
-            />
-          </TouchableOpacity>
-        </View> */}
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-primary-dark">
+      <View className="mx-auto w-full items-center bg-primary-light dark:bg-secondary-dark">
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
+            <View className="mx-auto mt-4 w-full items-center bg-primary-light dark:bg-secondary-dark">
+              <Text className="mb-2 text-center font-InterBold text-3xl text-typo-light dark:text-typo-dark">
               {t("Swap")}
-            </Text>
-            <View className="mx-auto my-3 w-full items-center rounded-xl border border-[#4F4F4F] bg-secondary-light dark:bg-secondary-dark">
+              </Text>
+            </View>
+            <View className="mx-auto  w-full items-center bg-primary-light dark:bg-secondary-dark">
+              <View className="w-11/12 flex-row justify-start">
+                <Text className="text-md text-typo-light dark:text-typo-dark">
+                  {t("spent")}:
+                </Text>
+              </View>
               <View className="w-full flex-row justify-between p-2">
                 <View className="ml-1 justify-end">
                   {srcToken && tokens && (
@@ -394,30 +367,80 @@ const Swap = ({
                 </View>
               </View>
 
-              <View
-                className="h-20 w-full flex-row justify-between rounded-br-xl rounded-bl-xl border-t border-[#4F4F4F]
-            bg-secondary-light pt-1
-            dark:bg-secondary-dark"
-              >
-                <View className="ml-1 p-2">
-                  {dstToken && tokens && (
-                    <SelectTokenButton
-                      tokens={tokens.filter(
-                        (t) => !["ETH", "MATIC"].includes(t.symbol)
-                      )} // quite dirty
-                      selectedToken={dstToken}
-                      tokenToUpdate={"dstToken"}
+              <View className="absolute z-10 mt-24 rounded-2xl bg-secondary-light p-2 dark:bg-primary-dark">
+                <TouchableHighlight onPress={flip}>
+                  <View className="flex-row items-center">
+                    <Image
+                      className="h-8 w-8"
+                      source={
+                        colorScheme === "light"
+                          ? require("../../../assets/flip.png")
+                          : require("../../../assets/flip_white.png")
+                      }
                     />
-                  )}
-                  <View className="my-2">
+                  </View>
+                </TouchableHighlight>
+              </View>
+
+              <View
+                className="w-full flex-col justify-start bg-secondary-light 
+            dark:bg-primary-dark"
+              >
+                <View className="flex-row justify-start mt-4 ml-4 mb-6">
+                  <Text className="text-typo-light dark:text-typo-dark">
+                  {t("received")}:
+                  </Text>
+                </View>
+                <View
+                  className="h-20 w-full flex-row justify-between 
+            bg-secondary-light pt-1
+            dark:bg-primary-dark"
+                >
+                  <View className="ml-1 p-2">
+                    {dstToken && tokens && (
+                      <SelectTokenButton
+                        tokens={tokens.filter(
+                          (t) => !["ETH", "MATIC"].includes(t.symbol)
+                        )} // quite dirty
+                        selectedToken={dstToken}
+                        tokenToUpdate={"dstToken"}
+                      />
+                    )}
+                    <View className="my-2">
+                      {isSearching ? (
+                        <View className="w-2/3 items-center justify-end">
+                          {/* @ts-ignore */}
+                          <Placeholder Animation={Shine}>
+                            <PlaceholderLine
+                              height={9}
+                              width={80}
+                              className="mt-2"
+                              style={
+                                colorScheme === "dark"
+                                  ? { backgroundColor: "#999999" }
+                                  : {}
+                              }
+                            />
+                          </Placeholder>
+                        </View>
+                      ) : (
+                        <Text className="mb-2 text-typo-light dark:text-typo-dark">
+                          ${" "}
+                          {quote && quote.totalToAmountUSD
+                            ? quote.totalToAmountUSD?.toFixed(2)
+                            : "0.00"}
+                        </Text>
+                      )}
+                    </View>
+                  </View>
+                  <View className="flex-row justify-end py-2">
                     {isSearching ? (
                       <View className="w-2/3 items-center justify-end">
                         {/* @ts-ignore */}
                         <Placeholder Animation={Shine}>
                           <PlaceholderLine
-                            height={9}
+                            height={20}
                             width={80}
-                            className="mt-2"
                             style={
                               colorScheme === "dark"
                                 ? { backgroundColor: "#999999" }
@@ -427,84 +450,45 @@ const Swap = ({
                         </Placeholder>
                       </View>
                     ) : (
-                      <Text className="mb-2 text-typo-light dark:text-typo-dark">
-                        ${" "}
-                        {quote && quote.totalToAmountUSD
-                          ? quote.totalToAmountUSD?.toFixed(2)
-                          : "0.00"}
+                      <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
+                        {quote && quote.sumOfToAmount
+                          ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
+                          : "0"}{" "}
                       </Text>
                     )}
                   </View>
                 </View>
-                <View className="flex-row justify-end py-2">
-                  {isSearching ? (
-                    <View className="w-2/3 items-center justify-end">
-                      {/* @ts-ignore */}
-                      <Placeholder Animation={Shine}>
-                        <PlaceholderLine
-                          height={20}
-                          width={80}
-                          style={
-                            colorScheme === "dark"
-                              ? { backgroundColor: "#999999" }
-                              : {}
-                          }
-                        />
-                      </Placeholder>
+              </View>
+              <View className="w-full flex-row justify-between bg-secondary-light dark:bg-primary-dark">
+                {gasFeeEstimateUSD ? (
+                  <TouchableHighlight>
+                    <View className="mr-3 flex-row items-center">
+                      <Icon
+                        icon={(props: any) => (
+                          <MaterialIcons
+                            name="local-gas-station"
+                            size={28}
+                            {...props}
+                          />
+                        )}
+                      />
+                      <Text className="ml-1 text-typo-light dark:text-typo-dark">
+                        {gasFeeEstimateUSD.toFixed(2)} USD
+                      </Text>
                     </View>
-                  ) : (
-                    <Text className="my-1 text-4xl font-semibold text-typo-light dark:text-typo-dark">
-                      {quote && quote.sumOfToAmount
-                        ? cutDecimals(quote.sumOfToAmount, 5).slice(0, 9)
-                        : "0"}{" "}
-                    </Text>
-                  )}
-                </View>
+                  </TouchableHighlight>
+                ) : null}
+              </View>
+              <View className="mx-auto w-full items-center bg-secondary-light pt-12 dark:bg-primary-dark">
+                <ActionButton
+                  text={buttonStatus().text}
+                  rounded
+                  bold
+                  disabled={buttonStatus().disabled}
+                  action={swap}
+                />
               </View>
             </View>
-            <View className="mb-3 w-full flex-row justify-between">
-              <TouchableHighlight onPress={flip}>
-                <View className="flex-row items-center">
-                  <Image
-                    className="ml-3 h-6 w-6"
-                    source={
-                      colorScheme === "light"
-                        ? require("../../../assets/flip.png")
-                        : require("../../../assets/flip_white.png")
-                    }
-                  />
-                  <Text className="font-bold text-typo-light dark:text-typo-dark">
-                    {t("Flip")}
-                  </Text>
-                </View>
-              </TouchableHighlight>
-              {gasFeeEstimateUSD ? (
-                <TouchableHighlight>
-                  <View className="mr-3 flex-row items-center">
-                    <Icon
-                      icon={(props: any) => (
-                        <MaterialIcons
-                          name="local-gas-station"
-                          size={28}
-                          {...props}
-                        />
-                      )}
-                    />
-                    <Text className="ml-1 text-typo-light dark:text-typo-dark">
-                      {gasFeeEstimateUSD.toFixed(2)} USD
-                    </Text>
-                  </View>
-                </TouchableHighlight>
-              ) : null}
-            </View>
-
-            <ActionButton
-              text={buttonStatus().text}
-              rounded
-              bold
-              disabled={buttonStatus().disabled}
-              action={swap}
-            />
           </>
         </TouchableWithoutFeedback>
       </View>
