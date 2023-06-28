@@ -167,5 +167,7 @@
   "getYourFirstAssets": "Ajoute des fonds",
   "to": "vers",
   "from": "de",
-  "into": "dans"
+  "into": "dans",
+  "PleaseLogin": "Connecte-toi pour continuer",
+  "Invested": "Investi",
 }

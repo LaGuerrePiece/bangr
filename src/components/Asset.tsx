@@ -22,6 +22,7 @@ import useYieldsStore from "../state/yields";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { MainScreenStackParamList } from "../screens/MainScreen";
 import { RootStackParamList } from "../../App";
+import { t } from "i18next";
 
 const Asset = ({
   navigation,
@@ -141,7 +142,12 @@ const Asset = ({
             <View />
           )}
         </View>
-        <View className={even ? "bg-secondary-light dark:bg-primary-dark flex-row items-center justify-between py-4 px-6" : "bg-primary-light dark:bg-secondary-dark flex-row items-center justify-between py-4 px-6"}
+        <View
+          className={
+            even
+              ? "flex-row items-center justify-between bg-secondary-light py-4 px-6 dark:bg-primary-dark"
+              : "flex-row items-center justify-between bg-primary-light py-4 px-6 dark:bg-secondary-dark"
+          }
         >
           <View className="flex-row items-center">
             {token.vaultToken ? (
@@ -168,7 +174,17 @@ const Asset = ({
                     {investment?.name}
                   </Text>
                   <Text className="text-typo2-light dark:text-typo2-dark">
-                    Vault
+                    {Number(
+                      ethers.utils.formatUnits(
+                        token.balance || 0,
+                        token.decimals
+                      )
+                    ).toFixed(2)}{" "}
+                    {token.symbol === "wstETH"
+                      ? "ETH"
+                      : token.symbol === "aUSDC"
+                      ? "USDC"
+                      : t("Invested")}
                   </Text>
                 </View>
               </>

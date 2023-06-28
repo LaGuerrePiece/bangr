@@ -168,6 +168,7 @@
   "getYourFirstAssets": "Get your first assets",
   "to": "to",
   "from": "from",
-  "into": "into"
-
+  "into": "into",
+  "PleaseLogin": "Please login to continue.",
+  "Invested": "Invested"
 }

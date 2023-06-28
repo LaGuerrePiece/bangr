@@ -17,6 +17,7 @@ import useTokensStore from "../state/tokens";
 import { skipBiometrics } from "../config/configs";
 import { RootStackParamList } from "../../App";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { t } from "i18next";
 global.Buffer = global.Buffer || Buffer;
 
 const LoginScreen = ({
@@ -76,10 +77,10 @@ const LoginScreen = ({
             }
           />
           <Text className="mx-auto mt-4 font-InterSemiBold text-lg text-typo-light dark:text-typo-dark">
-            Welcome to Bangr
+            {t("OnboardScreenWelcome")}
           </Text>
           <Text className="mx-auto mt-24 font-InterBold text-[25px] leading-9 text-typo-light dark:text-typo-dark">
-            Please login to continue.
+            {t("PleaseLogin")}
           </Text>
         </View>
       </View>
