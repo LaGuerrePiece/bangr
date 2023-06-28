@@ -61,7 +61,7 @@ export const chainData = [
 // infuraProvider({ apiKey: 'a035e52afe954afe9c45e781080cde98' }),
 // infuraProvider({ apiKey: '099fc58e0de9451d80b18d7c74caa7c1' }),
 
-export const forceOnboarding = false; // to see onboarding
+export const forceOnboarding = true; // to see onboarding
 
 export const forceWalletEmpty = false; // to see button to buy first coins
 
@@ -91,3 +91,5 @@ export const PAYMASTER_ADDRESS = "0xA5798D2F2618a24e017fc3631867a20a3fE8827b";
 export const REFERENCE_CHAIN = 137; // Polygon: reference chain used when a chain is needed
 
 export const FEE_PER_CALL = 0.025; // Fee taken per call in dollars to pay gas
+
+export const VALID_CODES = ["EXDJS"];

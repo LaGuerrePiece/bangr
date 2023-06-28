@@ -43,6 +43,7 @@ import RestoreAccountScreen from "./src/screens/onboard/RestoreAccount";
 import ChoosePasswordScreen from "./src/screens/onboard/ChoosePassword";
 import ChoosePasswordICloud from "./src/screens/onboard/ChoosePasswordICloud";
 import RestoreAccountICloud from "./src/screens/onboard/RestoreAccountICloud";
+import CodeScreen from "./src/screens/onboard/CodeScreen";
 import {
   FirstScreen,
   FourthScreen,
@@ -88,6 +89,7 @@ SplashScreen.preventAutoHideAsync();
 
 // params of all screens
 export type RootStackParamList = {
+  CodeScreen: undefined;
   FirstScreen: undefined;
   SecondScreen: undefined;
   ThirdScreen: undefined;
@@ -167,7 +169,7 @@ const App = () => {
   const checkifOnboardingNeeded = async () => {
     const privKey = await SecureStore.getItemAsync("privKey");
     if (!privKey || forceOnboarding) {
-      setInitialRouteName("FirstScreen");
+      setInitialRouteName("CodeScreen");
     }
   };
 
@@ -196,6 +198,11 @@ const App = () => {
           screenOptions={{ headerShown: false }}
           initialRouteName={initialRouteName as keyof RootStackParamList}
         >
+          <Stack.Screen
+            name="CodeScreen"
+            component={CodeScreen}
+            options={{ animation: "slide_from_right" }}
+          />
           <Stack.Screen
             name="FirstScreen"
             component={FirstScreen}
