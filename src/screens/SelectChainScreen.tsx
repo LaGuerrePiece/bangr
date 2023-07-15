@@ -23,10 +23,10 @@ export default function SelectChain({
   const colorScheme = useColorScheme();
 
   return (
-    <View className="h-full bg-secondary-light dark:bg-secondary-dark">
-      <SafeAreaView className="mx-auto w-11/12 rounded-lg p-3">
+    <SafeAreaView className="h-full bg-secondary-light dark:bg-secondary-dark">
+      <View className="mx-auto w-11/12 rounded-lg p-3">
         <TouchableWithoutFeedback onPress={navigation.goBack}>
-          <View className="flex-row justify-end">
+          <View className="my-2 flex-row justify-end">
             <XMarkIcon
               size={36}
               color={
@@ -35,14 +35,14 @@ export default function SelectChain({
             />
           </View>
         </TouchableWithoutFeedback>
-        <ScrollView className="my-2">
+        <ScrollView>
           {chainData
             .filter((chain) => chain.chainId !== chainId)
             .map((chain, i) => {
               return (
                 <TouchableOpacity
                   key={i}
-                  className="m-2 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
+                  className="mx-2 my-1 flex cursor-pointer flex-row items-center justify-between rounded-md border p-2 dark:border-typo-dark"
                   onPress={() => {
                     update({ chainId: chain.chainId });
                     navigation.goBack();
@@ -62,7 +62,7 @@ export default function SelectChain({
               );
             })}
         </ScrollView>
-      </SafeAreaView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 }

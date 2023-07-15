@@ -161,5 +161,13 @@
   "Aave USDC longDescription": "Les dollars déposés sur Aave permettent à d'autres utilisateurs de renforcer leur position en donnant d'autres actifs en caution. Les contrats intelligents d'Aave assurent que tout prêt reste sécurisé. Vous gagnez des intérêts sur vos dollars et vous pouvez les retirer n'importe quand.",
   "Aave USDC risks": "Aave est un des protocoles les plus anciens de la finance décentralisée. Il est également considéré comme l'un des plus sûrs et des plus fiables. Cependant, déposer dans Aave comporte des risques, tels que des bugs de contrats intelligent. Comme pour tout investissement, n'investissez que ce que vous pouvez vous permettre de perdre.",
   "Lido longDescription": "Les ethers déposés sur Lido assurent la stabilité du réseau Ethereum. Chaque jour, de nouveaux ethers sont émis et distribués proportionnellement à tous les dépôts. Vous percevrez des intérêts sur vos ethers et pourrez les retirer à tout moment.",
-  "Lido risks": "Lido est considéré comme l'un des protocoles les plus sûrs de la finance décentralisée. Cependant, il existe toujours des risques, tels que des bugs de contrats intelligents ou le slashing des validateurs. Comme pour tout investissement, n'investissez que ce que vous pouvez vous permettre de perdre."
+  "Lido risks": "Lido est considéré comme l'un des protocoles les plus sûrs de la finance décentralisée. Cependant, il existe toujours des risques, tels que des bugs de contrats intelligents ou le slashing des validateurs. Comme pour tout investissement, n'investissez que ce que vous pouvez vous permettre de perdre.",
+  "spent": "Dépensé",
+  "received": "Reçu",
+  "getYourFirstAssets": "Ajoute des fonds",
+  "to": "vers",
+  "from": "de",
+  "into": "dans",
+  "PleaseLogin": "Connecte-toi pour continuer",
+  "Invested": "Investi",
 }
