@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
     name: "bangr",
     slug: "poche-app",
-    version: "0.0.9",
+    version: "0.0.10",
     scheme: "bangr",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -24,7 +24,7 @@ module.exports = {
         RCTAsyncStorageExcludeFromBackup: false
       },
       bundleIdentifier: "app.bangr.app",
-      buildNumber: "5"
+      buildNumber: "6"
     },
     android: {
       adaptiveIcon: {
@@ -32,7 +32,7 @@ module.exports = {
         backgroundColor: "#FFFFFF"
       },
       package: "app.bangr.app",
-      versionCode: 5
+      versionCode: 6
     },
     web: {
       favicon: "./assets/favicon.png"
